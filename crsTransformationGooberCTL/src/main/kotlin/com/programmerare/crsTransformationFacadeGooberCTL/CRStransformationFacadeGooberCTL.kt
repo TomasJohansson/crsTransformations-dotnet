@@ -24,20 +24,22 @@ class CRStransformationFacadeGooberCTL : CRStransformationFacade {
         // shorter names below for readibility purpose (lots os usages further down)
         val input = epsgNumberForInputCoordinateSystem
         val output = epsgNumberForOutputCoordinateSystem
-
-        if(isRT90(input) && isWgs84(output)) {
+        // "Int" is the data type for the above input and output
+        // and below in the if statements they are used with extension functions
+        // for semantic reasons i.e. readability.
+        if(input.isRT90() && output.isWgs84()) { // procedural alternative: "if(isRT90(input) && isWgs84(output))"
             val rt90Position = RT90Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude, rt90Projections[input])
             positionToReturn = rt90Position.toWGS84()
 
-        } else if(isWgs84(input) && isRT90(output)) {
+        } else if(input.isWgs84() && output.isRT90()) {
             val wgs84Position = WGS84Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude)
             positionToReturn = RT90Position(wgs84Position, rt90Projections[output])
 
-        } else if(isSweref99(input) && isWgs84(output)) {
+        } else if(input.isSweref99() && output.isWgs84()) {
             val sweREF99Position = SWEREF99Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude, sweREFProjections[input])
             positionToReturn = sweREF99Position.toWGS84()
 
-        } else if(isWgs84(input) && isSweref99(output)) {
+        } else if(input.isWgs84() && output.isSweref99()) {
             val wgs84Position = WGS84Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude)
             positionToReturn = SWEREF99Position(wgs84Position, sweREFProjections[output])
 
@@ -48,9 +50,9 @@ class CRStransformationFacadeGooberCTL : CRStransformationFacade {
         } else if (
             // not direct support for transforming directly between SWEREF99 and RT90
             // but can do it by first transforming to WGS84 and then to the other
-            (isSweref99(input) && isRT90(output))
+            (input.isSweref99() && output.isRT90())
             ||
-            (isRT90(input) && isSweref99(output))
+            (input.isRT90() && output.isSweref99())
         ) {
             // first transform to WGS84
             val wgs84Coordinate = transform(inputCoordinate, WGS84)
@@ -61,21 +63,23 @@ class CRStransformationFacadeGooberCTL : CRStransformationFacade {
         }
     }
 
+    private fun Int.isWgs84(): Boolean {
+        return this == WGS84
+    }
+
+    private fun Int.isSweref99(): Boolean {
+        return sweREFProjections.containsKey(this)
+    }
+
+    private fun Int.isRT90(): Boolean {
+        return rt90Projections.containsKey(this)
+    }
+
     companion object {
         private val WGS84 = 4326
 
         private val rt90Projections = HashMap<Int, RT90Position.RT90Projection>()
         private val sweREFProjections = HashMap<Int, SWEREFProjection>()
-
-        private fun isRT90(epsgNumber: Int): Boolean {
-            return rt90Projections.containsKey(epsgNumber)
-        }
-        private fun isSweref99(epsgNumber: Int): Boolean {
-            return sweREFProjections.containsKey(epsgNumber)
-        }
-        private fun isWgs84(epsgNumber: Int): Boolean {
-            return epsgNumber == WGS84
-        }
 
         init {
             // http://spatialreference.org/ref/?search=rt90
