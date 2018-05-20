@@ -25,7 +25,8 @@ subprojects {
 
 	dependencies {
 		implementation("org.jetbrains.kotlin:kotlin-runtime:$kotlin_version")
-		testImplementation("junit:junit:4.12")
+		testImplementation("org.junit.jupiter:junit-jupiter-engine:5.2.0")
+
 
 		// TODO: not all modules will need the dependencies below
 		implementation("com.github.goober:coordinate-transformation-library:1.1")

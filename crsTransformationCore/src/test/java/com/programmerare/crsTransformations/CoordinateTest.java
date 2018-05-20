@@ -1,14 +1,12 @@
 package com.programmerare.crsTransformations;
 
-import java.util.Arrays;
-import java.util.List;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CoordinateTest {
+class CoordinateTest {
 
     @Test
-    public void coordinateTest() {
+    void coordinateTest() {
         double deltaTolerance = 0.00001;
 
         double xLongitude = 12.34;

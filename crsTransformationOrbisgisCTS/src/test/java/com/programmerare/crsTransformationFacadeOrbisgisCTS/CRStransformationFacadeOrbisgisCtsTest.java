@@ -1,16 +1,16 @@
 package com.programmerare.crsTransformationFacadeOrbisgisCTS;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.programmerare.crsTransformations.Coordinate;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-public class CRStransformationFacadeOrbisgisCtsTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+class CRStransformationFacadeOrbisgisCtsTest {
+
+    @DisplayName("Orbisgis Cts transformation from WGS84 to SWEREF99")
     @Test
-    public void orbisgisCtsTest() {
+    void orbisgisCtsTest() {
         // This test is using the coordinates of Stockholm Centralstation (Sweden)
         // https://kartor.eniro.se/m/03Yxp
         // WGS84 decimal (lat, lon)

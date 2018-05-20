@@ -1,16 +1,16 @@
 package com.programmerare.crsTransformationFacadeGooberCTL;
 
-import java.util.Arrays;
-import java.util.List;
-
 import com.programmerare.crsTransformations.Coordinate;
-import org.junit.Test;
-import static org.junit.Assert.assertEquals;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
 
-public class CRStransformationFacadeGooberCtlTest {
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
+class CRStransformationFacadeGooberCtlTest {
+
+    @DisplayName("Goober Cts transformation from WGS84 to SWEREF99")
     @Test
-    public void gooberCtlTest() {
+    void gooberCtlTest() {
         // This test is using the coordinates of Stockholm Centralstation (Sweden)
         // https://kartor.eniro.se/m/03Yxp
         // WGS84 decimal (lat, lon)
