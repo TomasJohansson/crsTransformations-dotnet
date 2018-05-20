@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CRStransformationFacadeBaseTest {
+final class CRStransformationFacadeTest {
 
     @DisplayName("Goober Cts transformation from WGS84 to SWEREF99")
     @Test
