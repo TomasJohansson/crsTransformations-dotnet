@@ -1,5 +1,6 @@
 package com.programmerare.crsTransformationFacadeOrbisgisCTS
 
+import com.programmerare.crsTransformations.CRStransformationFacade
 import com.programmerare.crsTransformations.Coordinate
 import org.cts.CRSFactory;
 import org.cts.crs.GeodeticCRS;
@@ -8,14 +9,9 @@ import org.cts.registry.EPSGRegistry;
 
 // " orbisgis/cts "
 // https://github.com/orbisgis/cts
-object CRStransformationFacadeOrbisgisCTS {
+class CRStransformationFacadeOrbisgisCTS : CRStransformationFacade {
 
-    // This ugly method signature (using a List<Double> as both input and output, will be refactored later
-    // and will use a Coordinate object instead)
-    // This ugly method signature (using a List<Double> as both input and output, will be refactored later
-    // and will use a Coordinate object instead)
-    @JvmStatic
-    fun transform(
+    override fun transform(
         inputCoordinate: Coordinate,
         epsgNumberForOutputCoordinateSystem: Int
     ): Coordinate {

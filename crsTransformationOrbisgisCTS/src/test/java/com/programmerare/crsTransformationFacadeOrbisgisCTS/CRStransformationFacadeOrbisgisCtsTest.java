@@ -27,7 +27,7 @@ class CRStransformationFacadeOrbisgisCtsTest {
         int epsgNumberForWgs84 = 4326;
         int epsgNumberForSweref99TM = 3006;
         Coordinate inputCoordinate = new Coordinate(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
-        Coordinate outputCoordinate = CRStransformationFacadeOrbisgisCTS.transform(inputCoordinate, epsgNumberForSweref99TM);
+        Coordinate outputCoordinate = (new CRStransformationFacadeOrbisgisCTS()).transform(inputCoordinate, epsgNumberForSweref99TM);
         assertEquals(sweref99_Y_expected, outputCoordinate.getYLatitude(), 0.5);
         assertEquals(sweref99_X_expected, outputCoordinate.getXLongitude(), 0.5);
     }

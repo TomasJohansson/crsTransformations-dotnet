@@ -3,17 +3,15 @@ package com.programmerare.crsTransformationFacadeGooberCTL
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position.SWEREFProjection
 import com.github.goober.coordinatetransformation.positions.WGS84Position
+import com.programmerare.crsTransformations.CRStransformationFacade
 import com.programmerare.crsTransformations.Coordinate
 import java.lang.UnsupportedOperationException
 
 // " goober/coordinate-transformation-library "
 // https://github.com/goober/coordinate-transformation-library
-object CRStransformationFacadeGooberCTL {
+class CRStransformationFacadeGooberCTL : CRStransformationFacade {
 
-    // This ugly method signature (using a List<Double> as both input and output, will be refactored later
-    // and will use a Coordinate object instead)
-    @JvmStatic
-    fun transform(
+    override fun transform(
         inputCoordinate: Coordinate,
         epsgNumberForOutputCoordinateSystem: Int
     ): Coordinate {
