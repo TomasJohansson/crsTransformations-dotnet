@@ -33,6 +33,18 @@ subprojects {
 	}
 }
 
+project(':crsTransformationGooberCTL') {
+    dependencies {
+        implementation project(':crsTransformationCore')
+    }
+}
+
+project(':crsTransformationOrbisgisCTS') {
+    dependencies {
+        implementation project(':crsTransformationCore')
+    }
+}
+
 project(':crsTransformationTest') {
 	dependencies {
 		implementation project(':crsTransformationCore')

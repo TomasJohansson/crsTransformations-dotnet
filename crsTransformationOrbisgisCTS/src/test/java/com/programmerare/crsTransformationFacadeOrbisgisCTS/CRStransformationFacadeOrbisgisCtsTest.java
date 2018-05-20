@@ -2,6 +2,8 @@ package com.programmerare.crsTransformationFacadeOrbisgisCTS;
 
 import java.util.Arrays;
 import java.util.List;
+
+import com.programmerare.crsTransformations.Coordinate;
 import org.junit.Test;
 import static org.junit.Assert.assertEquals;
 
@@ -22,8 +24,10 @@ public class CRStransformationFacadeOrbisgisCtsTest {
         double sweref99_Y_expected = 6580822;
         double sweref99_X_expected = 674032;
 
-        List<Double> doubles = CRStransformationFacadeOrbisgisCTS.transformWgs84CoordinateToSweref99TM(Arrays.asList(wgs84Lat, wgs84Lon));
-        assertEquals(sweref99_Y_expected, doubles.get(0), 0.5);
-        assertEquals(sweref99_X_expected, doubles.get(1), 0.5);
+        int epsgNumberForWgs84 = 4326;
+        Coordinate inputCoordinate = new Coordinate(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+        Coordinate outputCoordinate = CRStransformationFacadeOrbisgisCTS.transformWgs84CoordinateToSweref99TM(inputCoordinate);
+        assertEquals(sweref99_Y_expected, outputCoordinate.getYLatitude(), 0.5);
+        assertEquals(sweref99_X_expected, outputCoordinate.getXLongitude(), 0.5);
     }
 }

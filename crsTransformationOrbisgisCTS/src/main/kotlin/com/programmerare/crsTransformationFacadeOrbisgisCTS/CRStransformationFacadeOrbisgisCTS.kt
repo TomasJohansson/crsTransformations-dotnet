@@ -1,5 +1,6 @@
 package com.programmerare.crsTransformationFacadeOrbisgisCTS
 
+import com.programmerare.crsTransformations.Coordinate
 import java.util.*
 import org.cts.CRSFactory;
 import org.cts.crs.GeodeticCRS;
@@ -16,8 +17,8 @@ object CRStransformationFacadeOrbisgisCTS {
     // and will use a Coordinate object instead)
     @JvmStatic
     fun transformWgs84CoordinateToSweref99TM(
-        inputCoordinate: List<Double>
-    ): List<Double> {
+        inputCoordinate: Coordinate
+    ): Coordinate {
         val crsFactory: CRSFactory = CRSFactory()
         val registryManager = crsFactory.registryManager
         registryManager.addRegistry(EPSGRegistry())
@@ -27,8 +28,9 @@ object CRStransformationFacadeOrbisgisCTS {
         val outputCRSgeodetic = outputCRS as GeodeticCRS
         val coordinateOperations = CoordinateOperationFactory.createCoordinateOperations(inputCRSgeodetic, outputCRSgeodetic)
         val coordinateOperation = CoordinateOperationFactory.getMostPrecise(coordinateOperations);
-        val inputCoordinateArray = doubleArrayOf(inputCoordinate.get(1), inputCoordinate.get(0))
+        val inputCoordinateArray = doubleArrayOf(inputCoordinate.xLongitude, inputCoordinate.yLatitude)
         val outputCoordinateArray = coordinateOperation.transform(inputCoordinateArray)
-        return Arrays.asList(outputCoordinateArray[1], outputCoordinateArray[0])
+        val epsgNumberForSweref99TM = 3006
+        return Coordinate(yLatitude = outputCoordinateArray[1], xLongitude = outputCoordinateArray[0], epsgNumber = epsgNumberForSweref99TM)
     }
 }

@@ -3,6 +3,7 @@ package com.programmerare.crsTransformationFacadeGooberCTL
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position.SWEREFProjection
 import com.github.goober.coordinatetransformation.positions.WGS84Position
+import com.programmerare.crsTransformations.Coordinate
 import java.util.*
 
 // " goober/coordinate-transformation-library "
@@ -13,12 +14,11 @@ object CRStransformationFacadeGooberCTL {
     // and will use a Coordinate object instead)
     @JvmStatic
     fun transformWgs84CoordinateToSweref99TM(
-        inputCoordinate: List<Double>
-    ): List<Double> {
-        val wgs84Lat = inputCoordinate.get(0)
-        val wgs84Lon = inputCoordinate.get(1)
-        val wgs84Position = WGS84Position(wgs84Lat, wgs84Lon)
+        inputCoordinate: Coordinate
+    ): Coordinate {
+        val wgs84Position = WGS84Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude)
         val sweref99Position = SWEREF99Position(wgs84Position, SWEREFProjection.sweref_99_tm)
-        return Arrays.asList(sweref99Position.latitude, sweref99Position.longitude)
+        val epsgNumberForSweref99TM = 3006
+        return Coordinate(yLatitude = sweref99Position.latitude, xLongitude = sweref99Position.longitude, epsgNumber = epsgNumberForSweref99TM)
     }
 }
