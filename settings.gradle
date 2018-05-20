@@ -1,1 +1,1 @@
-include ':crsTransformationCore', ':crsTransformationTest'
+include ':crsTransformationCore', ':crsTransformationGooberCTL', ':crsTransformationTest'
