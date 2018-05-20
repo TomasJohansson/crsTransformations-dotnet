@@ -1,4 +1,27 @@
 package com.programmerare.crsTransformations;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
 public abstract class CRStransformationFacadeBaseTest {
+    protected void testTransformationFromWgs84ToSweref99TM(CRStransformationFacade crsTransformationFacade) {
+        // This test is using the coordinates of Stockholm Centralstation (Sweden)
+        // https://kartor.eniro.se/m/03Yxp
+        // WGS84 decimal (lat, lon)
+        // 59.330231, 18.059196
+        // SWEREF99 TM (nord, öst)
+        // 6580822, 674032
+
+        double wgs84Lat = 59.330231;
+        double wgs84Lon = 18.059196;
+
+        double sweref99_Y_expected = 6580822;
+        double sweref99_X_expected = 674032;
+
+        int epsgNumberForWgs84 = 4326;
+        int epsgNumberForSweref99TM = 3006;
+        Coordinate inputCoordinate = new Coordinate(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+        Coordinate outputCoordinate = crsTransformationFacade.transform(inputCoordinate, epsgNumberForSweref99TM);
+        assertEquals(sweref99_Y_expected, outputCoordinate.getYLatitude(), 0.5);
+        assertEquals(sweref99_X_expected, outputCoordinate.getXLongitude(), 0.5);
+    }
 }
