@@ -1,0 +1,36 @@
+buildscript {
+	ext.kotlin_version = '1.2.41'
+
+	repositories {
+		mavenCentral()
+	}
+
+	dependencies {
+		classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+	}
+}
+
+subprojects {
+	apply plugin: 'java'
+	apply plugin: 'kotlin'
+
+	group = 'com.programmerare.crsTransformations'
+	version = '1.0'
+
+	repositories {
+		mavenCentral()
+		jcenter()
+		google()
+	}
+
+	dependencies {
+		implementation("org.jetbrains.kotlin:kotlin-runtime:$kotlin_version")
+		testImplementation("junit:junit:4.12") 
+	}
+}
+
+project(':crsTransformationTest') {
+	dependencies {
+		implementation project(':crsTransformationCore')
+	}
+}
