@@ -1,0 +1,18 @@
+Description;4326Y;4326X;3021Y;3021X;3006Y;3006X;Url with some information about the location at the row
+#;wgs84Lat;wgs84Lon;rt90nord;rt90ost;sweref99nord;sweref99ost;
+# These coordinates below were manually retrieved from the Eniro site at ther below URL's and clicking the coordinate feture which shows the coordinates in the three systems WGS84, RT90, SWREF99
+Stockholm Centralstation;59.330231;18.059196;6580994;1628294;6580822;674032;https://kartor.eniro.se/m/03Yxp
+Göteborg Centralstation;57.708538;11.973295;6404652;1271642;6400289;319679;https://kartor.eniro.se/m/sTQAF
+Malmö Centralstation;55.608796;12.999305;6167950;1323189;6164357;373973;https://kartor.eniro.se/m/CkNth
+Uppsala Centralstation;59.858658;17.646017;6639127;1603151;6638630;648192;https://kartor.eniro.se/m/W0mye
+Linköping Centralstation;58.416183;15.624184;6477021;1489421;6475216;536466;https://kartor.eniro.se/m/ArSyZ
+Västerås Centralstation;59.607767;16.551665;6609980;1542148;6608753;587565;https://kartor.eniro.se/m/k6P2E
+Örebro Centralstation;59.278643;15.211837;6573229;1466175;6571099;512072;https://kartor.eniro.se/m/pCvRt
+Norrköping Centralstation;58.5964;16.18432;6497142;1522046;6495720;568834;https://kartor.eniro.se/m/FeC18
+Umeå Centralstation;63.829921;20.266843;7087939;1719519;7088754;758954;https://kartor.eniro.se/m/GKAp4
+Lund Centralstation;55.70519;13.187199;6178216;1335431;6174758;386087;https://kartor.eniro.se/m/5eOni
+Gävle Centralstation;60.675759;17.150989;6729487;1573560;6728596;617508;https://kartor.eniro.se/m/q2HhP
+Sundsvall Centralstation;62.386874;17.315614;6920330;1578141;6919424;619726;https://kartor.eniro.se/m/wSZa4
+Karlstad Centralstation;59.378194;13.499319;6586441;1368944;6583126;414734;https://kartor.eniro.se/m/Cq82T
+Luleå Station;65.584141;22.164724;7290667;1793066;7292373;829901;https://kartor.eniro.se/m/rYkVL
+Östersund station;63.178996;14.631107;7008249;1440882;7005586;481429;https://kartor.eniro.se/m/o16AO
