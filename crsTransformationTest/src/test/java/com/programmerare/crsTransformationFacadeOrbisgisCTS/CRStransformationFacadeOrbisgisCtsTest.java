@@ -10,4 +10,10 @@ class CRStransformationFacadeOrbisgisCtsTest extends CRStransformationFacadeBase
     void orbisgisCtsTest() {
         super.testTransformationFromWgs84ToSweref99TM(new CRStransformationFacadeOrbisgisCTS());
     }
+
+    @DisplayName("Orbisgis Cts transformation from RT90 to WGS84")
+    @Test
+    void orbisgisCtsTest2() {
+        super.testTransformationFromRT90ToWgs84(new CRStransformationFacadeOrbisgisCTS());
+    }
 }

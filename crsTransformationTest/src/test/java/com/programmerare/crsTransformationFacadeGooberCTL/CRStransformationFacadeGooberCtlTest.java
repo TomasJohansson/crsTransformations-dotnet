@@ -10,4 +10,10 @@ class CRStransformationFacadeGooberCtlTest extends CRStransformationFacadeBaseTe
     void gooberCtlTest() {
         super.testTransformationFromWgs84ToSweref99TM(new CRStransformationFacadeGooberCTL());
     }
+
+    @DisplayName("Goober Cts transformation from RT90 to WGS84")
+    @Test
+    void gooberCtlTest2() {
+        super.testTransformationFromRT90ToWgs84(new CRStransformationFacadeGooberCTL());
+    }
 }
