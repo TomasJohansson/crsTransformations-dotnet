@@ -1,0 +1,72 @@
+# --------------------------------------------------------------
+# https://github.com/JetBrains/kotlin/blob/master/.gitignore
+.DS_Store
+.idea/shelf
+/android.tests.dependencies
+/confluence/target
+/dependencies
+/dist
+/local
+/gh-pages
+/ideaSDK
+/clionSDK
+/android-studio/sdk
+out/
+/tmp
+workspace.xml
+*.versionsBackup
+/idea/testData/debugger/tinyApp/classes*
+/jps-plugin/testData/kannotator
+/ultimate/dependencies
+/ultimate/ideaSDK
+/ultimate/out
+/ultimate/tmp
+/js/js.translator/testData/out/
+/js/js.translator/testData/out-min/
+.gradle/
+build/
+!**/src/**/build
+!**/test/**/build
+*.iml
+!**/testData/**/*.iml
+.idea/libraries/Gradle*.xml
+.idea/libraries/Maven*.xml
+.idea/artifacts
+.idea/modules
+.idea/runConfigurations/JPS_*.xml
+.idea/libraries
+.idea/modules.xml
+.idea/gradle.xml
+.idea/compiler.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/.name
+# --------------------------------------------------------------
+# https://github.com/github/gitignore/blob/master/Java.gitignore
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+# --------------------------------------------------------------
+.idea/
+
+# backup files for Notepad++
+*.bak
