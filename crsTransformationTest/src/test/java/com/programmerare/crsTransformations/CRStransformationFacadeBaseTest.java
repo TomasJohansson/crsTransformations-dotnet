@@ -1,10 +1,39 @@
 package com.programmerare.crsTransformations;
 
+import com.programmerare.crsTransformationFacadeGooberCTL.CRStransformationFacadeGooberCTL;
+import com.programmerare.crsTransformationFacadeOrbisgisCTS.CRStransformationFacadeOrbisgisCTS;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public abstract class CRStransformationFacadeBaseTest {
+class CRStransformationFacadeBaseTest {
 
-    protected void testTransformationFromWgs84ToSweref99TM(CRStransformationFacade crsTransformationFacade) {
+    @DisplayName("Goober Cts transformation from WGS84 to SWEREF99")
+    @Test
+    void gooberCtlTest() {
+        testTransformationFromWgs84ToSweref99TM(new CRStransformationFacadeGooberCTL());
+    }
+
+    @DisplayName("Goober Cts transformation from RT90 to WGS84")
+    @Test
+    void gooberCtlTest2() {
+        testTransformationFromRT90ToWgs84(new CRStransformationFacadeGooberCTL());
+    }
+
+    @DisplayName("Orbisgis Cts transformation from WGS84 to SWEREF99")
+    @Test
+    void orbisgisCtsTest() {
+        testTransformationFromWgs84ToSweref99TM(new CRStransformationFacadeOrbisgisCTS());
+    }
+
+    @DisplayName("Orbisgis Cts transformation from RT90 to WGS84")
+    @Test
+    void orbisgisCtsTest2() {
+        testTransformationFromRT90ToWgs84(new CRStransformationFacadeOrbisgisCTS());
+    }
+
+    private void testTransformationFromWgs84ToSweref99TM(CRStransformationFacade crsTransformationFacade) {
         // This test is using the coordinates of Stockholm Centralstation (Sweden)
         // https://kartor.eniro.se/m/03Yxp
         // WGS84 decimal (lat, lon)
@@ -26,7 +55,7 @@ public abstract class CRStransformationFacadeBaseTest {
         assertEquals(sweref99_X_expected, outputCoordinate.getXLongitude(), 0.5);
     }
 
-    protected void testTransformationFromRT90ToWgs84(CRStransformationFacade crsTransformationFacade) {
+    private void testTransformationFromRT90ToWgs84(CRStransformationFacade crsTransformationFacade) {
         double wgs84Lat_expected = 59.330231;
         double wgs84Lon_expected = 18.059196;
 
