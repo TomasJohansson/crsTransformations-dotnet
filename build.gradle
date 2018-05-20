@@ -48,6 +48,6 @@ project(':crsTransformationOrbisgisCTS') {
 
 project(':crsTransformationTest') {
 	dependencies {
-		implementation project(':crsTransformationCore')
+		implementation project(':crsTransformationCore'), project(':crsTransformationOrbisgisCTS'), project(':crsTransformationGooberCTL')
 	}
 }
