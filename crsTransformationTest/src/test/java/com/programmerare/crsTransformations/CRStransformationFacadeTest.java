@@ -5,32 +5,30 @@ import com.programmerare.crsTransformationFacadeOrbisgisCTS.CRStransformationFac
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.Arrays;
+import java.util.List;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 final class CRStransformationFacadeTest {
 
-    @DisplayName("Goober Cts transformation from WGS84 to SWEREF99")
+    private final static List<CRStransformationFacade> crsTransformationFacadeImplementations = Arrays.asList(
+        new CRStransformationFacadeGooberCTL(),
+        new CRStransformationFacadeOrbisgisCTS()
+    );
+
     @Test
-    void gooberCtlTest() {
-        testTransformationFromWgs84ToSweref99TM(new CRStransformationFacadeGooberCTL());
+    void transformationFromWgs84ToSweref99TM() {
+        for (CRStransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
+            testTransformationFromWgs84ToSweref99TM(crsTransformationFacade);
+        }
     }
 
-    @DisplayName("Goober Cts transformation from RT90 to WGS84")
     @Test
-    void gooberCtlTest2() {
-        testTransformationFromRT90ToWgs84(new CRStransformationFacadeGooberCTL());
-    }
-
-    @DisplayName("Orbisgis Cts transformation from WGS84 to SWEREF99")
-    @Test
-    void orbisgisCtsTest() {
-        testTransformationFromWgs84ToSweref99TM(new CRStransformationFacadeOrbisgisCTS());
-    }
-
-    @DisplayName("Orbisgis Cts transformation from RT90 to WGS84")
-    @Test
-    void orbisgisCtsTest2() {
-        testTransformationFromRT90ToWgs84(new CRStransformationFacadeOrbisgisCTS());
+    void transformationFromRT90ToWgs84() {
+        for (CRStransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
+            testTransformationFromRT90ToWgs84(crsTransformationFacade);
+        }
     }
 
     private void testTransformationFromWgs84ToSweref99TM(CRStransformationFacade crsTransformationFacade) {
