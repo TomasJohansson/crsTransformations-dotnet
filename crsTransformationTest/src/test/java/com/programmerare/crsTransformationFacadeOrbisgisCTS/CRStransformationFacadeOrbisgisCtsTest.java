@@ -1,12 +1,13 @@
 package com.programmerare.crsTransformationFacadeOrbisgisCTS;
 
+import com.programmerare.crsTransformations.CRStransformationFacadeBaseTest;
 import com.programmerare.crsTransformations.Coordinate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CRStransformationFacadeOrbisgisCtsTest {
+class CRStransformationFacadeOrbisgisCtsTest extends CRStransformationFacadeBaseTest {
 
     @DisplayName("Orbisgis Cts transformation from WGS84 to SWEREF99")
     @Test

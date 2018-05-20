@@ -1,12 +1,13 @@
 package com.programmerare.crsTransformationFacadeGooberCTL;
 
+import com.programmerare.crsTransformations.CRStransformationFacadeBaseTest;
 import com.programmerare.crsTransformations.Coordinate;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-class CRStransformationFacadeGooberCtlTest {
+class CRStransformationFacadeGooberCtlTest extends CRStransformationFacadeBaseTest {
 
     @DisplayName("Goober Cts transformation from WGS84 to SWEREF99")
     @Test
