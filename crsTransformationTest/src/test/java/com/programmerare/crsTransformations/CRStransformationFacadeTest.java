@@ -2,6 +2,7 @@ package com.programmerare.crsTransformations;
 
 import com.programmerare.crsTransformationFacadeGooberCTL.CRStransformationFacadeGooberCTL;
 import com.programmerare.crsTransformationFacadeOrbisgisCTS.CRStransformationFacadeOrbisgisCTS;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -9,7 +10,9 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.IntStream;
 
+import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -26,10 +29,17 @@ final class CRStransformationFacadeTest {
     private final static int lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = 3006;
     private final static int upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = 3024;
 
+    private static List<Integer> epsgNumbersForSwedishProjectionsUsingMeterAsUnit;
+
     private final static List<CRStransformationFacade> crsTransformationFacadeImplementations = Arrays.asList(
         new CRStransformationFacadeGooberCTL(),
         new CRStransformationFacadeOrbisgisCTS()
     );
+
+    @BeforeAll
+    static void beforeAll() {
+        epsgNumbersForSwedishProjectionsUsingMeterAsUnit = IntStream.rangeClosed(lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit, upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit).boxed().collect(toList());
+    }
 
     @Test
     void transformationFromWgs84ToSweref99TM() {
@@ -72,7 +82,7 @@ final class CRStransformationFacadeTest {
         double delta = getDeltaValueForComparisons(inputCoordinateOriginalCRS.getEpsgNumber());
 
         Coordinate outputCoordinateForTransformTargetCRS = crsTransformationFacade.transform(inputCoordinateOriginalCRS, epsgNumberForTransformTargetCRS);
-        Coordinate outputCoordinateOriginalCRS = crsTransformationFacade.transform(outputCoordinateForTransformTargetCRS, epsgNumberForSweref991200);
+        Coordinate outputCoordinateOriginalCRS = crsTransformationFacade.transform(outputCoordinateForTransformTargetCRS, inputCoordinateOriginalCRS.getEpsgNumber());
 
         assertEquals(inputCoordinateOriginalCRS.getXLongitude(), outputCoordinateOriginalCRS.getXLongitude(), delta);
         assertEquals(inputCoordinateOriginalCRS.getYLatitude(), outputCoordinateOriginalCRS.getYLatitude(), delta);
@@ -186,6 +196,21 @@ final class CRStransformationFacadeTest {
         }
         else { // if(coordinateReferenceSystemUnit == CoordinateReferenceSystemUnit.UNKNOWN) {
             throw new IllegalArgumentException("Not supported epsg number: " + epsgNumberUsedOnlyInErrorMessage);
+        }
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/coordinatesForSweden.csv", numLinesToSkip = 3, delimiter = ';')
+    @DisplayName("Transformation back and forth from WGS84 cordinates to RT90/SWEREF99 projections should result in the same WGS84 coordinates")
+    void verifyTransformationsBackAndForthFromWgs84ToSwedishProjections(
+        String description,
+        double wgs84Lat, double wgs84Lon // ignore the rest of columns for this test method
+    ) {
+       Coordinate inputCoordinateWGS84 = new Coordinate(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+        for (CRStransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
+            for (Integer epsgNumber : epsgNumbersForSwedishProjectionsUsingMeterAsUnit) {
+                transformBackAndForthAndAssertResult(crsTransformationFacade, inputCoordinateWGS84, epsgNumber);
+            }
         }
     }
 }
