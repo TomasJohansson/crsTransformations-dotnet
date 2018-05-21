@@ -18,6 +18,12 @@ final class CRStransformationFacadeTest {
     private final static int epsgNumberForWgs84 = 4326;
     private final static int epsgNumberForRT90 = 3021;
     private final static int epsgNumberForSweref99TM = 3006;
+    private final static int epsgNumberForSweref991200 = 3007; // EPSG:3007: SWEREF99 12 00	https://epsg.io/3007
+    private final static int epsgNumberForSweref991500 = 3009; // EPSG:3009: SWEREF99 15 00	https://epsg.io/3009
+
+    // TODO: Define this constant somewhere else ...  maybe in CRStransformationFacadeGooberCTL which aer also using these EPSG values ...
+    private final static int lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = 3006;
+    private final static int upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = 3024;
 
     private final static List<CRStransformationFacade> crsTransformationFacadeImplementations = Arrays.asList(
         new CRStransformationFacadeGooberCTL(),
@@ -36,6 +42,31 @@ final class CRStransformationFacadeTest {
         for (CRStransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
             testTransformationFromRT90ToWgs84(crsTransformationFacade);
         }
+    }
+
+
+
+    @Test
+    void transformationFromSweref991200ToSweref991500() {
+        for (CRStransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
+            testTransformationFromSweref991200ToSweref991500(crsTransformationFacade);
+        }
+    }
+
+    private void testTransformationFromSweref991200ToSweref991500(CRStransformationFacade crsTransformationFacade) {
+        double sweref1200_Y = 6580822;
+        double sweref1200_X = 674032;
+
+        double delta = getDeltaValueForComparisons(epsgNumberForSweref991200);
+
+        // transform back and forth (from sweref1200 to sweref1500 and then back to sweref1200)
+        // and then check if you got the same as the original sweref1200
+        Coordinate inputCoordinateSweref1200 = new Coordinate(sweref1200_X, sweref1200_Y, epsgNumberForSweref991200);
+        Coordinate outputCoordinateSweref1500 = crsTransformationFacade.transform(inputCoordinateSweref1200, epsgNumberForSweref991500);
+        Coordinate outputCoordinateSweref1200 = crsTransformationFacade.transform(outputCoordinateSweref1500, epsgNumberForSweref991200);
+        assertEquals(inputCoordinateSweref1200.getXLongitude(), outputCoordinateSweref1200.getXLongitude(), delta);
+        assertEquals(inputCoordinateSweref1200.getYLatitude(), outputCoordinateSweref1200.getYLatitude(), delta);
+        assertEquals(inputCoordinateSweref1200.getEpsgNumber(), outputCoordinateSweref1200.getEpsgNumber());
     }
 
     private void testTransformationFromWgs84ToSweref99TM(CRStransformationFacade crsTransformationFacade) {
@@ -115,7 +146,13 @@ final class CRStransformationFacadeTest {
         if(epsgNumber == epsgNumberForWgs84) {
             coordinateReferenceSystemUnit = CoordinateReferenceSystemUnit.DEGREES;
         }
-        else if(epsgNumber == epsgNumberForRT90 ||epsgNumber == epsgNumberForSweref99TM) {
+        // sweref : 3006 - 3018
+        // RT90 :   3019 - 3024
+        else if(
+            lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit <= epsgNumber
+            &&
+            epsgNumber <= upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit
+        ) {
             coordinateReferenceSystemUnit = CoordinateReferenceSystemUnit.METERS;
         }
         return getDeltaValueForComparisons(coordinateReferenceSystemUnit, epsgNumber);

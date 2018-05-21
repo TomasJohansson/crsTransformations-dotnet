@@ -53,6 +53,10 @@ class CRStransformationFacadeGooberCTL : CRStransformationFacade {
             (input.isSweref99() && output.isRT90())
             ||
             (input.isRT90() && output.isSweref99())
+            || // transform between different Sweref systems
+            (input.isSweref99() && output.isSweref99())
+            || // transform between different RT90 systems
+            (input.isRT90() && output.isRT90())
         ) {
             // first transform to WGS84
             val wgs84Coordinate = transform(inputCoordinate, WGS84)
