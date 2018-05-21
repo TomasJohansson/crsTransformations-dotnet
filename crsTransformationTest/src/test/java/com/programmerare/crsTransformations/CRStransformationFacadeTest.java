@@ -58,16 +58,25 @@ final class CRStransformationFacadeTest {
         double sweref1200_Y = 6580822;
         double sweref1200_X = 674032;
 
-        double delta = getDeltaValueForComparisons(epsgNumberForSweref991200);
-
         // transform back and forth (from sweref1200 to sweref1500 and then back to sweref1200)
         // and then check if you got the same as the original sweref1200
         Coordinate inputCoordinateSweref1200 = new Coordinate(sweref1200_X, sweref1200_Y, epsgNumberForSweref991200);
-        Coordinate outputCoordinateSweref1500 = crsTransformationFacade.transform(inputCoordinateSweref1200, epsgNumberForSweref991500);
-        Coordinate outputCoordinateSweref1200 = crsTransformationFacade.transform(outputCoordinateSweref1500, epsgNumberForSweref991200);
-        assertEquals(inputCoordinateSweref1200.getXLongitude(), outputCoordinateSweref1200.getXLongitude(), delta);
-        assertEquals(inputCoordinateSweref1200.getYLatitude(), outputCoordinateSweref1200.getYLatitude(), delta);
-        assertEquals(inputCoordinateSweref1200.getEpsgNumber(), outputCoordinateSweref1200.getEpsgNumber());
+        transformBackAndForthAndAssertResult(crsTransformationFacade, inputCoordinateSweref1200, epsgNumberForSweref991500);
+    }
+
+    private void transformBackAndForthAndAssertResult(
+        CRStransformationFacade crsTransformationFacade,
+        Coordinate inputCoordinateOriginalCRS,
+        int epsgNumberForTransformTargetCRS
+    ) {
+        double delta = getDeltaValueForComparisons(inputCoordinateOriginalCRS.getEpsgNumber());
+
+        Coordinate outputCoordinateForTransformTargetCRS = crsTransformationFacade.transform(inputCoordinateOriginalCRS, epsgNumberForTransformTargetCRS);
+        Coordinate outputCoordinateOriginalCRS = crsTransformationFacade.transform(outputCoordinateForTransformTargetCRS, epsgNumberForSweref991200);
+
+        assertEquals(inputCoordinateOriginalCRS.getXLongitude(), outputCoordinateOriginalCRS.getXLongitude(), delta);
+        assertEquals(inputCoordinateOriginalCRS.getYLatitude(), outputCoordinateOriginalCRS.getYLatitude(), delta);
+        assertEquals(inputCoordinateOriginalCRS.getEpsgNumber(), outputCoordinateOriginalCRS.getEpsgNumber());
     }
 
     private void testTransformationFromWgs84ToSweref99TM(CRStransformationFacade crsTransformationFacade) {
