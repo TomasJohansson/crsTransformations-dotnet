@@ -1,5 +1,6 @@
 package com.programmerare.crsTransformations;
 
+import com.programmerare.crsTransformationFacadeGeoTools.CRStransformationFacadeGeoTools;
 import com.programmerare.crsTransformationFacadeGooberCTL.CRStransformationFacadeGooberCTL;
 import com.programmerare.crsTransformationFacadeOrbisgisCTS.CRStransformationFacadeOrbisgisCTS;
 import org.junit.jupiter.api.BeforeAll;
@@ -33,6 +34,7 @@ final class CRStransformationFacadeTest {
     private static List<Integer> epsgNumbersForSwedishProjectionsUsingMeterAsUnit;
 
     private final static List<CRStransformationFacade> crsTransformationFacadeImplementations = Arrays.asList(
+        new CRStransformationFacadeGeoTools(),
         new CRStransformationFacadeGooberCTL(),
         new CRStransformationFacadeOrbisgisCTS()
     );
