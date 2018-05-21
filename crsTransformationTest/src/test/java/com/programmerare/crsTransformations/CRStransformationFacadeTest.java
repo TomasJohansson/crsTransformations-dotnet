@@ -10,6 +10,7 @@ import org.junit.jupiter.params.provider.CsvFileSource;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.IntStream;
 
 import static java.util.stream.Collectors.toList;
@@ -210,6 +211,45 @@ final class CRStransformationFacadeTest {
         for (CRStransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
             for (Integer epsgNumber : epsgNumbersForSwedishProjectionsUsingMeterAsUnit) {
                 transformBackAndForthAndAssertResult(crsTransformationFacade, inputCoordinateWGS84, epsgNumber);
+            }
+        }
+    }
+
+    private void transformWithTwoImplementationsAndCompareTheResults(
+        CRStransformationFacade crsTransformationFacade1,
+        CRStransformationFacade crsTransformationFacade2,
+        Coordinate inputCoordinate,
+        int epsgNumberForOutputCoordinate
+    ) {
+        double delta = getDeltaValueForComparisons(epsgNumberForOutputCoordinate);
+
+        Coordinate outputCoordinate1 = crsTransformationFacade1.transform(inputCoordinate, epsgNumberForOutputCoordinate);
+        Coordinate outputCoordinate2 = crsTransformationFacade2.transform(inputCoordinate, epsgNumberForOutputCoordinate);
+
+        Supplier<String> errorMessage = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getXLongitude() - outputCoordinate2.getXLongitude());
+        assertEquals(outputCoordinate1.getXLongitude(), outputCoordinate2.getXLongitude(), delta, errorMessage);
+        assertEquals(outputCoordinate1.getYLatitude(), outputCoordinate2.getYLatitude(), delta, errorMessage);
+        assertEquals(outputCoordinate1.getEpsgNumber(), outputCoordinate2.getEpsgNumber());
+    }
+
+    @ParameterizedTest
+    @CsvFileSource(resources = "/coordinatesForSweden.csv", numLinesToSkip = 3, delimiter = ';')
+    @DisplayName("The same transformation but with different implementations should produce the same coordinates")
+    void verifyTransformationResultsAreTheSameWithDifferentImplementations(
+        String description,
+        double wgs84Lat, double wgs84Lon // ignore the rest of columns for this test method
+    ) {
+        Coordinate inputCoordinateWGS84 = new Coordinate(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+        for (int i = 0; i < crsTransformationFacadeImplementations.size()-1; i++) {
+            for (int j = i+1; j < crsTransformationFacadeImplementations.size(); j++) {
+                for (Integer epsgNumber : epsgNumbersForSwedishProjectionsUsingMeterAsUnit) {
+                    transformWithTwoImplementationsAndCompareTheResults(
+                        crsTransformationFacadeImplementations.get(i),
+                        crsTransformationFacadeImplementations.get(j),
+                        inputCoordinateWGS84,
+                        epsgNumber
+                    );
+                }
             }
         }
     }
