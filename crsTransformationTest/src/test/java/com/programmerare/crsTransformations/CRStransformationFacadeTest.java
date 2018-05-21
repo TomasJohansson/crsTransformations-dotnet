@@ -2,6 +2,7 @@ package com.programmerare.crsTransformations;
 
 import com.programmerare.crsTransformationFacadeGooberCTL.CRStransformationFacadeGooberCTL;
 import com.programmerare.crsTransformationFacadeOrbisgisCTS.CRStransformationFacadeOrbisgisCTS;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
@@ -105,7 +106,8 @@ final class CRStransformationFacadeTest {
 
     @ParameterizedTest
     @CsvFileSource(resources = "/coordinatesForSweden.csv", numLinesToSkip = 3, delimiter = ';')
-    void testWithCsvFileSource(
+    @DisplayName("Transformation result coordinates should match with coordinates in CSV file")
+    void verifyTransformationsCorrespondToCsvFileCoordinates(
         String description,
         double wgs84Lat, double wgs84Lon,
         double rt90nord, double rt90ost,
