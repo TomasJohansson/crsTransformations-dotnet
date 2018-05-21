@@ -45,6 +45,6 @@ class CRStransformationFacadeGeoTools : CRStransformationFacade {
         val lon = outputCoordinate.x
         val lat = outputCoordinate.y
 
-        return Coordinate(yLatitude = lat, xLongitude = lon, epsgNumber = epsgNumberForOutputCoordinateSystem)
+        return Coordinate.createFromYLatXLong(yLatitude = lat, xLongitude = lon, epsgNumber = epsgNumberForOutputCoordinateSystem)
     }
 }

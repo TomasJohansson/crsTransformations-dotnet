@@ -26,6 +26,6 @@ class CRStransformationFacadeOrbisgisCTS : CRStransformationFacade {
         val coordinateOperation = CoordinateOperationFactory.getMostPrecise(coordinateOperations);
         val inputCoordinateArray = doubleArrayOf(inputCoordinate.xLongitude, inputCoordinate.yLatitude)
         val outputCoordinateArray = coordinateOperation.transform(inputCoordinateArray)
-        return Coordinate(yLatitude = outputCoordinateArray[1], xLongitude = outputCoordinateArray[0], epsgNumber = epsgNumberForOutputCoordinateSystem)
+        return Coordinate.createFromYLatXLong(yLatitude = outputCoordinateArray[1], xLongitude = outputCoordinateArray[0], epsgNumber = epsgNumberForOutputCoordinateSystem)
     }
 }
