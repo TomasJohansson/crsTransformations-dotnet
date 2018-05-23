@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations
 
-class CrsIdentifier private constructor(val crsCode: String, val isEpsgCode: Boolean, val epsgNumber: Int) {
+data class CrsIdentifier private constructor(val crsCode: String, val isEpsgCode: Boolean, val epsgNumber: Int) {
 
     // The created crsCode strings will be trimmed, and if they are "epsg" (or e.g. "ePsG") then they will be uppercased i.e. "EPSG"
 

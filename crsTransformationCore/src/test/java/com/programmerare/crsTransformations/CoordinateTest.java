@@ -43,6 +43,7 @@ class CoordinateTest {
     private void assertEqualCoordinates(Coordinate coordinate1, Coordinate coordinate2) {
         assertEquals(coordinate1.getXLongitude(), coordinate2.getXLongitude(), deltaTolerance);
         assertEquals(coordinate1.getYLatitude(), coordinate2.getYLatitude(), deltaTolerance);
+        assertEquals(coordinate1.getCrsIdentifier(), coordinate2.getCrsIdentifier()); // data class
         assertEquals(coordinate1.getCrsIdentifier().getEpsgNumber(), coordinate2.getCrsIdentifier().getEpsgNumber());
     }
 }

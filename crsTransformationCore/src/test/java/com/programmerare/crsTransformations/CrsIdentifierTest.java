@@ -46,4 +46,12 @@ public class CrsIdentifierTest {
         // Fragile to test the message string below but easy to fix here if it would break, and it will not break/change often.
         assertThat(exception.getMessage(), containsString("non-empty"));
     }
+
+    @Test
+    void equalsTest() {
+        CrsIdentifier crsIdentifier1 = CrsIdentifier.createFromEpsgNumber(3006);
+        CrsIdentifier crsIdentifier2 = CrsIdentifier.createFromCrsCode("  epsg:3006   ");
+        assertEquals(crsIdentifier1, crsIdentifier2);
+        assertEquals(crsIdentifier1.hashCode(), crsIdentifier2.hashCode());
+    }
 }
