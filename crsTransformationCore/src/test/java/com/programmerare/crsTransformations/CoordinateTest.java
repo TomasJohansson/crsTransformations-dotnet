@@ -21,10 +21,7 @@ class CoordinateTest {
     void createCoordinatesWithEpsgNumberButWithDifferentOrderOfLatLongParameters() {
         Coordinate coordinate1 = Coordinate.createFromXLongYLat(xLongitude, yLatitude, epsgNumber);
         Coordinate coordinate2 = Coordinate.createFromYLatXLong(yLatitude, xLongitude, epsgNumber);
-        // TODO: refactor below duplicated assertions
-        assertEquals(coordinate1.getXLongitude(), coordinate2.getXLongitude(), deltaTolerance);
-        assertEquals(coordinate1.getYLatitude(), coordinate2.getYLatitude(), deltaTolerance);
-        assertEquals(coordinate1.getCrsIdentifier().getEpsgNumber(), coordinate2.getCrsIdentifier().getEpsgNumber());
+        assertEqualCoordinates(coordinate1, coordinate2);
     }
 
     @Test
@@ -32,10 +29,7 @@ class CoordinateTest {
         String crsCode = "EPSG:3006";
         Coordinate coordinate1 = Coordinate.createFromXLongYLat(xLongitude, yLatitude, crsCode);
         Coordinate coordinate2 = Coordinate.createFromYLatXLong(yLatitude, xLongitude, crsCode);
-        // TODO: refactor below duplicated assertions
-        assertEquals(coordinate1.getXLongitude(), coordinate2.getXLongitude(), deltaTolerance);
-        assertEquals(coordinate1.getYLatitude(), coordinate2.getYLatitude(), deltaTolerance);
-        assertEquals(coordinate1.getCrsIdentifier().getEpsgNumber(), coordinate2.getCrsIdentifier().getEpsgNumber());
+        assertEqualCoordinates(coordinate1, coordinate2);
     }
 
     @Test
@@ -43,7 +37,10 @@ class CoordinateTest {
         CrsIdentifier crsIdentifier = CrsIdentifier.createFromEpsgNumber(3006);
         Coordinate coordinate1 = Coordinate.createFromXLongYLat(xLongitude, yLatitude, crsIdentifier);
         Coordinate coordinate2 = Coordinate.createFromYLatXLong(yLatitude, xLongitude, crsIdentifier);
-        // TODO: refactor below duplicated assertions
+        assertEqualCoordinates(coordinate1, coordinate2);
+    }
+
+    private void assertEqualCoordinates(Coordinate coordinate1, Coordinate coordinate2) {
         assertEquals(coordinate1.getXLongitude(), coordinate2.getXLongitude(), deltaTolerance);
         assertEquals(coordinate1.getYLatitude(), coordinate2.getYLatitude(), deltaTolerance);
         assertEquals(coordinate1.getCrsIdentifier().getEpsgNumber(), coordinate2.getCrsIdentifier().getEpsgNumber());
