@@ -3,7 +3,7 @@ package com.programmerare.crsTransformations
 class Coordinate private constructor(
     val xLongitude: Double,
     val yLatitude: Double,
-    val epsgNumber: Int
+    val crsIdentifier: CrsIdentifier
 ) {
     // The constructor is private to force client code to use the below factory methods
     // which are named to indicate the order of the longitude and latitude parameters.
@@ -14,7 +14,7 @@ class Coordinate private constructor(
             yLatitude: Double,
             epsgNumber: Int
         ): Coordinate {
-            return Coordinate(
+            return createHelper(
                 xLongitude,
                 yLatitude,
                 epsgNumber
@@ -27,10 +27,22 @@ class Coordinate private constructor(
             xLongitude: Double,
             epsgNumber: Int
         ): Coordinate {
-            return Coordinate(
+            return createHelper(
                 xLongitude,
                 yLatitude,
                 epsgNumber
+            )
+        }
+
+        private fun createHelper(
+                xLongitude: Double,
+                yLatitude: Double,
+                epsgNumber: Int
+        ): Coordinate {
+            return Coordinate(
+                xLongitude,
+                yLatitude,
+                CrsIdentifier.createFromEpsgNumber(epsgNumber)
             )
         }
     }

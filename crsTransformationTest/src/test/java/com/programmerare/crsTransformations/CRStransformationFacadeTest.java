@@ -82,14 +82,14 @@ final class CRStransformationFacadeTest {
         Coordinate inputCoordinateOriginalCRS,
         int epsgNumberForTransformTargetCRS
     ) {
-        double delta = getDeltaValueForComparisons(inputCoordinateOriginalCRS.getEpsgNumber());
+        double delta = getDeltaValueForComparisons(inputCoordinateOriginalCRS.getCrsIdentifier());
 
         Coordinate outputCoordinateForTransformTargetCRS = crsTransformationFacade.transform(inputCoordinateOriginalCRS, epsgNumberForTransformTargetCRS);
-        Coordinate outputCoordinateOriginalCRS = crsTransformationFacade.transform(outputCoordinateForTransformTargetCRS, inputCoordinateOriginalCRS.getEpsgNumber());
+        Coordinate outputCoordinateOriginalCRS = crsTransformationFacade.transform(outputCoordinateForTransformTargetCRS, inputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber());
 
         assertEquals(inputCoordinateOriginalCRS.getXLongitude(), outputCoordinateOriginalCRS.getXLongitude(), delta);
         assertEquals(inputCoordinateOriginalCRS.getYLatitude(), outputCoordinateOriginalCRS.getYLatitude(), delta);
-        assertEquals(inputCoordinateOriginalCRS.getEpsgNumber(), outputCoordinateOriginalCRS.getEpsgNumber());
+        assertEquals(inputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber(), outputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber());
     }
 
     private void testTransformationFromWgs84ToSweref99TM(CRStransformationFacade crsTransformationFacade) {
@@ -165,6 +165,10 @@ final class CRStransformationFacadeTest {
         assertEquals(coordinate1.getYLatitude(), outputForCoordinate2.getYLatitude(), delta, description);
     }
 
+    private double getDeltaValueForComparisons(CrsIdentifier crsIdentifier) {
+        return getDeltaValueForComparisons(crsIdentifier.getEpsgNumber());
+
+    }
     private double getDeltaValueForComparisons(int epsgNumber) {
         CoordinateReferenceSystemUnit coordinateReferenceSystemUnit = CoordinateReferenceSystemUnit.UNKNOWN;
         if(epsgNumber == epsgNumberForWgs84) {
@@ -231,7 +235,7 @@ final class CRStransformationFacadeTest {
         Supplier<String> errorMessage = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getXLongitude() - outputCoordinate2.getXLongitude());
         assertEquals(outputCoordinate1.getXLongitude(), outputCoordinate2.getXLongitude(), delta, errorMessage);
         assertEquals(outputCoordinate1.getYLatitude(), outputCoordinate2.getYLatitude(), delta, errorMessage);
-        assertEquals(outputCoordinate1.getEpsgNumber(), outputCoordinate2.getEpsgNumber());
+        assertEquals(outputCoordinate1.getCrsIdentifier().getEpsgNumber(), outputCoordinate2.getCrsIdentifier().getEpsgNumber());
     }
 
     @ParameterizedTest

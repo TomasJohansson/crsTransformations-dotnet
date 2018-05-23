@@ -26,7 +26,7 @@ class CRStransformationFacadeGeoTools : CRStransformationFacade {
         inputCoordinate: Coordinate,
         epsgNumberForOutputCoordinateSystem: Int
     ): Coordinate {
-        val sourceCRS: CoordinateReferenceSystem = CRS.decode(epsgPrefix + inputCoordinate.epsgNumber, true)
+        val sourceCRS: CoordinateReferenceSystem = CRS.decode(inputCoordinate.crsIdentifier.crsCode, true)
         val targetCRS: CoordinateReferenceSystem = CRS.decode(epsgPrefix + epsgNumberForOutputCoordinateSystem, true)
         val mathTransform: MathTransform = CRS.findMathTransform(sourceCRS, targetCRS)
 

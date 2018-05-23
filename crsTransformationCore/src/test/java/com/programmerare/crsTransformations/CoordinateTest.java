@@ -14,16 +14,16 @@ class CoordinateTest {
         Coordinate coordinate = Coordinate.createFromXLongYLat(xLongitude, yLatitude, epsgNumber);
         assertEquals(xLongitude, coordinate.getXLongitude(), deltaTolerance);
         assertEquals(yLatitude, coordinate.getYLatitude(), deltaTolerance);
-        assertEquals(epsgNumber, coordinate.getEpsgNumber());
+        assertEquals(epsgNumber, coordinate.getCrsIdentifier().getEpsgNumber());
     }
 
     @Test
     void createCoordinatesWithDifferentCreationMethods() {
         Coordinate coordinate1 = Coordinate.createFromXLongYLat(xLongitude, yLatitude, epsgNumber);
         Coordinate coordinate2 = Coordinate.createFromYLatXLong(yLatitude, xLongitude, epsgNumber);
-
         assertEquals(coordinate1.getXLongitude(), coordinate2.getXLongitude(), deltaTolerance);
         assertEquals(coordinate1.getYLatitude(), coordinate2.getYLatitude(), deltaTolerance);
-        assertEquals(coordinate1.getEpsgNumber(), coordinate2.getEpsgNumber());
+        assertEquals(coordinate1.getCrsIdentifier().getEpsgNumber(), coordinate2.getCrsIdentifier().getEpsgNumber());
     }
+
 }

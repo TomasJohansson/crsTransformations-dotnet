@@ -18,7 +18,10 @@ class CRStransformationFacadeGooberCTL : CRStransformationFacade {
         inputCoordinate: Coordinate,
         epsgNumberForOutputCoordinateSystem: Int
     ): Coordinate {
-        val epsgNumberForInputCoordinateSystem = inputCoordinate.epsgNumber
+        if(!inputCoordinate.crsIdentifier.isEpsgCode) {
+            throw IllegalArgumentException("Unsupported transformation from CRS: ${inputCoordinate.crsIdentifier.crsCode}")
+        }
+        val epsgNumberForInputCoordinateSystem = inputCoordinate.crsIdentifier.epsgNumber
         var positionToReturn: Position? = null
 
         // shorter names below for readibility purpose (lots os usages further down)

@@ -18,7 +18,7 @@ class CRStransformationFacadeOrbisgisCTS : CRStransformationFacade {
         val crsFactory: CRSFactory = CRSFactory()
         val registryManager = crsFactory.registryManager
         registryManager.addRegistry(EPSGRegistry())
-        val inputCRS = crsFactory.getCRS("EPSG:" + inputCoordinate.epsgNumber) // e.g. "EPSG:4326" = WGS84
+        val inputCRS = crsFactory.getCRS(inputCoordinate.crsIdentifier.crsCode) // e.g. "EPSG:4326" = WGS84
         val outputCRS = crsFactory.getCRS("EPSG:" + epsgNumberForOutputCoordinateSystem) // e.g. "EPSG:3006" = SWEREF99 TM
         val inputCRSgeodetic = inputCRS as GeodeticCRS
         val outputCRSgeodetic = outputCRS as GeodeticCRS
