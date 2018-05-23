@@ -17,4 +17,19 @@ interface CRStransformationFacade {
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate
 
+
+    fun transformToResultObject(
+        inputCoordinate: Coordinate,
+        epsgNumberForOutputCoordinateSystem: Int
+    ): TransformResult
+
+    fun transformToResultObject(
+        inputCoordinate: Coordinate,
+        crsCodeForOutputCoordinateSystem: String
+    ): TransformResult
+
+    fun transformToResultObject(
+        inputCoordinate: Coordinate,
+        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+    ): TransformResult
 }
