@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations
 
-class Coordinate private constructor(
+data class Coordinate private constructor(
     val xLongitude: Double,
     val yLatitude: Double,
     val crsIdentifier: CrsIdentifier
