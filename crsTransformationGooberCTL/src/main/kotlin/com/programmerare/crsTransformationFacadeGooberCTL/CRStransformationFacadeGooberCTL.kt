@@ -7,12 +7,13 @@ import com.github.goober.coordinatetransformation.positions.SWEREF99Position
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position.SWEREFProjection
 import com.github.goober.coordinatetransformation.positions.WGS84Position
 import com.programmerare.crsTransformations.CRStransformationFacade
+import com.programmerare.crsTransformations.CRStransformationFacadeBase
 import com.programmerare.crsTransformations.Coordinate
 import java.util.*
 
 // " goober/coordinate-transformation-library "
 // https://github.com/goober/coordinate-transformation-library
-class CRStransformationFacadeGooberCTL : CRStransformationFacade {
+class CRStransformationFacadeGooberCTL : CRStransformationFacadeBase(), CRStransformationFacade {
 
     override fun transform(
         inputCoordinate: Coordinate,

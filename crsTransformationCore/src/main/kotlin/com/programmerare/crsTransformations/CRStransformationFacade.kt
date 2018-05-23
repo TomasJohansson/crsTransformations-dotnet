@@ -7,4 +7,14 @@ interface CRStransformationFacade {
         epsgNumberForOutputCoordinateSystem: Int
     ): Coordinate
 
+    fun transform(
+        inputCoordinate: Coordinate,
+        crsCodeForOutputCoordinateSystem: String
+    ): Coordinate
+
+    fun transform(
+        inputCoordinate: Coordinate,
+        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+    ): Coordinate
+
 }

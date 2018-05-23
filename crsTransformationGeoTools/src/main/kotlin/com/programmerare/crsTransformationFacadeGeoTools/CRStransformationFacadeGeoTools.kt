@@ -7,12 +7,13 @@ import org.geotools.referencing.CRS
 import org.opengis.referencing.crs.CoordinateReferenceSystem
 import org.opengis.referencing.operation.MathTransform
 import com.programmerare.crsTransformations.CRStransformationFacade
+import com.programmerare.crsTransformations.CRStransformationFacadeBase
 import com.programmerare.crsTransformations.Coordinate
 import org.geotools.geometry.jts.JTS
 
 // http://docs.geotools.org/
 // https://github.com/geotools/geotools/blob/master/pom.xml
-class CRStransformationFacadeGeoTools : CRStransformationFacade {
+class CRStransformationFacadeGeoTools : CRStransformationFacadeBase(), CRStransformationFacade {
 
     private val epsgPrefix = "EPSG:" // TODO: define this string ONCE in some appropriate place ...
 
