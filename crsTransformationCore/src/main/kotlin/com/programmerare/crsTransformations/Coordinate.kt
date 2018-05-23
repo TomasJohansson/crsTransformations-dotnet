@@ -14,10 +14,10 @@ class Coordinate private constructor(
             yLatitude: Double,
             epsgNumber: Int
         ): Coordinate {
-            return createHelper(
+            return createFromXLongYLat(
                 xLongitude,
                 yLatitude,
-                epsgNumber
+                CrsIdentifier.createFromEpsgNumber(epsgNumber)
             )
         }
 
@@ -27,22 +27,62 @@ class Coordinate private constructor(
             xLongitude: Double,
             epsgNumber: Int
         ): Coordinate {
-            return createHelper(
+            return createFromXLongYLat(
                 xLongitude,
                 yLatitude,
-                epsgNumber
+                CrsIdentifier.createFromEpsgNumber(epsgNumber)
             )
         }
 
-        private fun createHelper(
-                xLongitude: Double,
-                yLatitude: Double,
-                epsgNumber: Int
+        @JvmStatic
+        fun createFromXLongYLat(
+            xLongitude: Double,
+            yLatitude: Double,
+            crsCode: String
+        ): Coordinate {
+            return createFromXLongYLat(
+                xLongitude,
+                yLatitude,
+                CrsIdentifier.createFromCrsCode(crsCode)
+            )
+        }
+
+        @JvmStatic
+        fun createFromYLatXLong(
+            yLatitude: Double,
+            xLongitude: Double,
+            crsCode: String
+        ): Coordinate {
+            return createFromXLongYLat(
+                xLongitude,
+                yLatitude,
+                CrsIdentifier.createFromCrsCode(crsCode)
+            )
+        }
+
+        @JvmStatic
+        fun createFromYLatXLong(
+            yLatitude: Double,
+            xLongitude: Double,
+            crsIdentifier: CrsIdentifier
+        ): Coordinate {
+            return createFromXLongYLat(
+                xLongitude,
+                yLatitude,
+                crsIdentifier
+            )
+        }
+
+        @JvmStatic
+        fun createFromXLongYLat(
+            xLongitude: Double,
+            yLatitude: Double,
+            crsIdentifier: CrsIdentifier
         ): Coordinate {
             return Coordinate(
                 xLongitude,
                 yLatitude,
-                CrsIdentifier.createFromEpsgNumber(epsgNumber)
+                crsIdentifier
             )
         }
     }
