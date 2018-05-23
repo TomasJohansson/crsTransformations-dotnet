@@ -9,13 +9,12 @@ import org.opengis.referencing.operation.MathTransform
 import com.programmerare.crsTransformations.CRStransformationFacade
 import com.programmerare.crsTransformations.CRStransformationFacadeBase
 import com.programmerare.crsTransformations.Coordinate
+import com.programmerare.crsTransformations.CrsIdentifier
 import org.geotools.geometry.jts.JTS
 
 // http://docs.geotools.org/
 // https://github.com/geotools/geotools/blob/master/pom.xml
 class CRStransformationFacadeGeoTools : CRStransformationFacadeBase(), CRStransformationFacade {
-
-    private val epsgPrefix = "EPSG:" // TODO: define this string ONCE in some appropriate place ...
 
     private val geometryFactory: GeometryFactory
 
@@ -25,10 +24,10 @@ class CRStransformationFacadeGeoTools : CRStransformationFacadeBase(), CRStransf
 
     override fun transform(
         inputCoordinate: Coordinate,
-        epsgNumberForOutputCoordinateSystem: Int
+        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate {
         val sourceCRS: CoordinateReferenceSystem = CRS.decode(inputCoordinate.crsIdentifier.crsCode, true)
-        val targetCRS: CoordinateReferenceSystem = CRS.decode(epsgPrefix + epsgNumberForOutputCoordinateSystem, true)
+        val targetCRS: CoordinateReferenceSystem = CRS.decode(crsIdentifierForOutputCoordinateSystem.crsCode, true)
         val mathTransform: MathTransform = CRS.findMathTransform(sourceCRS, targetCRS)
 
         /*
@@ -46,6 +45,6 @@ class CRStransformationFacadeGeoTools : CRStransformationFacadeBase(), CRStransf
         val lon = outputCoordinate.x
         val lat = outputCoordinate.y
 
-        return Coordinate.createFromYLatXLong(yLatitude = lat, xLongitude = lon, epsgNumber = epsgNumberForOutputCoordinateSystem)
+        return Coordinate.createFromYLatXLong(yLatitude = lat, xLongitude = lon, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }
 }

@@ -9,6 +9,7 @@ import com.github.goober.coordinatetransformation.positions.WGS84Position
 import com.programmerare.crsTransformations.CRStransformationFacade
 import com.programmerare.crsTransformations.CRStransformationFacadeBase
 import com.programmerare.crsTransformations.Coordinate
+import com.programmerare.crsTransformations.CrsIdentifier
 import java.util.*
 
 // " goober/coordinate-transformation-library "
@@ -17,17 +18,20 @@ class CRStransformationFacadeGooberCTL : CRStransformationFacadeBase(), CRStrans
 
     override fun transform(
         inputCoordinate: Coordinate,
-        epsgNumberForOutputCoordinateSystem: Int
+        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate {
         if(!inputCoordinate.crsIdentifier.isEpsgCode) {
-            throw IllegalArgumentException("Unsupported transformation from CRS: ${inputCoordinate.crsIdentifier.crsCode}")
+            throwIllegalArgumentException(inputCoordinate.crsIdentifier)
+        }
+        if(!crsIdentifierForOutputCoordinateSystem.isEpsgCode) {
+            throwIllegalArgumentException(crsIdentifierForOutputCoordinateSystem)
         }
         val epsgNumberForInputCoordinateSystem = inputCoordinate.crsIdentifier.epsgNumber
         var positionToReturn: Position? = null
 
         // shorter names below for readibility purpose (lots os usages further down)
         val input = epsgNumberForInputCoordinateSystem
-        val output = epsgNumberForOutputCoordinateSystem
+        val output = crsIdentifierForOutputCoordinateSystem.epsgNumber
         // "Int" is the data type for the above input and output
         // and below in the if statements they are used with extension functions
         // for semantic reasons i.e. readability.
@@ -50,7 +54,7 @@ class CRStransformationFacadeGooberCTL : CRStransformationFacadeBase(), CRStrans
         }
 
         if (positionToReturn != null) {
-            return Coordinate.createFromYLatXLong(yLatitude = positionToReturn.latitude, xLongitude = positionToReturn.longitude, epsgNumber = epsgNumberForOutputCoordinateSystem)
+            return Coordinate.createFromYLatXLong(yLatitude = positionToReturn.latitude, xLongitude = positionToReturn.longitude, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
         } else if (
             // not direct support for transforming directly between SWEREF99 and RT90
             // but can do it by first transforming to WGS84 and then to the other
@@ -65,10 +69,14 @@ class CRStransformationFacadeGooberCTL : CRStransformationFacadeBase(), CRStrans
             // first transform to WGS84
             val wgs84Coordinate = transform(inputCoordinate, WGS84)
             // then transform from WGS84
-            return transform(wgs84Coordinate, epsgNumberForOutputCoordinateSystem)
+            return transform(wgs84Coordinate, crsIdentifierForOutputCoordinateSystem)
         } else {
-            throw IllegalArgumentException("Unsupported transformation from $epsgNumberForInputCoordinateSystem to $epsgNumberForOutputCoordinateSystem")
+            throw IllegalArgumentException("Unsupported transformation from $epsgNumberForInputCoordinateSystem to ${crsIdentifierForOutputCoordinateSystem.crsCode}")
         }
+    }
+
+    private fun throwIllegalArgumentException(crsIdentifier: CrsIdentifier) {
+        throw IllegalArgumentException("Unsupported CRS: ${crsIdentifier.crsCode}")
     }
 
     private fun Int.isWgs84(): Boolean {
