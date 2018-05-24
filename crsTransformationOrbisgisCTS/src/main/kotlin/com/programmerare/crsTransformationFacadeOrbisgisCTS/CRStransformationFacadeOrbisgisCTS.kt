@@ -1,7 +1,7 @@
 package com.programmerare.crsTransformationFacadeOrbisgisCTS
 
 import com.programmerare.crsTransformations.CRStransformationFacade
-import com.programmerare.crsTransformations.CRStransformationFacadeBase
+import com.programmerare.crsTransformations.CRStransformationFacadeBaseLeaf
 import com.programmerare.crsTransformations.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
 import org.cts.CRSFactory;
@@ -11,7 +11,7 @@ import org.cts.registry.EPSGRegistry;
 
 // " orbisgis/cts "
 // https://github.com/orbisgis/cts
-class CRStransformationFacadeOrbisgisCTS : CRStransformationFacadeBase(), CRStransformationFacade {
+class CRStransformationFacadeOrbisgisCTS : CRStransformationFacadeBaseLeaf(), CRStransformationFacade {
 
     override fun transform(
         inputCoordinate: Coordinate,
