@@ -3,6 +3,7 @@ package com.programmerare.crsTransformations;
 import com.programmerare.crsTransformationFacadeGeoTools.CRStransformationFacadeGeoTools;
 import com.programmerare.crsTransformationFacadeGooberCTL.CRStransformationFacadeGooberCTL;
 import com.programmerare.crsTransformationFacadeOrbisgisCTS.CRStransformationFacadeOrbisgisCTS;
+import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -17,15 +18,14 @@ import static org.junit.jupiter.api.Assertions.*;
 
 final class CRStransformationFacadeTest {
 
-    private final static int epsgNumberForWgs84 = 4326;
-    private final static int epsgNumberForRT90 = 3021;
-    private final static int epsgNumberForSweref99TM = 3006;
-    private final static int epsgNumberForSweref991200 = 3007; // EPSG:3007: SWEREF99 12 00	https://epsg.io/3007
-    private final static int epsgNumberForSweref991500 = 3009; // EPSG:3009: SWEREF99 15 00	https://epsg.io/3009
+    private final static int epsgNumberForWgs84         = ConstantEpsgNumber.WGS84;
+    private final static int epsgNumberForSweref99TM    = ConstantEpsgNumber.SWEREF99TM;
+    private final static int epsgNumberForRT90          = ConstantEpsgNumber.RT90_25_GON_V;
+    private final static int epsgNumberForSweref991200  = ConstantEpsgNumber.SWEREF99_12_00;
+    private final static int epsgNumberForSweref991500  = ConstantEpsgNumber.SWEREF99_15_00;
 
-    // TODO: Define this constant somewhere else ...  maybe in CRStransformationFacadeGooberCTL which aer also using these EPSG values ...
-    private final static int lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = 3006;
-    private final static int upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = 3024;
+    private final static int lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = ConstantEpsgNumber.SWEREF99TM; // 3006;
+    private final static int upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = ConstantEpsgNumber.RT90_05_GON_O; // 3024;
 
     private static List<Integer> epsgNumbersForSwedishProjectionsUsingMeterAsUnit;
 

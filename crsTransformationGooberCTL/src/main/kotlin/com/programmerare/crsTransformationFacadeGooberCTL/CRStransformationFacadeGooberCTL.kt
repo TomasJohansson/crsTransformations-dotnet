@@ -98,6 +98,9 @@ class CRStransformationFacadeGooberCTL : CRStransformationFacadeBase(), CRStrans
         private val sweREFProjections = HashMap<Int, SWEREFProjection>()
 
         init {
+
+            // TODO: maybe use the constants in an object such as ConstantEpsgNumber
+            // instead of hardcoding the EPSG numbers as below
             // http://spatialreference.org/ref/?search=rt90
             rt90Projections.put(3019, RT90Projection.rt90_7_5_gon_v)    // EPSG:3019: RT90 7.5 gon V		https://epsg.io/3019
             rt90Projections.put(3020, RT90Projection.rt90_5_0_gon_v)    // EPSG:3020: RT90 5 gon V			https://epsg.io/3020

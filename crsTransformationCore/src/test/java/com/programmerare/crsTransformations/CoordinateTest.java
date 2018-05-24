@@ -1,5 +1,6 @@
 package com.programmerare.crsTransformations;
 
+import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -7,7 +8,7 @@ class CoordinateTest {
     private final double deltaTolerance = 0.00001;
     private final double xLongitude = 12.34;
     private final double yLatitude = 56.67;
-    private final int epsgNumber = 3006;
+    private final int epsgNumber = ConstantEpsgNumber.SWEREF99TM;
 
     @Test
     void trivialCreateCoordinateTest() {

@@ -4,6 +4,8 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
+import com.programmerare.crsTransformations.crsConstants.ConstantCrsCode;
+import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -18,10 +20,11 @@ public class CrsIdentifierTest {
 
     @Test
     void createFromEpsgNumber() {
+        // SWEREF99TM = 3006
         CrsIdentifier crsIdentifier = CrsIdentifier.createFromEpsgNumber(3006);
-        assertEquals("EPSG:3006", crsIdentifier.getCrsCode());
+        assertEquals(ConstantCrsCode.SWEREF99TM, crsIdentifier.getCrsCode());
         assertEquals(true, crsIdentifier.isEpsgCode());
-        assertEquals(3006, crsIdentifier.getEpsgNumber());
+        assertEquals(ConstantEpsgNumber.SWEREF99TM, crsIdentifier.getEpsgNumber());
     }
 
     @Test
