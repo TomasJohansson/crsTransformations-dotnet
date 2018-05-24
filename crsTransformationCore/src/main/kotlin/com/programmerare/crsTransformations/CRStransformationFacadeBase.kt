@@ -12,16 +12,22 @@ abstract class CRStransformationFacadeBase : CRStransformationFacade {
         return transform(inputCoordinate, CrsIdentifier.createFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
     }
 
-    override fun transformToResultObject(inputCoordinate: Coordinate, epsgNumberForOutputCoordinateSystem: Int): TransformResult {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override final fun transformToResultObject(inputCoordinate: Coordinate, epsgNumberForOutputCoordinateSystem: Int): TransformResult {
+        return transformToResultObject(inputCoordinate, CrsIdentifier.createFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
     }
 
-    override fun transformToResultObject(inputCoordinate: Coordinate, crsCodeForOutputCoordinateSystem: String): TransformResult {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override final fun transformToResultObject(inputCoordinate: Coordinate, crsCodeForOutputCoordinateSystem: String): TransformResult {
+        return transformToResultObject(inputCoordinate, CrsIdentifier.createFromCrsCode(crsCodeForOutputCoordinateSystem))
     }
 
-    override fun transformToResultObject(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override final fun transformToResultObject(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
+        try {
+            val outputCoordinate = transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+            return TransformResultImplementation(inputCoordinate, outputCoordinate, exception = null, isSuccess = true)
+        }
+        catch (e: Exception) {
+            return TransformResultImplementation(inputCoordinate, null, exception = e, isSuccess = false)
+        }
     }
 
 }

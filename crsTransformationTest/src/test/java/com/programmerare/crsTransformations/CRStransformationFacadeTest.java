@@ -8,16 +8,12 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
-
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
-
 import static java.util.stream.Collectors.toList;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.*;
 
 final class CRStransformationFacadeTest {
 
@@ -259,4 +255,36 @@ final class CRStransformationFacadeTest {
             }
         }
     }
+
+    @DisplayName("Testing TransformResult with expected failure")
+    @Test
+    void transformToResultObjectWithUnvalidInputCoordinate() {
+        Coordinate unvalidInputCoordinate = Coordinate.createFromXLongYLat(-999999.0, -999999.0, -9999);
+        for (CRStransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
+            TransformResult transformResult = crsTransformationFacade.transformToResultObject(unvalidInputCoordinate, -888888);
+            assertNotNull(transformResult);
+            assertFalse(transformResult.isSuccess());
+            assertNotNull(transformResult.getException());
+            assertEquals(unvalidInputCoordinate, transformResult.getInputCoordinate());
+        }
+    }
+
+    @DisplayName("Testing TransformResult with expected successe")
+    @Test
+    void transformToResultObjectWithValidInputCoordinate() {
+        double wgs84Lat = 59.330231;
+        double wgs84Lon = 18.059196;
+        Coordinate wgs84InputCoordinate = Coordinate.createFromXLongYLat(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+
+        for (CRStransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
+            TransformResult transformResult = crsTransformationFacade.transformToResultObject(wgs84InputCoordinate, epsgNumberForSweref99TM);
+            assertNotNull(transformResult);
+            assertTrue(transformResult.isSuccess());
+            assertNull(transformResult.getException());
+            Coordinate outputCoordinate = transformResult.getOutputCoordinate();
+            assertNotNull(outputCoordinate);
+            assertEquals(outputCoordinate.getCrsIdentifier().getEpsgNumber(), epsgNumberForSweref99TM);
+        }
+    }
+
 }
