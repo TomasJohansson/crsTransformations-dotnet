@@ -3,8 +3,7 @@ package com.programmerare.crsTransformations.compositeTransformations
 import com.programmerare.crsTransformations.*
 import java.lang.RuntimeException
 
-// TODO make this class concrete and final and then also rename it (regarding "Base")
-abstract class CrsTransformationFacadeBaseComposite(protected val compositeStrategy: CompositeStrategy) : CrsTransformationFacadeBase(), CrsTransformationFacade {
+final class CrsTransformationFacadeComposite(protected val compositeStrategy: CompositeStrategy) : CrsTransformationFacadeBase(), CrsTransformationFacade {
 
     override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): Coordinate {
         val transformResult = transformToResultObject(inputCoordinate, crsIdentifierForOutputCoordinateSystem)

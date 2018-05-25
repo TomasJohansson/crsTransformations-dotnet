@@ -5,15 +5,15 @@ import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-// TODO: rename the class
-class CrsTransformationFacadeMedianTest extends CRStransformationFacadeBaseCompositeTest {
+
+class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
 
     private final static double delta = 0.00001;
 
     @Test
     void transformWithFacadeCompositeMedianTest() {
         // TODO: create some factory to make it more convenient to construct the below object
-        CrsTransformationFacadeMedian facadeMedian = new CrsTransformationFacadeMedian(
+        CrsTransformationFacadeComposite facadeMedian = new CrsTransformationFacadeComposite(
             new CompositeStrategyForMedianValue(
                 Arrays.asList(
                     facadeGeoTools,
@@ -63,26 +63,26 @@ class CrsTransformationFacadeMedianTest extends CRStransformationFacadeBaseCompo
 
     @Test
     void getMedianFrom3values() {
-        double medianValue = CrsTransformationFacadeMedian.getMedianValue(Arrays.asList(55.0, 33.0, 77.0));
+        double medianValue = CompositeStrategyForMedianValue.getMedianValue(Arrays.asList(55.0, 33.0, 77.0));
         assertEquals(55.0, medianValue, delta);
     }
 
     @Test
     void getMedianFrom4values() {
-        double medianValue = CrsTransformationFacadeMedian.getMedianValue(Arrays.asList(55.0, 33.0, 77.0, 35.0));
+        double medianValue = CompositeStrategyForMedianValue.getMedianValue(Arrays.asList(55.0, 33.0, 77.0, 35.0));
         // the average of the two middle values 35 and 55
         assertEquals(45.0, medianValue, delta);
     }
 
     @Test
     void getMedianFrom7values() {
-        double medianValue = CrsTransformationFacadeMedian.getMedianValue(Arrays.asList(9.0, 6.0, 1.0, 7.0, 8.0, 5.0, 3.0));
+        double medianValue = CompositeStrategyForMedianValue.getMedianValue(Arrays.asList(9.0, 6.0, 1.0, 7.0, 8.0, 5.0, 3.0));
         assertEquals(6.0, medianValue, delta);
     }
 
     @Test
     void getMedianFrom8values() {
-        double medianValue = CrsTransformationFacadeMedian.getMedianValue(Arrays.asList(9.0, 6.0, 1.0, 7.0, 8.0, 5.0, 3.0, 6.5));
+        double medianValue = CompositeStrategyForMedianValue.getMedianValue(Arrays.asList(9.0, 6.0, 1.0, 7.0, 8.0, 5.0, 3.0, 6.5));
         // the average of the two middle values 6.0 and 6.5
         assertEquals(6.25, medianValue, delta);
     }

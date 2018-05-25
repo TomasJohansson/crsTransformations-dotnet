@@ -12,7 +12,7 @@ import org.junit.jupiter.api.BeforeAll;
 import java.util.Arrays;
 import java.util.List;
 
-abstract class CRStransformationFacadeBaseCompositeTest  {
+abstract class CompositeStrategyTestBase {
 
     protected static CrsTransformationFacade facadeGeoTools;
     protected static CrsTransformationFacade facadeGooberCTL;

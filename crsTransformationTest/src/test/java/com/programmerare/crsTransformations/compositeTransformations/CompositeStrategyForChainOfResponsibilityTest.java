@@ -7,13 +7,12 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-// TODO: rename the class
-public class CrsTransformationFacadeChainOfResponsibilityTest extends CRStransformationFacadeBaseCompositeTest {
+public class CompositeStrategyForChainOfResponsibilityTest extends CompositeStrategyTestBase {
 
     @Test
     void createCRStransformationFacadeChainOfResponsibility() {
         // TODO: create some factory to make it more convenient to construct the below object
-        CrsTransformationFacade facadeComposite = new CrsTransformationFacadeChainOfResponsibility(
+        CrsTransformationFacade facadeComposite = new CrsTransformationFacadeComposite(
             new CompositeStrategyForChainOfResponsibility(
                 Arrays.asList(
                     facadeGeoTools, // since geotools is first here in this list, it should be the implementation providing the result

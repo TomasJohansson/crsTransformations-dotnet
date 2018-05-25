@@ -12,8 +12,7 @@ import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-// TODO: rename the class
-public class CrsTransformationFacadeAverageTest extends CRStransformationFacadeBaseCompositeTest {
+public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestBase {
 
     @Test
     void createCRStransformationFacadeAverage() {
@@ -21,7 +20,7 @@ public class CrsTransformationFacadeAverageTest extends CRStransformationFacadeB
         Coordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(coordinateResultsForTheDifferentImplementations);
 
         // TODO: create some factory to make it more convenient to construct the below object
-        CrsTransformationFacade facadeCompositeCalculatingAverage = new CrsTransformationFacadeAverage(
+        CrsTransformationFacade facadeCompositeCalculatingAverage = new CrsTransformationFacadeComposite(
             new CompositeStrategyForAverageValue(
                 Arrays.asList(
                     facadeGeoTools,

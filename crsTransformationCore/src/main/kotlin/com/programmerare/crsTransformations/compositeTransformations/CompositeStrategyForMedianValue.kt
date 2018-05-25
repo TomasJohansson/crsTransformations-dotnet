@@ -41,7 +41,7 @@ class CompositeStrategyForMedianValue(private val crsTransformationFacades: List
         // Java unit testing but "protected" works...
         // (and it did not work before when the test really was internal
         //  in the same module, but now it is moved to a separate test module)
-        fun getMedianValue(lats: kotlin.collections.List<Double>): Double {
+        protected fun getMedianValue(lats: kotlin.collections.List<Double>): Double {
             val sortedDescending = lats.sortedDescending()
             val middle = sortedDescending.size / 2
             return if (sortedDescending.size % 2 == 1) {
