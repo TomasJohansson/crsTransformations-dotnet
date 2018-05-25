@@ -3,6 +3,7 @@ package com.programmerare.crsTransformations;
 import com.programmerare.crsTransformationFacadeGeoTools.CrsTransformationFacadeGeoTools;
 import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL;
 import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFacadeOrbisgisCTS;
+import com.programmerare.crsTransformationFacadeProj4J.CrsTransformationFacadeProj4J;
 import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -32,6 +33,7 @@ final class CrsTransformationFacadeTest {
     private final static List<CrsTransformationFacade> crsTransformationFacadeImplementations = Arrays.asList(
         new CrsTransformationFacadeGeoTools(),
         new CrsTransformationFacadeGooberCTL(),
+        new CrsTransformationFacadeProj4J(),
         new CrsTransformationFacadeOrbisgisCTS()
     );
 

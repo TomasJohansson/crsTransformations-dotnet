@@ -3,6 +3,7 @@ package com.programmerare.crsTransformations.compositeTransformations;
 import com.programmerare.crsTransformationFacadeGeoTools.CrsTransformationFacadeGeoTools;
 import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL;
 import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFacadeOrbisgisCTS;
+import com.programmerare.crsTransformationFacadeProj4J.CrsTransformationFacadeProj4J;
 import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
@@ -16,6 +17,7 @@ abstract class CRStransformationFacadeBaseCompositeTest  {
     protected static CrsTransformationFacade facadeGeoTools;
     protected static CrsTransformationFacade facadeGooberCTL;
     protected static CrsTransformationFacade facadeOrbisgisCTS;
+    protected static CrsTransformationFacade facadeProj4J;
     protected static List<CrsTransformationFacade> allFacades;
 
     protected static double wgs84Lat = 59.330231;
@@ -27,12 +29,15 @@ abstract class CRStransformationFacadeBaseCompositeTest  {
     protected static Coordinate resultCoordinateGeoTools;
     protected static Coordinate resultCoordinateGooberCTL;
     protected static Coordinate resultCoordinateOrbisgisCTS;
+    protected static Coordinate resultCoordinateProj4J;
+
 
     @BeforeAll
     final static void beforeAll() {
         facadeGeoTools = new CrsTransformationFacadeGeoTools();
         facadeGooberCTL = new CrsTransformationFacadeGooberCTL();
         facadeOrbisgisCTS = new CrsTransformationFacadeOrbisgisCTS();
+        facadeProj4J = new CrsTransformationFacadeProj4J();
 
         allFacades = Arrays.asList(facadeGeoTools, facadeGooberCTL, facadeOrbisgisCTS);
 
@@ -41,5 +46,6 @@ abstract class CRStransformationFacadeBaseCompositeTest  {
         resultCoordinateGeoTools = facadeGeoTools.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
         resultCoordinateGooberCTL = facadeGooberCTL.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
         resultCoordinateOrbisgisCTS = facadeOrbisgisCTS.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
+        resultCoordinateProj4J = facadeProj4J.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
     }
 }
