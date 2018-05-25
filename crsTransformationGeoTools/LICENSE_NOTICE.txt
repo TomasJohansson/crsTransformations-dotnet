@@ -1,0 +1,7 @@
+This adapter/facade library is licensed in the same way as the adaptee library itself i.e. GeoTools.
+
+The license for GeoTools is Lesser General Public License (LGPL).
+http://docs.geotools.org/latest/userguide/welcome/license.html
+https://github.com/geotools/geotools
+https://github.com/geotools/geotools/blob/master/pom.xml
+http://geotools.org

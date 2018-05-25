@@ -1,0 +1,5 @@
+This adapter/facade library "OrbisgisCTS" is licensed in the same way as the adaptee library itself as specified below.
+
+The license for "orbisgis/cts" is "GNU Lesser General Public License (LGPLV3+)" (quoted from the pom file, at the below URL).
+https://github.com/orbisgis/cts/blob/master/pom.xml
+https://github.com/orbisgis/cts/
