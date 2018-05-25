@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations
 
-interface CRStransformationFacade {
+interface CrsTransformationFacade {
 
     fun transform(
         inputCoordinate: Coordinate,

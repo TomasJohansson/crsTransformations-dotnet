@@ -6,15 +6,15 @@ import org.geotools.geometry.jts.JTSFactoryFinder // gt-main-...jar
 import org.geotools.referencing.CRS
 import org.opengis.referencing.crs.CoordinateReferenceSystem
 import org.opengis.referencing.operation.MathTransform
-import com.programmerare.crsTransformations.CRStransformationFacade
-import com.programmerare.crsTransformations.CRStransformationFacadeBaseLeaf
+import com.programmerare.crsTransformations.CrsTransformationFacade
+import com.programmerare.crsTransformations.CrsTransformationFacadeBaseLeaf
 import com.programmerare.crsTransformations.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
 import org.geotools.geometry.jts.JTS
 
 // http://docs.geotools.org/
 // https://github.com/geotools/geotools/blob/master/pom.xml
-class CRStransformationFacadeGeoTools : CRStransformationFacadeBaseLeaf(), CRStransformationFacade {
+class CrsTransformationFacadeGeoTools : CrsTransformationFacadeBaseLeaf(), CrsTransformationFacade {
 
     private val geometryFactory: GeometryFactory
 

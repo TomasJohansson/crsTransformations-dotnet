@@ -3,7 +3,7 @@ package com.programmerare.crsTransformations.compositeTransformations
 import com.programmerare.crsTransformations.*
 import java.util.List
 
-class CRStransformationFacadeMedian(crsTransformationFacades: List<CRStransformationFacade>) : CRStransformationFacadeBaseComposite(crsTransformationFacades) {
+class CrsTransformationFacadeMedian(crsTransformationFacades: List<CrsTransformationFacade>) : CrsTransformationFacadeBaseComposite(crsTransformationFacades) {
 
     override fun transformToResultObject(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
         val successFulCoordinateResults = crsTransformationFacades.map { it.transformToResultObject(inputCoordinate, crsIdentifierForOutputCoordinateSystem) }.filter { it.isSuccess }.map { it.outputCoordinate }

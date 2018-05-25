@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations
 
-abstract class CRStransformationFacadeBaseLeaf : CRStransformationFacadeBase(), CRStransformationFacade {
+abstract class CrsTransformationFacadeBaseLeaf : CrsTransformationFacadeBase(), CrsTransformationFacade {
 
     override final fun transformToResultObject(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
         try {

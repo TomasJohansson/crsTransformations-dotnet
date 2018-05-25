@@ -3,13 +3,13 @@ package com.programmerare.crsTransformations.compositeTransformations
 import com.programmerare.crsTransformations.*
 import java.util.List
 
-class CRStransformationFacadeAverage(crsTransformationFacades: List<CRStransformationFacade>) : CRStransformationFacadeBaseComposite(crsTransformationFacades) {
+class CrsTransformationFacadeAverage(crsTransformationFacades: List<CrsTransformationFacade>) : CrsTransformationFacadeBaseComposite(crsTransformationFacades) {
 
     override fun transformToResultObject(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
         var successCount = 0
         var sumLat = 0.0
         var sumLon = 0.0
-        for (facade: CRStransformationFacade in crsTransformationFacades) {
+        for (facade: CrsTransformationFacade in crsTransformationFacades) {
             val res = facade.transformToResultObject(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
             if(res.isSuccess) {
                 successCount++

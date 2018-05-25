@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations
 
-abstract class CRStransformationFacadeBase : CRStransformationFacade {
+abstract class CrsTransformationFacadeBase : CrsTransformationFacade {
 
     override final fun transform(inputCoordinate: Coordinate, crsCodeForOutputCoordinateSystem: String): Coordinate {
         // the below invoked overloaded method is implemented in subclasses

@@ -1,17 +1,17 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
-import com.programmerare.crsTransformations.CRStransformationFacade;
+import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CRStransformationFacadeChainOfResponsibilityTest extends CRStransformationFacadeBaseCompositeTest {
+public class CrsTransformationFacadeChainOfResponsibilityTest extends CRStransformationFacadeBaseCompositeTest {
 
     @Test
     void createCRStransformationFacadeChainOfResponsibility() {
-        CRStransformationFacade facadeComposite = new CRStransformationFacadeChainOfResponsibility(
+        CrsTransformationFacade facadeComposite = new CrsTransformationFacadeChainOfResponsibility(
             Arrays.asList(
                 facadeGeoTools, // since geotools is first here in this list, it should be the implementation providing the result
                 facadeGooberCTL,

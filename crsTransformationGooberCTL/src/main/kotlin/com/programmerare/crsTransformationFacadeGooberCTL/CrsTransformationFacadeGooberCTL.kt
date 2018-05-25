@@ -6,15 +6,15 @@ import com.github.goober.coordinatetransformation.positions.RT90Position
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position.SWEREFProjection
 import com.github.goober.coordinatetransformation.positions.WGS84Position
-import com.programmerare.crsTransformations.CRStransformationFacade
-import com.programmerare.crsTransformations.CRStransformationFacadeBaseLeaf
+import com.programmerare.crsTransformations.CrsTransformationFacade
+import com.programmerare.crsTransformations.CrsTransformationFacadeBaseLeaf
 import com.programmerare.crsTransformations.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
 import java.util.*
 
 // " goober/coordinate-transformation-library "
 // https://github.com/goober/coordinate-transformation-library
-class CRStransformationFacadeGooberCTL : CRStransformationFacadeBaseLeaf(), CRStransformationFacade {
+class CrsTransformationFacadeGooberCTL : CrsTransformationFacadeBaseLeaf(), CrsTransformationFacade {
 
     override fun transform(
         inputCoordinate: Coordinate,

@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
-import com.programmerare.crsTransformations.CRStransformationFacade;
+import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.CrsIdentifier;
 import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
@@ -12,14 +12,14 @@ import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class CRStransformationFacadeAverageTest extends CRStransformationFacadeBaseCompositeTest {
+public class CrsTransformationFacadeAverageTest extends CRStransformationFacadeBaseCompositeTest {
 
     @Test
     void createCRStransformationFacadeAverage() {
         List<Coordinate> coordinateResultsForTheDifferentImplementations = Arrays.asList(resultCoordinateGeoTools, resultCoordinateGooberCTL, resultCoordinateOrbisgisCTS);
         Coordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(coordinateResultsForTheDifferentImplementations);
 
-        CRStransformationFacade facadeCompositeCalculatingAverage = new CRStransformationFacadeAverage(Arrays.asList(facadeGeoTools, facadeGooberCTL, facadeOrbisgisCTS));
+        CrsTransformationFacade facadeCompositeCalculatingAverage = new CrsTransformationFacadeAverage(Arrays.asList(facadeGeoTools, facadeGooberCTL, facadeOrbisgisCTS));
         Coordinate coordinateReturnedByCompositeFacade = facadeCompositeCalculatingAverage.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
 
         assertEquals(coordinateWithAverageLatitudeAndLongitude, coordinateReturnedByCompositeFacade);

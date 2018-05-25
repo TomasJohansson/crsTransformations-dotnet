@@ -1,9 +1,9 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
-import com.programmerare.crsTransformationFacadeGeoTools.CRStransformationFacadeGeoTools;
-import com.programmerare.crsTransformationFacadeGooberCTL.CRStransformationFacadeGooberCTL;
-import com.programmerare.crsTransformationFacadeOrbisgisCTS.CRStransformationFacadeOrbisgisCTS;
-import com.programmerare.crsTransformations.CRStransformationFacade;
+import com.programmerare.crsTransformationFacadeGeoTools.CrsTransformationFacadeGeoTools;
+import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL;
+import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFacadeOrbisgisCTS;
+import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
 import org.junit.jupiter.api.BeforeAll;
@@ -13,10 +13,10 @@ import java.util.List;
 
 abstract class CRStransformationFacadeBaseCompositeTest  {
 
-    protected static CRStransformationFacade facadeGeoTools;
-    protected static CRStransformationFacade facadeGooberCTL;
-    protected static CRStransformationFacade facadeOrbisgisCTS;
-    protected static List<CRStransformationFacade> allFacades;
+    protected static CrsTransformationFacade facadeGeoTools;
+    protected static CrsTransformationFacade facadeGooberCTL;
+    protected static CrsTransformationFacade facadeOrbisgisCTS;
+    protected static List<CrsTransformationFacade> allFacades;
 
     protected static double wgs84Lat = 59.330231;
     protected static double wgs84Lon = 18.059196;
@@ -30,9 +30,9 @@ abstract class CRStransformationFacadeBaseCompositeTest  {
 
     @BeforeAll
     final static void beforeAll() {
-        facadeGeoTools = new CRStransformationFacadeGeoTools();
-        facadeGooberCTL = new CRStransformationFacadeGooberCTL();
-        facadeOrbisgisCTS = new CRStransformationFacadeOrbisgisCTS();
+        facadeGeoTools = new CrsTransformationFacadeGeoTools();
+        facadeGooberCTL = new CrsTransformationFacadeGooberCTL();
+        facadeOrbisgisCTS = new CrsTransformationFacadeOrbisgisCTS();
 
         allFacades = Arrays.asList(facadeGeoTools, facadeGooberCTL, facadeOrbisgisCTS);
 
