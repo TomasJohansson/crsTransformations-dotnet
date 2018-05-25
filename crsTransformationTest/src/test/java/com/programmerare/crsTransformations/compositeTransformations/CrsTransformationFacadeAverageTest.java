@@ -12,6 +12,7 @@ import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+// TODO: rename the class
 public class CrsTransformationFacadeAverageTest extends CRStransformationFacadeBaseCompositeTest {
 
     @Test
@@ -19,7 +20,17 @@ public class CrsTransformationFacadeAverageTest extends CRStransformationFacadeB
         List<Coordinate> coordinateResultsForTheDifferentImplementations = Arrays.asList(resultCoordinateGeoTools, resultCoordinateGooberCTL, resultCoordinateOrbisgisCTS, resultCoordinateProj4J);
         Coordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(coordinateResultsForTheDifferentImplementations);
 
-        CrsTransformationFacade facadeCompositeCalculatingAverage = new CrsTransformationFacadeAverage(Arrays.asList(facadeGeoTools, facadeGooberCTL, facadeOrbisgisCTS, facadeProj4J));
+        // TODO: create some factory to make it more convenient to construct the below object
+        CrsTransformationFacade facadeCompositeCalculatingAverage = new CrsTransformationFacadeAverage(
+            new CompositeStrategyForAverageValue(
+                Arrays.asList(
+                    facadeGeoTools,
+                    facadeGooberCTL,
+                    facadeOrbisgisCTS,
+                    facadeProj4J
+                )
+            )
+        );
         Coordinate coordinateReturnedByCompositeFacade = facadeCompositeCalculatingAverage.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
 
         double delta = 0.000000001;

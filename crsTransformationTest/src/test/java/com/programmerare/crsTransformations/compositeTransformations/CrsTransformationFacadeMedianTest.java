@@ -5,19 +5,22 @@ import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-
+// TODO: rename the class
 class CrsTransformationFacadeMedianTest extends CRStransformationFacadeBaseCompositeTest {
 
     private final static double delta = 0.00001;
 
     @Test
     void transformWithFacadeCompositeMedianTest() {
+        // TODO: create some factory to make it more convenient to construct the below object
         CrsTransformationFacadeMedian facadeMedian = new CrsTransformationFacadeMedian(
-            Arrays.asList(
-                facadeGeoTools,
-                facadeGooberCTL,
-                facadeProj4J,
-                facadeOrbisgisCTS
+            new CompositeStrategyForMedianValue(
+                Arrays.asList(
+                    facadeGeoTools,
+                    facadeGooberCTL,
+                    facadeProj4J,
+                    facadeOrbisgisCTS
+                )
             )
         );
 
