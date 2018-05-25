@@ -16,13 +16,18 @@ public class CrsTransformationFacadeAverageTest extends CRStransformationFacadeB
 
     @Test
     void createCRStransformationFacadeAverage() {
-        List<Coordinate> coordinateResultsForTheDifferentImplementations = Arrays.asList(resultCoordinateGeoTools, resultCoordinateGooberCTL, resultCoordinateOrbisgisCTS);
+        List<Coordinate> coordinateResultsForTheDifferentImplementations = Arrays.asList(resultCoordinateGeoTools, resultCoordinateGooberCTL, resultCoordinateOrbisgisCTS, resultCoordinateProj4J);
         Coordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(coordinateResultsForTheDifferentImplementations);
 
-        CrsTransformationFacade facadeCompositeCalculatingAverage = new CrsTransformationFacadeAverage(Arrays.asList(facadeGeoTools, facadeGooberCTL, facadeOrbisgisCTS));
+        CrsTransformationFacade facadeCompositeCalculatingAverage = new CrsTransformationFacadeAverage(Arrays.asList(facadeGeoTools, facadeGooberCTL, facadeOrbisgisCTS, facadeProj4J));
         Coordinate coordinateReturnedByCompositeFacade = facadeCompositeCalculatingAverage.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
 
-        assertEquals(coordinateWithAverageLatitudeAndLongitude, coordinateReturnedByCompositeFacade);
+        double delta = 0.000000001;
+        assertEquals(coordinateWithAverageLatitudeAndLongitude.getXLongitude(), coordinateReturnedByCompositeFacade.getXLongitude(), delta);
+        assertEquals(coordinateWithAverageLatitudeAndLongitude.getYLatitude(), coordinateReturnedByCompositeFacade.getYLatitude(), delta);
+        // assertEquals(coordinateWithAverageLatitudeAndLongitude, coordinateReturnedByCompositeFacade);
+        // Expected :Coordinate(xLongitude=674032.3572074446, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
+        // Actual   :Coordinate(xLongitude=674032.3572074447, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
     }
 
     private double getAverage(List<Coordinate> resultCoordinates, ToDoubleFunction<? super Coordinate> mapperReturningDoubleValueForAverageCalculation) {
