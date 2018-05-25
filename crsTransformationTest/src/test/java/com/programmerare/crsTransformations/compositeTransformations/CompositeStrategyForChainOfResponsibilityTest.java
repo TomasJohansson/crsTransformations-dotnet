@@ -11,14 +11,11 @@ public class CompositeStrategyForChainOfResponsibilityTest extends CompositeStra
 
     @Test
     void createCRStransformationFacadeChainOfResponsibility() {
-        // TODO: create some factory to make it more convenient to construct the below object
-        CrsTransformationFacade facadeComposite = new CrsTransformationFacadeComposite(
-            new CompositeStrategyForChainOfResponsibility(
-                Arrays.asList(
-                    facadeGeoTools, // since geotools is first here in this list, it should be the implementation providing the result
-                    facadeGooberCTL,
-                    facadeOrbisgisCTS
-                )
+        CrsTransformationFacade facadeComposite = CrsTransformationFacadeComposite.createCrsTransformationChainOfResponsibility(
+            Arrays.asList(
+                facadeGeoTools, // since geotools is first here in this list, it should be the implementation providing the result
+                facadeGooberCTL,
+                facadeOrbisgisCTS
             )
         );
         Coordinate coordinateReturnedByCompositeFacadeChainOfResponsibility = facadeComposite.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);

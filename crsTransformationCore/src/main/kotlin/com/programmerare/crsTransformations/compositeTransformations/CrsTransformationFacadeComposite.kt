@@ -3,7 +3,7 @@ package com.programmerare.crsTransformations.compositeTransformations
 import com.programmerare.crsTransformations.*
 import java.lang.RuntimeException
 
-final class CrsTransformationFacadeComposite(protected val compositeStrategy: CompositeStrategy) : CrsTransformationFacadeBase(), CrsTransformationFacade {
+final class CrsTransformationFacadeComposite private constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationFacadeBase(), CrsTransformationFacade {
 
     override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): Coordinate {
         val transformResult = transformToResultObject(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
@@ -30,5 +30,35 @@ final class CrsTransformationFacadeComposite(protected val compositeStrategy: Co
             }
         }
         return compositeStrategy.calculateAggregatedResult(list, inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+    }
+
+    companion object {
+        @JvmStatic
+        fun createCrsTransformationMedian(list: List<CrsTransformationFacade>): CrsTransformationFacadeComposite {
+
+            return CrsTransformationFacadeComposite(
+                CompositeStrategyForMedianValue(
+                    list
+                )
+            )
+        }
+
+        @JvmStatic
+        fun createCrsTransformationAverage(list: List<CrsTransformationFacade>): CrsTransformationFacadeComposite {
+            return CrsTransformationFacadeComposite(
+                CompositeStrategyForAverageValue(
+                        list
+                )
+            )
+        }
+
+        @JvmStatic
+        fun createCrsTransformationChainOfResponsibility(list: List<CrsTransformationFacade>): CrsTransformationFacadeComposite {
+            return CrsTransformationFacadeComposite(
+                CompositeStrategyForChainOfResponsibility(
+                        list
+                )
+            )
+        }
     }
 }

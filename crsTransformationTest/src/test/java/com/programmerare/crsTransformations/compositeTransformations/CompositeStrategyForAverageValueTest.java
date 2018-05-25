@@ -19,18 +19,15 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
         List<Coordinate> coordinateResultsForTheDifferentImplementations = Arrays.asList(resultCoordinateGeoTools, resultCoordinateGooberCTL, resultCoordinateOrbisgisCTS, resultCoordinateProj4J);
         Coordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(coordinateResultsForTheDifferentImplementations);
 
-        // TODO: create some factory to make it more convenient to construct the below object
-        CrsTransformationFacade facadeCompositeCalculatingAverage = new CrsTransformationFacadeComposite(
-            new CompositeStrategyForAverageValue(
-                Arrays.asList(
-                    facadeGeoTools,
-                    facadeGooberCTL,
-                    facadeOrbisgisCTS,
-                    facadeProj4J
-                )
+        CrsTransformationFacade facadeComposite = CrsTransformationFacadeComposite.createCrsTransformationAverage(
+            Arrays.asList(
+                facadeGeoTools,
+                facadeGooberCTL,
+                facadeOrbisgisCTS,
+                facadeProj4J
             )
         );
-        Coordinate coordinateReturnedByCompositeFacade = facadeCompositeCalculatingAverage.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
+        Coordinate coordinateReturnedByCompositeFacade = facadeComposite.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
 
         double delta = 0.000000001;
         assertEquals(coordinateWithAverageLatitudeAndLongitude.getXLongitude(), coordinateReturnedByCompositeFacade.getXLongitude(), delta);
