@@ -20,6 +20,8 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTestBase {
 
+    private final static double SMALL_DELTA_VALUE = 0.0000000001;
+
     private static double weightForGeoTools = 0.4;
     private static double weightForGoober = 0.3;
     private static double weightForOrbis = 0.2;
@@ -64,49 +66,47 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
     private void createCompositeStrategyForWeightedAverageValueHelper(CrsTransformationFacadeComposite facade) {
         final Coordinate coordinateResult = facade.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
 
-        final double delta = 0.0000000001;
-        assertEquals(coordinateWithExpectedWeightedValues.getYLatitude(), coordinateResult.getYLatitude(), delta);
-        assertEquals(coordinateWithExpectedWeightedValues.getXLongitude(), coordinateResult.getXLongitude(), delta);
+        assertEquals(coordinateWithExpectedWeightedValues.getYLatitude(), coordinateResult.getYLatitude(), SMALL_DELTA_VALUE);
+        assertEquals(coordinateWithExpectedWeightedValues.getXLongitude(), coordinateResult.getXLongitude(), SMALL_DELTA_VALUE);
 
         // The logic for the tests below:
         // The tested result should of course be very close to the expected result,
         // i.e. the differences (longitude and latitude differences)
-        // // should be less than a very small delta value
+        // // should be less than a very small SMALL_DELTA_VALUE value
         final double diffLatTestedFacade = Math.abs(coordinateWithExpectedWeightedValues.getYLatitude() - coordinateResult.getYLatitude());
         final double diffLonTestedFacade = Math.abs(coordinateWithExpectedWeightedValues.getXLongitude() - coordinateResult.getXLongitude());
-        assertThat(diffLatTestedFacade, lessThan(delta));// assertTrue(diffLatTestedFacade < delta);
-        assertThat(diffLonTestedFacade, lessThan(delta));
+        assertThat(diffLatTestedFacade, lessThan(SMALL_DELTA_VALUE));// assertTrue(diffLatTestedFacade < SMALL_DELTA_VALUE);
+        assertThat(diffLonTestedFacade, lessThan(SMALL_DELTA_VALUE));
 
         // Now in the rest of the assertions below,
         // the difference between the individual results which were weighted
-        // should not be quite as close to that same small delta value,
+        // should not be quite as close to that same small SMALL_DELTA_VALUE value,
         // and thus the assertions below are that the difference should be greater
-        // than the delta value.
+        // than the SMALL_DELTA_VALUE value.
         // Of course, in theory some of the individual values below might
         // come very very close to the weighted result, and then some assertion might fail.
         // However, it turned out to not be like that with the chosen test values,
         // and thus they are asserted here as part of regression testing.
         // If this test would break, it needs to be investigated since these values
         // have benn working fine to assert like below.
-        final double diffLatGeoTools = Math.abs(coordinateWithExpectedWeightedValues.getYLatitude() - resultCoordinateGeoTools.getYLatitude());
-        final double diffLonGeoTools = Math.abs(coordinateWithExpectedWeightedValues.getXLongitude() - resultCoordinateGeoTools.getXLongitude());
-        assertThat(diffLatGeoTools, greaterThan(delta)); // assertTrue(diffLatGeoTools > delta);
-        assertThat(diffLonGeoTools, greaterThan(delta));
+        assertDiffsAreGreaterThanSmallDelta(resultCoordinateGeoTools, coordinateWithExpectedWeightedValues);
+        assertDiffsAreGreaterThanSmallDelta(resultCoordinateGooberCTL, coordinateWithExpectedWeightedValues);
+        assertDiffsAreGreaterThanSmallDelta(resultCoordinateOrbisgisCTS, coordinateWithExpectedWeightedValues);
+        assertDiffsAreGreaterThanSmallDelta(resultCoordinateProj4J, coordinateWithExpectedWeightedValues);
+    }
 
-        final double diffLatGoober = Math.abs(coordinateWithExpectedWeightedValues.getYLatitude() - resultCoordinateGooberCTL.getYLatitude());
-        final double diffLonGoober = Math.abs(coordinateWithExpectedWeightedValues.getXLongitude() - resultCoordinateGooberCTL.getXLongitude());
-        assertThat(diffLatGoober, greaterThan(delta));
-        assertThat(diffLonGoober , greaterThan(delta));
-
-        final double diffLatOrbis = Math.abs(coordinateWithExpectedWeightedValues.getYLatitude() - resultCoordinateOrbisgisCTS.getYLatitude());
-        final double diffLonOrbis = Math.abs(coordinateWithExpectedWeightedValues.getXLongitude() - resultCoordinateOrbisgisCTS.getXLongitude());
-        assertThat(diffLatOrbis, greaterThan(delta));
-        assertThat(diffLonOrbis, greaterThan(delta));
-
-        final double diffLatProj4J = Math.abs(coordinateWithExpectedWeightedValues.getYLatitude() - resultCoordinateProj4J.getYLatitude());
-        final double diffLonProj4J = Math.abs(coordinateWithExpectedWeightedValues.getXLongitude() - resultCoordinateProj4J.getXLongitude());
-        assertThat(diffLatProj4J, greaterThan(delta));
-        assertThat(diffLonProj4J, greaterThan(delta));
+    private void assertDiffsAreGreaterThanSmallDelta(
+        final Coordinate resultCoordinateIndividualImplementation,
+        final Coordinate coordinateWithExpectedWeightedValues
+    ) {
+        final double diffLatIndividualImplementation = Math.abs(
+            coordinateWithExpectedWeightedValues.getYLatitude() - resultCoordinateIndividualImplementation.getYLatitude()
+        );
+        final double diffLonIndividualImplementation = Math.abs(
+            coordinateWithExpectedWeightedValues.getXLongitude() - resultCoordinateIndividualImplementation.getXLongitude()
+        );
+        assertThat(diffLatIndividualImplementation, greaterThan(SMALL_DELTA_VALUE));
+        assertThat(diffLonIndividualImplementation, greaterThan(SMALL_DELTA_VALUE));
     }
 
     private static Coordinate createWeightedValue() {
