@@ -29,13 +29,12 @@ final class CrsTransformationFacadeComposite private constructor(protected val c
                 break
             }
         }
-        return compositeStrategy.calculateAggregatedResult(list, inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+        return compositeStrategy.calculateAggregatedResult(list, inputCoordinate, crsIdentifierForOutputCoordinateSystem, this)
     }
 
     companion object {
         @JvmStatic
         fun createCrsTransformationMedian(list: List<CrsTransformationFacade>): CrsTransformationFacadeComposite {
-
             return CrsTransformationFacadeComposite(
                 CompositeStrategyForMedianValue(
                     list
@@ -47,8 +46,22 @@ final class CrsTransformationFacadeComposite private constructor(protected val c
         fun createCrsTransformationAverage(list: List<CrsTransformationFacade>): CrsTransformationFacadeComposite {
             return CrsTransformationFacadeComposite(
                 CompositeStrategyForAverageValue(
-                        list
+                    list
                 )
+            )
+        }
+
+        @JvmStatic
+        fun createCrsTransformationWeightedAverage(weightedFacades: List<Pair<CrsTransformationFacade, Double>>): CrsTransformationFacadeComposite {
+            return CrsTransformationFacadeComposite(
+                CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(weightedFacades)
+            )
+        }
+
+        @JvmStatic
+        fun createCrsTransformationWeightedAverageByReflection(weightedFacades: List<Pair<String, Double>>): CrsTransformationFacadeComposite {
+            return CrsTransformationFacadeComposite(
+                CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValueByReflection(weightedFacades)
             )
         }
 
@@ -56,7 +69,7 @@ final class CrsTransformationFacadeComposite private constructor(protected val c
         fun createCrsTransformationChainOfResponsibility(list: List<CrsTransformationFacade>): CrsTransformationFacadeComposite {
             return CrsTransformationFacadeComposite(
                 CompositeStrategyForChainOfResponsibility(
-                        list
+                    list
                 )
             )
         }

@@ -7,7 +7,8 @@ class TransformResultImplementation(
     override val inputCoordinate: Coordinate,
     outputCoordinate: Coordinate?,
     override val exception: Exception?,
-    override val isSuccess: Boolean
+    override val isSuccess: Boolean,
+    override val crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
 ): TransformResult {
 
     private val _outputCoordinate: Coordinate? = outputCoordinate

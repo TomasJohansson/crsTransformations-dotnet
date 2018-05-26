@@ -15,6 +15,7 @@ interface CompositeStrategy {
     fun calculateAggregatedResult(
         allResults: List<TransformResult>,
         inputCoordinate: Coordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+        crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
+        crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
     ): TransformResult
 }

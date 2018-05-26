@@ -18,7 +18,8 @@ class CompositeStrategyForAverageValue(private val crsTransformationFacades: Lis
     override fun calculateAggregatedResult(
             allResults: List<TransformResult>,
             inputCoordinate: Coordinate,
-            crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+            crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
+            crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
     ): TransformResult {
         var successCount = 0
         var sumLat = 0.0
@@ -35,11 +36,11 @@ class CompositeStrategyForAverageValue(private val crsTransformationFacades: Lis
             var avgLat = sumLat / successCount
             var avgLon = sumLon / successCount
             val coordRes = Coordinate.createFromYLatXLong(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
-            return TransformResultImplementation(inputCoordinate, outputCoordinate = coordRes, exception = null, isSuccess = true)
+            return TransformResultImplementation(inputCoordinate, outputCoordinate = coordRes, exception = null, isSuccess = true, crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult)
         }
         else {
             // TODO: aggregate mroe from the results e.g. exception messages
-            return TransformResultImplementation(inputCoordinate, outputCoordinate = null, exception = null, isSuccess = false)
+            return TransformResultImplementation(inputCoordinate, outputCoordinate = null, exception = null, isSuccess = false, crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult)
         }
    }
 }

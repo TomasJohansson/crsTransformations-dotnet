@@ -5,10 +5,10 @@ abstract class CrsTransformationFacadeBaseLeaf : CrsTransformationFacadeBase(), 
     override final fun transformToResultObject(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
         try {
             val outputCoordinate = transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
-            return TransformResultImplementation(inputCoordinate, outputCoordinate, exception = null, isSuccess = true)
+            return TransformResultImplementation(inputCoordinate, outputCoordinate, exception = null, isSuccess = true, crsTransformationFacadeThatCreatedTheResult = this)
         }
         catch (e: Exception) {
-            return TransformResultImplementation(inputCoordinate, null, exception = e, isSuccess = false)
+            return TransformResultImplementation(inputCoordinate, null, exception = e, isSuccess = false, crsTransformationFacadeThatCreatedTheResult = this)
         }
     }
 

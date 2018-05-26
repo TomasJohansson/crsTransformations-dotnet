@@ -17,13 +17,14 @@ class CompositeStrategyForMedianValue(private val crsTransformationFacades: List
     }
 
     override fun calculateAggregatedResult(
-        allResults: List<TransformResult>,
-        inputCoordinate: Coordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+            allResults: List<TransformResult>,
+            inputCoordinate: Coordinate,
+            crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
+            crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
     ): TransformResult {
         val successFulCoordinateResults = allResults.filter { it.isSuccess }.map { it.outputCoordinate }
         if(allResults.size == 0) {
-            return TransformResultImplementation(inputCoordinate, outputCoordinate = null, exception = null, isSuccess = false)
+            return TransformResultImplementation(inputCoordinate, outputCoordinate = null, exception = null, isSuccess = false, crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult)
         }
         else {
             val lats = successFulCoordinateResults.map { it.yLatitude }
@@ -31,7 +32,7 @@ class CompositeStrategyForMedianValue(private val crsTransformationFacades: List
             val medianLat = getMedianValue(lats)
             val medianLon = getMedianValue(lons)
             val outputCoordinate = Coordinate.createFromYLatXLong(medianLat, medianLon, crsIdentifierForOutputCoordinateSystem)
-            return TransformResultImplementation(inputCoordinate, outputCoordinate = outputCoordinate, exception = null, isSuccess = true)
+            return TransformResultImplementation(inputCoordinate, outputCoordinate = outputCoordinate, exception = null, isSuccess = true, crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult)
         }
     }
 

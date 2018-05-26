@@ -5,4 +5,5 @@ interface TransformResult {
     val outputCoordinate: Coordinate
     val exception: Exception?
     val isSuccess: Boolean
+    val crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
 }
