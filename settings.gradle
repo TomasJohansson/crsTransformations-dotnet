@@ -1,1 +1,1 @@
-include ':crsTransformationCore', ':crsTransformationGeoTools', ':crsTransformationGooberCTL', ':crsTransformationOrbisgisCTS', ':crsTransformationProj4J', ':crsTransformationTest'
+include ':crsTransformationCore', ':crsTransformationGeoTools', ':crsTransformationGooberCTL', ':crsTransformationOrbisgisCTS', ':crsTransformationProj4J', ':crsTransformationTest', ':crsCodeGeneration'

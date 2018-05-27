@@ -81,3 +81,19 @@ project(':crsTransformationTest') {
 		implementation project(':crsTransformationCore'), project(':crsTransformationOrbisgisCTS'), project(':crsTransformationGooberCTL'), project(':crsTransformationGeoTools'), project(':crsTransformationProj4J')
 	}
 }
+
+project(':crsCodeGeneration') {
+	// command line execution
+	// gradle execute
+	// or, if somethign else than the default/hardcoded class name should be used:
+	// gradle execute -PmainClass=com.programmerare.crsCodeGeneration.ConstantClassGenerator
+	task execute(type:JavaExec) {
+		main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crsCodeGeneration.ConstantClassGenerator"
+		classpath = sourceSets.main.runtimeClasspath
+	}
+
+	dependencies {
+		// https://mvnrepository.com/artifact/org.freemarker/freemarker
+		implementation("org.freemarker:freemarker:2.3.28")
+	}
+}
