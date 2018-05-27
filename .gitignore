@@ -70,3 +70,10 @@ hs_err_pid*
 
 # backup files for Notepad++
 *.bak
+
+# The purpose of the below line is to exclude database files from git.
+# MS Access database file with EPSG codes can be downloaded from here:
+# http://www.epsg.org/EPSGDataset/DownloadDataset.aspx
+# The class "ConstantClassGenerator" currently uses the following file path i.e. expects that file to exist:
+# .../data_files/EPSG_v9_3/EPSG_v9_3.mdb
+data_files/
