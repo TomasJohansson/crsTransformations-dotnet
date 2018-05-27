@@ -78,7 +78,7 @@ project(':crsTransformationProj4J') {
 
 project(':crsTransformationTest') {
 	dependencies {
-		implementation project(':crsTransformationCore'), project(':crsTransformationOrbisgisCTS'), project(':crsTransformationGooberCTL'), project(':crsTransformationGeoTools'), project(':crsTransformationProj4J')
+		implementation project(':crsTransformationCore'), project(':crsTransformationOrbisgisCTS'), project(':crsTransformationGooberCTL'), project(':crsTransformationGeoTools'), project(':crsTransformationProj4J'), project(':crsConstants')
 	}
 }
 

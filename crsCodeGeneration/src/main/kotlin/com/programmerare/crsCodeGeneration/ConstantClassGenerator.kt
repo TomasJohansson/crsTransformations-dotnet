@@ -36,11 +36,13 @@ class ConstantClassGenerator {
     private val freemarkerConfiguration: Configuration
     private val jdbcTemplate: JdbcTemplate
     private val rootDirectoryForCodeGenerationModule: File
+//    private val rootDirectoryForConstantsModule: File
     private val rootDirectoryWhereTheJavaFilesShouldBeGenerated: File
 
     init {
         rootDirectoryForCodeGenerationModule = getRootDirectoryForCodeGenerationModule()
-        rootDirectoryWhereTheJavaFilesShouldBeGenerated = getRootDirectoryWhereTheJavaFilesShouldBeGenerated(rootDirectoryForCodeGenerationModule)
+        val rootDirectoryForConstantsModule = getRootDirectoryForConstantsModule(rootDirectoryForCodeGenerationModule)
+        rootDirectoryWhereTheJavaFilesShouldBeGenerated = getRootDirectoryWhereTheJavaFilesShouldBeGenerated(rootDirectoryForConstantsModule)
 
         freemarkerConfiguration = Configuration(Configuration.VERSION_2_3_28)
 //        freemarkerConfiguration.setDirectoryForTemplateLoading(File(directoryForTemplates))
@@ -56,9 +58,24 @@ class ConstantClassGenerator {
     // The input file should be be something like:
     // "...crsTransformations\crsCodeGeneration"
     // and the output file should then be
-    // "...crsTransformations\crsCodeGeneration\src\main\java"
-    private fun getRootDirectoryWhereTheJavaFilesShouldBeGenerated(rootDirectoryForCodeGenerationModule: File): File {
-        val subDirectory: File = rootDirectoryForCodeGenerationModule.resolve("src/main/java")
+    // "...crsTransformations\crsConstants"
+    private fun getRootDirectoryForConstantsModule(rootDirectoryForCodeGenerationModule: File): File {
+        if(!rootDirectoryForCodeGenerationModule.name.equals("crsCodeGeneration")) {
+            throw RuntimeException("Unexpected driectory name. crsCodeGeneration was expected but it was: " + rootDirectoryForCodeGenerationModule.name)
+        }
+        val constantsDirectory = File(rootDirectoryForCodeGenerationModule.parentFile, "crsConstants")
+        if(!constantsDirectory.exists()) {
+            throw RuntimeException("The directory does not exist: " + constantsDirectory.absolutePath)
+        }
+        return constantsDirectory
+    }
+
+    // The input file should be be something like:
+    // "...crsTransformations\crsConstants"
+    // and the output file should then be
+    // "...crsTransformations\crsConstants\src\main\java"
+    private fun getRootDirectoryWhereTheJavaFilesShouldBeGenerated(rootDirectoryForConstantsModule: File): File {
+        val subDirectory: File = rootDirectoryForConstantsModule.resolve("src/main/java")
         if(!subDirectory.exists()) {
             throw RuntimeException("The file does not exist: " + subDirectory.absolutePath)
         }
@@ -77,6 +94,20 @@ class ConstantClassGenerator {
 
         val fieldSeparator = "__"
 
+        val javaFileToBecomeCreated = rootDirectoryWhereTheJavaFilesShouldBeGenerated.resolve("com/programmerare/crsConstants/EpsgNumber.java")
+        val dir = javaFileToBecomeCreated.parentFile
+        if(!dir.exists()) {
+            val result: Boolean = dir.mkdirs()
+            if(result) {
+                println("Created directory: " + dir.absolutePath)
+            }
+            else {
+                throw RuntimeException("Directory does not exist and could not be created: " + dir.absolutePath)
+            }
+        }
+        if(!dir.isDirectory) {
+            throw RuntimeException("Not directory: " + dir.absolutePath)
+        }
         val nameOfConstants = mutableListOf<ConstantTypeNameValue>()
         jdbcTemplate.query(sqlQuery) { rs, _ ->
         //jdbcTemplate.query(sqlQuery, "%Sweden%") { rs, _ ->
@@ -111,7 +142,7 @@ class ConstantClassGenerator {
 
         }
 
-        val javaFileToBecomeCreated = rootDirectoryWhereTheJavaFilesShouldBeGenerated.resolve("com/programmerare/crsConstants/EpsgNumber.java")
+
         generateJavaFileWithConstants(javaFileToBecomeCreated, nameOfConstants, "Constants.ftlh")
     }
 
