@@ -36,7 +36,6 @@ class ConstantClassGenerator {
     private val freemarkerConfiguration: Configuration
     private val jdbcTemplate: JdbcTemplate
     private val rootDirectoryForCodeGenerationModule: File
-//    private val rootDirectoryForConstantsModule: File
     private val rootDirectoryWhereTheJavaFilesShouldBeGenerated: File
 
     init {
@@ -55,27 +54,41 @@ class ConstantClassGenerator {
         jdbcTemplate = getJdbcTemplate()
     }
 
+    // returns a file object for the directory "crsCodeGeneration"
+    private fun getRootDirectoryForCodeGenerationModule(): File {
+        val pathToRootDirectoryForClassFiles: String? = ConstantClassGenerator.javaClass.getResource("/").path
+        // the path retrieved above is now assumed to be like this:
+        // " .../crsTransformations/crsCodeGeneration/build/classes/kotlin/main/"
+        val rootDirectoryForClassFiles = File(pathToRootDirectoryForClassFiles)
+        val rootDirectoryForModule = rootDirectoryForClassFiles.parentFile.parentFile.parentFile.parentFile
+        if(!rootDirectoryForModule.name.equals(NAME_OF_DIRECTORY_FOR_CODE_GENERATION)) {
+            throw RuntimeException("Assumption about directory structure was not valid. Expected 4 parent directories of the following dir to be named '$NAME_OF_DIRECTORY_FOR_CODE_GENERATION' : " + pathToRootDirectoryForClassFiles)
+        }
+        return rootDirectoryForModule
+    }
+
     // The input file should be be something like:
     // "...crsTransformations\crsCodeGeneration"
-    // and the output file should then be
+    // and the output file should then become
     // "...crsTransformations\crsConstants"
     private fun getRootDirectoryForConstantsModule(rootDirectoryForCodeGenerationModule: File): File {
-        if(!rootDirectoryForCodeGenerationModule.name.equals("crsCodeGeneration")) {
-            throw RuntimeException("Unexpected driectory name. crsCodeGeneration was expected but it was: " + rootDirectoryForCodeGenerationModule.name)
+        if(!rootDirectoryForCodeGenerationModule.name.equals(NAME_OF_DIRECTORY_FOR_CODE_GENERATION)) {
+            throw RuntimeException("Unexpected directory name. $NAME_OF_DIRECTORY_FOR_CODE_GENERATION was expected but it was: " + rootDirectoryForCodeGenerationModule.name)
         }
-        val constantsDirectory = File(rootDirectoryForCodeGenerationModule.parentFile, "crsConstants")
+        val constantsDirectory = File(rootDirectoryForCodeGenerationModule.parentFile, NAME_OF_DIRECTORY_FOR_CONSTANTS)
         if(!constantsDirectory.exists()) {
             throw RuntimeException("The directory does not exist: " + constantsDirectory.absolutePath)
         }
         return constantsDirectory
     }
 
+
     // The input file should be be something like:
     // "...crsTransformations\crsConstants"
     // and the output file should then be
     // "...crsTransformations\crsConstants\src\main\java"
     private fun getRootDirectoryWhereTheJavaFilesShouldBeGenerated(rootDirectoryForConstantsModule: File): File {
-        val subDirectory: File = rootDirectoryForConstantsModule.resolve("src/main/java")
+        val subDirectory: File = rootDirectoryForConstantsModule.resolve(RELATIVE_PATH_TO_JAVA_FILES)
         if(!subDirectory.exists()) {
             throw RuntimeException("The file does not exist: " + subDirectory.absolutePath)
         }
@@ -182,20 +195,6 @@ class ConstantClassGenerator {
     }
 
     companion object {
-        // returns a file object for the directory "crsCodeGeneration"
-        private fun getRootDirectoryForCodeGenerationModule(): File {
-            val pathToRootDirectoryForClassFiles: String? = ConstantClassGenerator.javaClass.getResource("/").path
-            // the path is assumed to be like this:
-            // " .../crsTransformations/crsCodeGeneration/build/classes/kotlin/main/"
-            val rootDirectoryForClassFiles = File(pathToRootDirectoryForClassFiles)
-            val rootDirectoryForModule = rootDirectoryForClassFiles.parentFile.parentFile.parentFile.parentFile
-            if(!rootDirectoryForModule.name.equals("crsCodeGeneration")) {
-                throw RuntimeException("Assumption about directory structure was not valid. Expected 4 parent directories of the following dir to be named 'crsCodeGeneration' : " + pathToRootDirectoryForClassFiles)
-            }
-            return rootDirectoryForModule
-        }
-
-
         @JvmStatic
         fun main(args: Array<String>) {
             verifyJdbcDriver()
@@ -222,6 +221,11 @@ class ConstantClassGenerator {
                 }
             }
         }
+
+        private val NAME_OF_DIRECTORY_FOR_CODE_GENERATION = "crsCodeGeneration"
+        private val NAME_OF_DIRECTORY_FOR_CONSTANTS = "crsConstants"
+
+        private val RELATIVE_PATH_TO_JAVA_FILES = "src/main/java"
 
         private val ENCODING_UTF_8 = "UTF-8"
 
