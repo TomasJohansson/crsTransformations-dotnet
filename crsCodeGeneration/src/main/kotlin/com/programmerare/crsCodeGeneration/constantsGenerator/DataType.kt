@@ -1,4 +1,4 @@
-package com.programmerare.crsCodeGeneration
+package com.programmerare.crsCodeGeneration.constantsGenerator
 
 enum class DataType(val dataTypeName: String) {
     STRING("String"),

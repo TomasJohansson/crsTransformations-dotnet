@@ -1,10 +1,9 @@
-package com.programmerare.crsCodeGeneration
+package com.programmerare.crsCodeGeneration.constantsGenerator
 
 import freemarker.template.Configuration
 import freemarker.template.TemplateExceptionHandler
 import java.io.File;
 import org.springframework.jdbc.core.JdbcTemplate;
-import org.springframework.jdbc.core.query
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
 import java.sql.Driver
 import java.io.FileOutputStream
@@ -17,9 +16,9 @@ import java.nio.charset.Charset
 //    // command line execution
 //    // gradle execute
 //    // or, if somethign else than the default/hardcoded class name should be used:
-//    // gradle execute -PmainClass=com.programmerare.crsCodeGeneration.ConstantClassGenerator
+//    // gradle execute -PmainClass=com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator
 //    task execute(type:JavaExec) {
-//        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crsCodeGeneration.ConstantClassGenerator"
+//        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator"
 //        classpath = sourceSets.main.runtimeClasspath
 //    }
 //
@@ -59,7 +58,7 @@ class ConstantClassGenerator {
         val rootDirectoryForClassFiles = File(pathToRootDirectoryForClassFiles)
         val rootDirectoryForModule = rootDirectoryForClassFiles.parentFile.parentFile.parentFile.parentFile
         if(!rootDirectoryForModule.name.equals(NAME_OF_DIRECTORY_FOR_CODE_GENERATION)) {
-            throw RuntimeException("Assumption about directory structure was not valid. Expected 4 parent directories of the following dir to be named '$NAME_OF_DIRECTORY_FOR_CODE_GENERATION' : " + pathToRootDirectoryForClassFiles)
+            throw RuntimeException("Assumption about directory structure was not valid. Expected 4 parent directories of the following dir to be named '${NAME_OF_DIRECTORY_FOR_CODE_GENERATION}' : " + pathToRootDirectoryForClassFiles)
         }
         return rootDirectoryForModule
     }
@@ -70,7 +69,7 @@ class ConstantClassGenerator {
     // "...crsTransformations\crsConstants"
     private fun getRootDirectoryForConstantsModule(rootDirectoryForCodeGenerationModule: File): File {
         if(!rootDirectoryForCodeGenerationModule.name.equals(NAME_OF_DIRECTORY_FOR_CODE_GENERATION)) {
-            throw RuntimeException("Unexpected directory name. $NAME_OF_DIRECTORY_FOR_CODE_GENERATION was expected but it was: " + rootDirectoryForCodeGenerationModule.name)
+            throw RuntimeException("Unexpected directory name. ${NAME_OF_DIRECTORY_FOR_CODE_GENERATION} was expected but it was: " + rootDirectoryForCodeGenerationModule.name)
         }
         val constantsDirectory = File(rootDirectoryForCodeGenerationModule.parentFile, NAME_OF_DIRECTORY_FOR_CONSTANTS)
         if(!constantsDirectory.exists()) {
@@ -123,16 +122,16 @@ class ConstantClassGenerator {
             val nameForConstant6 = crsName + fieldSeparator + epsgNumber + fieldSeparator + areaName
 
             nameOfConstants.add(
-                ConstantTypeNameValue(
+                    ConstantTypeNameValue(
 //                    "EPSG:" + epsgCrsCode + " , " + crsName + " , " + areaName,
 //                    DataType.INTEGER,
 //                    nameForConstant5.adjusted(),
 //                    epsgCrsCode.toString()
-                    constantNameRenderer,
-                    epsgNumber,
-                    areaName,
-                    crsName
-            ))
+                            constantNameRenderer,
+                            epsgNumber,
+                            areaName,
+                            crsName
+                    ))
 //            println("nameForConstant1 " + nameForConstant1.adjusted())
 //            println("nameForConstant2 " + nameForConstant2.adjusted())
 //            println("nameForConstant3 " + nameForConstant3.adjusted())
@@ -226,9 +225,9 @@ class ConstantClassGenerator {
     private val FREEMARKER_PROPERTY_NAME_OF_JAVA_PACKAGE = "nameOfJavaPackage"
 
     private fun generateJavaFileWithConstants(
-        javaFileToBecomeCreated: File,
-        constantsInformation: ConstantsInformation,
-        nameOfTemplate: String
+            javaFileToBecomeCreated: File,
+            constantsInformation: ConstantsInformation,
+            nameOfTemplate: String
     ) {
         val template = freemarkerConfiguration.getTemplate(nameOfTemplate)
         val root = HashMap<String, Any>()
@@ -283,7 +282,7 @@ class ConstantClassGenerator {
                 throwable = e
             }
             if(driver == null) {
-                val message = "Problem with the database driver '$nameOfJdbcDriver'"
+                val message = "Problem with the database driver '${nameOfJdbcDriver}'"
                 if(throwable == null) {
                     throw RuntimeException(message)
                 }

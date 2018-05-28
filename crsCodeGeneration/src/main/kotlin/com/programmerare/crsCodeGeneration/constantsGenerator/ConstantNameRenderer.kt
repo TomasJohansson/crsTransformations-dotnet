@@ -1,4 +1,4 @@
-package com.programmerare.crsCodeGeneration
+package com.programmerare.crsCodeGeneration.constantsGenerator
 
 class ConstantNameRenderer(var renderStrategy: RenderStrategy) : RenderStrategy {
     override fun getValueForConstant(epsgNumber: Int): String {

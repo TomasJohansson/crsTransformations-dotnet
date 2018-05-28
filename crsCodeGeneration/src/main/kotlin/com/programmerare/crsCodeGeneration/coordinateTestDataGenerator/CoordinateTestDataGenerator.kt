@@ -2,7 +2,7 @@ package com.programmerare.crsCodeGeneration.coordinateTestDataGenerator
 
 import java.util.HashMap
 import kotlin.collections.MutableMap
-import com.programmerare.crsCodeGeneration.ConstantClassGenerator
+import com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator
 import freemarker.template.Configuration
 import freemarker.template.TemplateExceptionHandler
 import org.springframework.jdbc.core.JdbcTemplate

@@ -1,4 +1,4 @@
-package com.programmerare.crsCodeGeneration
+package com.programmerare.crsCodeGeneration.constantsGenerator
 
 class ConstantsInformation(
     val nameOfJavaClass: String,

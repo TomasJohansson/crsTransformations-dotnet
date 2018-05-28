@@ -1,12 +1,10 @@
-package com.programmerare.crsCodeGeneration
-
-import javax.xml.datatype.DatatypeConfigurationException
+package com.programmerare.crsCodeGeneration.constantsGenerator
 
 class ConstantTypeNameValue(
-    private val constantNameRenderer: ConstantNameRenderer,
-    val epsgNumber: Int,
-    private val areaName: String,
-    private val crsName: String
+        private val constantNameRenderer: ConstantNameRenderer,
+        val epsgNumber: Int,
+        private val areaName: String,
+        private val crsName: String
 //    val javadocCommentForConstant: String,
 //    val dataTypeForConstant: DataType,
 //    val nameForConstant: String,
