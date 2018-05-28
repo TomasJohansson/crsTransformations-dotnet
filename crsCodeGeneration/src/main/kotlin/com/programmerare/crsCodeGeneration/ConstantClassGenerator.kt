@@ -6,13 +6,10 @@ import java.io.File;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.query
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import java.nio.file.Paths
 import java.sql.Driver
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
-import java.net.URL
 import java.nio.charset.Charset
-import java.nio.file.Path
 
 
 // build.gradle:
@@ -95,19 +92,119 @@ class ConstantClassGenerator {
         return subDirectory
     }
 
-    fun generateConstants() {
+    // e.g. epsgVersion = ""
+    fun generateConstants(epsgVersion: String) {
         // TODO: generate classes with constants e.g. based on database with EPSG codes:
         // http://www.epsg.org/EPSGDataset/DownloadDataset.aspx
 
         val sqlQueryBase = " SELECT [Area].[AREA_NAME], [Coordinate Reference System].[AREA_OF_USE_CODE], [Coordinate Reference System].[COORD_REF_SYS_CODE], [Coordinate Reference System].[COORD_REF_SYS_NAME] FROM [Coordinate Reference System] , [Area] WHERE [Coordinate Reference System].[AREA_OF_USE_CODE] = [Area].[AREA_CODE] "
-        //val sqlQueryCondition = " AND [Area].[AREA_NAME] LIKE ? "
-        val sqlQueryOrderClause = " ORDER BY [Area].[AREA_NAME] , [Coordinate Reference System].[COORD_REF_SYS_NAME] "
-//        val sqlQuery = sqlQueryBase + sqlQueryCondition + sqlQueryOrderClause
-        val sqlQuery = sqlQueryBase + sqlQueryOrderClause
-
+        val sqlQueryCondition = " AND [Area].[AREA_NAME] LIKE ? "
+        // val sqlQueryOrderClause = " ORDER BY [Area].[AREA_NAME] , [Coordinate Reference System].[COORD_REF_SYS_NAME] "
+        // val sqlQuery = sqlQueryBase + sqlQueryCondition + sqlQueryOrderClause
+//        val sqlQuery = sqlQueryBase + sqlQueryCondition
+//        val sqlQuery = sqlQueryBase + sqlQueryOrderClause
+        val sqlQuery = sqlQueryBase
         val fieldSeparator = "__"
 
-        val javaFileToBecomeCreated = rootDirectoryWhereTheJavaFilesShouldBeGenerated.resolve("com/programmerare/crsConstants/EpsgNumber.java")
+        val constantNameRenderer = ConstantNameRenderer(RenderStrategyNameAreaNumberInteger())
+
+        val nameOfConstants = mutableListOf<ConstantTypeNameValue>()
+        jdbcTemplate.query(sqlQuery) { rs, _ ->
+//        jdbcTemplate.query(sqlQuery, "%Sweden%") { rs, _ ->
+            val epsgNumber = rs.getInt("COORD_REF_SYS_CODE")
+            val areaName = rs.getString("AREA_NAME")
+            val crsName = rs.getString("COORD_REF_SYS_NAME")
+
+            val nameForConstant1 = "_" + epsgNumber + fieldSeparator + areaName + fieldSeparator + crsName
+            val nameForConstant2 = "_" + epsgNumber + fieldSeparator + crsName + fieldSeparator + areaName
+            val nameForConstant3 = areaName + fieldSeparator + crsName + fieldSeparator + epsgNumber
+            val nameForConstant4 = areaName + fieldSeparator + epsgNumber + fieldSeparator + crsName
+            val nameForConstant5 = crsName + fieldSeparator + areaName + fieldSeparator + epsgNumber
+            val nameForConstant6 = crsName + fieldSeparator + epsgNumber + fieldSeparator + areaName
+
+            nameOfConstants.add(
+                ConstantTypeNameValue(
+//                    "EPSG:" + epsgNumber + " , " + crsName + " , " + areaName,
+//                    DataType.INTEGER,
+//                    nameForConstant5.adjusted(),
+//                    epsgNumber.toString()
+                    constantNameRenderer,
+                    epsgNumber,
+                    areaName,
+                    crsName
+            ))
+//            println("nameForConstant1 " + nameForConstant1.adjusted())
+//            println("nameForConstant2 " + nameForConstant2.adjusted())
+//            println("nameForConstant3 " + nameForConstant3.adjusted())
+//            println("nameForConstant4 " + nameForConstant4.adjusted())
+//            println("nameForConstant5 " + nameForConstant5.adjusted())
+//            println("nameForConstant6 " + nameForConstant6.adjusted())
+//            nameForConstant1 _3006__SWEDEN__SWEREF99_TM
+//            nameForConstant2 _3006__SWEREF99_TM__SWEDEN
+//            nameForConstant3 SWEDEN__SWEREF99_TM__3006
+//            nameForConstant4 SWEDEN__3006__SWEREF99_TM
+//            nameForConstant5 SWEREF99_TM__SWEDEN__3006
+//            nameForConstant6 SWEREF99_TM__3006__SWEDEN
+
+        }
+
+        val packageNamePrefix = "com.programmerare.crsConstants."
+        val packageNameSuffix = "." + epsgVersion
+
+        val nameOfJavaClassForIntegerConstants = "EpsgNumber"
+        val nameOfJavaClassForStringConstants = "EpsgCode"
+        var nameOfJavaPackage = ""
+
+        nameOfJavaPackage = packageNamePrefix + "constantsByNameAreaNumber" + packageNameSuffix
+        generateFile(nameOfJavaClassForIntegerConstants, nameOfJavaPackage, RenderStrategyNameAreaNumberInteger(), constantNameRenderer, nameOfConstants)
+        generateFile(nameOfJavaClassForStringConstants, nameOfJavaPackage, RenderStrategyNameAreaNumberString(), constantNameRenderer, nameOfConstants)
+
+        nameOfJavaPackage = packageNamePrefix + "constantsByNameNumberArea" + packageNameSuffix
+        generateFile(nameOfJavaClassForIntegerConstants, nameOfJavaPackage, RenderStrategyNameNumberAreaInteger(), constantNameRenderer, nameOfConstants)
+        generateFile(nameOfJavaClassForStringConstants, nameOfJavaPackage, RenderStrategyNameNumberAreaString(), constantNameRenderer, nameOfConstants)
+
+        nameOfJavaPackage = packageNamePrefix + "constantsByAreaNumberName" + packageNameSuffix
+        generateFile(nameOfJavaClassForIntegerConstants, nameOfJavaPackage, RenderStrategyAreaNumberNameInteger(), constantNameRenderer, nameOfConstants)
+        generateFile(nameOfJavaClassForStringConstants, nameOfJavaPackage, RenderStrategyAreaNumberNameString(), constantNameRenderer, nameOfConstants)
+
+        nameOfJavaPackage = packageNamePrefix + "constantsByAreaNameNumber" + packageNameSuffix
+        generateFile(nameOfJavaClassForIntegerConstants, nameOfJavaPackage, RenderStrategyAreaNameNumberInteger(), constantNameRenderer, nameOfConstants)
+        generateFile(nameOfJavaClassForStringConstants, nameOfJavaPackage, RenderStrategyAreaNameNumberString(), constantNameRenderer, nameOfConstants)
+
+        nameOfJavaPackage = packageNamePrefix + "constantsByNumberAreaName" + packageNameSuffix
+        generateFile(nameOfJavaClassForIntegerConstants, nameOfJavaPackage, RenderStrategyNumberAreaNameInteger(), constantNameRenderer, nameOfConstants, sortByNumber = true)
+        generateFile(nameOfJavaClassForStringConstants, nameOfJavaPackage, RenderStrategyNumberAreaNameString(), constantNameRenderer, nameOfConstants, sortByNumber = true)
+
+        nameOfJavaPackage = packageNamePrefix + "constantsByNumberNameArea" + packageNameSuffix
+        generateFile(nameOfJavaClassForIntegerConstants, nameOfJavaPackage, RenderStrategyNumberNameAreaInteger(), constantNameRenderer, nameOfConstants, sortByNumber = true)
+        generateFile(nameOfJavaClassForStringConstants, nameOfJavaPackage, RenderStrategyNumberNameAreaString(), constantNameRenderer, nameOfConstants, sortByNumber = true)
+    }
+
+    private fun generateFile(
+            nameOfJavaClass: String,
+            nameOfJavaPackage: String,
+            renderStrategy: RenderStrategy,
+            constantNameRenderer: ConstantNameRenderer,
+            nameOfConstants: MutableList<ConstantTypeNameValue>,
+            sortByNumber: Boolean = false
+    ) {
+        constantNameRenderer.renderStrategy = renderStrategy
+        var javaFileToBecomeCreated = getJavaFileToBecomeCreated(nameOfJavaClass, nameOfJavaPackage)
+        val constantsSortedByName: List<ConstantTypeNameValue> =
+            if(sortByNumber)
+                nameOfConstants.sortedBy { it.epsgNumber }
+            else
+                nameOfConstants.sortedBy { it.getNameForConstant() }
+        val constantsInformation = ConstantsInformation(nameOfJavaClass, nameOfJavaPackage, constants = constantsSortedByName)
+        generateJavaFileWithConstants(javaFileToBecomeCreated, constantsInformation, "Constants.ftlh")
+    }
+
+    private fun getJavaFileToBecomeCreated(nameOfClassToBeGenerated: String, nameOfPackageToBeGenerated: String): File {
+//        val nameOfClassToBeGenerated = "EpsgNumber"
+//        val nameOfPackageToBeGenerated = "com.programmerare.crsConstants"
+        val fullClassName = nameOfPackageToBeGenerated + "." + nameOfClassToBeGenerated // "com.programmerare.crsConstants.EpsgNumber"
+        val relativePathToJavaFile = fullClassName.replace('.', '/') + FILE_EXTENSION_FOR_JAVA_FILE // "com/programmerare/crsConstants/EpsgNumber.java"
+        val javaFileToBecomeCreated = rootDirectoryWhereTheJavaFilesShouldBeGenerated.resolve(relativePathToJavaFile)
         val dir = javaFileToBecomeCreated.parentFile
         if(!dir.exists()) {
             val result: Boolean = dir.mkdirs()
@@ -121,50 +218,24 @@ class ConstantClassGenerator {
         if(!dir.isDirectory) {
             throw RuntimeException("Not directory: " + dir.absolutePath)
         }
-        val nameOfConstants = mutableListOf<ConstantTypeNameValue>()
-        jdbcTemplate.query(sqlQuery) { rs, _ ->
-        //jdbcTemplate.query(sqlQuery, "%Sweden%") { rs, _ ->
-            val epsgNumber = rs.getInt("COORD_REF_SYS_CODE")
-            val areaName = rs.getString("AREA_NAME")
-            val crsName = rs.getString("COORD_REF_SYS_NAME")
-            val nameForConstant1 = "_" + epsgNumber + fieldSeparator + areaName + fieldSeparator + crsName
-            val nameForConstant2 = "_" + epsgNumber + fieldSeparator + crsName + fieldSeparator + areaName
-            val nameForConstant3 = areaName + fieldSeparator + crsName + fieldSeparator + epsgNumber
-            val nameForConstant4 = areaName + fieldSeparator + epsgNumber + fieldSeparator + crsName
-            val nameForConstant5 = crsName + fieldSeparator + areaName + fieldSeparator + epsgNumber
-            val nameForConstant6 = crsName + fieldSeparator + epsgNumber + fieldSeparator + areaName
-            nameOfConstants.add(
-                ConstantTypeNameValue(
-                    "",
-                    DataType.INTEGER,
-                    nameForConstant5.adjusted(),
-                    epsgNumber.toString()
-            ))
-            println("nameForConstant1 " + nameForConstant1.adjusted())
-            println("nameForConstant2 " + nameForConstant2.adjusted())
-            println("nameForConstant3 " + nameForConstant3.adjusted())
-            println("nameForConstant4 " + nameForConstant4.adjusted())
-            println("nameForConstant5 " + nameForConstant5.adjusted())
-            println("nameForConstant6 " + nameForConstant6.adjusted())
-//            nameForConstant1 _3006__SWEDEN__SWEREF99_TM
-//            nameForConstant2 _3006__SWEREF99_TM__SWEDEN
-//            nameForConstant3 SWEDEN__SWEREF99_TM__3006
-//            nameForConstant4 SWEDEN__3006__SWEREF99_TM
-//            nameForConstant5 SWEREF99_TM__SWEDEN__3006
-//            nameForConstant6 SWEREF99_TM__3006__SWEDEN
-
-        }
-
-
-        generateJavaFileWithConstants(javaFileToBecomeCreated, nameOfConstants, "Constants.ftlh")
+        return javaFileToBecomeCreated
     }
 
     private val FREEMARKER_PROPERTY_NAME_OF_CONSTANTS = "constants"
+    private val FREEMARKER_PROPERTY_NAME_OF_JAVA_CLASS = "nameOfJavaClass"
+    private val FREEMARKER_PROPERTY_NAME_OF_JAVA_PACKAGE = "nameOfJavaPackage"
 
-    private fun generateJavaFileWithConstants(javaFileToBecomeCreated: File, nameOfConstants: MutableList<ConstantTypeNameValue>, nameOfTemplate: String) {
+    private fun generateJavaFileWithConstants(
+        javaFileToBecomeCreated: File,
+        constantsInformation: ConstantsInformation,
+        nameOfTemplate: String
+    ) {
         val template = freemarkerConfiguration.getTemplate(nameOfTemplate)
         val root = HashMap<String, Any>()
-        root.put(FREEMARKER_PROPERTY_NAME_OF_CONSTANTS, nameOfConstants)
+
+        root.put(FREEMARKER_PROPERTY_NAME_OF_CONSTANTS, constantsInformation.constants)
+        root.put(FREEMARKER_PROPERTY_NAME_OF_JAVA_PACKAGE, constantsInformation.nameOfJavaPackage);
+        root.put(FREEMARKER_PROPERTY_NAME_OF_JAVA_CLASS, constantsInformation.nameOfJavaClass);
 
         val outputStreamWriterWithUTF8encoding = OutputStreamWriter(
             FileOutputStream(javaFileToBecomeCreated),
@@ -199,7 +270,7 @@ class ConstantClassGenerator {
         fun main(args: Array<String>) {
             verifyJdbcDriver()
             val constantClassGenerator = ConstantClassGenerator()
-            constantClassGenerator.generateConstants()
+            constantClassGenerator.generateConstants(epsgVersion)
         }
 
         private fun verifyJdbcDriver() {
@@ -222,6 +293,8 @@ class ConstantClassGenerator {
             }
         }
 
+        private val FILE_EXTENSION_FOR_JAVA_FILE = ".java"
+
         private val NAME_OF_DIRECTORY_FOR_CODE_GENERATION = "crsCodeGeneration"
         private val NAME_OF_DIRECTORY_FOR_CONSTANTS = "crsConstants"
 
@@ -233,8 +306,16 @@ class ConstantClassGenerator {
 
         private val directoryForTemplates = "/freemarker_templates" // means the directory ".../src/main/resources/freemarker_templates"
 
+        private val epsgVersion = "v9_3" // TODO: maybe iterate the file system to extract version names from the directory names
+
+
         // Note that when the path below is changed: The path is mentioned in gitignore
-        private val relativePathToAccessDatabaseFile = "data_files/EPSG_v9_3/EPSG_v9_3.mdb"
+        private val relativePathToAccessDatabaseFile: String //  = "data_files/EPSG_v9_3/EPSG_v9_3.mdb"
+
+        init {
+            //relativePathToAccessDatabaseFile = "data_files/EPSG_v9_3/EPSG_v9_3.mdb"
+            relativePathToAccessDatabaseFile = "data_files/EPSG_" + epsgVersion + "/EPSG_" + epsgVersion + ".mdb"
+        }
     }
 }
 
