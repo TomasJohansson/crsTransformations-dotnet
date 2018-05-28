@@ -52,7 +52,7 @@ class ConstantClassGenerator {
     }
 
     // returns a file object for the directory "crsCodeGeneration"
-    private fun getRootDirectoryForCodeGenerationModule(): File {
+    fun getRootDirectoryForCodeGenerationModule(): File {
         val pathToRootDirectoryForClassFiles: String? = ConstantClassGenerator.javaClass.getResource("/").path
         // the path retrieved above is now assumed to be like this:
         // " .../crsTransformations/crsCodeGeneration/build/classes/kotlin/main/"
@@ -96,8 +96,8 @@ class ConstantClassGenerator {
     fun generateConstants(epsgVersion: String) {
         // TODO: generate classes with constants e.g. based on database with EPSG codes:
         // http://www.epsg.org/EPSGDataset/DownloadDataset.aspx
-
         val sqlQueryBase = " SELECT [Area].[AREA_NAME], [Coordinate Reference System].[AREA_OF_USE_CODE], [Coordinate Reference System].[COORD_REF_SYS_CODE], [Coordinate Reference System].[COORD_REF_SYS_NAME] FROM [Coordinate Reference System] , [Area] WHERE [Coordinate Reference System].[AREA_OF_USE_CODE] = [Area].[AREA_CODE] "
+
         val sqlQueryCondition = " AND [Area].[AREA_NAME] LIKE ? "
         // val sqlQueryOrderClause = " ORDER BY [Area].[AREA_NAME] , [Coordinate Reference System].[COORD_REF_SYS_NAME] "
         // val sqlQuery = sqlQueryBase + sqlQueryCondition + sqlQueryOrderClause
@@ -124,10 +124,10 @@ class ConstantClassGenerator {
 
             nameOfConstants.add(
                 ConstantTypeNameValue(
-//                    "EPSG:" + epsgNumber + " , " + crsName + " , " + areaName,
+//                    "EPSG:" + epsgCrsCode + " , " + crsName + " , " + areaName,
 //                    DataType.INTEGER,
 //                    nameForConstant5.adjusted(),
-//                    epsgNumber.toString()
+//                    epsgCrsCode.toString()
                     constantNameRenderer,
                     epsgNumber,
                     areaName,
@@ -245,7 +245,7 @@ class ConstantClassGenerator {
         outputStreamWriterWithUTF8encoding.close()
     }
 
-    private fun getJdbcTemplate(): JdbcTemplate {
+    fun getJdbcTemplate(): JdbcTemplate { // TODO: refactor reusage instead of letting this method be public here ...
         val file: File = getAccessDatabaseFileWithEpsgData()
         val connectionString = "jdbc:ucanaccess://" + file.absolutePath + ";memory=false"// jdbc:ucanaccess://c:/data/mydb.mdb;memory=false
         val driverManagerDataSource = DriverManagerDataSource(connectionString)
@@ -300,11 +300,11 @@ class ConstantClassGenerator {
 
         private val RELATIVE_PATH_TO_JAVA_FILES = "src/main/java"
 
-        private val ENCODING_UTF_8 = "UTF-8"
+        val ENCODING_UTF_8 = "UTF-8"
 
         private val nameOfJdbcDriver = "net.ucanaccess.jdbc.UcanaccessDriver"
 
-        private val directoryForTemplates = "/freemarker_templates" // means the directory ".../src/main/resources/freemarker_templates"
+        val directoryForTemplates = "/freemarker_templates" // means the directory ".../src/main/resources/freemarker_templates"
 
         private val epsgVersion = "v9_3" // TODO: maybe iterate the file system to extract version names from the directory names
 
