@@ -1,54 +1,39 @@
 package com.programmerare.crsCodeGeneration.coordinateTestDataGenerator
 
+import com.programmerare.crsCodeGeneration.CodeGeneratorBase
 import java.util.HashMap
-import kotlin.collections.MutableMap
-import com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator
-import freemarker.template.Configuration
-import freemarker.template.TemplateExceptionHandler
-import org.springframework.jdbc.core.JdbcTemplate
 import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.nio.charset.Charset
 
-class CoordinateTestDataGenerator {
-
-    private val freemarkerConfiguration: Configuration
-    private val constantClassGenerator: ConstantClassGenerator
-
-    init {
-        constantClassGenerator = ConstantClassGenerator()
-        // TODO: put this stuff e.g. in a base class (it is currently duplicated in two code generation classes)
-        freemarkerConfiguration = Configuration(Configuration.VERSION_2_3_28)
-//        freemarkerConfiguration.setDirectoryForTemplateLoading(File(directoryForTemplates))
-        freemarkerConfiguration.setClassForTemplateLoading(javaClass, ConstantClassGenerator.directoryForTemplates)
-        freemarkerConfiguration.setDefaultEncoding(ConstantClassGenerator.ENCODING_UTF_8)
-        freemarkerConfiguration.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER)
-        freemarkerConfiguration.setLogTemplateExceptions(false)
-        freemarkerConfiguration.setWrapUncheckedExceptions(true)
-    }
+/**
+ * Generates a CSV file with test data.
+ * The data in each row is coming from two tables (throgh a SQL join) in an MS Access database
+ * and indirectly from a shapefile.
+ * The coordinates at each row are created throgh extracting a polygon associated with
+ * an area code (also existing in the Access database used) and then GeoTools
+ * is used for creating a centroid coordinate from the polygon.
+ */
+class CoordinateTestDataGenerator : CodeGeneratorBase() {
 
     private fun getEpsgShapeFile(): File {
-        val dir = constantClassGenerator.getRootDirectoryForCodeGenerationModule()
-        val file = dir.resolve("../crsCodeGeneration/data_files/EPSG_Polygons_Ver_9.2.1/EPSG_Polygons.shp")
-        if(!file.exists()) {
-            throw RuntimeException("File does not exist: " + file.absolutePath)
-        }
-        return file
+        val shapefile = super.getFileOrDirectory(
+            NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION,
+            RELATIVE_PATH_TO_EPSG_SHAPEFILE,
+            throwExceptionIfNotExisting = true
+        )
+        return shapefile
     }
 
     private fun getCsvFileToBecomeCreated(): File {
-        val dir = constantClassGenerator.getRootDirectoryForCodeGenerationModule()
-        val file = dir.resolve("../crsTransformationTest/src/test/resources/generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv")
-        if(!file.exists()) {
-            throw RuntimeException("File does not exist: " + file.absolutePath)
-        }
-        return file
-    }
-
-    private fun getJdbcTemplate(): JdbcTemplate {
-        var jdbcTemplate = constantClassGenerator.getJdbcTemplate()
-        return jdbcTemplate
+        val csvFile = super.getFileOrDirectory(
+            NAME_OF_MODULE_DIRECTORY_FOR_TESTS,
+            RELATIVE_PATH_TO_CSV_FILE_WITH_TESTDATA_TO_BECOME_GENERATED,
+            throwExceptionIfNotExisting = false
+        )
+        throwExceptionIfDirectoryDoesNotExist(csvFile.parentFile)
+        return csvFile
     }
 
     private fun generateTestData() {
@@ -82,16 +67,15 @@ class CoordinateTestDataGenerator {
         generateFile(returnList)
     }
 
-    private fun generateFile(listt: List<EpsgCrsAndAreaCodeWithCoordinates>) {
-        val nameOfTemplate = "CoordinateTestCsvData.ftlh"
-        val template = freemarkerConfiguration.getTemplate(nameOfTemplate)
+    private fun generateFile(list: List<EpsgCrsAndAreaCodeWithCoordinates>) {
+        val template = freemarkerConfiguration.getTemplate(NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_TESTDATA)
         val root = HashMap<String, Any>()
-        root.put(FREEMARKER_PROPERTY_NAME_OF_LIST_WITH_TEST_DATA, listt)
+        root.put(FREEMARKER_PROPERTY_NAME_OF_LIST_WITH_TEST_DATA, list)
 
         val csvFileToBecomeCreated = getCsvFileToBecomeCreated()
         val outputStreamWriterWithUTF8encoding = OutputStreamWriter(
             FileOutputStream(csvFileToBecomeCreated),
-            Charset.forName(ConstantClassGenerator.ENCODING_UTF_8).newEncoder()
+            Charset.forName(ENCODING_UTF_8).newEncoder()
         )
         template.process(root, outputStreamWriterWithUTF8encoding)
         outputStreamWriterWithUTF8encoding.close()
@@ -103,13 +87,11 @@ class CoordinateTestDataGenerator {
     // SELECT COUNT(*) FROM [Coordinate Reference System] , [Area] WHERE [Coordinate Reference System].[AREA_OF_USE_CODE] = [Area].[AREA_CODE] // 6583
     private fun getEpsgAndAreaCodes(): List<EpsgCrsAndAreaCode> {
         val jdbcTemplate = getJdbcTemplate()
-        val sqlQuery = " SELECT [Area].[AREA_NAME], [Coordinate Reference System].[AREA_OF_USE_CODE], [Coordinate Reference System].[COORD_REF_SYS_CODE], [Coordinate Reference System].[COORD_REF_SYS_NAME] FROM [Coordinate Reference System] , [Area] WHERE [Coordinate Reference System].[AREA_OF_USE_CODE] = [Area].[AREA_CODE] "
-        val map: MutableMap<String, Boolean> = HashMap<String, Boolean>()
         val list = mutableListOf<EpsgCrsAndAreaCode>()
-        jdbcTemplate.query(sqlQuery) { rs, _ ->
-            val epsgCrsCode = rs.getInt("COORD_REF_SYS_CODE")
-            val epsgAreaName = rs.getString("AREA_NAME")
-            val epsgAreaCode = rs.getInt("AREA_OF_USE_CODE")
+        jdbcTemplate.query(SQL_STATEMENT_SELECTING_CRSCODE_CRSNAME_AREANAME) { rs, _ ->
+            val epsgCrsCode = rs.getInt(SQL_COLUMN_CRSCODE)
+            val epsgAreaName = rs.getString(SQL_COLUMN_AREANAME)
+            val epsgAreaCode = rs.getInt(SQL_COLUMN_AREACODE)
             list.add(EpsgCrsAndAreaCode(epsgCrsCode, epsgAreaCode, epsgAreaName))
         }
         return list
@@ -123,10 +105,16 @@ class CoordinateTestDataGenerator {
         }
 
         private val FREEMARKER_PROPERTY_NAME_OF_LIST_WITH_TEST_DATA = "testdata"
-    }
 
+        private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_TESTDATA = "CoordinateTestCsvData.ftlh"
+
+        private const val RELATIVE_PATH_TO_EPSG_SHAPEFILE = "data_files/EPSG_Polygons_Ver_9.2.1/EPSG_Polygons.shp"
+        private const val RELATIVE_PATH_TO_CSV_FILE_WITH_TESTDATA_TO_BECOME_GENERATED = "src/test/resources/generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv"
+        //
+    }
 }
 
+// used as a resultset object i.e. each instance represents some row resulting from an SQL query
 data class EpsgCrsAndAreaCode(
     val epsgCrsCode: Int,
     val epsgAreaCode: Int,
@@ -134,7 +122,7 @@ data class EpsgCrsAndAreaCode(
 ) {
 }
 
-// this class below is sent into freemaker template and usages of string is a convenient
+// instance of this class below are sent into freemaker template and usages of string is a convenient
 // to avoid commas insted of dots within double field, and avoid
 // spaces in integers (as thousands separator)
 data class EpsgCrsAndAreaCodeWithCoordinates(

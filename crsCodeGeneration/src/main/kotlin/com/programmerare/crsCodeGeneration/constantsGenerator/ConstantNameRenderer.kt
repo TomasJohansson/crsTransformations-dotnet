@@ -211,3 +211,12 @@ class RenderStrategyAreaNameNumberString: RenderStrategyBase() , RenderStrategy 
         return super.getNameForConstantAdjusted(areaName, crsName, epsgNumber.toString())
     }
 }
+
+fun String.adjusted(): String {
+    return this.getUppercasedWithOnylValidCharacters()
+}
+
+fun String.getUppercasedWithOnylValidCharacters(): String {
+    // the last regexp below just makes sure there are will not be more than two "_" in a row
+    return this.toUpperCase().replace("[^a-zA-Z0-9_]".toRegex(), "_").replace("_{2,}".toRegex(), "__")
+}
