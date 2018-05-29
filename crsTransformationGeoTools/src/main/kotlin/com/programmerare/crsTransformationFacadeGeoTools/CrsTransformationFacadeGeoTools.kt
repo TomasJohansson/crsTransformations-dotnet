@@ -22,7 +22,7 @@ class CrsTransformationFacadeGeoTools : CrsTransformationFacadeBaseLeaf(), CrsTr
         geometryFactory = JTSFactoryFinder.getGeometryFactory()
     }
 
-    override fun transform(
+    override protected fun transformHook(
         inputCoordinate: Coordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate {

@@ -15,7 +15,7 @@ class CrsTransformationFacadeProj4J : CrsTransformationFacadeBaseLeaf(), CrsTran
     private var coordinateTransformFactory: CoordinateTransformFactory = CoordinateTransformFactory()
     private var crsFactory: CRSFactory = CRSFactory()
 
-    override fun transform(
+    override protected fun transformHook(
         inputCoordinate: Coordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate {

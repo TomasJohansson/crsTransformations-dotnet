@@ -5,7 +5,7 @@ import java.lang.RuntimeException
 
 final class CrsTransformationFacadeComposite private constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationFacadeBase(), CrsTransformationFacade {
 
-    override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): Coordinate {
+    override final protected fun transformHook(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): Coordinate {
         val transformResult = transformToResultObject(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
         if(transformResult.isSuccess) {
             return transformResult.outputCoordinate

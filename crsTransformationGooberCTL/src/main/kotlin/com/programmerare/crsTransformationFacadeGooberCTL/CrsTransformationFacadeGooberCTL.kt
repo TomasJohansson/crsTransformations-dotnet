@@ -16,7 +16,7 @@ import java.util.*
 // https://github.com/goober/coordinate-transformation-library
 class CrsTransformationFacadeGooberCTL : CrsTransformationFacadeBaseLeaf(), CrsTransformationFacade {
 
-    override fun transform(
+    override protected fun transformHook(
         inputCoordinate: Coordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate {

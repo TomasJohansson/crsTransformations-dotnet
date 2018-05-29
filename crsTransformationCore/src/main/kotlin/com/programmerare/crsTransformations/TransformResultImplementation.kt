@@ -6,7 +6,7 @@ import java.lang.RuntimeException
 class TransformResultImplementation(
     override val inputCoordinate: Coordinate,
     outputCoordinate: Coordinate?,
-    override val exception: Exception?,
+    override val exception: Throwable?,
     override val isSuccess: Boolean,
     override val crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
 ): TransformResult {

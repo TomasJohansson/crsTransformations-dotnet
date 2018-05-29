@@ -13,7 +13,7 @@ import org.cts.registry.EPSGRegistry;
 // https://github.com/orbisgis/cts
 class CrsTransformationFacadeOrbisgisCTS : CrsTransformationFacadeBaseLeaf(), CrsTransformationFacade {
 
-    override fun transform(
+    override protected fun transformHook(
         inputCoordinate: Coordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate {
