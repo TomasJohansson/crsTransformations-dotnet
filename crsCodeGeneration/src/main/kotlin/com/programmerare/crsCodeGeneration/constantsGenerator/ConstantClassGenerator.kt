@@ -6,22 +6,8 @@ import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.nio.charset.Charset
 
-// build.gradle:
-//project(':crsCodeGeneration') {
-//    // command line execution
-//    // gradle execute
-//    // or, if somethign else than the default/hardcoded class name should be used:
-//    // gradle execute -PmainClass=com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator
-//    task execute(type:JavaExec) {
-//        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator"
-//        classpath = sourceSets.main.runtimeClasspath
-//    }
-//
-//    dependencies {
-//        // https://mvnrepository.com/artifact/org.freemarker/freemarker
-//        implementation("org.freemarker:freemarker:2.3.28")
-//    }
-//}
+// command line execution (according to configuration in build.gradle):
+// gradle generateClassesWithEpsgConstants
 class ConstantClassGenerator : CodeGeneratorBase() {
 
     // Generates classes with constants based on database with EPSG codes:

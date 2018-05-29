@@ -95,11 +95,20 @@ project(':crsTransformationTest') {
 
 project(':crsCodeGeneration') {
 	// command line execution
-	// gradle execute
-	// or, if somethign else than the default/hardcoded class name should be used:
-	// gradle execute -PmainClass=com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator
-	task execute(type:JavaExec) {
+	// gradle generateClassesWithEpsgConstants
+	// or, if something else than the default/hardcoded class name should be used:
+	// gradle generateClassesWithEpsgConstants -PmainClass=com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator
+	task generateClassesWithEpsgConstants(type:JavaExec) {
 		main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator"
+		classpath = sourceSets.main.runtimeClasspath
+	}
+
+	// command line execution
+	// gradle generateCsvTestDataFromEpsgDatabaseAndShapefile
+	// or, if something else than the default/hardcoded class name should be used:
+	// gradle generateCsvTestDataFromEpsgDatabaseAndShapefile -PmainClass=com.programmerare.crsCodeGeneration.coordinateTestDataGenerator.CoordinateTestDataGenerator
+	task generateCsvTestDataFromEpsgDatabaseAndShapefile(type:JavaExec) {
+		main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crsCodeGeneration.coordinateTestDataGenerator.CoordinateTestDataGenerator"
 		classpath = sourceSets.main.runtimeClasspath
 	}
 

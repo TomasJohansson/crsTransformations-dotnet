@@ -7,6 +7,9 @@ import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.nio.charset.Charset
 
+// command line execution (according to configuration in build.gradle):
+// gradle generateCsvTestDataFromEpsgDatabaseAndShapefile
+
 /**
  * Generates a CSV file with test data.
  * The data in each row is coming from two tables (throgh a SQL join) in an MS Access database
