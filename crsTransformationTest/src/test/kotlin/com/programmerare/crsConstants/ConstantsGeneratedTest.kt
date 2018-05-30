@@ -17,18 +17,7 @@ class ConstantsGeneratedTest {
             com.programmerare.crsConstants.constantsByNameAreaNumber.v9_3.EpsgNumber.SWEREF99_TM__SWEDEN__3006,
             com.programmerare.crsConstants.constantsByNameNumberArea.v9_3.EpsgNumber.SWEREF99_TM__3006__SWEDEN
         )
-
-        for (i in list.indices) {
-            var j = i+1
-            for (j in i+1 .. list.size) {
-                val v1 = list[i]
-                val v2 = list[j]
-                assertEquals(
-                    v1,
-                    v2
-                )
-            }
-        }
+        assertAllElementsAreEqual(list)
     }
 
     @Test
@@ -43,19 +32,16 @@ class ConstantsGeneratedTest {
             com.programmerare.crsConstants.constantsByNameAreaNumber.v9_3.EpsgCode.SWEREF99_TM__SWEDEN__3006,
             com.programmerare.crsConstants.constantsByNameNumberArea.v9_3.EpsgCode.SWEREF99_TM__3006__SWEDEN
         )
+        assertAllElementsAreEqual(list)
+    }
 
-        for (i in list.indices) {
-            var j = i+1
-            while(j < list.size) {
-                val v1 = list[i]
-                val v2 = list[j]
-                println("i "+ i)
-                println("j "+ j)
-                assertEquals(
-                    v1, v2
-                )
-                j++
-            }
+    private fun <T> assertAllElementsAreEqual(list: List<T>) {
+        val firstElement = list.get(0)
+        for (i in 1 until list.size) {
+            assertEquals(
+                firstElement,
+                list.get(i)
+            )
         }
     }
 
