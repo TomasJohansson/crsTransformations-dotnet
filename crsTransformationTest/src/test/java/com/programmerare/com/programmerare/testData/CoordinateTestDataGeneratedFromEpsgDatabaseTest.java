@@ -2,6 +2,7 @@ package com.programmerare.com.programmerare.testData;
 
 import static org.junit.jupiter.api.Assertions.*;
 import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_3.EpsgCode;
+import com.programmerare.crsTransformationFacadeGeoPackageNGA.CrsTransformationFacadeGeoPackageNGA;
 import com.programmerare.crsTransformationFacadeGeoTools.CrsTransformationFacadeGeoTools;
 import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL;
 import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFacadeOrbisgisCTS;
@@ -31,10 +32,15 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     void testAllTransformationsInGeneratedCsvFileWithDifferentImplementations() {
         List<EpsgCrsAndAreaCodeWithCoordinates> list = getCoordinatesFromGeneratedCsvFile();
 
-//        boolean createNewRegressionFile = true;
-        boolean createNewRegressionFile = false;
+        boolean createNewRegressionFile = true;
+        //boolean createNewRegressionFile = false;
 
         double deltaLimitForSuccess = DELTA_LIMIT_FOR_SUCCESS;
+
+
+        TestResult testResultForGeoPackage = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeGeoPackageNGA(), list);
+        handleTestResults(testResultForGeoPackage, deltaLimitForSuccess, createNewRegressionFile);
+        if(true) return;
 
         TestResult testResultForGoober = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeGooberCTL(), list);
         handleTestResults(testResultForGoober, deltaLimitForSuccess, createNewRegressionFile);
@@ -72,7 +78,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             testResultItems.add(new TestResultItem(item, inputCoordinateWGS84, resultOfTransformationFromWGS84, resultOfTransformationBackToWGS84));
             if (counter++ % 1000 == 0) // just to show some progress
                 System.out.println("counter: " + counter + " (of the total " + coordinatesFromGeneratedCsvFile.size() + ") for facade " + crsTransformationFacade.getClass().getSimpleName()); // to show some progress
-            // if(counter > 100) break;
+            // if(counter > 300) break;
         }
         long elapsedNanos = System.nanoTime() - startTime;
         long totalNumberOfSecondsForAllTransformations = TimeUnit.NANOSECONDS.toSeconds(elapsedNanos);
@@ -193,6 +199,29 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         return list;
     }
 
+    // @Test
+    void temporaryTestAsStartingPointOfExecutionWhenTroubleShooting() {
+        testOneRowFromCsvFile(
+            new CrsTransformationFacadeGeoPackageNGA(),
+            "3006|1225|Sweden|17.083659606206545|61.98770256318016"
+        );
+    }
+
+    /**
+     *
+     * @param crsTransformationFacade
+     * @param oneRowFromCsvFile e.g. "3006|1225|Sweden|17.083659606206545|61.98770256318016"
+     *  (can be copied from the file "generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv" )
+     */
+    private void testOneRowFromCsvFile(CrsTransformationFacade crsTransformationFacade, String oneRowFromCsvFile) {
+        EpsgCrsAndAreaCodeWithCoordinates item = createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile("3006|1225|Sweden|17.083659606206545|61.98770256318016");
+        final Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongYLat(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
+        final TransformResult resultOfTransformationFromWGS84 = crsTransformationFacade.transformToResultObject(inputCoordinateWGS84, item.epsgCrsCode);
+        if(!resultOfTransformationFromWGS84.isSuccess()) {
+            System.out.println(resultOfTransformationFromWGS84.getException());
+        }
+        assertTrue(resultOfTransformationFromWGS84.isSuccess());
+    }
     private EpsgCrsAndAreaCodeWithCoordinates createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(String line) {
         final String trimmedLine = line.trim();
         // e.g. "3006|1225|Sweden|17.083659606206545|61.98770256318016"
@@ -310,4 +339,9 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 //seconds: 210
 //countOfSuccess: 4036
 //countOfFailures: 2399
+//-------------------------------
+//testResults for CrsTransformationFacadeGeoPackageNGA
+//seconds: 249
+//countOfSuccess: 3918
+//countOfFailures: 2517
 //-------------------------------

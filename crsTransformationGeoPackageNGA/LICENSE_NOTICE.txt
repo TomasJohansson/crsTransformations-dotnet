@@ -1,0 +1,5 @@
+This adapter/facade library "GeoPackageNGA" is licensed in the same way as the adaptee library itself as specified below.
+
+The license for "ngageoint/geopackage-java" and "ngageoint/geopackage-core-java" is MIT.
+https://github.com/ngageoint/geopackage-java/blob/master/LICENSE.txt
+https://github.com/ngageoint/geopackage-core-java/blob/master/LICENSE.txt

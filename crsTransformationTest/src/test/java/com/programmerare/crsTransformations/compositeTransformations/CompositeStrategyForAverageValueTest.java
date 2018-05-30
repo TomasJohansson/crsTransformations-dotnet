@@ -25,6 +25,7 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
                 facadeGooberCTL,
                 facadeOrbisgisCTS,
                 facadeProj4J
+                    // TODO: add usage of the added implementation GeoPackageNGA
             )
         );
         Coordinate coordinateReturnedByCompositeFacade = facadeComposite.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);

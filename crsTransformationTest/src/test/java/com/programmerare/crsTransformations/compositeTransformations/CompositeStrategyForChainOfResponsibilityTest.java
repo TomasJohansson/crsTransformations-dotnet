@@ -16,6 +16,8 @@ public class CompositeStrategyForChainOfResponsibilityTest extends CompositeStra
                 facadeGeoTools, // since geotools is first here in this list, it should be the implementation providing the result
                 facadeGooberCTL,
                 facadeOrbisgisCTS
+                    // TODO: add usage of the added implementation Proj4J
+                    // TODO: add usage of the added implementation GeoPackageNGA
             )
         );
         Coordinate coordinateReturnedByCompositeFacadeChainOfResponsibility = facadeComposite.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);

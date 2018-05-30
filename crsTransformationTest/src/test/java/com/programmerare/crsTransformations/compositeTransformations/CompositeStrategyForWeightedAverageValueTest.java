@@ -26,6 +26,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
     private static double weightForGoober = 0.3;
     private static double weightForOrbis = 0.2;
     private static double weightForProj4J = 0.1;
+    // TODO: add usage of the added implementation GeoPackageNGA
 
     private static Coordinate coordinateWithExpectedWeightedValues;
 
