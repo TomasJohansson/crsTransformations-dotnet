@@ -58,6 +58,18 @@ subprojects {
 		// https://mvnrepository.com/artifact/com.google.guava/guava
 		compile group: 'com.google.guava', name: 'guava', version: '25.1-jre'
 	}
+	test {
+		// Enable JUnit 5 (Gradle 4.6+).
+		useJUnitPlatform()
+
+		// Always run tests, even when nothing changed.
+		// dependsOn 'cleanTest'
+
+		testLogging {
+			events "passed", "skipped", "failed" // , "standardOut", "standardError"
+		}
+	}
+
 }
 
 project(':crsTransformationGeoTools') {
