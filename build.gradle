@@ -64,8 +64,9 @@ subprojects {
 		compile group: 'org.geotools', name: 'gt-shapefile', version: '20.0'
 
 		// https://mvnrepository.com/artifact/mil.nga.geopackage/geopackage
-		compile group: 'mil.nga.geopackage', name: 'geopackage', version: '3.0.0'
-		compile group: 'mil.nga.geopackage', name: 'geopackage-core', version: '3.0.0'
+		// https://github.com/ngageoint/GeoPackage
+		compile group: 'mil.nga.geopackage', name: 'geopackage', version: '3.1.0'
+		compile group: 'mil.nga.geopackage', name: 'geopackage-core', version: '3.1.0'
 
 		// https://mvnrepository.com/artifact/com.google.guava/guava
 		// https://github.com/google/guava/releases
