@@ -36,8 +36,12 @@ subprojects {
 	dependencies {
 		implementation("org.jetbrains.kotlin:kotlin-runtime:$kotlin_version")
 		implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
-		testImplementation("org.junit.jupiter:junit-jupiter-engine:5.2.0")
-		testImplementation("org.junit.jupiter:junit-jupiter-params:5.2.0")
+
+		// https://mvnrepository.com/artifact/org.junit.jupiter
+		// https://github.com/junit-team/junit5/releases
+		testImplementation("org.junit.jupiter:junit-jupiter-engine:5.3.1")
+		testImplementation("org.junit.jupiter:junit-jupiter-params:5.3.1")
+
 		testImplementation("org.hamcrest:hamcrest-library:1.3")
 
 
