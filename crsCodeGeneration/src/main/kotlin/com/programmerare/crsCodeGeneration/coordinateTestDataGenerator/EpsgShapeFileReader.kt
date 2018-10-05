@@ -1,7 +1,7 @@
 package com.programmerare.crsCodeGeneration.coordinateTestDataGenerator
 
-import com.vividsolutions.jts.geom.Geometry
-import com.vividsolutions.jts.geom.MultiPolygon
+import org.locationtech.jts.geom.Geometry
+import org.locationtech.jts.geom.MultiPolygon
 import org.geotools.data.*
 import org.opengis.feature.simple.SimpleFeature
 import java.io.File
@@ -10,8 +10,8 @@ import java.io.File
 // there will be a "silent error" i.e. null will be returned
 // without information that "gt-shapefile" is missing ...
 // build.gradle
-//compile group: 'org.geotools', name: 'gt-shapefile', version: '19.1'
-//compile group: 'org.geotools', name: 'gt-data', version: '19.1'
+//compile group: 'org.geotools', name: 'gt-shapefile', version: '20.0'
+//compile group: 'org.geotools', name: 'gt-data', version: '20.0'
 // http://docs.geotools.org/latest/userguide/welcome/architecture.html
 
 

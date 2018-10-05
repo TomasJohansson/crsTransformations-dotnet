@@ -37,10 +37,23 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
         double deltaLimitForSuccess = DELTA_LIMIT_FOR_SUCCESS;
 
+        TestResult testResultForGeoTools = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeGeoTools(), list);
+        handleTestResults(
+            testResultForGeoTools,
+            deltaLimitForSuccess,
+            createNewRegressionFile,
+            "_version_20.0_"
+            // file created: "test/resources/regression_results/CrsTransformationFacadeGeoTools_version_20.0_.csv
+        );
+        // There are differences in the above generated file (when using version 20.0 instead of 19.1)
+        // but when roughly looking at the files with WinMerge the differences seem to be very small.
+        // However: TODO: use code to detect significant differences, and if those exist,
+        // then try to figure out if it is improvement or the opposite.
+        // If the later version seem to have introduced a bug/error then try to report it to the GeoTools project
 
+        /*
         TestResult testResultForGeoPackage = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeGeoPackageNGA(), list);
         handleTestResults(testResultForGeoPackage, deltaLimitForSuccess, createNewRegressionFile);
-        if(true) return;
 
         TestResult testResultForGoober = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeGooberCTL(), list);
         handleTestResults(testResultForGoober, deltaLimitForSuccess, createNewRegressionFile);
@@ -50,10 +63,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
         TestResult testResultForOrbisgis = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeOrbisgisCTS(), list);
         handleTestResults(testResultForOrbisgis, deltaLimitForSuccess, createNewRegressionFile);
-
-        TestResult testResultForGeoTools = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeGeoTools(), list);
-        handleTestResults(testResultForGeoTools, deltaLimitForSuccess, createNewRegressionFile);
-
+        */
         // TODO: compute standard deviations for the results e.g.
         // the deviations from the original coordinate when transforming back and forth,
         // and also compare them with each other and caluclate the standard deviation
@@ -97,7 +107,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
      * @param deltaLimitForSuccess
      * @param createNewRegressionFile if false, then instead compare with previous regression file
      */
-    private void handleTestResults(TestResult testResult, double deltaLimitForSuccess, boolean createNewRegressionFile) {
+    private void handleTestResults(TestResult testResult, double deltaLimitForSuccess, boolean createNewRegressionFile, String fileNameSuffixExcludingExtension) {
         System.out.println("-------------------------------");
         System.out.println("testResults for " + testResult.facade.getClass().getSimpleName());
         System.out.println("seconds: " + testResult.totalNumberOfSecondsForAllTransformations);
@@ -131,7 +141,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         System.out.println("countOfFailures: " + countOfFailures);
         System.out.println("-------------------------------");
 
-        final File file = getFileForRegressionResults(testResult.facade);
+        final File file = getFileForRegressionResults(testResult.facade, fileNameSuffixExcludingExtension);
         if (createNewRegressionFile) {
             createNewRegressionFile(file, linesWithCurrentResults);
         } else {
@@ -139,9 +149,9 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         }
     }
 
-    private File getFileForRegressionResults(CrsTransformationFacade facade) {
+    private File getFileForRegressionResults(CrsTransformationFacade facade, String fileNameSuffixExcludingExtension) {
         File directoryForRegressionsResults = getDirectoryForRegressionsResults();
-        File file = new File(directoryForRegressionsResults, facade.getClass().getSimpleName() + ".csv");
+        File file = new File(directoryForRegressionsResults, facade.getClass().getSimpleName() + fileNameSuffixExcludingExtension + ".csv");
         return file;
     }
 
