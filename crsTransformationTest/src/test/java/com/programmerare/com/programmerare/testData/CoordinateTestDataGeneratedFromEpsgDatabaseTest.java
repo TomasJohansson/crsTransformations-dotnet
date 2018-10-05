@@ -42,7 +42,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             testResultForGeoTools,
             deltaLimitForSuccess,
             createNewRegressionFile,
-            "_version_20.0_"
+            "_version_20.0"
             // file created: "test/resources/regression_results/CrsTransformationFacadeGeoTools_version_20.0_.csv
         );
         // There are differences in the above generated file (when using version 20.0 instead of 19.1)
