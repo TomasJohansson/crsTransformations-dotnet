@@ -62,7 +62,8 @@ subprojects {
 		compile group: 'mil.nga.geopackage', name: 'geopackage-core', version: '3.0.0'
 
 		// https://mvnrepository.com/artifact/com.google.guava/guava
-		compile group: 'com.google.guava', name: 'guava', version: '25.1-jre'
+		// https://github.com/google/guava/releases
+		compile group: 'com.google.guava', name: 'guava', version: '26.0-jre'
 	}
 	test {
 		// Enable JUnit 5 (Gradle 4.6+).
