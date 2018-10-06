@@ -6,6 +6,9 @@ import java.io.FileOutputStream
 import java.io.OutputStreamWriter
 import java.nio.charset.Charset
 
+// This class generates constants classes into subfolders of this folder:
+// // .\crsConstants\src\main\java\com\programmerare\crsConstants
+
 // command line execution (according to configuration in build.gradle):
 // gradle generateClassesWithEpsgConstants
 class ConstantClassGenerator : CodeGeneratorBase() {

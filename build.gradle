@@ -150,8 +150,10 @@ project(':crsCodeGeneration') {
 	dependencies {
 		// https://mvnrepository.com/artifact/org.freemarker/freemarker
 		implementation("org.freemarker:freemarker:2.3.28")
-		// https://mvnrepository.com/artifact/net.sf.ucanaccess/ucanaccess
-		implementation("net.sf.ucanaccess:ucanaccess:4.0.4")
+
+		// https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
+		compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+
 		// https://mvnrepository.com/artifact/org.springframework/spring-jdbc
 		// https://github.com/spring-projects/spring-framework/releases
 		implementation("org.springframework:spring-jdbc:5.1.0.RELEASE")

@@ -7,6 +7,9 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource
 import java.io.File
 import java.sql.Driver
 
+// TODO: currently you need to hardcode the password (and database name and user name in the CONNECTION_STRING_EPSG_DATABASE_MARIADB )
+// which should be fixed ...
+
 abstract class CodeGeneratorBase {
 
     protected val freemarkerConfiguration: Configuration
@@ -24,29 +27,21 @@ abstract class CodeGeneratorBase {
     }
 
     protected fun getJdbcTemplate(): JdbcTemplate {
-        val file: File = getAccessDatabaseFileWithEpsgData()
-        val connectionString = "jdbc:ucanaccess://" + file.absolutePath + ";memory=false"// jdbc:ucanaccess://c:/data/mydb.mdb;memory=false
-        val driverManagerDataSource = DriverManagerDataSource(connectionString)
+        val driverManagerDataSource = DriverManagerDataSource(CONNECTION_STRING_EPSG_DATABASE_MARIADB)
         return JdbcTemplate(driverManagerDataSource)
-    }
-
-    private fun getAccessDatabaseFileWithEpsgData(): File {
-        val file = getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION, RELATIVE_PATH_TO_EPSG_MSACCESS_DATABASE_FILE)
-        throwExceptionIfFileDoesNotExist(file, "Access database file does not exist: ")
-        return file
     }
 
     private fun verifyJdbcDriver() {
         var driver: Driver? = null
         var throwable: Throwable? = null
         try {
-            driver = net.ucanaccess.jdbc.UcanaccessDriver()
+            driver = org.mariadb.jdbc.Driver()
         }
         catch (e: Throwable) {
             throwable = e
         }
         if(driver == null) {
-            val message = "Problem with the database driver '${JDBC_DRIVER_CLASS_NAME}'"
+            val message = "Problem with the database driver '${JDBC_DRIVER_CLASS_NAME_MARIADB}'"
             if(throwable == null) {
                 throw RuntimeException(message)
             }
@@ -124,10 +119,10 @@ abstract class CodeGeneratorBase {
         @JvmField
         val EPSG_VERSION = "v9_3" // TODO: maybe iterate the file system to extract version names from the directory names
 
-        // Note that when the path below is changed: The path is mentioned in gitignore
+        // TODO: currently you need to hardcode the password (and database name and user name in the CONNECTION_STRING_EPSG_DATABASE_MARIADB )
+        // which should be fixed ...
         @JvmField
-        val RELATIVE_PATH_TO_EPSG_MSACCESS_DATABASE_FILE = "data_files/EPSG_" + EPSG_VERSION + "/EPSG_" + EPSG_VERSION + ".mdb"
-        //relativePathToAccessDatabaseFile = "data_files/EPSG_v9_3/EPSG_v9_3.mdb"
+        val CONNECTION_STRING_EPSG_DATABASE_MARIADB = "jdbc:mariadb://localhost:3306/epsg_version_9_3?user=tomas&password=mypassword"
 
         @JvmField
         val NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION = "crsCodeGeneration"
@@ -154,16 +149,32 @@ abstract class CodeGeneratorBase {
         val ENCODING_UTF_8 = "UTF-8"
 
         @JvmField
-        val JDBC_DRIVER_CLASS_NAME = "net.ucanaccess.jdbc.UcanaccessDriver"
+        val JDBC_DRIVER_CLASS_NAME_MARIADB = "org.mariadb.jdbc.Driver"
+
 
         @JvmField
         val DIRECTORY_FOR_FREEMARKER_TEMPLATES = "/freemarker_templates" // means the directory ".../src/main/resources/freemarker_templates"
 
+        // The SQL below works for the downloaded database MySQL/MariaDB database
+        // (but had slightly different names in the previously used MS Access database)
+        // for example the table names are using the prefix "epsg_" in the MySQL database but not in the MS Access database.
+        @JvmField val SQL_STATEMENT_SELECTING_CRSCODE_CRSNAME_AREANAME = """
+            SELECT
+                area.area_name,
+                crs.area_of_use_code,
+                crs.coord_ref_sys_code,
+                crs.coord_ref_sys_name
+            FROM
+                epsg_coordinatereferencesystem AS crs
+                INNER JOIN
+                epsg_area AS area
+                    ON
+                    crs.area_of_use_code = area.area_code
+        """
 
-        @JvmField val SQL_STATEMENT_SELECTING_CRSCODE_CRSNAME_AREANAME = " SELECT [Area].[AREA_NAME], [Coordinate Reference System].[AREA_OF_USE_CODE], [Coordinate Reference System].[COORD_REF_SYS_CODE], [Coordinate Reference System].[COORD_REF_SYS_NAME] FROM [Coordinate Reference System] , [Area] WHERE [Coordinate Reference System].[AREA_OF_USE_CODE] = [Area].[AREA_CODE] "
-        @JvmField val SQL_COLUMN_CRSCODE = "COORD_REF_SYS_CODE"
-        @JvmField val SQL_COLUMN_CRSNAME = "COORD_REF_SYS_NAME"
-        @JvmField val SQL_COLUMN_AREANAME = "AREA_NAME"
-        @JvmField val SQL_COLUMN_AREACODE = "AREA_OF_USE_CODE"
+        @JvmField val SQL_COLUMN_CRSCODE = "coord_ref_sys_code"
+        @JvmField val SQL_COLUMN_CRSNAME = "coord_ref_sys_name"
+        @JvmField val SQL_COLUMN_AREANAME = "area_name"
+        @JvmField val SQL_COLUMN_AREACODE = "area_of_use_code"
     }
 }
