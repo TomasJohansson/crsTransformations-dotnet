@@ -9,8 +9,8 @@ package com.programmerare.crsCodeGeneration.constantsGenerator
 class ConstantTypeNameValue(
     private val constantNameRenderer: ConstantNameRenderer,
     val epsgNumber: Int,
-    private val areaName: String,
-    private val crsName: String
+    val areaName: String,
+    val crsName: String
 ) {
     fun getJavadocCommentForConstant(): String {
         return "EPSG:" + epsgNumber + " , " + crsName + " , " + areaName

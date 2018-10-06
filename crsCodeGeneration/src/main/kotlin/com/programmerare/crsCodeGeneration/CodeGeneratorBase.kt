@@ -133,6 +133,12 @@ abstract class CodeGeneratorBase {
 //        protected val RELATIVE_PATH_TO_KOTLIN_FILES = "src/main/kotlin"
 
         @JvmField
+        val RELATIVE_PATH_TO_RESOURCES_DIRECTORY = "src/main/resources"
+
+        @JvmField
+        val RELATIVE_PATH_TO_TARGET_DIRECTORY_FOR_GENERATED_CODE_WITHIN_RESOURCES_DIRECTORY = RELATIVE_PATH_TO_RESOURCES_DIRECTORY + "/generated"
+
+        @JvmField
         val ENCODING_UTF_8 = "UTF-8"
 
        @JvmField

@@ -164,26 +164,31 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         }
 
         // Generate Totally 12 classes below in 6 packages with 2 classes per package:
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger())
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString())
+        generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger())
+        generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString())
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger())
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaString())
+        generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger())
+        generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaString())
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger())
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameString())
+        generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger())
+        generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameString())
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberInteger())
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString())
+        generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberInteger())
+        generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString())
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), sortByNumber = true)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(), sortByNumber = true)
+        generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), sortByNumber = true)
+        generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(), sortByNumber = true)
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), sortByNumber = true)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
+        generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), sortByNumber = true)
+        generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
+
+        // The below method does not really belong here within this class
+        // at least from a semantic point of view considering that the current name of the
+        // class indicates that it should generated classes with constants ...
+        generateCsvFile()
     }
 
-    private fun generateFile(
+    private fun generateJavaFileWithConstants(
         nameOfJavaClass: String,
         nameOfJavaPackage: String,
         renderStrategy: RenderStrategy,
@@ -199,6 +204,53 @@ class ConstantClassGenerator : CodeGeneratorBase() {
                 nameOfConstants.sortedBy { it.getNameForConstant() }
         val constantsInformation = ConstantsInformation(nameOfJavaClass, nameOfJavaPackage, constants = constantsSortedByName)
         generateJavaFileWithConstants(javaFileToBecomeCreated, constantsInformation, NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CONSTANTS)
+    }
+
+
+    /**
+     * Creates a pipe character separated file (but the file extension "csv" indicates comma as separator)
+     * with the following three fields at each row: EpsgNumber|CrsName|AreaName
+    * The name of the generated path/file will be something like this:
+    *   ./crsCodeGeneration/src/main/resources/generated/csv_files/crs_number_name_area_v9_5_3.csv
+    */
+    private fun generateCsvFile() {
+        val directoryWhereTheCsvFileShouldBeGenerated = getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION, RELATIVE_PATH_TO_TARGET_DIRECTORY_FOR_GENERATED_CODE_WITHIN_RESOURCES_DIRECTORY + "/csv_files", throwExceptionIfNotExisting = false)
+        if(!directoryWhereTheCsvFileShouldBeGenerated.exists()) {
+            println("Directory does not exist: " + directoryWhereTheCsvFileShouldBeGenerated.canonicalPath)
+            val result = directoryWhereTheCsvFileShouldBeGenerated.mkdirs()
+            println("Result of directory creation: " + result)
+        }
+        val fileName = "crs_number_name_area_" + getEpsgVersion() + ".csv"
+        var csvFileToBecomeCreated = File(directoryWhereTheCsvFileShouldBeGenerated, fileName)
+        nameOfConstants.sortedBy { it.epsgNumber }
+        constantNameRenderer.renderStrategy = RenderStrategyNumberNameAreaInteger()
+        // Note that the freemarker template file is using valueForConstant instead of epsgNumber
+        // which is just a convenient way of creating rows such as:
+        // 3006|SWEREF99 TM|Sweden
+        // instead of: (i.e. with white space in the number)
+        // 3 006|SWEREF99 TM|Sweden
+
+        val rootHashMapWithDataToBeUsedByFreemarkerTemplate = HashMap<String, Any>()
+        rootHashMapWithDataToBeUsedByFreemarkerTemplate.put(FREEMARKER_PROPERTY_NAME_OF_CONSTANTS, nameOfConstants)
+
+        createFile(
+            NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_FILE,
+            rootHashMapWithDataToBeUsedByFreemarkerTemplate,
+            csvFileToBecomeCreated
+        )
+    }
+    private fun createFile(
+        nameOfFreemarkerTemplate: String,
+        rootHashMapWithDataToBeUsedByFreemarkerTemplate: HashMap<String, Any>,
+        fileToBecomeCreated: File
+    ) {
+        val template = freemarkerConfiguration.getTemplate(nameOfFreemarkerTemplate)
+        val outputStreamWriterWithUTF8encoding = OutputStreamWriter(
+            FileOutputStream(fileToBecomeCreated),
+            Charset.forName(ENCODING_UTF_8).newEncoder()
+        )
+        template.process(rootHashMapWithDataToBeUsedByFreemarkerTemplate, outputStreamWriterWithUTF8encoding)
+        outputStreamWriterWithUTF8encoding.close()
     }
 
     private fun getJavaFileToBecomeCreated(nameOfClassToBeGenerated: String, nameOfPackageToBeGenerated: String, directoryWhereTheJavaFilesShouldBeGenerated: File): File {
@@ -227,19 +279,16 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         constantsInformation: ConstantsInformation,
         nameOfFreemarkerTemplate: String
     ) {
-        val template = freemarkerConfiguration.getTemplate(nameOfFreemarkerTemplate)
-
         val root = HashMap<String, Any>()
         root.put(FREEMARKER_PROPERTY_NAME_OF_CONSTANTS, constantsInformation.constants)
         root.put(FREEMARKER_PROPERTY_NAME_OF_JAVA_PACKAGE, constantsInformation.nameOfJavaPackage);
         root.put(FREEMARKER_PROPERTY_NAME_OF_JAVA_CLASS, constantsInformation.nameOfJavaClass);
 
-        val outputStreamWriterWithUTF8encoding = OutputStreamWriter(
-            FileOutputStream(javaFileToBecomeCreated),
-            Charset.forName(ENCODING_UTF_8).newEncoder()
+        createFile(
+            nameOfFreemarkerTemplate,
+            root,
+            javaFileToBecomeCreated
         )
-        template.process(root, outputStreamWriterWithUTF8encoding)
-        outputStreamWriterWithUTF8encoding.close()
     }
 
     private fun getNameOfPackageForNameAreaNumber(): String {
@@ -271,7 +320,7 @@ class ConstantClassGenerator : CodeGeneratorBase() {
                 return
             }
             // args[0] is the version of EPSG and should be specified with underscores instead of dots e.g. "v9_5_3"
-            setPackageNameSuffix(epsgVersion = args[0])
+            setEpsgVersion(epsgVersion = args[0])
             setDatabaseInformationForMariaDbConnection(
                     databaseName = args[1],
                     databaseUserName = args[2],
@@ -311,6 +360,8 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         private const val FREEMARKER_PROPERTY_NAME_OF_JAVA_PACKAGE = "nameOfJavaPackage"
 
         private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CONSTANTS = "Constants.ftlh"
+        private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_FILE = "CsvFileWithEpsgNumberAndCrsNameAndAreaName.ftlh"
+
 
         private const val CLASS_NAME_INTEGER_CONSTANTS = "EpsgNumber"
         private const val CLASS_NAME_STRING_CONSTANTS = "EpsgCode"
@@ -318,11 +369,14 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         private const val PACKAGE_NAME_PREFIX = "com.programmerare.crsConstants."
 
         private var _epsgVersion = "v_NotYetDefined"
-        private fun setPackageNameSuffix(epsgVersion: String) {
+        private fun setEpsgVersion(epsgVersion: String) {
             _epsgVersion = epsgVersion
         }
+        private fun getEpsgVersion() : String {
+            return _epsgVersion
+        }
         private fun getPackageNameSuffix(): String {
-            return "." + _epsgVersion
+            return "." + getEpsgVersion()
         }
    }
 }
