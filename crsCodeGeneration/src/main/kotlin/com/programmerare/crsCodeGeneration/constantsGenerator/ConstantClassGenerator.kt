@@ -141,7 +141,7 @@ class ConstantClassGenerator : CodeGeneratorBase() {
 
     // Generates classes with constants based on database with EPSG codes:
     // http://www.epsg.org/EPSGDataset/DownloadDataset.aspx
-    fun generateConstants(epsgVersion: String) {
+    fun generateConstants() {
         val sqlQueryBase = SQL_STATEMENT_SELECTING_CRSCODE_CRSNAME_AREANAME
         val sqlQueryCondition = " AND [Area].[AREA_NAME] LIKE ? "
         // val sqlQueryOrderClause = " ORDER BY [Area].[AREA_NAME] , [Coordinate Reference System].[COORD_REF_SYS_NAME] "
@@ -284,14 +284,15 @@ class ConstantClassGenerator : CodeGeneratorBase() {
                 println(validationMessage)
                 return
             }
-            EPSG_VERSION = args[0] // should be specified (with underscores instead of dots e.g. "v9_5_3"
-            CodeGeneratorBase.setDatabaseInformationForMariaDbConnection(
+            // args[0] is the version of EPSG and should be specified with underscores instead of dots e.g. "v9_5_3"
+            setPackageNameSuffix(epsgVersion = args[0])
+            setDatabaseInformationForMariaDbConnection(
                 databaseName = args[1],
                 databaseUserName = args[2],
                 databaseUserPassword = args[3]
             )
             val constantClassGenerator = ConstantClassGenerator()
-            constantClassGenerator.generateConstants(EPSG_VERSION)
+            constantClassGenerator.generateConstants()
         }
 
         private const val FREEMARKER_PROPERTY_NAME_OF_CONSTANTS = "constants"
@@ -305,12 +306,14 @@ class ConstantClassGenerator : CodeGeneratorBase() {
 
         private val PACKAGE_NAME_PREFIX = "com.programmerare.crsConstants."
 
-        // TODO: improve this ugly hack below when doing refactoring from a hardcoded EPSG_VERSION
-        // to instead using a parameter to the main method
-        private var EPSG_VERSION = "v_NotYetDefined" // should instead be set to something like "EPSG_VERSION"
+        private var _epsgVersion = "v_NotYetDefined"
+
+        private fun setPackageNameSuffix(epsgVersion: String) {
+            _epsgVersion = epsgVersion
+        }
 
         private fun getPackageNameSuffix(): String {
-            return "." + EPSG_VERSION
+            return "." + _epsgVersion
         }
 
         private fun getNameOfPackageForNameAreaNumber(): String {
