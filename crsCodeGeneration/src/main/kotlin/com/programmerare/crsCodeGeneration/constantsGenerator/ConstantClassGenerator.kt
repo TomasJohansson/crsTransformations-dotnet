@@ -11,6 +11,12 @@ import java.nio.charset.Charset
 
 // command line execution (according to configuration in build.gradle):
 // gradle generateClassesWithEpsgConstants
+
+/**
+ * TODO: below document the whole procedure of how to create new constants
+ * including downloading zip file with EPSG information ...
+ * (and creation of a new database ...)
+ */
 class ConstantClassGenerator : CodeGeneratorBase() {
 
     // Generates classes with constants based on database with EPSG codes:
@@ -44,23 +50,23 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         var nameOfJavaPackage = ""
 
         // Generate Totally 12 classes below in 6 packages with 2 classes per package:
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, PACKAGE_NameAreaNumber, RenderStrategyNameAreaNumberInteger(), constantNameRenderer, nameOfConstants)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  PACKAGE_NameAreaNumber, RenderStrategyNameAreaNumberString(),  constantNameRenderer, nameOfConstants)
+        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger(), constantNameRenderer, nameOfConstants)
+        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString(),  constantNameRenderer, nameOfConstants)
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, PACKAGE_NameNumberArea, RenderStrategyNameNumberAreaInteger(), constantNameRenderer, nameOfConstants)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  PACKAGE_NameNumberArea, RenderStrategyNameNumberAreaString(),  constantNameRenderer, nameOfConstants)
+        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger(), constantNameRenderer, nameOfConstants)
+        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaString(),  constantNameRenderer, nameOfConstants)
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, PACKAGE_AreaNumberName, RenderStrategyAreaNumberNameInteger(), constantNameRenderer, nameOfConstants)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  PACKAGE_AreaNumberName, RenderStrategyAreaNumberNameString(),  constantNameRenderer, nameOfConstants)
+        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger(), constantNameRenderer, nameOfConstants)
+        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameString(),  constantNameRenderer, nameOfConstants)
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, PACKAGE_AreaNameNumber, RenderStrategyAreaNameNumberInteger(), constantNameRenderer, nameOfConstants)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  PACKAGE_AreaNameNumber, RenderStrategyAreaNameNumberString(),  constantNameRenderer, nameOfConstants)
+        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberInteger(), constantNameRenderer, nameOfConstants)
+        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString(),  constantNameRenderer, nameOfConstants)
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, PACKAGE_NumberAreaName, RenderStrategyNumberAreaNameInteger(), constantNameRenderer, nameOfConstants, sortByNumber = true)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  PACKAGE_NumberAreaName, RenderStrategyNumberAreaNameString(),  constantNameRenderer, nameOfConstants, sortByNumber = true)
+        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), constantNameRenderer, nameOfConstants, sortByNumber = true)
+        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(),  constantNameRenderer, nameOfConstants, sortByNumber = true)
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, PACKAGE_NumberNameArea, RenderStrategyNumberNameAreaInteger(), constantNameRenderer, nameOfConstants, sortByNumber = true)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  PACKAGE_NumberNameArea, RenderStrategyNumberNameAreaString(),  constantNameRenderer, nameOfConstants, sortByNumber = true)
+        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), constantNameRenderer, nameOfConstants, sortByNumber = true)
+        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(),  constantNameRenderer, nameOfConstants, sortByNumber = true)
     }
 
     private fun generateFile(
@@ -127,7 +133,25 @@ class ConstantClassGenerator : CodeGeneratorBase() {
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {
+            if (args.size < 4) {
+                println("The method should have four parameters")
+                // TODO validate not only the number of arguments but also with some regular expression
+                // to only allow "v" as prefix and then numbers and underscores as in e.g. "v9_5_3"
+                return
+            }
+            // EPSG_VERSION should be specified (with underscores instead of dots e.g. 'v9_5_3'"
+            EPSG_VERSION = args[0]
+            // TODO validate not only the number of arguments but also with some regular expression
+            // to only allow "v" as prefix (for EPSG_VERSION) and then numbers and underscores as in e.g. "v9_5_3"
+
+            CodeGeneratorBase.setDatabaseInformationForMariaDbConnection(
+                    databaseName = args[1],
+                    databaseUserName = args[2],
+                    databaseUserPassword = args[3]
+            )
+
             val constantClassGenerator = ConstantClassGenerator()
+
             constantClassGenerator.generateConstants(EPSG_VERSION)
         }
 
@@ -141,13 +165,32 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         private const val CLASS_NAME_STRING_CONSTANTS = "EpsgCode"
 
         private val PACKAGE_NAME_PREFIX = "com.programmerare.crsConstants."
-        private val PACKAGE_NAME_SUFFIX = "." + EPSG_VERSION
 
-        private val PACKAGE_NameAreaNumber = PACKAGE_NAME_PREFIX + "constantsByNameAreaNumber" + PACKAGE_NAME_SUFFIX
-        private val PACKAGE_NameNumberArea = PACKAGE_NAME_PREFIX + "constantsByNameNumberArea" + PACKAGE_NAME_SUFFIX
-        private val PACKAGE_AreaNumberName = PACKAGE_NAME_PREFIX + "constantsByAreaNumberName" + PACKAGE_NAME_SUFFIX
-        private val PACKAGE_AreaNameNumber = PACKAGE_NAME_PREFIX + "constantsByAreaNameNumber" + PACKAGE_NAME_SUFFIX
-        private val PACKAGE_NumberAreaName = PACKAGE_NAME_PREFIX + "constantsByNumberAreaName" + PACKAGE_NAME_SUFFIX
-        private val PACKAGE_NumberNameArea = PACKAGE_NAME_PREFIX + "constantsByNumberNameArea" + PACKAGE_NAME_SUFFIX
+        // TODO: improve this ugly hack below when doing refactoring from a hardcoded EPSG_VERSION
+        // to instead using a parameter to the main method
+        private var EPSG_VERSION = "v_NotYetDefined" // should instead be set to something like "EPSG_VERSION"
+
+        private fun getPackageNameSuffix(): String {
+            return "." + EPSG_VERSION
+        }
+
+        private fun getNameOfPackageForNameAreaNumber(): String {
+            return PACKAGE_NAME_PREFIX + "constantsByNameAreaNumber" + getPackageNameSuffix()
+        }
+        private fun getNameOfPackageForNameNumberArea(): String {
+            return PACKAGE_NAME_PREFIX + "constantsByNameNumberArea" + getPackageNameSuffix()
+        }
+        private fun getNameOfPackageForAreaNumberName(): String {
+            return PACKAGE_NAME_PREFIX + "constantsByAreaNumberName" + getPackageNameSuffix()
+        }
+        private fun getNameOfPackageForAreaNameNumber(): String {
+            return PACKAGE_NAME_PREFIX + "constantsByAreaNameNumber" + getPackageNameSuffix()
+        }
+        private fun getNameOfPackageForNumberAreaName(): String {
+            return PACKAGE_NAME_PREFIX + "constantsByNumberAreaName" + getPackageNameSuffix()
+        }
+        private fun getNameOfPackageForNumberNameArea(): String {
+            return PACKAGE_NAME_PREFIX + "constantsByNumberNameArea" + getPackageNameSuffix()
+        }
    }
 }

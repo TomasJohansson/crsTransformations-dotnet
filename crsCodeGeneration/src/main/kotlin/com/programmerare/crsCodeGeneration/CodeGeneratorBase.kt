@@ -7,9 +7,6 @@ import org.springframework.jdbc.datasource.DriverManagerDataSource
 import java.io.File
 import java.sql.Driver
 
-// TODO: currently you need to hardcode the password (and database name and user name in the CONNECTION_STRING_EPSG_DATABASE_MARIADB )
-// which should be fixed ...
-
 abstract class CodeGeneratorBase {
 
     protected val freemarkerConfiguration: Configuration
@@ -27,7 +24,7 @@ abstract class CodeGeneratorBase {
     }
 
     protected fun getJdbcTemplate(): JdbcTemplate {
-        val driverManagerDataSource = DriverManagerDataSource(CONNECTION_STRING_EPSG_DATABASE_MARIADB)
+        val driverManagerDataSource = DriverManagerDataSource(getConnectionStringForEpsgDatabaseMariaDB())
         return JdbcTemplate(driverManagerDataSource)
     }
 
@@ -111,18 +108,27 @@ abstract class CodeGeneratorBase {
         }
     }
 
-    companion object {
-        // in the future maybe the row below will work:
-        // protected const val EPSG_VERSION = "v9_3"
-        // but currently not supported when trying to use from subclass.
-        // therefore instead public (implicit when not protected/private) and "@JvmField" and without "const"
-        @JvmField
-        val EPSG_VERSION = "v9_3" // TODO: maybe iterate the file system to extract version names from the directory names
 
-        // TODO: currently you need to hardcode the password (and database name and user name in the CONNECTION_STRING_EPSG_DATABASE_MARIADB )
-        // which should be fixed ...
-        @JvmField
-        val CONNECTION_STRING_EPSG_DATABASE_MARIADB = "jdbc:mariadb://localhost:3306/epsg_version_9_3?user=tomas&password=mypassword"
+    companion object {
+
+        protected var _databaseName: String = "epsg_version_NotYetDefined"
+        protected var _databaseUserName: String = "TheUserNameIsNotSet"
+        protected var _databaseUserPassword: String = "ThePasswordIsNotSet"
+        // the values for the above fields should be set by a main method
+        // throgh invoking the method below
+        public fun setDatabaseInformationForMariaDbConnection(
+            databaseName: String,
+            databaseUserName: String,
+            databaseUserPassword: String
+        ) {
+            _databaseName = databaseName
+            _databaseUserName = databaseUserName
+            _databaseUserPassword = databaseUserPassword
+        }
+
+        protected fun getConnectionStringForEpsgDatabaseMariaDB(): String {
+            return "jdbc:mariadb://localhost:3306/" + _databaseName + "?user=" + _databaseUserName + "&password=" + _databaseUserPassword
+        }
 
         @JvmField
         val NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION = "crsCodeGeneration"
