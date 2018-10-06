@@ -20,15 +20,6 @@ import java.nio.charset.Charset
  */
 class CoordinateTestDataGenerator : CodeGeneratorBase() {
 
-    private fun getEpsgShapeFile(): File {
-        val shapefile = super.getFileOrDirectory(
-            NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION,
-            RELATIVE_PATH_TO_EPSG_SHAPEFILE,
-            throwExceptionIfNotExisting = true
-        )
-        return shapefile
-    }
-
     private fun getCsvFileToBecomeCreated(): File {
         val csvFile = super.getFileOrDirectory(
             NAME_OF_MODULE_DIRECTORY_FOR_TESTS,
@@ -39,11 +30,14 @@ class CoordinateTestDataGenerator : CodeGeneratorBase() {
         return csvFile
     }
 
-    private fun generateTestData() {
-        val pathToShapeFile = getEpsgShapeFile()
+    private fun generateTestData(pathToShapeFile: String) {
+        val shapeFile = File(pathToShapeFile) // getEpsgShapeFile()
+        if(!shapeFile.exists()) {
+            throw RuntimeException("Shapefile does not exist: " + shapeFile.canonicalPath)
+        }
         val returnList = mutableListOf<EpsgCrsAndAreaCodeWithCoordinates>()
         val epsgShapeFileReader = EpsgShapeFileReader()
-        val attributeDataFromShapefile: List<RowOfAttributeTableAndCentroid> = epsgShapeFileReader.extractAttributeDataFromShapefile(pathToShapeFile.absolutePath)
+        val attributeDataFromShapefile: List<RowOfAttributeTableAndCentroid> = epsgShapeFileReader.extractAttributeDataFromShapefile(shapeFile.absolutePath)
         val mapWithAreaCodeAsKey = mutableMapOf<Int, RowOfAttributeTableAndCentroid>()
         attributeDataFromShapefile.forEach { mapWithAreaCodeAsKey.put(it.AREA_CODE, it) }
         val list: List<EpsgCrsAndAreaCode> = getEpsgAndAreaCodes()
@@ -76,6 +70,7 @@ class CoordinateTestDataGenerator : CodeGeneratorBase() {
         root.put(FREEMARKER_PROPERTY_NAME_OF_LIST_WITH_TEST_DATA, list)
 
         val csvFileToBecomeCreated = getCsvFileToBecomeCreated()
+        println("csvFileToBecomeCreated: " + csvFileToBecomeCreated.canonicalPath)
         val outputStreamWriterWithUTF8encoding = OutputStreamWriter(
             FileOutputStream(csvFileToBecomeCreated),
             Charset.forName(ENCODING_UTF_8).newEncoder()
@@ -102,16 +97,41 @@ class CoordinateTestDataGenerator : CodeGeneratorBase() {
 
     companion object {
         @JvmStatic
+
+        // Potential problem when you run the main method below:
+        //      java.lang.IllegalAccessException: class org.geotools.resources.NIOUtilities$1 cannot access class jdk.internal.ref.Cleaner (in module java.base) because module java.base does not export jdk.internal.ref to unnamed module @4d49af10
+        // Workaround solution: Add the following to VM options:
+        //      --add-exports java.base/jdk.internal.ref=ALL-UNNAMED
+        // Some more information about the above "add-exports":
+        //      https://docs.oracle.com/javase/9/migrate/toc.htm
+
+
+        /**
+         * @param args as below:
+         *      args[0] a full path to an EPSG shapefile such as the path to a file ...\crsCodeGeneration\data_files\EPSG_Polygons_Ver_9.2.1\EPSG_Polygons.shp
+         *      args[1] name of the EPSG database
+         *      args[2] name of database user with access to the above EPSG database
+         *      args[3] password for the above database user
+         */
         fun main(args: Array<String>) {
+            if(args.size < 4) {
+                println("You must provide four parameters: PathToShapeFile dbName dbUser dbPassword")
+                return
+            }
+
+            setDatabaseInformationForMariaDbConnection(
+                    databaseName = args[1],
+                    databaseUserName = args[2],
+                    databaseUserPassword = args[3]
+            )
             val c = CoordinateTestDataGenerator()
-            c.generateTestData()
+            c.generateTestData(pathToShapeFile = args[0])
         }
 
         private val FREEMARKER_PROPERTY_NAME_OF_LIST_WITH_TEST_DATA = "testdata"
 
         private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_TESTDATA = "CoordinateTestCsvData.ftlh"
 
-        private const val RELATIVE_PATH_TO_EPSG_SHAPEFILE = "data_files/EPSG_Polygons_Ver_9.2.1/EPSG_Polygons.shp"
         private const val RELATIVE_PATH_TO_CSV_FILE_WITH_TESTDATA_TO_BECOME_GENERATED = "src/test/resources/generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv"
         //
     }
