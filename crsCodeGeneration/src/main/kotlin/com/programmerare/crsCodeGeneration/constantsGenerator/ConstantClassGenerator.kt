@@ -139,17 +139,13 @@ import java.nio.charset.Charset
  */
 class ConstantClassGenerator : CodeGeneratorBase() {
 
+    private var nameOfConstants = mutableListOf<ConstantTypeNameValue>()
+    private var constantNameRenderer = ConstantNameRenderer(RenderStrategyNameAreaNumberInteger())
+
     // Generates classes with constants based on database with EPSG codes:
     // http://www.epsg.org/EPSGDataset/DownloadDataset.aspx
     fun generateConstants() {
-        val sqlQueryBase = SQL_STATEMENT_SELECTING_CRSCODE_CRSNAME_AREANAME
-        val sqlQueryCondition = " AND [Area].[AREA_NAME] LIKE ? "
-        // val sqlQueryOrderClause = " ORDER BY [Area].[AREA_NAME] , [Coordinate Reference System].[COORD_REF_SYS_NAME] "
-        // val sqlQuery = sqlQueryBase + sqlQueryCondition
-        val sqlQuery = sqlQueryBase
-
-        val constantNameRenderer = ConstantNameRenderer(RenderStrategyNameAreaNumberInteger())
-        val nameOfConstants = mutableListOf<ConstantTypeNameValue>()
+        val sqlQuery = SQL_STATEMENT_SELECTING_CRSCODE_CRSNAME_AREANAME
 
         getJdbcTemplate().query(sqlQuery) { rs, _ ->
             // jdbcTemplate.query(sqlQuery, "%Sweden%") { rs, _ ->
@@ -167,34 +163,30 @@ class ConstantClassGenerator : CodeGeneratorBase() {
             )
         }
 
-        var nameOfJavaPackage = ""
-
         // Generate Totally 12 classes below in 6 packages with 2 classes per package:
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger(), constantNameRenderer, nameOfConstants)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString(),  constantNameRenderer, nameOfConstants)
+        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger())
+        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString())
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger(), constantNameRenderer, nameOfConstants)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaString(),  constantNameRenderer, nameOfConstants)
+        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger())
+        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaString())
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger(), constantNameRenderer, nameOfConstants)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameString(),  constantNameRenderer, nameOfConstants)
+        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger())
+        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameString())
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberInteger(), constantNameRenderer, nameOfConstants)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString(),  constantNameRenderer, nameOfConstants)
+        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberInteger())
+        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString())
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), constantNameRenderer, nameOfConstants, sortByNumber = true)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(),  constantNameRenderer, nameOfConstants, sortByNumber = true)
+        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), sortByNumber = true)
+        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(), sortByNumber = true)
 
-        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), constantNameRenderer, nameOfConstants, sortByNumber = true)
-        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(),  constantNameRenderer, nameOfConstants, sortByNumber = true)
+        generateFile(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), sortByNumber = true)
+        generateFile(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
     }
 
     private fun generateFile(
         nameOfJavaClass: String,
         nameOfJavaPackage: String,
         renderStrategy: RenderStrategy,
-        constantNameRenderer: ConstantNameRenderer,
-        nameOfConstants: MutableList<ConstantTypeNameValue>,
         sortByNumber: Boolean = false
     ) {
         constantNameRenderer.renderStrategy = renderStrategy
@@ -250,7 +242,44 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         outputStreamWriterWithUTF8encoding.close()
     }
 
+    private fun getNameOfPackageForNameAreaNumber(): String {
+        return PACKAGE_NAME_PREFIX + "constantsByNameAreaNumber" + getPackageNameSuffix()
+    }
+    private fun getNameOfPackageForNameNumberArea(): String {
+        return PACKAGE_NAME_PREFIX + "constantsByNameNumberArea" + getPackageNameSuffix()
+    }
+    private fun getNameOfPackageForAreaNumberName(): String {
+        return PACKAGE_NAME_PREFIX + "constantsByAreaNumberName" + getPackageNameSuffix()
+    }
+    private fun getNameOfPackageForAreaNameNumber(): String {
+        return PACKAGE_NAME_PREFIX + "constantsByAreaNameNumber" + getPackageNameSuffix()
+    }
+    private fun getNameOfPackageForNumberAreaName(): String {
+        return PACKAGE_NAME_PREFIX + "constantsByNumberAreaName" + getPackageNameSuffix()
+    }
+    private fun getNameOfPackageForNumberNameArea(): String {
+        return PACKAGE_NAME_PREFIX + "constantsByNumberNameArea" + getPackageNameSuffix()
+    }
+
+
     companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val validationMessage = getValidationErrorMessageOrEmptyStringIfNoError(args)
+            if (!validationMessage.equals("")) {
+                println(validationMessage)
+                return
+            }
+            // args[0] is the version of EPSG and should be specified with underscores instead of dots e.g. "v9_5_3"
+            setPackageNameSuffix(epsgVersion = args[0])
+            setDatabaseInformationForMariaDbConnection(
+                    databaseName = args[1],
+                    databaseUserName = args[2],
+                    databaseUserPassword = args[3]
+            )
+            val constantClassGenerator = ConstantClassGenerator()
+            constantClassGenerator.generateConstants()
+        }
 
         /**
          * Return empty string if validation is okay, otherwise
@@ -277,24 +306,6 @@ class ConstantClassGenerator : CodeGeneratorBase() {
             return regularExpressionForVersionSuffix.matches(versionSuffix)
         }
 
-        @JvmStatic
-        fun main(args: Array<String>) {
-            val validationMessage = getValidationErrorMessageOrEmptyStringIfNoError(args)
-            if (!validationMessage.equals("")) {
-                println(validationMessage)
-                return
-            }
-            // args[0] is the version of EPSG and should be specified with underscores instead of dots e.g. "v9_5_3"
-            setPackageNameSuffix(epsgVersion = args[0])
-            setDatabaseInformationForMariaDbConnection(
-                databaseName = args[1],
-                databaseUserName = args[2],
-                databaseUserPassword = args[3]
-            )
-            val constantClassGenerator = ConstantClassGenerator()
-            constantClassGenerator.generateConstants()
-        }
-
         private const val FREEMARKER_PROPERTY_NAME_OF_CONSTANTS = "constants"
         private const val FREEMARKER_PROPERTY_NAME_OF_JAVA_CLASS = "nameOfJavaClass"
         private const val FREEMARKER_PROPERTY_NAME_OF_JAVA_PACKAGE = "nameOfJavaPackage"
@@ -304,35 +315,14 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         private const val CLASS_NAME_INTEGER_CONSTANTS = "EpsgNumber"
         private const val CLASS_NAME_STRING_CONSTANTS = "EpsgCode"
 
-        private val PACKAGE_NAME_PREFIX = "com.programmerare.crsConstants."
+        private const val PACKAGE_NAME_PREFIX = "com.programmerare.crsConstants."
 
         private var _epsgVersion = "v_NotYetDefined"
-
         private fun setPackageNameSuffix(epsgVersion: String) {
             _epsgVersion = epsgVersion
         }
-
         private fun getPackageNameSuffix(): String {
             return "." + _epsgVersion
-        }
-
-        private fun getNameOfPackageForNameAreaNumber(): String {
-            return PACKAGE_NAME_PREFIX + "constantsByNameAreaNumber" + getPackageNameSuffix()
-        }
-        private fun getNameOfPackageForNameNumberArea(): String {
-            return PACKAGE_NAME_PREFIX + "constantsByNameNumberArea" + getPackageNameSuffix()
-        }
-        private fun getNameOfPackageForAreaNumberName(): String {
-            return PACKAGE_NAME_PREFIX + "constantsByAreaNumberName" + getPackageNameSuffix()
-        }
-        private fun getNameOfPackageForAreaNameNumber(): String {
-            return PACKAGE_NAME_PREFIX + "constantsByAreaNameNumber" + getPackageNameSuffix()
-        }
-        private fun getNameOfPackageForNumberAreaName(): String {
-            return PACKAGE_NAME_PREFIX + "constantsByNumberAreaName" + getPackageNameSuffix()
-        }
-        private fun getNameOfPackageForNumberNameArea(): String {
-            return PACKAGE_NAME_PREFIX + "constantsByNumberNameArea" + getPackageNameSuffix()
         }
    }
 }
