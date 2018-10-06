@@ -55,8 +55,11 @@ class ImprovingTheEpsgImportFileForMysqlByAddingTransactions {
 
             // Charsets.UTF_8
             // Charsets.ISO_8859_1
-            inputEpsgFileWithMysqlInsertStatements.forEachLine(Charsets.ISO_8859_1){ line ->
-            //inputEpsgFileWithMysqlInsertStatements.forEachLine(Charsets.UTF_8){ line ->
+            //inputEpsgFileWithMysqlInsertStatements.forEachLine(Charsets.ISO_8859_1){ line ->
+            // The "EPSG" file should be UTF8. If not then it should be converted to UTF8 before this method is executed.
+            // For further information about the expected encoding see the documentation in "ConstantClassGenerator"
+            // ( .\crsCodeGeneration\src\main\kotlin\com\programmerare\crsCodeGeneration\constantsGenerator\ConstantClassGenerator.kt )
+            inputEpsgFileWithMysqlInsertStatements.forEachLine(Charsets.UTF_8){ line ->
                 // Australia - 102�E to 108�E
                 // Australia - 102°E to 108°E
                 if(line.contains("Australia - 102")) {
@@ -79,7 +82,7 @@ class ImprovingTheEpsgImportFileForMysqlByAddingTransactions {
 
             print("Total number of SQL INSERT statements: " + insertCounterTotal) // 53801
 
-            Files.write(outputEpsgFileWithMysqlInsertStatements.toPath(), rowsForOutputFile, Charset.forName("UTF-8"))
+            Files.write(outputEpsgFileWithMysqlInsertStatements.toPath(), rowsForOutputFile, Charsets.UTF_8)
        }
     }
 }

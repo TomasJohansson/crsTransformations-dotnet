@@ -13,9 +13,129 @@ import java.nio.charset.Charset
 // gradle generateClassesWithEpsgConstants
 
 /**
- * TODO: below document the whole procedure of how to create new constants
- * including downloading zip file with EPSG information ...
- * (and creation of a new database ...)
+ * Below are step by step instructions for how to generate new constants when a new EPSG version is downloaded.
+ * (i.e. constants within "crsConstants" e.g. the file ".\crsConstants\src\main\java\com\programmerare\crsConstants\constantsByAreaNameNumber\v9_3\EpsgCode.java")
+ *
+ * 1. Download the latest version of a MySQL/MariaDB file from one of these websites:
+ *          http://www.epsg-registry.org
+ *          http://www.epsg.org
+ *      It may be necessary to register to be able to download the latest file.
+ *      The name of the downloaded file might be something like this: "EPSG-MySQL-export-9.5.3.zip"
+ * 2. Unzip the content of the downloaded file into some directory.
+ *      In the description below it is assumed that you unzipped the content to the directory "C:\temp\EPSG\"
+ *      There should now be at least two relevant SQL files in your unzip directory:
+ *          "MySQL_Table_Script.sql" (create table statements)
+ *          "MySQL_Data_Script.sql" (insert into statement)
+ *       ( There may also be a file "MySQL_FKey_Script.sql" for creating foreign keys but it is not
+ *          really necessary for the purposes here, i.e. use the database content
+ *          for generating Java or Kotlin classes with constants )
+ * 3. Verify the encoding to be UTF-8 and convert if necessary.
+ *       There may be a readme textfile among the unzipped files which may claim
+ *       that the encoding UTF-8 is used, but you should verify that yourself.
+ *       For example, open the above (in the previos step) two mentioned ".sql"-files with Notepad++
+ *       and then look at the Encoding menu option to see that the files are UTF8.
+ *       If some of them would not be UTF8, then you should convert it to UTF-8
+ *       to avoid later problems (with awkward characters)
+ *       when reading the content from the file or inserting/reading from the database.
+ * 4. Execute the script/program "ImprovingTheEpsgImportFileForMysqlByAddingTransactions"
+ *          ( .\crsCodeGeneration\src\main\kotlin\com\programmerare\crsCodeGeneration\databaseRelatedPreprocessingUtilities\ImprovingTheEpsgImportFileForMysqlByAddingTransactions.kt )
+ *          The input should be the file with insert statements and the resulting output
+ *          will be a similar file (but with transactions) in the same directory.
+ *        Example usage (with the path as input to the program)
+ *        com.programmerare.crsCodeGeneration.databaseRelatedPreprocessingUtilities.ImprovingTheEpsgImportFileForMysqlByAddingTransactions C:\temp\EPSG\MySQL_Data_Script.sql
+ *          The input for the above command was the following file:
+ *              "C:\temp\EPSG\MySQL_Data_Script.sql"
+ *          and the result should then be the following file: (i.e. a file with alsmost the same path/name but different suffix)
+ *              "C:\temp\EPSG\MySQL_Data_Script_WithTransactions.sql"
+ *          The purpose is to use the above created file to improve the performance for
+ *          the insert statements by creating a new file which uses transactions.
+ *          Some background information explaining the reason for the above creation of a new file:
+ *              The file "MySQL_Table_Script.sql" (from the unzipped directory mentioned above)
+ *              contains a long long list of insert statements, which make it very very slow.
+ *              Therefore, use a script (a main method in a Kotlin class file)
+ *              which reads all those statements from the file and inserts in a new file,
+ *              but with the difference that in the new file, there will also be
+ *              "start transaction" and "commit" statements at around each 50th insert statement.
+ *              (currently 50 is used, but it might change later without remembering to mention it here)
+ * 5. Create the MariaDB database to become populated with the above two files
+ *      i.e. the file that creates the tables and then the file (modified with transaction)
+ *      which inserts the data.
+ *    Note that the creation of a database (and user rights) is currently not described here in detail.
+ *      You may for example create the database through a GUI such as DBeaver.
+ *      For the next step, it is simply assumed that you have created a database
+ *      with the name "epsg_version_9_5_3"
+ *      (and please note that dots should be avoided in the name of the database !)
+ *      and the database user "myuser" has the password "mypassword"
+ *      and has the rights to create tables and insert data to the tables.
+ * 6. Create the tables with the file "MySQL_Table_Script.sql"
+ *      (located in the unzip directory mentioned in a previous step above)
+ *      The commands below have been tested with Windows 10 and an installation of MariaDB version 10.1.34.
+ *      Commands from a Windows 10 command prompt (first navigating to the unzip directory):
+ *          cd C:\temp\EPSG
+ *          mysql --user=myuser --password=mypassword --default-character-set=utf8 epsg_version_9_5_3
+ *      Depending on how your path has been set up you may have to use the full path to the mysql tool e.g. like below:
+ *          "C:\Program Files\MariaDB 10.1\bin\mysql" --user=myuser --password=mypassword --default-character-set=utf8 epsg_version_9_5_3
+ *      Then run the "source" command two times from within the "mysql" program:
+ *          source MySQL_Table_Script.sql
+ *          source MySQL_Data_Script_WithTransactions.sql
+ * 7. Generate the constants with the main method in ConstantClassGenerator.
+ *      The main method requries four parameters in the following order:
+ *          version name (this string is used as last part of the package name) e.g. "v9_5_3"
+ *          database name e.g. "epsg_version_9_5_3"
+ *          database user name
+ *          database user password
+ *      Example of running the main method:
+ *          com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator v9_5_3 dbName dbUser dbPassword
+ *      The resulting output should 12 classes with constants generated into the module "crsConstants"
+ *      within the following directory:
+ *          .\crsConstants\src\main\java\com\programmerare\crsConstants
+ *         Example of the full names for some of those generated classes:
+ *              com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_3.EpsgCode
+ *              com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_3.EpsgNumber
+ *              com.programmerare.crsConstants.constantsByAreaNumberName.v9_5_3.EpsgCode
+ *              ....
+ *         Six of the twelve classes has the name "EpsgNumber" and the others have the name "EpsgCode"
+ *         In each of six packages those two classed are generated.
+ *         The differences between them are reflected by the package names
+ *         e.g. "constantsByAreaNameNumber" vs "constantsByAreaNumberName".
+ *         The names of the constants are a concatenation of Area/Name/Number
+ *         and the package names reflects the order of the concatenation.
+ *         Two examples from the package including "constantsByAreaNameNumber":
+ *          (e.g. the package com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_3)
+ *          class EpsgCode {
+ *              ...
+ *              public final static String SWEDEN__SWEREF99_TM__3006 = "EPSG:3006";
+ *              ...
+ *          class EpsgNumber {
+ *              ...
+ *              public final static int SWEDEN__SWEREF99_TM__3006 = 3006;
+ *              ...
+ *          Note above that the names of the contants (within the same package)
+ *          are exactly the same for the two classes in the package.
+ *          You can also note that the order of the elements in the constant names
+ *          are as you can see in the package name "constantsByAreaNameNumber"
+ *          (i.e. the order Area and then Name and then Number as below):
+ *              "Area":     "SWEDEN"
+ *              "Name":     "SWEREF99_TM"
+ *              "Number":   "3006"
+ *          Another example from the package "constantsByNumberAreaName":
+ *           (e.g. the package com.programmerare.crsConstants.constantsByNumberAreaName.v9_5_3)
+ *              class EpsgNumber {
+ *                  ...
+ *                  public final static int _3006__SWEDEN__SWEREF99_TM = 3006;
+ *                  ...
+ *          Now you can note that the order of the elements in the constant names
+ *          are as you can see in the package name "constantsByNumberAreaName"
+ *          (i.e. the order Number and then Area and then Name as below):
+ *              "Number":   "_3006"
+ *              "Area":     "SWEDEN"
+ *              "Name":     "SWEREF99_TM"
+ *           (when the constant name begins with the number there is an additional _ as prefix)
+ *          The purpose of the different contatenations is that it can be a matter of preference
+ *          and how you want to use the constants, in which order you want the different parts.
+ *          For example, if you like to use intellisense/autocompletion you might
+ *          prefer to see the constants popped up being ordered by area, e.g. the
+ *          constants for EPSG codes used specifically in Sweden are sorted together.
  */
 class ConstantClassGenerator : CodeGeneratorBase() {
 
