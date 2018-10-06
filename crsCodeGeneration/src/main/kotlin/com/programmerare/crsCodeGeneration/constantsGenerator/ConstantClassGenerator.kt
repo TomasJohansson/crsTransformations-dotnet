@@ -251,27 +251,46 @@ class ConstantClassGenerator : CodeGeneratorBase() {
     }
 
     companion object {
+
+        /**
+         * Return empty string if validation is okay, otherwise
+         * a string with a validation message that should be displayed
+         */
+        fun getValidationErrorMessageOrEmptyStringIfNoError(args: Array<String>): String {
+            if (args.size < 4) {
+                return "The method should have four parameters"
+            }
+            if(!isValidAsVersionPrefix(args[0])) {
+                return "The version prefix is not valid. It should be a 'v' with some numbers, potentially separated with '_' instead of '.' . Example: 'v9_5_3' "
+            }
+            return ""
+        }
+
+        val regularExpressionForVersionSuffix = Regex("""v(\d+|\d+[_\d]*\d+)""")
+        /**
+         * @param versionSuffix a string such as "v9_5_3" (for a version 9.5.3)
+         *  i.e. the "v" as prefix and then some version number with one or more digits,
+         *  but instead of the normal dots the separator between major/minor version numbers should be underscore.
+         *  The usage of the validated string is that it will be used as the last part of a package name.
+         */
+        fun isValidAsVersionPrefix(versionSuffix: String): Boolean {
+            return regularExpressionForVersionSuffix.matches(versionSuffix)
+        }
+
         @JvmStatic
         fun main(args: Array<String>) {
-            if (args.size < 4) {
-                println("The method should have four parameters")
-                // TODO validate not only the number of arguments but also with some regular expression
-                // to only allow "v" as prefix and then numbers and underscores as in e.g. "v9_5_3"
+            val validationMessage = getValidationErrorMessageOrEmptyStringIfNoError(args)
+            if (!validationMessage.equals("")) {
+                println(validationMessage)
                 return
             }
-            // EPSG_VERSION should be specified (with underscores instead of dots e.g. 'v9_5_3'"
-            EPSG_VERSION = args[0]
-            // TODO validate not only the number of arguments but also with some regular expression
-            // to only allow "v" as prefix (for EPSG_VERSION) and then numbers and underscores as in e.g. "v9_5_3"
-
+            EPSG_VERSION = args[0] // should be specified (with underscores instead of dots e.g. "v9_5_3"
             CodeGeneratorBase.setDatabaseInformationForMariaDbConnection(
-                    databaseName = args[1],
-                    databaseUserName = args[2],
-                    databaseUserPassword = args[3]
+                databaseName = args[1],
+                databaseUserName = args[2],
+                databaseUserPassword = args[3]
             )
-
             val constantClassGenerator = ConstantClassGenerator()
-
             constantClassGenerator.generateConstants(EPSG_VERSION)
         }
 
