@@ -1,16 +1,17 @@
 package com.programmerare.crsCodeGeneration.constantsGenerator
 
+/**
+ * It might seem as if this class is never being used when looking at "grayed"
+ * method names in an IDE such as IntelliJ IDEA.
+ * However, note that this class is used from a freemarker template !
+ * ( .\crsCodeGeneration\src\main\resources\freemarker_templates\Constants.ftlh )
+ */
 class ConstantTypeNameValue(
-        private val constantNameRenderer: ConstantNameRenderer,
-        val epsgNumber: Int,
-        private val areaName: String,
-        private val crsName: String
-//    val javadocCommentForConstant: String,
-//    val dataTypeForConstant: DataType,
-//    val nameForConstant: String,
-//    val valueForConstant: String
-)
-{
+    private val constantNameRenderer: ConstantNameRenderer,
+    val epsgNumber: Int,
+    private val areaName: String,
+    private val crsName: String
+) {
     fun getJavadocCommentForConstant(): String {
         return "EPSG:" + epsgNumber + " , " + crsName + " , " + areaName
     }

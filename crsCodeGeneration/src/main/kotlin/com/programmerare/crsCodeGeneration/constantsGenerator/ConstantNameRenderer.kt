@@ -1,5 +1,7 @@
 package com.programmerare.crsCodeGeneration.constantsGenerator
 
+// TODO maybe: Separate all types below into separate files (in a package of its own)
+
 class ConstantNameRenderer(var renderStrategy: RenderStrategy) : RenderStrategy {
     override fun getValueForConstant(epsgNumber: Int): String {
         return renderStrategy.getValueForConstant(epsgNumber)

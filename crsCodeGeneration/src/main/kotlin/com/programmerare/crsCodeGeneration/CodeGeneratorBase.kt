@@ -48,11 +48,14 @@ abstract class CodeGeneratorBase {
         }
     }
 
-    // returns a file object for the directory "crsCodeGeneration"
+    /**
+     * @return a file object for the directory "crsCodeGeneration"
+     */
     private fun getDirectoryForCodeGenerationModule(): File {
         val pathToRootDirectoryForClassFiles: String? = CodeGeneratorBase.javaClass.getResource("/").path
         // the path retrieved above is now assumed to be like this:
-        // " .../crsTransformations/crsCodeGeneration/build/classes/kotlin/main/"
+        // " .../crsCodeGeneration/build/classes/kotlin/main/"
+        // (and therefore by navigatin upwards four directory we should find the directory "crsCodeGeneration")
         val rootDirectoryForClassFiles = File(pathToRootDirectoryForClassFiles)
         throwExceptionIfDirectoryDoesNotExist(rootDirectoryForClassFiles)
         val rootDirectoryForModule = rootDirectoryForClassFiles.parentFile.parentFile.parentFile.parentFile
@@ -64,7 +67,7 @@ abstract class CodeGeneratorBase {
     }
 
     /**
-     * @nameOfModuleDirectory should be e.g. NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION or NAME_OF_MODULE_DIRECTORY_FOR_CONSTANTS
+     * @param nameOfModuleDirectory should be e.g. NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION or NAME_OF_MODULE_DIRECTORY_FOR_CONSTANTS
      */
     protected fun getModuleDirectory(nameOfModuleDirectory: String): File {
         val codeGenerationDirectory = getDirectoryForCodeGenerationModule()
@@ -108,27 +111,7 @@ abstract class CodeGeneratorBase {
         }
     }
 
-
     companion object {
-
-        protected var _databaseName: String = "epsg_version_NotYetDefined"
-        protected var _databaseUserName: String = "TheUserNameIsNotSet"
-        protected var _databaseUserPassword: String = "ThePasswordIsNotSet"
-        // the values for the above fields should be set by a main method
-        // throgh invoking the method below
-        public fun setDatabaseInformationForMariaDbConnection(
-            databaseName: String,
-            databaseUserName: String,
-            databaseUserPassword: String
-        ) {
-            _databaseName = databaseName
-            _databaseUserName = databaseUserName
-            _databaseUserPassword = databaseUserPassword
-        }
-
-        protected fun getConnectionStringForEpsgDatabaseMariaDB(): String {
-            return "jdbc:mariadb://localhost:3306/" + _databaseName + "?user=" + _databaseUserName + "&password=" + _databaseUserPassword
-        }
 
         @JvmField
         val NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION = "crsCodeGeneration"
@@ -141,25 +124,43 @@ abstract class CodeGeneratorBase {
 
         @JvmField
         val FILE_EXTENSION_FOR_JAVA_FILE = ".java"
-
 //        @JvmStatic
 //        protected val FILE_EXTENSION_FOR_KOTLIN_FILE = ".kt"
 
         @JvmField
         val RELATIVE_PATH_TO_JAVA_FILES = "src/main/java"
-
 //        @JvmStatic
 //        protected val RELATIVE_PATH_TO_KOTLIN_FILES = "src/main/kotlin"
 
         @JvmField
         val ENCODING_UTF_8 = "UTF-8"
 
+       @JvmField
+        val DIRECTORY_FOR_FREEMARKER_TEMPLATES = "/freemarker_templates" // means the directory ".../src/main/resources/freemarker_templates"
+
+
+        // TODO maybe move the database code below to the subclass using that kind of code
+        protected var _databaseName: String = "epsg_version_NotYetDefined"
+        protected var _databaseUserName: String = "TheUserNameIsNotSet"
+        protected var _databaseUserPassword: String = "ThePasswordIsNotSet"
+        // the values for the above fields should be set by a main method
+        // throgh invoking the method below
+        public fun setDatabaseInformationForMariaDbConnection(
+                databaseName: String,
+                databaseUserName: String,
+                databaseUserPassword: String
+        ) {
+            _databaseName = databaseName
+            _databaseUserName = databaseUserName
+            _databaseUserPassword = databaseUserPassword
+        }
+
+        protected fun getConnectionStringForEpsgDatabaseMariaDB(): String {
+            return "jdbc:mariadb://localhost:3306/" + _databaseName + "?user=" + _databaseUserName + "&password=" + _databaseUserPassword
+        }
+
         @JvmField
         val JDBC_DRIVER_CLASS_NAME_MARIADB = "org.mariadb.jdbc.Driver"
-
-
-        @JvmField
-        val DIRECTORY_FOR_FREEMARKER_TEMPLATES = "/freemarker_templates" // means the directory ".../src/main/resources/freemarker_templates"
 
         // The SQL below works for the downloaded database MySQL/MariaDB database
         // (but had slightly different names in the previously used MS Access database)
