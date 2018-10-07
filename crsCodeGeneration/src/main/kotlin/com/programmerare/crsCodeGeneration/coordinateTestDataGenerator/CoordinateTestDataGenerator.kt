@@ -63,24 +63,27 @@ class CoordinateTestDataGenerator : CodeGeneratorBase() {
         if(!shapeFile.exists()) {
             throw RuntimeException("Shapefile does not exist: " + shapeFile.canonicalPath)
         }
-        val returnList = mutableListOf<EpsgCrsAndAreaCodeWithCoordinates>()
-        val epsgShapeFileReader = EpsgShapeFileReader()
-        val attributeDataFromShapefile: List<RowOfAttributeTableAndCentroid> = epsgShapeFileReader.extractAttributeDataFromShapefile(shapeFile.absolutePath)
-        val mapWithAreaCodeAsKey = mutableMapOf<Int, RowOfAttributeTableAndCentroid>()
-        attributeDataFromShapefile.forEach { mapWithAreaCodeAsKey.put(it.AREA_CODE, it) }
-        val list: List<EpsgCrsAndAreaCode> = getEpsgAndAreaCodes()
-        list.forEach {
+
+        val attributeDataFromShapefile: List<RowOfAttributeTableAndCentroid> = getAttributeDataIncludingCentroidCoordinatesFromShapefile(shapeFile)
+        val mapWithCentroidCoordinatesFromShapefileAndAreaCodeAsKey = mutableMapOf<Int, RowOfAttributeTableAndCentroid>()
+        attributeDataFromShapefile.forEach { mapWithCentroidCoordinatesFromShapefileAndAreaCodeAsKey.put(it.AREA_CODE, it) }
+
+        val listWithEpsgAndAreaCodesFromDatabase: List<EpsgCrsAndAreaCode> = getEpsgAndAreaCodesFromDatabase()
+
+        val listOfDataToBeIncludedInGeneratedCsvFile = mutableListOf<EpsgCrsAndAreaCodeWithCoordinates>()
+
+        listWithEpsgAndAreaCodesFromDatabase.forEach {
             val epsgAreaCode = it.epsgAreaCode
             val epsgCrsCode = it.epsgCrsCode
             val epsgAreaName = it.epsgAreaName
-            if(!mapWithAreaCodeAsKey.containsKey(epsgAreaCode)) {
+            if(!mapWithCentroidCoordinatesFromShapefileAndAreaCodeAsKey.containsKey(epsgAreaCode)) {
                 println("missing areacode: " + epsgAreaCode)
             }
             else {
-                val attr = mapWithAreaCodeAsKey.get(epsgAreaCode)!!
+                val attr = mapWithCentroidCoordinatesFromShapefileAndAreaCodeAsKey.get(epsgAreaCode)!!
                 val x = attr.centroidX
                 val y = attr.centroidY
-                returnList.add(EpsgCrsAndAreaCodeWithCoordinates(
+                listOfDataToBeIncludedInGeneratedCsvFile.add(EpsgCrsAndAreaCodeWithCoordinates(
                     epsgCrsCode.toString(),
                     epsgAreaCode.toString(),
                     epsgAreaName,
@@ -89,19 +92,19 @@ class CoordinateTestDataGenerator : CodeGeneratorBase() {
                 ))
             }
         }
-        generateFile(returnList)
+        generateFile(listOfDataToBeIncludedInGeneratedCsvFile)
     }
 
-    private fun generateFile(list: List<EpsgCrsAndAreaCodeWithCoordinates>) {
-        val root = HashMap<String, Any>()
-        root.put(FREEMARKER_PROPERTY_NAME_OF_LIST_WITH_TEST_DATA, list)
+    private fun generateFile(listOfDataToBeIncludedInGeneratedCsvFile: List<EpsgCrsAndAreaCodeWithCoordinates>) {
+        val rootHashMapWithDataToBeUsedByFreemarkerTemplate = HashMap<String, Any>()
+        rootHashMapWithDataToBeUsedByFreemarkerTemplate.put(FREEMARKER_PROPERTY_NAME_OF_LIST_WITH_TEST_DATA, listOfDataToBeIncludedInGeneratedCsvFile)
 
         val csvFileToBecomeCreated = getCsvFileToBecomeCreated()
         println("csvFileToBecomeCreated: " + csvFileToBecomeCreated.canonicalPath)
 
         super.createFile(
             NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_TESTDATA,
-            root,
+            rootHashMapWithDataToBeUsedByFreemarkerTemplate,
             csvFileToBecomeCreated
         )
     }
@@ -110,7 +113,7 @@ class CoordinateTestDataGenerator : CodeGeneratorBase() {
     // SELECT COUNT(*) FROM [Coordinate Reference System] // 6583
     // SELECT COUNT(*) FROM [Area] // 3491
     // SELECT COUNT(*) FROM [Coordinate Reference System] , [Area] WHERE [Coordinate Reference System].[AREA_OF_USE_CODE] = [Area].[AREA_CODE] // 6583
-    private fun getEpsgAndAreaCodes(): List<EpsgCrsAndAreaCode> {
+    private fun getEpsgAndAreaCodesFromDatabase(): List<EpsgCrsAndAreaCode> {
         val jdbcTemplate = getJdbcTemplate()
         val list = mutableListOf<EpsgCrsAndAreaCode>()
         jdbcTemplate.query(SQL_STATEMENT_SELECTING_CRSCODE_CRSNAME_AREANAME) { rs, _ ->
@@ -120,6 +123,12 @@ class CoordinateTestDataGenerator : CodeGeneratorBase() {
             list.add(EpsgCrsAndAreaCode(epsgCrsCode, epsgAreaCode, epsgAreaName))
         }
         return list
+    }
+
+    private fun getAttributeDataIncludingCentroidCoordinatesFromShapefile(shapeFile: File): List<RowOfAttributeTableAndCentroid> {
+        val epsgShapeFileReader = EpsgShapeFileReader()
+        val attributeDataFromShapefile: List<RowOfAttributeTableAndCentroid> = epsgShapeFileReader.extractAttributeDataFromShapefile(shapeFile.absolutePath)
+        return attributeDataFromShapefile
     }
 
     companion object {
