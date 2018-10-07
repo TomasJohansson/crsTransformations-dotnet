@@ -11,12 +11,43 @@ import java.nio.charset.Charset
 // gradle generateCsvTestDataFromEpsgDatabaseAndShapefile
 
 /**
- * Generates a CSV file with test data.
- * The data in each row is coming from two tables (throgh a SQL join) in an MS Access database
- * and indirectly from a shapefile.
- * The coordinates at each row are created throgh extracting a polygon associated with
- * an area code (also existing in the Access database used) and then GeoTools
- * is used for creating a centroid coordinate from the polygon.
+ * Generates a CSV file with test data (regarding "CSV": actually pipe characters are the separator and not comma).
+ *  (the current output directory for the CSV file is ./crsTransformationTest/src/test/resources/generated )
+ * The output columns in the CSV files are as below:
+ *      epsgCrsCode|epsgAreaCode|epsgAreaName|centroidX|centroidY
+ *          (as defined in the Freemarker template file "CoordinateTestCsvData.ftlh")
+ *      Example:
+ *      3006|1225|Sweden|17.083659606206545|61.98770256318016
+ *          epsgCrsCode - unique number defining a coordinate reference system
+ *              (for example 3006 in the above example, https://epsg.io/3006 )
+ *              No duplicates in the file but each crs code only once in the file.
+ *          epsgAreaCode -the code for an area, e.g. "1225" is an area code for area Sweden" in the above example.
+ *              The interpreation of the above row is that the epsg code 3006 is used within the area 1225.
+ *              Many CRS codes (i.e. Coordinate Reference Systems) can be used within one area.
+ *              For example, area code 1225 (Sweden) are using CRS 3006, 2400, 4124, ... as in the above and below examples.
+ *                  2400|1225|Sweden|17.083659606206545|61.98770256318016
+ *                  4124|1225|Sweden|17.083659606206545|61.98770256318016
+ *              It should also be noted that areas are not always exactly one country.
+ *              For example there are many area codes within Sweden as in the below examples:
+ *                    3007|2833|Sweden - 12 00|12.146151472138385|58.46573396912418
+ *                    3008|2834|Sweden - 13 30|13.470524334397624|58.58400993288184
+ *                    3009|2835|Sweden - 15 00|14.977576047737374|58.78282472189397
+ *                    ...
+ *                    5846|2833|Sweden - 12 00|12.146151472138385|58.46573396912418
+ *              One of the above CRS codes is "3007" which is the CRS "SWEREF99 12 00" ( https://epsg.io/3007 )
+ *              and it has (almost) an area code of its own (2833) , but not quite since
+ *              EPSG has also defined the CRS code 5846 to be associated with area code 2833.
+ *          epsgAreaName - the name associated with the area code e.g. "Sweden" or "Sweden - 12 00" as in above examples.
+ *          centroidX - the "X" (longitude) coordinate for the center of the area (defined by the area code)
+ *          centroidY - one "Y" (latitude) coordinate for the center of the area (defined by the area code)
+ *              Both X and Y above are defined as longitude/latitude in the global CRS 4326 (WGS84 or "GPS" coordinates)
+ *
+ * When the above described CSV file is being created, the data in the three first columns of each row
+ * is retrieved with an SQL JOIN between two tables in an MariaDB/MySql database,
+ * and then the remaining two columns with the coordinates are retrieved from a shapefile.
+ * The coordinates in the last two columns of each row in the output file are created by extracting (from the shapefile)
+ * a polygon associated with an area code (also existing in the database) and then the
+ * library GeoTools is used for finding the centroid coordinate from that polygon.
  */
 class CoordinateTestDataGenerator : CodeGeneratorBase() {
 
@@ -133,11 +164,10 @@ class CoordinateTestDataGenerator : CodeGeneratorBase() {
         private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_TESTDATA = "CoordinateTestCsvData.ftlh"
 
         private const val RELATIVE_PATH_TO_CSV_FILE_WITH_TESTDATA_TO_BECOME_GENERATED = "src/test/resources/generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv"
-        //
     }
 }
 
-// used as a resultset object i.e. each instance represents some row resulting from an SQL query
+// Used as a resultset object i.e. each instance represents some row resulting from an SQL query
 data class EpsgCrsAndAreaCode(
     val epsgCrsCode: Int,
     val epsgAreaCode: Int,
@@ -145,9 +175,10 @@ data class EpsgCrsAndAreaCode(
 ) {
 }
 
-// instance of this class below are sent into freemaker template and usages of string is a convenient
-// to avoid commas insted of dots within double field, and avoid
-// spaces in integers (as thousands separator)
+// Instances of this class below are sent into freemaker template
+// and the usages of string is a convenient way of
+// avoiding commas insted of dots within double field, and to avoid
+// spaces to become rendered in integers (as thousands separator)
 data class EpsgCrsAndAreaCodeWithCoordinates(
     val epsgCrsCode: String,
     val epsgAreaCode: String,
