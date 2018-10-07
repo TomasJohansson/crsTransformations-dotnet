@@ -12,7 +12,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class CrsIdentifierTest {
 
     @Test
-    void createFromCrsCodeTrimmedButWithoutUppercasingSinceNotEpsg() {
+    void createFromCrsCodeTrimmedButWithoutUppercasingButNotEpsg() {
         CrsIdentifier crsIdentifier = CrsIdentifier.createFromCrsCode("  abc  ");
         assertEquals("abc", crsIdentifier.getCrsCode());
         assertEquals(false, crsIdentifier.isEpsgCode());
@@ -28,33 +28,52 @@ public class CrsIdentifierTest {
     }
 
     @Test
-    void createFromCrsCodeWithUppercasingSinceEpsg() {
+    void createFromCrsCodeWithLowerCasedEpsg() {
         CrsIdentifier crsIdentifier = CrsIdentifier.createFromCrsCode("  epsg:4326  ");
+        // the input should become trimmed and uppercased "EPSG"
         assertEquals("EPSG:4326", crsIdentifier.getCrsCode());
         assertEquals(true, crsIdentifier.isEpsgCode());
         assertEquals(4326, crsIdentifier.getEpsgNumber());
     }
 
     @Test
-    void createFromCrsCodeNull() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> CrsIdentifier.createFromCrsCode(null), "Must not be null");
+    void createFromCrsCodeNullShouldFail() {
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> CrsIdentifier.createFromCrsCode(null), // should fail
+            "Must not be null"
+        );
+        assertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-null");
+    }
+
+    @Test
+    void createFromCrsCodeWithOnlyWhiteSpaceShouldFail() {
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> CrsIdentifier.createFromCrsCode("   "), // should fail
+            "Must not be empty string"
+        );
+        assertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-empty");
+    }
+
+    @Test
+    void equalsTestWhenCreatingFromEpsgNumberAndFromCrsCode() {
+        CrsIdentifier fromEpsgNumber    = CrsIdentifier.createFromEpsgNumber(3006);
+        CrsIdentifier fromCrsCode       = CrsIdentifier.createFromCrsCode("  epsg:3006   ");
+        assertEquals(fromEpsgNumber, fromCrsCode);
+        assertEquals(fromEpsgNumber.hashCode(), fromCrsCode.hashCode());
+    }
+
+    /**
+     * @param exception
+     * @param expectedStringToBeContainedInExceptionMessage e.g. "non-null" or "non-empty"
+     */
+    private void assertExceptionMessageWhenArgumentWasNullOrEmptyString(
+        IllegalArgumentException exception,
+        String expectedStringToBeContainedInExceptionMessage
+    ) {
         // the exception message is currently something like this: "Parameter specified as non-null is null: method com.programmerare.crsTransformations.CrsIdentifier$Companion.createFromCrsCode, parameter crsCode"
         // (potentially fragile to test the message strings but it does not really change often, and in such a rare scenario, then easy to fix)
-        assertThat(exception.getMessage(), containsString("non-null"));
-    }
-
-    @Test
-    void createFromCrsCodeEmpty() {
-        IllegalArgumentException exception = assertThrows(IllegalArgumentException.class, () -> CrsIdentifier.createFromCrsCode("   "), "Must not be empty string");
-        // Fragile to test the message string below but easy to fix here if it would break, and it will not break/change often.
-        assertThat(exception.getMessage(), containsString("non-empty"));
-    }
-
-    @Test
-    void equalsTest() {
-        CrsIdentifier crsIdentifier1 = CrsIdentifier.createFromEpsgNumber(3006);
-        CrsIdentifier crsIdentifier2 = CrsIdentifier.createFromCrsCode("  epsg:3006   ");
-        assertEquals(crsIdentifier1, crsIdentifier2);
-        assertEquals(crsIdentifier1.hashCode(), crsIdentifier2.hashCode());
+        assertThat(exception.getMessage(), containsString(expectedStringToBeContainedInExceptionMessage));
     }
 }
