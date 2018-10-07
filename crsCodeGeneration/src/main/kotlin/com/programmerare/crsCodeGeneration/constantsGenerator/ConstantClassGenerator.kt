@@ -1,7 +1,7 @@
 package com.programmerare.crsCodeGeneration.constantsGenerator
 
 import com.programmerare.crsCodeGeneration.CodeGeneratorBase
-import java.io.File;
+import java.io.File
 
 // This class generates constants classes into subfolders of this folder:
 // // .\crsConstants\src\main\java\com\programmerare\crsConstants

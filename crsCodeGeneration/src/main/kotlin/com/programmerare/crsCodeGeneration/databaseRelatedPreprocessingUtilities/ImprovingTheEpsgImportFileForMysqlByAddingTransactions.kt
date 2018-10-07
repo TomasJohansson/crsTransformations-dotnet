@@ -16,8 +16,8 @@ import java.nio.file.Files
  * For example if the input file has the name "EPSG_v9_3.mdb_Data_MySQL.sql"
  * then the output file may get the name "EPSG_v9_3.mdb_Data_MySQL_WithTransactions.sql"
  *
- * TODO: describe the full procedure from dowloading a new version of the EPSG database
- * to generating new constants.
+ * There are more documentation about the entire process of generating new constants
+ * for a new version, in the file ConstantClassGenerator.
  */
 class ImprovingTheEpsgImportFileForMysqlByAddingTransactions {
     companion object {
