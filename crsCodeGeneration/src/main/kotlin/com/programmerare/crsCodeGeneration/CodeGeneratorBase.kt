@@ -5,6 +5,9 @@ import freemarker.template.TemplateExceptionHandler
 import org.springframework.jdbc.core.JdbcTemplate
 import org.springframework.jdbc.datasource.DriverManagerDataSource
 import java.io.File
+import java.io.FileOutputStream
+import java.io.OutputStreamWriter
+import java.nio.charset.Charset
 import java.sql.Driver
 
 abstract class CodeGeneratorBase {
@@ -109,6 +112,20 @@ abstract class CodeGeneratorBase {
         if(!dirOrFile.exists()) {
             throw RuntimeException("File or directory does not exist: " + dirOrFile.absolutePath)
         }
+    }
+
+    protected fun createFile(
+        nameOfFreemarkerTemplate: String,
+        rootHashMapWithDataToBeUsedByFreemarkerTemplate: HashMap<String, Any>,
+        fileToBecomeCreated: File
+    ) {
+        val template = freemarkerConfiguration.getTemplate(nameOfFreemarkerTemplate)
+        val outputStreamWriterWithUTF8encoding = OutputStreamWriter(
+            FileOutputStream(fileToBecomeCreated),
+            Charset.forName(ENCODING_UTF_8).newEncoder()
+        )
+        template.process(rootHashMapWithDataToBeUsedByFreemarkerTemplate, outputStreamWriterWithUTF8encoding)
+        outputStreamWriterWithUTF8encoding.close()
     }
 
     companion object {

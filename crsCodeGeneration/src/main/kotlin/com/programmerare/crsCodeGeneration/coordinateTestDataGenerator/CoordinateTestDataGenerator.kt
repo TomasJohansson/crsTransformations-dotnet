@@ -3,9 +3,6 @@ package com.programmerare.crsCodeGeneration.coordinateTestDataGenerator
 import com.programmerare.crsCodeGeneration.CodeGeneratorBase
 import java.util.HashMap
 import java.io.File
-import java.io.FileOutputStream
-import java.io.OutputStreamWriter
-import java.nio.charset.Charset
 
 // command line execution (according to configuration in build.gradle):
 // gradle generateCsvTestDataFromEpsgDatabaseAndShapefile
@@ -96,18 +93,17 @@ class CoordinateTestDataGenerator : CodeGeneratorBase() {
     }
 
     private fun generateFile(list: List<EpsgCrsAndAreaCodeWithCoordinates>) {
-        val template = freemarkerConfiguration.getTemplate(NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_TESTDATA)
         val root = HashMap<String, Any>()
         root.put(FREEMARKER_PROPERTY_NAME_OF_LIST_WITH_TEST_DATA, list)
 
         val csvFileToBecomeCreated = getCsvFileToBecomeCreated()
         println("csvFileToBecomeCreated: " + csvFileToBecomeCreated.canonicalPath)
-        val outputStreamWriterWithUTF8encoding = OutputStreamWriter(
-            FileOutputStream(csvFileToBecomeCreated),
-            Charset.forName(ENCODING_UTF_8).newEncoder()
+
+        super.createFile(
+            NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_TESTDATA,
+            root,
+            csvFileToBecomeCreated
         )
-        template.process(root, outputStreamWriterWithUTF8encoding)
-        outputStreamWriterWithUTF8encoding.close()
     }
 
     // SELECT MAX(COORD_REF_SYS_CODE) FROM  [Coordinate Reference System] // 69036405

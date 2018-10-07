@@ -2,9 +2,6 @@ package com.programmerare.crsCodeGeneration.constantsGenerator
 
 import com.programmerare.crsCodeGeneration.CodeGeneratorBase
 import java.io.File;
-import java.io.FileOutputStream
-import java.io.OutputStreamWriter
-import java.nio.charset.Charset
 
 // This class generates constants classes into subfolders of this folder:
 // // .\crsConstants\src\main\java\com\programmerare\crsConstants
@@ -233,24 +230,11 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         val rootHashMapWithDataToBeUsedByFreemarkerTemplate = HashMap<String, Any>()
         rootHashMapWithDataToBeUsedByFreemarkerTemplate.put(FREEMARKER_PROPERTY_NAME_OF_CONSTANTS, nameOfConstants)
 
-        createFile(
+        super.createFile(
             NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_FILE,
             rootHashMapWithDataToBeUsedByFreemarkerTemplate,
             csvFileToBecomeCreated
         )
-    }
-    private fun createFile(
-        nameOfFreemarkerTemplate: String,
-        rootHashMapWithDataToBeUsedByFreemarkerTemplate: HashMap<String, Any>,
-        fileToBecomeCreated: File
-    ) {
-        val template = freemarkerConfiguration.getTemplate(nameOfFreemarkerTemplate)
-        val outputStreamWriterWithUTF8encoding = OutputStreamWriter(
-            FileOutputStream(fileToBecomeCreated),
-            Charset.forName(ENCODING_UTF_8).newEncoder()
-        )
-        template.process(rootHashMapWithDataToBeUsedByFreemarkerTemplate, outputStreamWriterWithUTF8encoding)
-        outputStreamWriterWithUTF8encoding.close()
     }
 
     private fun getJavaFileToBecomeCreated(nameOfClassToBeGenerated: String, nameOfPackageToBeGenerated: String, directoryWhereTheJavaFilesShouldBeGenerated: File): File {
@@ -284,7 +268,7 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         root.put(FREEMARKER_PROPERTY_NAME_OF_JAVA_PACKAGE, constantsInformation.nameOfJavaPackage);
         root.put(FREEMARKER_PROPERTY_NAME_OF_JAVA_CLASS, constantsInformation.nameOfJavaClass);
 
-        createFile(
+        super.createFile(
             nameOfFreemarkerTemplate,
             root,
             javaFileToBecomeCreated
