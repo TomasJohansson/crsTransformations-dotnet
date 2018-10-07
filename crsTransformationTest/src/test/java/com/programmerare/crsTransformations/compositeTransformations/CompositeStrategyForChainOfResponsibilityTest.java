@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations.compositeTransformations;
 
 import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsTransformations.Coordinate;
-import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
+import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -20,11 +20,11 @@ public class CompositeStrategyForChainOfResponsibilityTest extends CompositeStra
                     // TODO: add usage of the added implementation GeoPackageNGA
             )
         );
-        Coordinate coordinateReturnedByCompositeFacadeChainOfResponsibility = facadeComposite.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
+        Coordinate coordinateReturnedByCompositeFacadeChainOfResponsibility = facadeComposite.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         // The above result of the composite should be equal to the result of GeoTools since it
         // is first in the list of parameters to the constructor and it should produce a result for
         // the input coordinates ... so therefore below assert against the direct result of geotools
-        Coordinate coordinateResultWhenUsingGeoTools = facadeGeoTools.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
+        Coordinate coordinateResultWhenUsingGeoTools = facadeGeoTools.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertEquals(coordinateResultWhenUsingGeoTools, coordinateReturnedByCompositeFacadeChainOfResponsibility);
     }
 }

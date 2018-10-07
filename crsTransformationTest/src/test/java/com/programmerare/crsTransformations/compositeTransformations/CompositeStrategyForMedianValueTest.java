@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations.compositeTransformations;
 
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.CrsTransformationFacade;
-import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
+import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -25,7 +25,7 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
 
         System.out.println(resultCoordinateProj4J);
 
-        Coordinate coordinateReturnedByMedianFacade = facadeComposite.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
+        Coordinate coordinateReturnedByMedianFacade = facadeComposite.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         // The same transformation as above has been done in the base class for the individual facades
         // The motviation for the below asserted values, read further down in the method.
         double expectedMedianLongitude = (resultCoordinateOrbisgisCTS.getXLongitude() + resultCoordinateGeoTools.getXLongitude()) / 2.0;

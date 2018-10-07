@@ -3,7 +3,7 @@ package com.programmerare.crsTransformations.compositeTransformations;
 import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.CrsIdentifier;
-import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
+import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
@@ -28,7 +28,7 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
                     // TODO: add usage of the added implementation GeoPackageNGA
             )
         );
-        Coordinate coordinateReturnedByCompositeFacade = facadeComposite.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
+        Coordinate coordinateReturnedByCompositeFacade = facadeComposite.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
 
         double delta = 0.000000001;
         assertEquals(coordinateWithAverageLatitudeAndLongitude.getXLongitude(), coordinateReturnedByCompositeFacade.getXLongitude(), delta);

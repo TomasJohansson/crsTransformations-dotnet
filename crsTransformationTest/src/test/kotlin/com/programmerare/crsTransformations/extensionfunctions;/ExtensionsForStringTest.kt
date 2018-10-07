@@ -3,7 +3,7 @@ package com.programmerare.crsTransformations.extensionfunctions
 import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL
 import com.programmerare.crsTransformations.Coordinate
 import com.programmerare.crsTransformations.CrsTransformationFacade
-import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber
+import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
@@ -17,8 +17,8 @@ class ExtensionsForStringTest {
         val crsTransformationFacade: CrsTransformationFacade = className.createCrsTransformationFacadeFromFullClassName()
 
         // below trying to use the above created object to really make sure it works
-        val coordinate = Coordinate.Companion.createFromYLatXLong(59.330231, 18.059196, ConstantEpsgNumber.WGS84)
-        val result = crsTransformationFacade.transformToResultObject(coordinate, ConstantEpsgNumber.SWEREF99TM)
+        val coordinate = Coordinate.Companion.createFromYLatXLong(59.330231, 18.059196, EpsgNumber._4326__WGS_84__WORLD)
+        val result = crsTransformationFacade.transformToResultObject(coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN)
         assertTrue(result.isSuccess)
     }
 

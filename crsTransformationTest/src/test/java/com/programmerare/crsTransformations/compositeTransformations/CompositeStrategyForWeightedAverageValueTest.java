@@ -10,7 +10,7 @@ import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFac
 import com.programmerare.crsTransformationFacadeProj4J.CrsTransformationFacadeProj4J;
 import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsTransformations.Coordinate;
-import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
+import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import kotlin.Pair;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -65,7 +65,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
     }
 
     private void createCompositeStrategyForWeightedAverageValueHelper(CrsTransformationFacadeComposite facade) {
-        final Coordinate coordinateResult = facade.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
+        final Coordinate coordinateResult = facade.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
 
         assertEquals(coordinateWithExpectedWeightedValues.getYLatitude(), coordinateResult.getYLatitude(), SMALL_DELTA_VALUE);
         assertEquals(coordinateWithExpectedWeightedValues.getXLongitude(), coordinateResult.getXLongitude(), SMALL_DELTA_VALUE);
@@ -124,6 +124,6 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
                 weightForProj4J* resultCoordinateProj4J.getXLongitude();
 
         final double totWeights = weightForGeoTools + weightForGoober + weightForOrbis + weightForProj4J;
-        return Coordinate.createFromYLatXLong( latitudeWeightedSum/totWeights, longitutdeWeightedSum/totWeights, ConstantEpsgNumber.SWEREF99TM);
+        return Coordinate.createFromYLatXLong( latitudeWeightedSum/totWeights, longitutdeWeightedSum/totWeights, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
     }
 }

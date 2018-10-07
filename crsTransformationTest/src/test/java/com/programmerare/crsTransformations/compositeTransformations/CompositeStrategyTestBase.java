@@ -6,7 +6,8 @@ import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFac
 import com.programmerare.crsTransformationFacadeProj4J.CrsTransformationFacadeProj4J;
 import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsTransformations.Coordinate;
-import com.programmerare.crsTransformations.crsConstants.ConstantEpsgNumber;
+import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
+
 import org.junit.jupiter.api.BeforeAll;
 
 import java.util.Arrays;
@@ -41,11 +42,11 @@ abstract class CompositeStrategyTestBase {
 
         allFacades = Arrays.asList(facadeGeoTools, facadeGooberCTL, facadeOrbisgisCTS);
 
-        wgs84coordinate = Coordinate.createFromYLatXLong(wgs84Lat, wgs84Lon, ConstantEpsgNumber.WGS84);
+        wgs84coordinate = Coordinate.createFromYLatXLong(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
 
-        resultCoordinateGeoTools = facadeGeoTools.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
-        resultCoordinateGooberCTL = facadeGooberCTL.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
-        resultCoordinateOrbisgisCTS = facadeOrbisgisCTS.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
-        resultCoordinateProj4J = facadeProj4J.transform(wgs84coordinate, ConstantEpsgNumber.SWEREF99TM);
+        resultCoordinateGeoTools = facadeGeoTools.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        resultCoordinateGooberCTL = facadeGooberCTL.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        resultCoordinateOrbisgisCTS = facadeOrbisgisCTS.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        resultCoordinateProj4J = facadeProj4J.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
     }
 }
