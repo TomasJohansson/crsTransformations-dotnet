@@ -3,10 +3,8 @@ package com.programmerare.crsTransformations.extensionfunctions;
 // Java test for Kotlin file "ExtensionsForString.kt"
 // labeled with @file:JvmName("StringUtils")
 
-import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL;
 import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFacadeOrbisgisCTS;
 import com.programmerare.crsTransformations.CrsTransformationFacade;
-import com.programmerare.crsTransformations.TransformResultImplementation;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;

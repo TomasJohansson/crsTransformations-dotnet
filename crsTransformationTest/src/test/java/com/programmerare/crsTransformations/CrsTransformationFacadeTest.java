@@ -76,9 +76,9 @@ final class CrsTransformationFacadeTest {
     }
 
     private void transformBackAndForthAndAssertResult(
-            CrsTransformationFacade crsTransformationFacade,
-            Coordinate inputCoordinateOriginalCRS,
-            int epsgNumberForTransformTargetCRS
+        CrsTransformationFacade crsTransformationFacade,
+        Coordinate inputCoordinateOriginalCRS,
+        int epsgNumberForTransformTargetCRS
     ) {
         double delta = getDeltaValueForComparisons(inputCoordinateOriginalCRS.getCrsIdentifier());
 
@@ -111,11 +111,11 @@ final class CrsTransformationFacadeTest {
     }
 
     private void testTransformationFromRT90ToWgs84(CrsTransformationFacade crsTransformationFacade) {
-        double wgs84Lat_expected = 59.330231;
-        double wgs84Lon_expected = 18.059196;
-
         double rt90_Y = 6580994;
         double rt90_X = 1628294;
+
+        double wgs84Lat_expected = 59.330231;
+        double wgs84Lon_expected = 18.059196;
 
         Coordinate inputCoordinate = Coordinate.createFromXLongYLat(rt90_X, rt90_Y, epsgNumberForRT90);
 
@@ -130,8 +130,8 @@ final class CrsTransformationFacadeTest {
     void verifyTransformationsCorrespondToCsvFileCoordinates(
         String description,
         double wgs84Lat, double wgs84Lon,
-        double rt90nord, double rt90ost,
-        double sweref99nord, double sweref99ost,
+        double rt90north, double rt90east,
+        double sweref99north, double sweref99east,
         String url
     ) {
         // example row from the csv file:
@@ -142,15 +142,21 @@ final class CrsTransformationFacadeTest {
         // which shows the coordinates in the three systems WGS84, RT90, SWREF99
 
         for (CrsTransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
-            testTransformation(crsTransformationFacade, epsgNumberForWgs84, epsgNumberForRT90, wgs84Lat, wgs84Lon, rt90nord, rt90ost, description);
-            testTransformation(crsTransformationFacade, epsgNumberForWgs84, epsgNumberForSweref99TM, wgs84Lat, wgs84Lon, sweref99nord, sweref99ost, description);
-            testTransformation(crsTransformationFacade, epsgNumberForRT90, epsgNumberForSweref99TM, rt90nord, rt90ost, sweref99nord, sweref99ost, description);
+            testTransformation(crsTransformationFacade, epsgNumberForWgs84, epsgNumberForRT90, wgs84Lat, wgs84Lon, rt90north, rt90east, description);
+            testTransformation(crsTransformationFacade, epsgNumberForWgs84, epsgNumberForSweref99TM, wgs84Lat, wgs84Lon, sweref99north, sweref99east, description);
+            testTransformation(crsTransformationFacade, epsgNumberForRT90, epsgNumberForSweref99TM, rt90north, rt90east, sweref99north, sweref99east, description);
         }
     }
 
-    private void testTransformation(CrsTransformationFacade crsTransformationFacade, int epsgNumber1, int epsgNumber2, double lat1, double lon1, double lat2, double lon2, String description) {
-        final Coordinate coordinate1 = Coordinate.createFromXLongYLat(lon1, lat1, epsgNumber1);
-        final Coordinate coordinate2 = Coordinate.createFromXLongYLat(lon2, lat2, epsgNumber2);
+    private void testTransformation(
+        CrsTransformationFacade crsTransformationFacade,
+        int epsgNumber1, int epsgNumber2,
+        double yLat1, double xLon1,
+        double yLat2, double xLon2,
+        String description
+    ) {
+        final Coordinate coordinate1 = Coordinate.createFromXLongYLat(xLon1, yLat1, epsgNumber1);
+        final Coordinate coordinate2 = Coordinate.createFromXLongYLat(xLon2, yLat2, epsgNumber2);
         final Coordinate outputForCoordinate1 = crsTransformationFacade.transform(coordinate1, epsgNumber2);
         final Coordinate outputForCoordinate2 = crsTransformationFacade.transform(coordinate2, epsgNumber1);
 
@@ -174,7 +180,7 @@ final class CrsTransformationFacadeTest {
         }
         // sweref : 3006 - 3018
         // RT90 :   3019 - 3024
-        else if(
+        else if( // if(epsgNumber >= 3006 && epsgNumber <= 3024)
             lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit <= epsgNumber
             &&
             epsgNumber <= upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit
@@ -220,19 +226,20 @@ final class CrsTransformationFacadeTest {
     }
 
     private void transformWithTwoImplementationsAndCompareTheResults(
-            CrsTransformationFacade crsTransformationFacade1,
-            CrsTransformationFacade crsTransformationFacade2,
-            Coordinate inputCoordinate,
-            int epsgNumberForOutputCoordinate
+        CrsTransformationFacade crsTransformationFacade1,
+        CrsTransformationFacade crsTransformationFacade2,
+        Coordinate inputCoordinate,
+        int epsgNumberForOutputCoordinate
     ) {
         double delta = getDeltaValueForComparisons(epsgNumberForOutputCoordinate);
 
         Coordinate outputCoordinate1 = crsTransformationFacade1.transform(inputCoordinate, epsgNumberForOutputCoordinate);
         Coordinate outputCoordinate2 = crsTransformationFacade2.transform(inputCoordinate, epsgNumberForOutputCoordinate);
 
-        Supplier<String> errorMessage = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getXLongitude() - outputCoordinate2.getXLongitude());
-        assertEquals(outputCoordinate1.getXLongitude(), outputCoordinate2.getXLongitude(), delta, errorMessage);
-        assertEquals(outputCoordinate1.getYLatitude(), outputCoordinate2.getYLatitude(), delta, errorMessage);
+        Supplier<String> errorMessageLongitude = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getXLongitude() - outputCoordinate2.getXLongitude());
+        Supplier<String> errorMessageLatitude = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getYLatitude() - outputCoordinate2.getYLatitude());
+        assertEquals(outputCoordinate1.getXLongitude(), outputCoordinate2.getXLongitude(), delta, errorMessageLongitude);
+        assertEquals(outputCoordinate1.getYLatitude(), outputCoordinate2.getYLatitude(), delta, errorMessageLatitude);
         assertEquals(outputCoordinate1.getCrsIdentifier().getEpsgNumber(), outputCoordinate2.getCrsIdentifier().getEpsgNumber());
     }
 

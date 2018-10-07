@@ -15,11 +15,13 @@ class ExtensionsForStringTest {
         assertEquals((CrsTransformationFacadeGooberCTL()).javaClass.name, className, "The class or package seem to have been renamed")
 
         val crsTransformationFacade: CrsTransformationFacade = className.createCrsTransformationFacadeFromFullClassName()
+        assertNotNull(crsTransformationFacade)
+        assertEquals(className, crsTransformationFacade.javaClass.name)
 
         // below trying to use the above created object to really make sure it works
-        val coordinate = Coordinate.Companion.createFromYLatXLong(59.330231, 18.059196, EpsgNumber._4326__WGS_84__WORLD)
-        val result = crsTransformationFacade.transformToResultObject(coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN)
-        assertTrue(result.isSuccess)
+        val coordinateWgs84 = Coordinate.Companion.createFromYLatXLong(59.330231, 18.059196, EpsgNumber._4326__WGS_84__WORLD)
+        val resultSweref99 = crsTransformationFacade.transformToResultObject(coordinateWgs84, EpsgNumber._3006__SWEREF99_TM__SWEDEN)
+        assertTrue(resultSweref99.isSuccess)
     }
 
     @Test
@@ -28,8 +30,7 @@ class ExtensionsForStringTest {
         val illegalStateException = assertThrows(
             ClassNotFoundException::class.java,
             { classNameNotExisting.createCrsTransformationFacadeFromFullClassName() },
-            "should not be able to create class from unvalid classname"
+            "Should not be able to create class from unvalid classname"
         )
     }
-
 }

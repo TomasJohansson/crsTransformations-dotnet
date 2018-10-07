@@ -1,17 +1,13 @@
 package com.programmerare.com.programmerare.testData;
 
-import static org.junit.jupiter.api.Assertions.*;
+import com.google.common.io.Resources;
 import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_3.EpsgCode;
 import com.programmerare.crsTransformationFacadeGeoPackageNGA.CrsTransformationFacadeGeoPackageNGA;
 import com.programmerare.crsTransformationFacadeGeoTools.CrsTransformationFacadeGeoTools;
-import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL;
-import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFacadeOrbisgisCTS;
-import com.programmerare.crsTransformationFacadeProj4J.CrsTransformationFacadeProj4J;
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsTransformations.TransformResult;
 import org.junit.jupiter.api.Test;
-import com.google.common.io.Resources;
 
 import java.io.File;
 import java.io.IOException;
@@ -23,9 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
-    //private final static double deltaLimit = 0.000001;
     private final static double DELTA_LIMIT_FOR_SUCCESS = 0.0001;
 
     @Test

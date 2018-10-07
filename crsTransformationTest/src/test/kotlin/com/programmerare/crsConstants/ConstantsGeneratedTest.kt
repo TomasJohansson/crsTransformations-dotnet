@@ -7,6 +7,7 @@ class ConstantsGeneratedTest {
 
     @Test
     fun constantNumberTest() {
+        // Note that the package names below are different (the part beginning with "constantsBy")
         val list = listOf(
             com.programmerare.crsConstants.constantsByNumberNameArea.v9_3.EpsgNumber._3006__SWEREF99_TM__SWEDEN,
             com.programmerare.crsConstants.constantsByNumberAreaName.v9_3.EpsgNumber._3006__SWEDEN__SWEREF99_TM,
@@ -44,5 +45,4 @@ class ConstantsGeneratedTest {
             )
         }
     }
-
 }
