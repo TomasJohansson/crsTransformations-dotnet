@@ -85,5 +85,43 @@ data class Coordinate private constructor(
                 crsIdentifier
             )
         }
+
+        /**
+         * WGS84 is probably the most common coordinate reference system,
+         * the coordinates typically used with GPS.
+         * Therefore it is default for the factory method not specifying
+         * the coordinate reference system.
+         */
+        private val COORDINATE_REFERENCE_SYSTEM_WGS84 = CrsIdentifier.createFromEpsgNumber(4326)
+
+        /**
+         * The "GPS coordinate system" WGS84 is assumed when using this factory method.
+         */
+        @JvmStatic
+        fun createFromLongLat(
+            longitude: Double,
+            latitude: Double
+        ): Coordinate {
+            return Coordinate(
+                longitude,
+                latitude,
+                COORDINATE_REFERENCE_SYSTEM_WGS84
+            )
+        }
+
+        /**
+         * The "GPS coordinate system" WGS84 is assumed when using this factory method.
+         */
+        @JvmStatic
+        fun createFromLatLong(
+            latitude: Double,
+            longitude: Double
+        ): Coordinate {
+            return Coordinate(
+                longitude,
+                latitude,
+                COORDINATE_REFERENCE_SYSTEM_WGS84
+            )
+        }
     }
 }

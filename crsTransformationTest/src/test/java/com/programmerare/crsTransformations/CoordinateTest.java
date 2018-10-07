@@ -1,6 +1,7 @@
 package com.programmerare.crsTransformations;
 
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
+import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgCode;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
@@ -39,6 +40,24 @@ class CoordinateTest {
         Coordinate coordinate1 = Coordinate.createFromXLongYLat(xLongitude, yLatitude, crsIdentifier);
         Coordinate coordinate2 = Coordinate.createFromYLatXLong(yLatitude, xLongitude, crsIdentifier);
         assertEqualCoordinates(coordinate1, coordinate2);
+    }
+
+    @Test
+    void createCoordinatesWithWgs84AsDefaultWhenNotSpecifyingCRS() {
+        double wgs84Lat = 59.330231;
+        double wgs84Lon = 18.059196;
+
+        Coordinate wgs84_1 = Coordinate.createFromLongLat(wgs84Lon, wgs84Lat);
+        assertEquals(EpsgNumber._4326__WGS_84__WORLD, wgs84_1.getCrsIdentifier().getEpsgNumber());
+        assertEquals(  EpsgCode._4326__WGS_84__WORLD, wgs84_1.getCrsIdentifier().getCrsCode());
+
+        Coordinate wgs84_2 = Coordinate.createFromLatLong(wgs84Lat, wgs84Lon);
+        assertEquals(EpsgNumber._4326__WGS_84__WORLD, wgs84_2.getCrsIdentifier().getEpsgNumber());
+        assertEquals(  EpsgCode._4326__WGS_84__WORLD, wgs84_2.getCrsIdentifier().getCrsCode());
+
+        Coordinate wgs84_3 = Coordinate.createFromYLatXLong(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
+        assertEqualCoordinates(wgs84_3, wgs84_1);
+        assertEqualCoordinates(wgs84_3, wgs84_2);
     }
 
     private void assertEqualCoordinates(Coordinate coordinate1, Coordinate coordinate2) {
