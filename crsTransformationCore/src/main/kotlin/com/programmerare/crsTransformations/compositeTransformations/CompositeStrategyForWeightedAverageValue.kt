@@ -30,7 +30,7 @@ class CompositeStrategyForWeightedAverageValue(
         var weightSum = 0.0
         for (res: TransformResult in allResults) {
             if(res.isSuccess) {
-                val weight: Double = weights[res.crsTransformationFacadeThatCreatedTheResult.javaClass.name]!!
+                val weight: Double = weights[res.crsTransformationFacadeThatCreatedTheResult.getNameOfImplementation()]!!
                 // TODO: ugly !! above
                 successCount++
                 val coord = res.outputCoordinate
@@ -54,29 +54,15 @@ class CompositeStrategyForWeightedAverageValue(
     companion object {
         @JvmStatic
         fun createCompositeStrategyForWeightedAverageValue(
-            weightedFacades: List<Pair<CrsTransformationFacade, Double>>
+            weightedFacades: List<FacadeAndWeight>
         ): CompositeStrategyForWeightedAverageValue {
-
-            val name: String = "com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL"
-            val obj: CrsTransformationFacade = Class.forName(name).getDeclaredConstructor().newInstance() as CrsTransformationFacade
-
-            val facades: List<CrsTransformationFacade> = weightedFacades.map { it -> it.first }
+            val facades: List<CrsTransformationFacade> = weightedFacades.map { it -> it.crsTransformationFacade }
             val map = HashMap<String, Double>()
-            for ((k, v) in weightedFacades) {
-                println("$k -> $v")
-                println("k: $k")
-                println("v: $v")
-                map[k.javaClass.name] = v
+            for (faw: FacadeAndWeight in weightedFacades) {
+                map[faw.crsTransformationFacade.getNameOfImplementation()] = faw.weight
             }
             return CompositeStrategyForWeightedAverageValue(facades, map)
         }
 
-        @JvmStatic
-        fun createCompositeStrategyForWeightedAverageValueByReflection(
-            weightedFacades: List<Pair<String, Double>>
-        ): CompositeStrategyForWeightedAverageValue {
-            val weights: List<Pair<CrsTransformationFacade, Double>> = weightedFacades.map { it -> Pair(Class.forName(it.first).getDeclaredConstructor().newInstance() as CrsTransformationFacade, it.second) }
-            return createCompositeStrategyForWeightedAverageValue(weights)
-        }
     }
 }

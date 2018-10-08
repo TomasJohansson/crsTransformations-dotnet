@@ -18,6 +18,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     private static double medianLatitude, averageLatitude, medianLongitude, averageLongitude;
     private static Coordinate inputCoordinateSweref99;
     private static Coordinate outputCoordinateWgs84ForImplementation_1, outputCoordinateWgs84ForImplementation_2, outputCoordinateWgs84ForImplementation_3, outputCoordinateWgs84ForImplementation_4, outputCoordinateWgs84ForImplementation_5;
+    private static List<Coordinate> outputCoordinates;
     private static CrsTransformationFacade facadeImplementation_1, facadeImplementation_2, facadeImplementation_3, facadeImplementation_4, facadeImplementation_5;
     private static List<CrsTransformationFacade> allFacades;
 
@@ -48,6 +49,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         outputCoordinateWgs84ForImplementation_3 = Coordinate.createFromLatLong(outputLatitudes[4],outputLongitudes[4]);
         outputCoordinateWgs84ForImplementation_4 = Coordinate.createFromLatLong(outputLatitudes[1],outputLongitudes[0]);
         outputCoordinateWgs84ForImplementation_5 = Coordinate.createFromLatLong(outputLatitudes[3],outputLongitudes[2]);
+        outputCoordinates = Arrays.asList(outputCoordinateWgs84ForImplementation_1, outputCoordinateWgs84ForImplementation_2, outputCoordinateWgs84ForImplementation_3, outputCoordinateWgs84ForImplementation_4, outputCoordinateWgs84ForImplementation_5);
 
         facadeImplementation_1 = mock(CrsTransformationFacade.class);
         facadeImplementation_2 = mock(CrsTransformationFacade.class);
@@ -144,6 +146,46 @@ public class CompositeStrategyTestsUsingTestDoubles {
         assertEquals(outputCoordinateWgs84ForImplementation_1.getYLatitude(),  result.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
         assertEquals(outputCoordinateWgs84ForImplementation_1.getXLongitude(), result.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
     }
+
+    @Test
+    void weightedAverageFacadeTest() {
+        when(facadeImplementation_1.getNameOfImplementation()).thenReturn("1");
+        when(facadeImplementation_2.getNameOfImplementation()).thenReturn("2");
+        when(facadeImplementation_3.getNameOfImplementation()).thenReturn("3");
+        when(facadeImplementation_4.getNameOfImplementation()).thenReturn("4");
+        when(facadeImplementation_5.getNameOfImplementation()).thenReturn("5");
+
+        final double[] weights = {1,2,4,5,9};
+        double totWeights = 0;
+        double totLats = 0;
+        double totLons = 0;
+        for (int i = 0; i <weights.length ; i++) {
+            final double weight = weights[i];
+            totWeights += weight;
+            final Coordinate coordinate = outputCoordinates.get(i);
+            totLats += weight * coordinate.getYLatitude();
+            totLons += weight * coordinate.getXLongitude();
+        }
+        final double weightedLat = totLats / totWeights;
+        final double weightedLon = totLons / totWeights;
+        final Coordinate expectedWeightedAverage = Coordinate.createFromLatLong(weightedLat, weightedLon);
+
+        List<FacadeAndWeight> weightedFacades = Arrays.asList(
+            FacadeAndWeight.createFromInstance(facadeImplementation_1, weights[0]),
+            FacadeAndWeight.createFromInstance(facadeImplementation_2, weights[1]),
+            FacadeAndWeight.createFromInstance(facadeImplementation_3, weights[2]),
+            FacadeAndWeight.createFromInstance(facadeImplementation_4, weights[3]),
+            FacadeAndWeight.createFromInstance(facadeImplementation_5, weights[4])
+        );
+
+        final CrsTransformationFacade weightedAverageFacade = CrsTransformationFacadeComposite.createCrsTransformationWeightedAverage(weightedFacades);
+        final Coordinate result = weightedAverageFacade.transform(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        assertNotNull(result);
+
+        assertEquals(expectedWeightedAverage.getYLatitude(),  result.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(expectedWeightedAverage.getXLongitude(), result.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+    }
+
 
     // --------------------------------------------------------------
     @Test

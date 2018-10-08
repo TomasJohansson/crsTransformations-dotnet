@@ -52,16 +52,9 @@ final class CrsTransformationFacadeComposite private constructor(protected val c
         }
 
         @JvmStatic
-        fun createCrsTransformationWeightedAverage(weightedFacades: List<Pair<CrsTransformationFacade, Double>>): CrsTransformationFacadeComposite {
+        fun createCrsTransformationWeightedAverage(weightedFacades: List<FacadeAndWeight>): CrsTransformationFacadeComposite {
             return CrsTransformationFacadeComposite(
                 CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(weightedFacades)
-            )
-        }
-
-        @JvmStatic
-        fun createCrsTransformationWeightedAverageByReflection(weightedFacades: List<Pair<String, Double>>): CrsTransformationFacadeComposite {
-            return CrsTransformationFacadeComposite(
-                CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValueByReflection(weightedFacades)
             )
         }
 

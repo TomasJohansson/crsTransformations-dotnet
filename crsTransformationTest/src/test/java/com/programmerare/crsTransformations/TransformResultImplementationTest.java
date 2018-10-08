@@ -108,6 +108,12 @@ public class TransformResultImplementationTest {
         public TransformResult transformToResultObject(@NotNull Coordinate inputCoordinate, @NotNull CrsIdentifier crsIdentifierForOutputCoordinateSystem) {
             return null;
         }
+
+        @NotNull
+        @Override
+        public String getNameOfImplementation() {
+            return "CrsTransformationFacadeTemp";
+        }
     }
 }
 

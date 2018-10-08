@@ -67,4 +67,8 @@ abstract class CrsTransformationFacadeBase : CrsTransformationFacade {
 //    }
 
 
+    override final fun getNameOfImplementation(): String {
+        return this.javaClass.name
+    }
+
 }
