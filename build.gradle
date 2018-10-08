@@ -125,6 +125,8 @@ project(':crsTransformationTest') {
 //		implementation("group:org.geotools:gt-shapefile:19.1")
 // https://mvnrepository.com/artifact/org.geotools/gt-shapefile
 //		compile group: 'org.geotools', name: 'gt-shapefile', version: '19.1'
+		// https://mvnrepository.com/artifact/org.mockito/mockito-core
+		testCompile group: 'org.mockito', name: 'mockito-core', version: '2.23.0'
 	}
 }
 
