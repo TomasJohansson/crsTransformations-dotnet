@@ -16,19 +16,10 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
 
     @Test
     void createCRStransformationFacadeAverage() {
-        List<Coordinate> coordinateResultsForTheDifferentImplementations = Arrays.asList(resultCoordinateGeoTools, resultCoordinateGooberCTL, resultCoordinateOrbisgisCTS, resultCoordinateProj4J, resultCoordinateGeoPackageNGA);
-        // TODO: move the above row to base class (duplicated in some subclasses)
-        Coordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(coordinateResultsForTheDifferentImplementations);
+        Coordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
 
         CrsTransformationFacade facadeComposite = CrsTransformationFacadeComposite.createCrsTransformationAverage(
-            // TODO: move the list below to base class (because of duplication in subclasses)
-            Arrays.asList(
-                facadeGeoTools,
-                facadeGooberCTL,
-                facadeOrbisgisCTS,
-                facadeProj4J,
-                facadeGeoPackageNGA
-            )
+            allFacades
         );
         Coordinate coordinateReturnedByCompositeFacade = facadeComposite.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
 

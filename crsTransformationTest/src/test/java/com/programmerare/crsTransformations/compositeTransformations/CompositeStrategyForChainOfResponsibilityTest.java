@@ -1,10 +1,10 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
-import com.programmerare.crsTransformations.CrsTransformationFacade;
-import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
+import com.programmerare.crsTransformations.Coordinate;
+import com.programmerare.crsTransformations.CrsTransformationFacade;
 import org.junit.jupiter.api.Test;
-import java.util.Arrays;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CompositeStrategyForChainOfResponsibilityTest extends CompositeStrategyTestBase {
@@ -12,13 +12,9 @@ public class CompositeStrategyForChainOfResponsibilityTest extends CompositeStra
     @Test
     void createCRStransformationFacadeChainOfResponsibility() {
         CrsTransformationFacade facadeComposite = CrsTransformationFacadeComposite.createCrsTransformationChainOfResponsibility(
-            Arrays.asList(
-                facadeGeoTools, // since geotools is first here in this list, it should be the implementation providing the result
-                facadeGooberCTL,
-                facadeOrbisgisCTS,
-                facadeProj4J,
-                facadeGeoPackageNGA
-            )
+            // note that geotools should be the first item in the below list defined in the baseclass,
+            // and therefore geotools should be the implementation providing the result
+            super.allFacades
         );
         Coordinate coordinateReturnedByCompositeFacadeChainOfResponsibility = facadeComposite.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         // The above result of the composite should be equal to the result of GeoTools since it

@@ -16,19 +16,10 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
 
     @Test
     void transformWithFacadeCompositeMedianTest() {
-        List<Coordinate> coordinateResultsForTheDifferentImplementations = Arrays.asList(resultCoordinateGeoTools, resultCoordinateGooberCTL, resultCoordinateOrbisgisCTS, resultCoordinateProj4J, resultCoordinateGeoPackageNGA);
-        // TODO: move the above row to base class (duplicated in some subclasses)
-        Coordinate expectedCoordinateWithMedianLatitudeAndLongitude = calculateMedianCoordinate(coordinateResultsForTheDifferentImplementations);
+        Coordinate expectedCoordinateWithMedianLatitudeAndLongitude = calculateMedianCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
 
         CrsTransformationFacade facadeComposite = CrsTransformationFacadeComposite.createCrsTransformationMedian(
-            // TODO: move the list below to base class (because of duplication in subclasses)
-            Arrays.asList(
-                facadeGeoTools,
-                facadeGooberCTL,
-                facadeProj4J,
-                facadeOrbisgisCTS,
-                facadeGeoPackageNGA
-            )
+            allFacades
         );
 
         Coordinate coordinateReturnedByMedianFacade = facadeComposite.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);

@@ -21,7 +21,9 @@ abstract class CompositeStrategyTestBase {
     protected static CrsTransformationFacade facadeOrbisgisCTS;
     protected static CrsTransformationFacade facadeProj4J;
     protected static CrsTransformationFacade facadeGeoPackageNGA;
+
     protected static List<CrsTransformationFacade> allFacades;
+    protected static List<Coordinate> allCoordinateResultsForTheDifferentImplementations;
 
     protected static double wgs84Lat = 59.330231;
     protected static double wgs84Lon = 18.059196;
@@ -43,7 +45,15 @@ abstract class CompositeStrategyTestBase {
         facadeProj4J = new CrsTransformationFacadeProj4J();
         facadeGeoPackageNGA = new CrsTransformationFacadeGeoPackageNGA();
 
-        allFacades = Arrays.asList(facadeGeoTools, facadeGooberCTL, facadeOrbisgisCTS, facadeProj4J, facadeGeoPackageNGA);
+        allFacades = Arrays.asList(
+            // Regarding the order of the items in the list below:
+            // GeoTools should be the first since it is assumed in the test by the subclass CompositeStrategyForChainOfResponsibilityTest
+            facadeGeoTools,
+            facadeGooberCTL,
+            facadeOrbisgisCTS,
+            facadeProj4J,
+            facadeGeoPackageNGA
+        );
 
         wgs84coordinate = Coordinate.createFromYLatXLong(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
 
@@ -52,5 +62,12 @@ abstract class CompositeStrategyTestBase {
         resultCoordinateOrbisgisCTS = facadeOrbisgisCTS.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         resultCoordinateProj4J = facadeProj4J.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         resultCoordinateGeoPackageNGA = facadeGeoPackageNGA.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        allCoordinateResultsForTheDifferentImplementations = Arrays.asList(
+            resultCoordinateGeoTools,
+            resultCoordinateGooberCTL,
+            resultCoordinateOrbisgisCTS,
+            resultCoordinateProj4J,
+            resultCoordinateGeoPackageNGA
+        );
     }
 }
