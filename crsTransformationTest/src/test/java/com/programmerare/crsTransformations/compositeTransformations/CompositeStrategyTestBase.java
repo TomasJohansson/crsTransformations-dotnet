@@ -1,5 +1,6 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
+import com.programmerare.crsTransformationFacadeGeoPackageNGA.CrsTransformationFacadeGeoPackageNGA;
 import com.programmerare.crsTransformationFacadeGeoTools.CrsTransformationFacadeGeoTools;
 import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL;
 import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFacadeOrbisgisCTS;
@@ -19,6 +20,7 @@ abstract class CompositeStrategyTestBase {
     protected static CrsTransformationFacade facadeGooberCTL;
     protected static CrsTransformationFacade facadeOrbisgisCTS;
     protected static CrsTransformationFacade facadeProj4J;
+    protected static CrsTransformationFacade facadeGeoPackageNGA;
     protected static List<CrsTransformationFacade> allFacades;
 
     protected static double wgs84Lat = 59.330231;
@@ -31,7 +33,7 @@ abstract class CompositeStrategyTestBase {
     protected static Coordinate resultCoordinateGooberCTL;
     protected static Coordinate resultCoordinateOrbisgisCTS;
     protected static Coordinate resultCoordinateProj4J;
-
+    protected static Coordinate resultCoordinateGeoPackageNGA;
 
     @BeforeAll
     final static void beforeAll() {
@@ -39,8 +41,9 @@ abstract class CompositeStrategyTestBase {
         facadeGooberCTL = new CrsTransformationFacadeGooberCTL();
         facadeOrbisgisCTS = new CrsTransformationFacadeOrbisgisCTS();
         facadeProj4J = new CrsTransformationFacadeProj4J();
+        facadeGeoPackageNGA = new CrsTransformationFacadeGeoPackageNGA();
 
-        allFacades = Arrays.asList(facadeGeoTools, facadeGooberCTL, facadeOrbisgisCTS);
+        allFacades = Arrays.asList(facadeGeoTools, facadeGooberCTL, facadeOrbisgisCTS, facadeProj4J, facadeGeoPackageNGA);
 
         wgs84coordinate = Coordinate.createFromYLatXLong(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
 
@@ -48,5 +51,6 @@ abstract class CompositeStrategyTestBase {
         resultCoordinateGooberCTL = facadeGooberCTL.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         resultCoordinateOrbisgisCTS = facadeOrbisgisCTS.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         resultCoordinateProj4J = facadeProj4J.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        resultCoordinateGeoPackageNGA = facadeGeoPackageNGA.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
     }
 }

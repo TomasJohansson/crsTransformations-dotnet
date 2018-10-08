@@ -1,5 +1,6 @@
 package com.programmerare.crsTransformations;
 
+import com.programmerare.crsTransformationFacadeGeoPackageNGA.CrsTransformationFacadeGeoPackageNGA;
 import com.programmerare.crsTransformationFacadeGeoTools.CrsTransformationFacadeGeoTools;
 import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL;
 import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFacadeOrbisgisCTS;
@@ -34,7 +35,8 @@ final class CrsTransformationFacadeTest {
         new CrsTransformationFacadeGeoTools(),
         new CrsTransformationFacadeGooberCTL(),
         new CrsTransformationFacadeProj4J(),
-        new CrsTransformationFacadeOrbisgisCTS()
+        new CrsTransformationFacadeOrbisgisCTS(),
+        new CrsTransformationFacadeGeoPackageNGA()
     );
 
     @BeforeAll

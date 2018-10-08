@@ -5,6 +5,9 @@ import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
+
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
@@ -13,51 +16,33 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
 
     @Test
     void transformWithFacadeCompositeMedianTest() {
+        List<Coordinate> coordinateResultsForTheDifferentImplementations = Arrays.asList(resultCoordinateGeoTools, resultCoordinateGooberCTL, resultCoordinateOrbisgisCTS, resultCoordinateProj4J, resultCoordinateGeoPackageNGA);
+        // TODO: move the above row to base class (duplicated in some subclasses)
+        Coordinate expectedCoordinateWithMedianLatitudeAndLongitude = calculateMedianCoordinate(coordinateResultsForTheDifferentImplementations);
+
         CrsTransformationFacade facadeComposite = CrsTransformationFacadeComposite.createCrsTransformationMedian(
+            // TODO: move the list below to base class (because of duplication in subclasses)
             Arrays.asList(
                 facadeGeoTools,
                 facadeGooberCTL,
                 facadeProj4J,
-                facadeOrbisgisCTS
-                    // TODO: add usage of the added implementation GeoPackageNGA
+                facadeOrbisgisCTS,
+                facadeGeoPackageNGA
             )
         );
 
-        System.out.println(resultCoordinateProj4J);
-
         Coordinate coordinateReturnedByMedianFacade = facadeComposite.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         // The same transformation as above has been done in the base class for the individual facades
-        // The motviation for the below asserted values, read further down in the method.
-        double expectedMedianLongitude = (resultCoordinateOrbisgisCTS.getXLongitude() + resultCoordinateGeoTools.getXLongitude()) / 2.0;
-        double expectedMedianLatitude = (resultCoordinateOrbisgisCTS.getYLatitude() + resultCoordinateProj4J.getYLatitude()) / 2.0;
-        assertEquals(expectedMedianLongitude, coordinateReturnedByMedianFacade.getXLongitude(), delta);
-        assertEquals(expectedMedianLatitude, coordinateReturnedByMedianFacade.getYLatitude(), delta);
+        assertEquals(expectedCoordinateWithMedianLatitudeAndLongitude.getXLongitude(), coordinateReturnedByMedianFacade.getXLongitude(), delta);
+        assertEquals(expectedCoordinateWithMedianLatitudeAndLongitude.getYLatitude(), coordinateReturnedByMedianFacade.getYLatitude(), delta);
+    }
 
-        // The median values are the following (using test data in the base class):
-        // longitude: 674032.3571771549 (the average of the longitude from GeoTools and Orbis, see below)
-        // latitude: 6580821.991121078 (the average of the latitude from Proj4J and Orbis, see below)
-
-//        System.out.println(resultCoordinateGeoTools);
-//        System.out.println(resultCoordinateGooberCTL);
-//        System.out.println(resultCoordinateOrbisgisCTS);
-//        System.out.println(resultCoordinateProj4J);
-// Below are the outputs of the above statements (in the same order as above)
-//        Coordinate(xLongitude=674032.3571771549, yLatitude=6580821.994371211, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
-//        Coordinate(xLongitude=674032.357, yLatitude=6580821.991, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
-//        Coordinate(xLongitude=674032.3573261796, yLatitude=6580821.991121078, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
-//        Coordinate(xLongitude=674032.357326444, yLatitude=6580821.991123579, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
-
-        // The above longitudes in sorted order, i.e. with the median in the middle
-        assertEquals(674032.357, resultCoordinateGooberCTL.getXLongitude(), delta);
-        assertEquals(674032.3571771549, resultCoordinateGeoTools.getXLongitude(), delta);
-        assertEquals(674032.3573261796, resultCoordinateOrbisgisCTS.getXLongitude(), delta);
-        assertEquals(674032.357326444, resultCoordinateProj4J.getXLongitude(), delta);
-
-        // The latitudes in sorted order, i.e. with the median in the middle
-        assertEquals(6580821.991, resultCoordinateGooberCTL.getYLatitude(), delta);
-        assertEquals(6580821.991121078, resultCoordinateOrbisgisCTS.getYLatitude(), delta);
-        assertEquals(6580821.991123579, resultCoordinateProj4J.getYLatitude(), delta);
-        assertEquals(6580821.994371211, resultCoordinateGeoTools.getYLatitude(), delta);
+    private Coordinate calculateMedianCoordinate(List<Coordinate> coordinateResultsForTheDifferentImplementations) {
+        List<Double> longitudesSorted = coordinateResultsForTheDifferentImplementations.stream().map(x -> x.getXLongitude()).collect(Collectors.toList());
+        List<Double> latitudesSorted = coordinateResultsForTheDifferentImplementations.stream().map(x -> x.getYLatitude()).collect(Collectors.toList());
+        double medianLongitude = CompositeStrategyForMedianValue.getMedianValue(longitudesSorted);
+        double medianLatitude = CompositeStrategyForMedianValue.getMedianValue(latitudesSorted);
+        return Coordinate.createFromXLongYLat(medianLongitude, medianLatitude, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
     }
 
     @Test
