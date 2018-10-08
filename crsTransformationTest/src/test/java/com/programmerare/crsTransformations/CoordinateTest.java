@@ -4,6 +4,7 @@ import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumbe
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgCode;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class CoordinateTest {
     private final double deltaTolerance = 0.00001;
@@ -78,5 +79,47 @@ class CoordinateTest {
         // assertEquals(coordinateWithAverageLatitudeAndLongitude, coordinateReturnedByCompositeFacade);
         // Expected :Coordinate(xLongitude=674032.3572074446, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
         // Actual   :Coordinate(xLongitude=674032.3572074447, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
+    }
+
+
+    // The Coordinate class (implemented with Kotlin) does not explicitly implement
+    // the methods equals and hashCode but the class is a "data class" (with an implicit/automatic implementation )
+    @Test
+    void assertEqualsAndHashCodeWhenSixDecimalsAreUsed() {
+        Coordinate c1 = Coordinate.createFromLatLong(59.123456, 18.123456000);
+        Coordinate c2 = Coordinate.createFromLatLong(59.123456000, 18.123456);
+        assertEquals(
+            c1, c2
+        );
+        assertEquals(
+            c1.hashCode(), c2.hashCode()
+        );
+    }
+
+    @Test
+    void assertEqualsAndHashCodeWhenNineDecimalsAreUsed() {
+        Coordinate c1 = Coordinate.createFromLatLong(59.123456789, 18.123456789000);
+        Coordinate c2 = Coordinate.createFromLatLong(59.123456789000, 18.123456789);
+        assertEquals(
+            c1, c2
+        );
+        assertEquals(
+            c1.hashCode(), c2.hashCode()
+        );
+    }
+
+    @Test
+    void assertNotEqualsWhenVerySmallDifference() {
+        // very small latitude difference:
+        assertNotEquals(
+            Coordinate.createFromLatLong(59.123456789000, 18.123456789),
+            Coordinate.createFromLatLong(59.123456789001, 18.123456789)
+        );
+
+        // very small longitude difference:
+        assertNotEquals(
+            Coordinate.createFromLatLong(59.123456789, 18.123456789000),
+            Coordinate.createFromLatLong(59.123456789, 18.123456789001)
+        );
     }
 }
