@@ -3,11 +3,11 @@ package com.programmerare.crsTransformations;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import org.jetbrains.annotations.NotNull;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.mock;
 
 public class TransformResultImplementationTest {
 
@@ -22,7 +22,9 @@ public class TransformResultImplementationTest {
         inputCoordinate = Coordinate.createFromXLongYLat(0.0, 0.0, 1234);
         outputCoordinate = inputCoordinate;
 
-        crsTransformationFacade = new CrsTransformationFacadeTemp();
+        // the mock below is currently not used any more than as a convenient way
+        // of constructing an instance of the interface
+        crsTransformationFacade = mock(CrsTransformationFacade.class);
     }
 
     @Test
@@ -70,50 +72,4 @@ public class TransformResultImplementationTest {
         // e.g. will match text containing "Pre-condition" (including hyphen and uppercased first letter)
         assertThat(exceptionMessage, containsString("precondition"));
     }
-
-    // TODO elimitate the class below
-    class CrsTransformationFacadeTemp implements CrsTransformationFacade {
-        @NotNull
-        @Override
-        public Coordinate transform(@NotNull Coordinate inputCoordinate, int epsgNumberForOutputCoordinateSystem) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public Coordinate transform(@NotNull Coordinate inputCoordinate, @NotNull String crsCodeForOutputCoordinateSystem) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public Coordinate transform(@NotNull Coordinate inputCoordinate, @NotNull CrsIdentifier crsIdentifierForOutputCoordinateSystem) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public TransformResult transformToResultObject(@NotNull Coordinate inputCoordinate, int epsgNumberForOutputCoordinateSystem) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public TransformResult transformToResultObject(@NotNull Coordinate inputCoordinate, @NotNull String crsCodeForOutputCoordinateSystem) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public TransformResult transformToResultObject(@NotNull Coordinate inputCoordinate, @NotNull CrsIdentifier crsIdentifierForOutputCoordinateSystem) {
-            return null;
-        }
-
-        @NotNull
-        @Override
-        public String getNameOfImplementation() {
-            return "CrsTransformationFacadeTemp";
-        }
-    }
 }
-
