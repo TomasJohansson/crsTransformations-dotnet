@@ -6,8 +6,9 @@ import java.io.File
 // This class generates constants classes into subfolders of this folder:
 // // .\crsConstants\src\main\java\com\programmerare\crsConstants
 
-// command line execution (according to configuration in build.gradle):
-// gradle generateClassesWithEpsgConstants
+// command line execution (according to configuration in build.gradle) example:
+// gradle generateClassesWithEpsgConstants --args="v9_5_4 epsg_version_9_5_4 dbUserName dbUserPassword java"
+// gradle generateClassesWithEpsgConstants --args="v9_5_4 epsg_version_9_5_4 dbUserName dbUserPassword csv"
 
 /**
  * Below are step by step instructions for how to generate new constants when a new EPSG version is downloaded.
@@ -139,9 +140,7 @@ class ConstantClassGenerator : CodeGeneratorBase() {
     private var nameOfConstants = mutableListOf<ConstantTypeNameValue>()
     private var constantNameRenderer = ConstantNameRenderer(RenderStrategyNameAreaNumberInteger())
 
-    // Generates classes with constants based on database with EPSG codes:
-    // http://www.epsg.org/EPSGDataset/DownloadDataset.aspx
-    fun generateConstants() {
+    private fun populateListWithNameOfConstants() {
         val sqlQuery = SQL_STATEMENT_SELECTING_CRSCODE_CRSNAME_AREANAME
 
         getJdbcTemplate().query(sqlQuery) { rs, _ ->
@@ -151,14 +150,20 @@ class ConstantClassGenerator : CodeGeneratorBase() {
             val crsName = rs.getString(SQL_COLUMN_CRSNAME)
 
             nameOfConstants.add(
-                ConstantTypeNameValue(
-                    constantNameRenderer,
-                    epsgNumber,
-                    areaName,
-                    crsName
-                )
+                    ConstantTypeNameValue(
+                            constantNameRenderer,
+                            epsgNumber,
+                            areaName,
+                            crsName
+                    )
             )
         }
+    }
+
+    // Generates classes with constants based on database with EPSG codes:
+    // http://www.epsg.org/EPSGDataset/DownloadDataset.aspx
+    fun generateFilesWithJavaConstants() {
+        populateListWithNameOfConstants()
 
         // Generate Totally 12 classes below in 6 packages with 2 classes per package:
         generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger())
@@ -178,11 +183,6 @@ class ConstantClassGenerator : CodeGeneratorBase() {
 
         generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), sortByNumber = true)
         generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
-
-        // The below method does not really belong here within this class
-        // at least from a semantic point of view considering that the current name of the
-        // class indicates that it should generated classes with constants ...
-        generateCsvFile()
     }
 
     private fun generateJavaFileWithConstants(
@@ -209,8 +209,18 @@ class ConstantClassGenerator : CodeGeneratorBase() {
      * with the following three fields at each row: EpsgNumber|CrsName|AreaName
     * The name of the generated path/file will be something like this:
     *   ./crsCodeGeneration/src/main/resources/generated/csv_files/crs_number_name_area_v9_5_3.csv
+    * The reason for generating this file is that it might be reusable to create constants
+     * for other programming languages, i.e. very simple to copy this generated file
+     * and then split the lines and generate new files with those names as constants
+     * for any programming language.
     */
-    private fun generateCsvFile() {
+    fun generateCsvFile() {
+        // This method does not really belong here within this class
+        // at least from a semantic point of view considering that the current name of the
+        // class indicates that it should generated classes with constants ...
+
+        populateListWithNameOfConstants()
+
         val directoryWhereTheCsvFileShouldBeGenerated = getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION, RELATIVE_PATH_TO_TARGET_DIRECTORY_FOR_GENERATED_CODE_WITHIN_RESOURCES_DIRECTORY + "/csv_files", throwExceptionIfNotExisting = false)
         if(!directoryWhereTheCsvFileShouldBeGenerated.exists()) {
             println("Directory does not exist: " + directoryWhereTheCsvFileShouldBeGenerated.canonicalPath)
@@ -311,7 +321,19 @@ class ConstantClassGenerator : CodeGeneratorBase() {
                     databaseUserPassword = args[3]
             )
             val constantClassGenerator = ConstantClassGenerator()
-            constantClassGenerator.generateConstants()
+            val typeOfFilesToBeGenerated = args[4]
+            if(typeOfFilesToBeGenerated == "java") {
+                constantClassGenerator.generateFilesWithJavaConstants()
+            }
+            else if(typeOfFilesToBeGenerated == "csv") {
+                constantClassGenerator.generateCsvFile()
+            }
+            else if(typeOfFilesToBeGenerated == "csharpe") {
+                println("Generation of C# constants is NOT YET implemented")
+            }
+            else {
+                println("Unsupported argument: " + typeOfFilesToBeGenerated)
+            }
         }
 
         /**
@@ -319,8 +341,8 @@ class ConstantClassGenerator : CodeGeneratorBase() {
          * a string with a validation message that should be displayed
          */
         fun getValidationErrorMessageOrEmptyStringIfNoError(args: Array<String>): String {
-            if (args.size < 4) {
-                return "The method should have four parameters"
+            if (args.size < 5) {
+                return "The method should have five parameters"
             }
             if(!isValidAsVersionPrefix(args[0])) {
                 return "The version prefix is not valid. It should be a 'v' with some numbers, potentially separated with '_' instead of '.' . Example: 'v9_5_3' "

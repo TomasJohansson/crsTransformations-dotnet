@@ -131,10 +131,9 @@ project(':crsTransformationTest') {
 }
 
 project(':crsCodeGeneration') {
-	// command line execution
-	// gradle generateClassesWithEpsgConstants
-	// or, if something else than the default/hardcoded class name should be used:
-	// gradle generateClassesWithEpsgConstants -PmainClass=com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator
+	// command line execution  examples:
+	// gradle generateClassesWithEpsgConstants --args="v9_5_4 epsg_version_9_5_4 dbUserName dbUserPassword java"
+	// gradle generateClassesWithEpsgConstants --args="v9_5_4 epsg_version_9_5_4 dbUserName dbUserPassword csv"
 	task generateClassesWithEpsgConstants(type:JavaExec) {
 		main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator"
 		classpath = sourceSets.main.runtimeClasspath
