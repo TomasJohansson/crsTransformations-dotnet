@@ -158,6 +158,6 @@ project(':crsCodeGeneration') {
 
 		// https://mvnrepository.com/artifact/org.springframework/spring-jdbc
 		// https://github.com/spring-projects/spring-framework/releases
-		implementation("org.springframework:spring-jdbc:5.1.0.RELEASE")
+		implementation("org.springframework:spring-jdbc:5.1.1.RELEASE")
 	}
 }
