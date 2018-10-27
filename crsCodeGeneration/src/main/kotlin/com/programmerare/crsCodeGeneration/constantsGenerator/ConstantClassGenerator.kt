@@ -194,12 +194,12 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         constantNameRenderer.renderStrategy = renderStrategy
         val directoryWhereTheJavaFilesShouldBeGenerated = getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CONSTANTS, RELATIVE_PATH_TO_JAVA_FILES)
         var javaFileToBecomeCreated = getJavaFileToBecomeCreated(nameOfJavaClass, nameOfJavaPackage, directoryWhereTheJavaFilesShouldBeGenerated)
-        val constantsSortedByName: List<ConstantTypeNameValue> =
+        val constantsSorted: List<ConstantTypeNameValue> =
             if(sortByNumber)
                 nameOfConstants.sortedBy { it.epsgNumber }
             else
                 nameOfConstants.sortedBy { it.getNameForConstant() }
-        val constantsInformation = ConstantsInformation(nameOfJavaClass, nameOfJavaPackage, constants = constantsSortedByName)
+        val constantsInformation = ConstantsInformation(nameOfJavaClass, nameOfJavaPackage, constants = constantsSorted)
         generateJavaFileWithConstants(javaFileToBecomeCreated, constantsInformation, NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CONSTANTS)
     }
 
