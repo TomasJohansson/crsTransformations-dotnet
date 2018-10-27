@@ -70,7 +70,7 @@ subprojects {
 
 		// https://mvnrepository.com/artifact/com.google.guava/guava
 		// https://github.com/google/guava/releases
-		compile group: 'com.google.guava', name: 'guava', version: '26.0-jre'
+		compile group: 'com.google.guava', name: 'guava', version: '27.0-jre'
 	}
 	test {
 		// Enable JUnit 5 (Gradle 4.6+).
