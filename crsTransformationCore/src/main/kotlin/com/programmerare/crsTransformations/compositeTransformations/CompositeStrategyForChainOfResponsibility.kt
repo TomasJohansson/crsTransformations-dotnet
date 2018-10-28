@@ -8,11 +8,7 @@ class CompositeStrategyForChainOfResponsibility(private val crsTransformationFac
         return crsTransformationFacades
     }
 
-    override fun shouldInvokeNextFacade(allResultsSoFar: List<TransformResult>, lastResultOrNullIfNoPrevious: TransformResult?, nextFacadeToInvoke: CrsTransformationFacade): Boolean {
-        return shouldContinueIterationOfFacadesToInvoke(allResultsSoFar, lastResultOrNullIfNoPrevious)
-    }
-
-    override fun shouldContinueIterationOfFacadesToInvoke(allResultsSoFar: List<TransformResult>, lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
+    override fun shouldContinueIterationOfFacadesToInvoke(lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
         return lastResultOrNullIfNoPrevious == null || !lastResultOrNullIfNoPrevious.isSuccess
     }
 

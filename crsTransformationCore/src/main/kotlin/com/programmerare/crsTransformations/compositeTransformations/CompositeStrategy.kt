@@ -8,9 +8,7 @@ import com.programmerare.crsTransformations.TransformResult
 interface CompositeStrategy {
     fun getAllTransformationFacadesInTheOrderTheyShouldBeInvoked(): List<CrsTransformationFacade>
 
-    fun shouldInvokeNextFacade(allResultsSoFar: List<TransformResult>, lastResultOrNullIfNoPrevious: TransformResult?, nextFacadeToInvoke: CrsTransformationFacade): Boolean
-
-    fun shouldContinueIterationOfFacadesToInvoke(allResultsSoFar: List<TransformResult>, lastResultOrNullIfNoPrevious: TransformResult?) : Boolean
+    fun shouldContinueIterationOfFacadesToInvoke(lastResultOrNullIfNoPrevious: TransformResult?) : Boolean
 
     fun calculateAggregatedResult(
         allResults: List<TransformResult>,

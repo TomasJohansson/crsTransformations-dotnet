@@ -1,6 +1,10 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
-import com.programmerare.crsTransformations.*
+import com.programmerare.crsTransformations.Coordinate
+import com.programmerare.crsTransformations.CrsIdentifier
+import com.programmerare.crsTransformations.CrsTransformationFacade
+import com.programmerare.crsTransformations.CrsTransformationFacadeBase
+import com.programmerare.crsTransformations.TransformResult
 import java.lang.RuntimeException
 
 final class CrsTransformationFacadeComposite private constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationFacadeBase(), CrsTransformationFacade {
@@ -16,18 +20,16 @@ final class CrsTransformationFacadeComposite private constructor(protected val c
     }
 
     override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
-        val crsTransformationFacades = compositeStrategy.getAllTransformationFacadesInTheOrderTheyShouldBeInvoked()
+        val allCrsTransformationFacades = compositeStrategy.getAllTransformationFacadesInTheOrderTheyShouldBeInvoked()
         val list = mutableListOf<TransformResult>()
         var lastResultOrNullIfNoPrevious: TransformResult? = null
-        for (facade: CrsTransformationFacade in crsTransformationFacades) {
-            if(compositeStrategy.shouldInvokeNextFacade(list, lastResultOrNullIfNoPrevious, facade)) {
-                val res = facade.transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
-                list.add(res)
-                lastResultOrNullIfNoPrevious = res
-            }
-            if(!compositeStrategy.shouldContinueIterationOfFacadesToInvoke(list, lastResultOrNullIfNoPrevious)) {
+        for (crsTransformationFacade: CrsTransformationFacade in allCrsTransformationFacades) {
+            if(!compositeStrategy.shouldContinueIterationOfFacadesToInvoke(lastResultOrNullIfNoPrevious)) {
                 break
             }
+            val res = crsTransformationFacade.transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+            list.add(res)
+            lastResultOrNullIfNoPrevious = res
         }
         return compositeStrategy.calculateAggregatedResult(list, inputCoordinate, crsIdentifierForOutputCoordinateSystem, this)
     }
