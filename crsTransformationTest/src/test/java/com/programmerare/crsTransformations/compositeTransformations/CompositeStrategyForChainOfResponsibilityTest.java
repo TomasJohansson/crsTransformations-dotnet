@@ -16,11 +16,11 @@ public class CompositeStrategyForChainOfResponsibilityTest extends CompositeStra
             // and therefore geotools should be the implementation providing the result
             super.allFacades
         );
-        Coordinate coordinateReturnedByCompositeFacadeChainOfResponsibility = facadeComposite.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        Coordinate coordinateReturnedByCompositeFacadeChainOfResponsibility = facadeComposite.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         // The above result of the composite should be equal to the result of GeoTools since it
         // is first in the list of parameters to the constructor and it should produce a result for
         // the input coordinates ... so therefore below assert against the direct result of geotools
-        Coordinate coordinateResultWhenUsingGeoTools = facadeGeoTools.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        Coordinate coordinateResultWhenUsingGeoTools = facadeGeoTools.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertEquals(coordinateResultWhenUsingGeoTools, coordinateReturnedByCompositeFacadeChainOfResponsibility);
     }
 }

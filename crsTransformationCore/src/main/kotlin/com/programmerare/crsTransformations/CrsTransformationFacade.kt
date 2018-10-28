@@ -2,17 +2,17 @@ package com.programmerare.crsTransformations
 
 interface CrsTransformationFacade {
 
-    fun transform(
+    fun transformToCoordinate(
         inputCoordinate: Coordinate,
         epsgNumberForOutputCoordinateSystem: Int
     ): Coordinate
 
-    fun transform(
+    fun transformToCoordinate(
         inputCoordinate: Coordinate,
         crsCodeForOutputCoordinateSystem: String
     ): Coordinate
 
-    fun transform(
+    fun transformToCoordinate(
         inputCoordinate: Coordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate

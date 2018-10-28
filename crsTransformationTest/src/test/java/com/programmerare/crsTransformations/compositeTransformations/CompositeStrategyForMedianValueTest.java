@@ -22,7 +22,7 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
             allFacades
         );
 
-        Coordinate coordinateReturnedByMedianFacade = facadeComposite.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        Coordinate coordinateReturnedByMedianFacade = facadeComposite.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         // The same transformation as above has been done in the base class for the individual facades
         assertEquals(expectedCoordinateWithMedianLatitudeAndLongitude.getXLongitude(), coordinateReturnedByMedianFacade.getXLongitude(), delta);
         assertEquals(expectedCoordinateWithMedianLatitudeAndLongitude.getYLatitude(), coordinateReturnedByMedianFacade.getYLatitude(), delta);

@@ -67,9 +67,9 @@ class CrsTransformationFacadeGooberCTL : CrsTransformationFacadeBaseLeaf(), CrsT
             (input.isRT90() && output.isRT90())
         ) {
             // first transform to WGS84
-            val wgs84Coordinate = transform(inputCoordinate, WGS84)
+            val wgs84Coordinate = transformToCoordinate(inputCoordinate, WGS84)
             // then transform from WGS84
-            return transform(wgs84Coordinate, crsIdentifierForOutputCoordinateSystem)
+            return transformToCoordinate(wgs84Coordinate, crsIdentifierForOutputCoordinateSystem)
         } else {
             throw IllegalArgumentException("Unsupported transformation from $epsgNumberForInputCoordinateSystem to ${crsIdentifierForOutputCoordinateSystem.crsCode}")
         }

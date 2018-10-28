@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations
 
 abstract class CrsTransformationFacadeBase : CrsTransformationFacade {
 
-    override final fun transform(
+    override final fun transformToCoordinate(
         inputCoordinate: Coordinate,
         crsCodeForOutputCoordinateSystem: String
     ): Coordinate {
@@ -13,7 +13,7 @@ abstract class CrsTransformationFacadeBase : CrsTransformationFacade {
         )
     }
 
-    override final fun transform(
+    override final fun transformToCoordinate(
         inputCoordinate: Coordinate,
         epsgNumberForOutputCoordinateSystem: Int
     ): Coordinate {
@@ -23,7 +23,7 @@ abstract class CrsTransformationFacadeBase : CrsTransformationFacade {
         )
     }
 
-    override final fun transform(
+    override final fun transformToCoordinate(
         inputCoordinate: Coordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate {

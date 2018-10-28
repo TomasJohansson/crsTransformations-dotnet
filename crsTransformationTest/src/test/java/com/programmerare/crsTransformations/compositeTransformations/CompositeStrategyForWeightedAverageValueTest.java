@@ -71,7 +71,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
     }
 
     private void createCompositeStrategyForWeightedAverageValueHelper(CrsTransformationFacadeComposite facade) {
-        final Coordinate coordinateResult = facade.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        final Coordinate coordinateResult = facade.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
 
         assertEquals(coordinateWithExpectedWeightedValues.getYLatitude(), coordinateResult.getYLatitude(), SMALL_DELTA_VALUE);
         assertEquals(coordinateWithExpectedWeightedValues.getXLongitude(), coordinateResult.getXLongitude(), SMALL_DELTA_VALUE);

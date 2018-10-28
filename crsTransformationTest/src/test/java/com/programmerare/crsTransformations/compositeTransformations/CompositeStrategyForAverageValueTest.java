@@ -21,7 +21,7 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
         CrsTransformationFacade facadeComposite = CrsTransformationFacadeComposite.createCrsTransformationAverage(
             allFacades
         );
-        Coordinate coordinateReturnedByCompositeFacade = facadeComposite.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        Coordinate coordinateReturnedByCompositeFacade = facadeComposite.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
 
         double delta = 0.000000001;
         assertEquals(coordinateWithAverageLatitudeAndLongitude.getXLongitude(), coordinateReturnedByCompositeFacade.getXLongitude(), delta);

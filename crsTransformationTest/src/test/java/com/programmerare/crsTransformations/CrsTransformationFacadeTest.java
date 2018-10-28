@@ -84,8 +84,8 @@ final class CrsTransformationFacadeTest {
     ) {
         double delta = getDeltaValueForComparisons(inputCoordinateOriginalCRS.getCrsIdentifier());
 
-        Coordinate outputCoordinateForTransformTargetCRS = crsTransformationFacade.transform(inputCoordinateOriginalCRS, epsgNumberForTransformTargetCRS);
-        Coordinate outputCoordinateOriginalCRS = crsTransformationFacade.transform(outputCoordinateForTransformTargetCRS, inputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber());
+        Coordinate outputCoordinateForTransformTargetCRS = crsTransformationFacade.transformToCoordinate(inputCoordinateOriginalCRS, epsgNumberForTransformTargetCRS);
+        Coordinate outputCoordinateOriginalCRS = crsTransformationFacade.transformToCoordinate(outputCoordinateForTransformTargetCRS, inputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber());
 
         assertEquals(inputCoordinateOriginalCRS.getXLongitude(), outputCoordinateOriginalCRS.getXLongitude(), delta);
         assertEquals(inputCoordinateOriginalCRS.getYLatitude(), outputCoordinateOriginalCRS.getYLatitude(), delta);
@@ -107,7 +107,7 @@ final class CrsTransformationFacadeTest {
         double sweref99_X_expected = 674032;
 
         Coordinate inputCoordinate = Coordinate.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
-        Coordinate outputCoordinate = crsTransformationFacade.transform(inputCoordinate, epsgNumberForSweref99TM);
+        Coordinate outputCoordinate = crsTransformationFacade.transformToCoordinate(inputCoordinate, epsgNumberForSweref99TM);
         assertEquals(sweref99_Y_expected, outputCoordinate.getYLatitude(), 0.5);
         assertEquals(sweref99_X_expected, outputCoordinate.getXLongitude(), 0.5);
     }
@@ -121,7 +121,7 @@ final class CrsTransformationFacadeTest {
 
         Coordinate inputCoordinate = Coordinate.createFromXLongitudeYLatitude(rt90_X, rt90_Y, epsgNumberForRT90);
 
-        Coordinate outputCoordinate = crsTransformationFacade.transform(inputCoordinate, epsgNumberForWgs84);
+        Coordinate outputCoordinate = crsTransformationFacade.transformToCoordinate(inputCoordinate, epsgNumberForWgs84);
         assertEquals(wgs84Lat_expected, outputCoordinate.getYLatitude(), 0.1);
         assertEquals(wgs84Lon_expected, outputCoordinate.getXLongitude(), 0.1);
     }
@@ -159,8 +159,8 @@ final class CrsTransformationFacadeTest {
     ) {
         final Coordinate coordinate1 = Coordinate.createFromXLongitudeYLatitude(xLon1, yLat1, epsgNumber1);
         final Coordinate coordinate2 = Coordinate.createFromXLongitudeYLatitude(xLon2, yLat2, epsgNumber2);
-        final Coordinate outputForCoordinate1 = crsTransformationFacade.transform(coordinate1, epsgNumber2);
-        final Coordinate outputForCoordinate2 = crsTransformationFacade.transform(coordinate2, epsgNumber1);
+        final Coordinate outputForCoordinate1 = crsTransformationFacade.transformToCoordinate(coordinate1, epsgNumber2);
+        final Coordinate outputForCoordinate2 = crsTransformationFacade.transformToCoordinate(coordinate2, epsgNumber1);
 
         double delta = getDeltaValueForComparisons(epsgNumber2);
         assertEquals(coordinate2.getXLongitude(), outputForCoordinate1.getXLongitude(), delta, description);
@@ -235,8 +235,8 @@ final class CrsTransformationFacadeTest {
     ) {
         double delta = getDeltaValueForComparisons(epsgNumberForOutputCoordinate);
 
-        Coordinate outputCoordinate1 = crsTransformationFacade1.transform(inputCoordinate, epsgNumberForOutputCoordinate);
-        Coordinate outputCoordinate2 = crsTransformationFacade2.transform(inputCoordinate, epsgNumberForOutputCoordinate);
+        Coordinate outputCoordinate1 = crsTransformationFacade1.transformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinate);
+        Coordinate outputCoordinate2 = crsTransformationFacade2.transformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinate);
 
         Supplier<String> errorMessageLongitude = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getXLongitude() - outputCoordinate2.getXLongitude());
         Supplier<String> errorMessageLatitude = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getYLatitude() - outputCoordinate2.getYLatitude());

@@ -116,7 +116,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     @Test
     void averageFacadeTest() {
         CrsTransformationFacade averageFacade = CrsTransformationFacadeComposite.createCrsTransformationAverage(allFacades);
-        Coordinate result = averageFacade.transform(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        Coordinate result = averageFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(result);
 
         // Coordinate expectedAverageCoordinate = Coordinate.createFromLatitudeLongitude(averageLatitude, averageLongitude);
@@ -128,7 +128,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     @Test
     void medianFacadeTest() {
         CrsTransformationFacade averageFacade = CrsTransformationFacadeComposite.createCrsTransformationMedian(allFacades);
-        Coordinate result = averageFacade.transform(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        Coordinate result = averageFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(result);
 
         assertEquals(medianLatitude,  result.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
@@ -138,7 +138,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     @Test
     void ChainOfResponsibilityFacadeTest() {
         CrsTransformationFacade averageFacade = CrsTransformationFacadeComposite.createCrsTransformationChainOfResponsibility(allFacades);
-        Coordinate result = averageFacade.transform(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        Coordinate result = averageFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(result);
 
         // The assumption below (according to the setup code in the "before" method in this JUnit class)
@@ -179,7 +179,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         );
 
         final CrsTransformationFacade weightedAverageFacade = CrsTransformationFacadeComposite.createCrsTransformationWeightedAverage(weightedFacades);
-        final Coordinate result = weightedAverageFacade.transform(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        final Coordinate result = weightedAverageFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(result);
 
         assertEquals(expectedWeightedAverage.getYLatitude(),  result.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);

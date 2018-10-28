@@ -57,11 +57,11 @@ abstract class CompositeStrategyTestBase {
 
         wgs84coordinate = Coordinate.createFromYLatitudeXLongitude(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
 
-        resultCoordinateGeoTools = facadeGeoTools.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
-        resultCoordinateGooberCTL = facadeGooberCTL.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
-        resultCoordinateOrbisgisCTS = facadeOrbisgisCTS.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
-        resultCoordinateProj4J = facadeProj4J.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
-        resultCoordinateGeoPackageNGA = facadeGeoPackageNGA.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        resultCoordinateGeoTools = facadeGeoTools.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        resultCoordinateGooberCTL = facadeGooberCTL.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        resultCoordinateOrbisgisCTS = facadeOrbisgisCTS.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        resultCoordinateProj4J = facadeProj4J.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        resultCoordinateGeoPackageNGA = facadeGeoPackageNGA.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         allCoordinateResultsForTheDifferentImplementations = Arrays.asList(
             resultCoordinateGeoTools,
             resultCoordinateGooberCTL,
