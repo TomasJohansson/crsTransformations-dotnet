@@ -137,6 +137,96 @@ import java.io.File
  *          constants for EPSG codes used specifically in Sweden are sorted together.
  */
 class ConstantClassGenerator : CodeGeneratorBase() {
+    // --------------------------------------------------------------------------------
+    companion object {
+        @JvmStatic
+        fun main(args: Array<String>) {
+            val validationMessage = getValidationErrorMessageOrEmptyStringIfNoError(args)
+            if (!validationMessage.equals("")) {
+                println(validationMessage)
+                return
+            }
+            // args[0] is the version of EPSG and should be specified with underscores instead of dots e.g. "v9_5_3"
+            setEpsgVersion(epsgVersion = args[0])
+            setDatabaseInformationForMariaDbConnection(
+                    databaseName = args[1],
+                    databaseUserName = args[2],
+                    databaseUserPassword = args[3]
+            )
+            val constantClassGenerator = ConstantClassGenerator()
+            val typeOfFilesToBeGenerated = args[4]
+            if(typeOfFilesToBeGenerated == "java") {
+                constantClassGenerator.generateFilesWithJavaConstants()
+            }
+            else if(typeOfFilesToBeGenerated == "csv") {
+                constantClassGenerator.generateCsvFile()
+            }
+            else if(typeOfFilesToBeGenerated == "csharpe") {
+                constantClassGenerator.generateFilesWithCSharpeConstants()
+            }
+            else {
+                println("Unsupported argument: " + typeOfFilesToBeGenerated)
+            }
+        }
+
+        /**
+         * Return empty string if validation is okay, otherwise
+         * a string with a validation message that should be displayed
+         */
+        fun getValidationErrorMessageOrEmptyStringIfNoError(args: Array<String>): String {
+            if (args.size < 5) {
+                return "The method should have five parameters"
+            }
+            if(!isValidAsVersionPrefix(args[0])) {
+                return "The version prefix is not valid. It should be a 'v' with some numbers, potentially separated with '_' instead of '.' . Example: 'v9_5_3' "
+            }
+            return ""
+        }
+
+        private val regularExpressionForVersionSuffix = Regex("""v(\d+|\d+[_\d]*\d+)""")
+        /**
+         * @param versionSuffix a string such as "v9_5_3" (for a version 9.5.3)
+         *  i.e. the "v" as prefix and then some version number with one or more digits,
+         *  but instead of the normal dots the separator between major/minor version numbers should be underscore.
+         *  The usage of the validated string is that it will be used as the last part of a package name.
+         */
+        fun isValidAsVersionPrefix(versionSuffix: String): Boolean {
+            return regularExpressionForVersionSuffix.matches(versionSuffix)
+        }
+
+        private const val FREEMARKER_PROPERTY_NAME_OF_CONSTANTS = "constants"
+        private const val FREEMARKER_PROPERTY_NAME_OF_CLASS = "nameOfClass"
+        private const val FREEMARKER_PROPERTY_NAME_OF_PACKAGE_OR_NAMESPACE = "nameOfPackageOrNamespace"
+        private const val FREEMARKER_PROPERTY_NAME_OF_CLASS_LEVEL_COMMENTS = "rowsForClassLevelComment"
+
+        private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_JAVA_CONSTANTS = "ConstantsJava.ftlh"
+        private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSHARPE_CONSTANTS = "ConstantsCSharpe.ftlh"
+        private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_FILE = "CsvFileWithEpsgNumberAndCrsNameAndAreaName.ftlh"
+
+        private const val CLASS_NAME_INTEGER_CONSTANTS = "EpsgNumber"
+        private const val CLASS_NAME_STRING_CONSTANTS = "EpsgCode"
+
+        private const val PACKAGE_NAME_PREFIX = "com.programmerare.crsConstants."
+
+        private var _epsgVersion = "v_NotYetDefined" // should be something like "v9_5_4"
+        private fun setEpsgVersion(epsgVersion: String) {
+            _epsgVersion = epsgVersion
+        }
+
+        // should return something like "v9_5_4" or "v9.5.4" depending on the boolean parameter
+        private fun getEpsgVersion(useUnderScoresInsteadOfDots: Boolean = true) : String {
+            if(useUnderScoresInsteadOfDots) {
+                return _epsgVersion.replace('.','_')
+            }
+            else {
+                return _epsgVersion.replace('_','.')
+            }
+        }
+        private fun getPackageNameSuffix(): String {
+            return "." + getEpsgVersion()
+        }
+    } // companion object ends here
+    // --------------------------------------------------------------------------------
 
     private var nameOfConstants = mutableListOf<ConstantTypeNameValue>()
     private var constantNameRenderer = ConstantNameRenderer(RenderStrategyNameAreaNumberInteger())
@@ -228,49 +318,6 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         generateClassFileWithConstants(classFileToBecomeCreated, constantsInformation, this.programmingLanguageStrategy.getNameOfFreemarkerTemplateForConstants())
     }
 
-    /**
-     * Creates a pipe character separated file (but the file extension "csv" indicates comma as separator)
-     * with the following three fields at each row: EpsgNumber|CrsName|AreaName
-    * The name of the generated path/file will be something like this:
-    *   ./crsCodeGeneration/src/main/resources/generated/csv_files/crs_number_name_area_v9_5_3.csv
-    * The reason for generating this file is that it might be reusable to create constants
-     * for other programming languages, i.e. very simple to copy this generated file
-     * and then split the lines and generate new files with those names as constants
-     * for any programming language.
-    */
-    fun generateCsvFile() {
-        // This method does not really belong here within this class
-        // at least from a semantic point of view considering that the current name of the
-        // class indicates that it should generated classes with constants ...
-
-        populateListWithNameOfConstants()
-
-        val directoryWhereTheCsvFileShouldBeGenerated = getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION, RELATIVE_PATH_TO_TARGET_DIRECTORY_FOR_GENERATED_CODE_WITHIN_RESOURCES_DIRECTORY + "/csv_files", throwExceptionIfNotExisting = false)
-        if(!directoryWhereTheCsvFileShouldBeGenerated.exists()) {
-            println("Directory does not exist: " + directoryWhereTheCsvFileShouldBeGenerated.canonicalPath)
-            val result = directoryWhereTheCsvFileShouldBeGenerated.mkdirs()
-            println("Result of directory creation: " + result)
-        }
-        val fileName = "crs_number_name_area_" + getEpsgVersion() + ".csv"
-        var csvFileToBecomeCreated = File(directoryWhereTheCsvFileShouldBeGenerated, fileName)
-        nameOfConstants.sortedBy { it.epsgNumber }
-        constantNameRenderer.renderStrategy = RenderStrategyNumberNameAreaInteger()
-        // Note that the freemarker template file is using valueForConstant instead of epsgNumber
-        // which is just a convenient way of creating rows such as:
-        // 3006|SWEREF99 TM|Sweden
-        // instead of: (i.e. with white space in the number)
-        // 3 006|SWEREF99 TM|Sweden
-
-        val rootHashMapWithDataToBeUsedByFreemarkerTemplate = HashMap<String, Any>()
-        rootHashMapWithDataToBeUsedByFreemarkerTemplate.put(FREEMARKER_PROPERTY_NAME_OF_CONSTANTS, nameOfConstants)
-
-        super.createFile(
-            NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_FILE,
-            rootHashMapWithDataToBeUsedByFreemarkerTemplate,
-            csvFileToBecomeCreated
-        )
-    }
-
     private fun getClassFileToBecomeCreated(nameOfClassToBeGenerated: String, nameOfPackageOrNamespaceToBeGenerated: String, directoryWhereTheClassFilesShouldBeGenerated: File): File {
         val fullClassName = nameOfPackageOrNamespaceToBeGenerated + "." + nameOfClassToBeGenerated // e.g. "com.programmerare.crsConstants.EpsgNumber"
         val relativePathToClassFile = fullClassName.replace('.', '/') + this.programmingLanguageStrategy.getFileExtensionForClassFile() // "com/programmerare/crsConstants/EpsgNumber.java"
@@ -335,6 +382,56 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         return PACKAGE_NAME_PREFIX + "constantsByNumberNameArea" + getPackageNameSuffix()
     }
 
+    // ---------------------------------------------------------------------
+    // This method 'generateCsvFile' does not really belong within this class,
+    // regarding the name of the class i.e. 'ConstantClassGenerator'
+    /**
+     * Creates a pipe character separated file (but the file extension "csv" indicates comma as separator)
+     * with the following three fields at each row: EpsgNumber|CrsName|AreaName
+     * The name of the generated path/file will be something like this:
+     *   ./crsCodeGeneration/src/main/resources/generated/csv_files/crs_number_name_area_v9_5_3.csv
+     * The reason for generating this file is that it might be reusable to create constants
+     * for other programming languages, i.e. very simple to copy this generated file
+     * and then split the lines and generate new files with those names as constants
+     * for any programming language.
+     */
+    fun generateCsvFile() {
+        // This method does not really belong here within this class
+        // at least from a semantic point of view considering that the current name of the
+        // class indicates that it should generated classes with constants ...
+
+        populateListWithNameOfConstants()
+
+        val directoryWhereTheCsvFileShouldBeGenerated = getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION, RELATIVE_PATH_TO_TARGET_DIRECTORY_FOR_GENERATED_CODE_WITHIN_RESOURCES_DIRECTORY + "/csv_files", throwExceptionIfNotExisting = false)
+        if(!directoryWhereTheCsvFileShouldBeGenerated.exists()) {
+            println("Directory does not exist: " + directoryWhereTheCsvFileShouldBeGenerated.canonicalPath)
+            val result = directoryWhereTheCsvFileShouldBeGenerated.mkdirs()
+            println("Result of directory creation: " + result)
+        }
+        val fileName = "crs_number_name_area_" + getEpsgVersion() + ".csv"
+        var csvFileToBecomeCreated = File(directoryWhereTheCsvFileShouldBeGenerated, fileName)
+        nameOfConstants.sortedBy { it.epsgNumber }
+        constantNameRenderer.renderStrategy = RenderStrategyNumberNameAreaInteger()
+        // Note that the freemarker template file is using valueForConstant instead of epsgNumber
+        // which is just a convenient way of creating rows such as:
+        // 3006|SWEREF99 TM|Sweden
+        // instead of: (i.e. with white space in the number)
+        // 3 006|SWEREF99 TM|Sweden
+
+        val rootHashMapWithDataToBeUsedByFreemarkerTemplate = HashMap<String, Any>()
+        rootHashMapWithDataToBeUsedByFreemarkerTemplate.put(FREEMARKER_PROPERTY_NAME_OF_CONSTANTS, nameOfConstants)
+
+        super.createFile(
+                NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_FILE,
+                rootHashMapWithDataToBeUsedByFreemarkerTemplate,
+                csvFileToBecomeCreated
+        )
+    } // end of method 'generateCsvFile' which does not really belong (semantically) in this class with the name 'ConstantClassGenerator'
+    // ---------------------------------------------------------------------
+
+    // ---------------------------------------------------------------------
+    // interface for programming language (Java vs C#) specific differences
+    // and their implementations for Java and C#
     interface ProgrammingLanguageStrategy {
         fun getNameOfFreemarkerTemplateForConstants(): String
         fun getDirectoryWhereTheClassFilesShouldBeGenerated(): File
@@ -377,93 +474,6 @@ class ConstantClassGenerator : CodeGeneratorBase() {
             return FILE_EXTENSION_FOR_JAVA_FILE
         }
     }
+    // ---------------------------------------------------------------------
 
-    companion object {
-        @JvmStatic
-        fun main(args: Array<String>) {
-            val validationMessage = getValidationErrorMessageOrEmptyStringIfNoError(args)
-            if (!validationMessage.equals("")) {
-                println(validationMessage)
-                return
-            }
-            // args[0] is the version of EPSG and should be specified with underscores instead of dots e.g. "v9_5_3"
-            setEpsgVersion(epsgVersion = args[0])
-            setDatabaseInformationForMariaDbConnection(
-                    databaseName = args[1],
-                    databaseUserName = args[2],
-                    databaseUserPassword = args[3]
-            )
-            val constantClassGenerator = ConstantClassGenerator()
-            val typeOfFilesToBeGenerated = args[4]
-            if(typeOfFilesToBeGenerated == "java") {
-                constantClassGenerator.generateFilesWithJavaConstants()
-            }
-            else if(typeOfFilesToBeGenerated == "csv") {
-                constantClassGenerator.generateCsvFile()
-            }
-            else if(typeOfFilesToBeGenerated == "csharpe") {
-                constantClassGenerator.generateFilesWithCSharpeConstants()
-            }
-            else {
-                println("Unsupported argument: " + typeOfFilesToBeGenerated)
-            }
-        }
-
-        /**
-         * Return empty string if validation is okay, otherwise
-         * a string with a validation message that should be displayed
-         */
-        fun getValidationErrorMessageOrEmptyStringIfNoError(args: Array<String>): String {
-            if (args.size < 5) {
-                return "The method should have five parameters"
-            }
-            if(!isValidAsVersionPrefix(args[0])) {
-                return "The version prefix is not valid. It should be a 'v' with some numbers, potentially separated with '_' instead of '.' . Example: 'v9_5_3' "
-            }
-            return ""
-        }
-
-        val regularExpressionForVersionSuffix = Regex("""v(\d+|\d+[_\d]*\d+)""")
-        /**
-         * @param versionSuffix a string such as "v9_5_3" (for a version 9.5.3)
-         *  i.e. the "v" as prefix and then some version number with one or more digits,
-         *  but instead of the normal dots the separator between major/minor version numbers should be underscore.
-         *  The usage of the validated string is that it will be used as the last part of a package name.
-         */
-        fun isValidAsVersionPrefix(versionSuffix: String): Boolean {
-            return regularExpressionForVersionSuffix.matches(versionSuffix)
-        }
-
-        private const val FREEMARKER_PROPERTY_NAME_OF_CONSTANTS = "constants"
-        private const val FREEMARKER_PROPERTY_NAME_OF_CLASS = "nameOfClass"
-        private const val FREEMARKER_PROPERTY_NAME_OF_PACKAGE_OR_NAMESPACE = "nameOfPackageOrNamespace"
-        private const val FREEMARKER_PROPERTY_NAME_OF_CLASS_LEVEL_COMMENTS = "rowsForClassLevelComment"
-
-
-        private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_JAVA_CONSTANTS = "ConstantsJava.ftlh"
-        private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSHARPE_CONSTANTS = "ConstantsCSharpe.ftlh"
-        private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_FILE = "CsvFileWithEpsgNumberAndCrsNameAndAreaName.ftlh"
-
-
-        private const val CLASS_NAME_INTEGER_CONSTANTS = "EpsgNumber"
-        private const val CLASS_NAME_STRING_CONSTANTS = "EpsgCode"
-
-        private const val PACKAGE_NAME_PREFIX = "com.programmerare.crsConstants."
-
-        private var _epsgVersion = "v_NotYetDefined"
-        private fun setEpsgVersion(epsgVersion: String) {
-            _epsgVersion = epsgVersion
-        }
-        private fun getEpsgVersion(useUnderScoresInsteadOfDots: Boolean = true) : String {
-            if(useUnderScoresInsteadOfDots) {
-                return _epsgVersion.replace('.','_')
-            }
-            else {
-                return _epsgVersion.replace('_','.')
-            }
-        }
-        private fun getPackageNameSuffix(): String {
-            return "." + getEpsgVersion()
-        }
-   }
 }
