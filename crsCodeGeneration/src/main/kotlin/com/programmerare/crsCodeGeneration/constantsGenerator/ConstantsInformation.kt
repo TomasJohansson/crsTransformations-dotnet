@@ -1,12 +1,13 @@
 package com.programmerare.crsCodeGeneration.constantsGenerator
 
 /**
- * This class is used from a freemarker template.
- * ( .\crsCodeGeneration\src\main\resources\freemarker_templates\Constants.ftlh )
+ * This class is used from two freemarker templates:
+ *  .\crsCodeGeneration\src\main\resources\freemarker_templates\ConstantsJava.ftlh
+ *  .\crsCodeGeneration\src\main\resources\freemarker_templates\ConstantsCSharpe.ftlh
  */
 class ConstantsInformation(
-    val nameOfJavaClass: String,
-    val nameOfJavaPackage: String,
-    val constants: List<ConstantTypeNameValue>
+        val nameOfClass: String,
+        val nameOfPackageOrNamespace: String,
+        val constants: List<ConstantTypeNameValue>
 ) {
 }

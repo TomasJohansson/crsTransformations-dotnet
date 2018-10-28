@@ -141,6 +141,9 @@ abstract class CodeGeneratorBase {
 
         @JvmField
         val FILE_EXTENSION_FOR_JAVA_FILE = ".java"
+
+        @JvmField
+        val FILE_EXTENSION_FOR_CSHARPE_FILE = ".cs"
 //        @JvmStatic
 //        protected val FILE_EXTENSION_FOR_KOTLIN_FILE = ".kt"
 

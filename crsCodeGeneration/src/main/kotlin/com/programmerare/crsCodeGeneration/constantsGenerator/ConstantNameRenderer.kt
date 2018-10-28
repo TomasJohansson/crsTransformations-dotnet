@@ -30,7 +30,7 @@ abstract class RenderStrategyBase: RenderStrategy {
         return DataType.INTEGER
     }
     protected fun getDataTypeForConstantString(): DataType {
-        return DataType.STRING
+        return DataType.STRING_JAVA
     }
     protected fun getValueForConstantAsInteger(epsgNumber: Int): String {
         return epsgNumber.toString()
@@ -43,6 +43,29 @@ abstract class RenderStrategyBase: RenderStrategy {
         return nameForConstant.adjusted()
     }
 }
+abstract class RenderStrategyDecorator(private val renderStrategy: RenderStrategy): RenderStrategy {
+    override fun getValueForConstant(epsgNumber: Int): String {
+        return renderStrategy.getValueForConstant(epsgNumber)
+    }
+    override fun getDataTypeForConstant(): DataType {
+        return renderStrategy.getDataTypeForConstant()
+    }
+    override fun getNameForConstant(crsName: String, areaName: String, epsgNumber: Int): String {
+        return renderStrategy.getNameForConstant(crsName, areaName, epsgNumber)
+    }
+}
+class RenderStrategyDecoratorForCSharpe(private val renderStrategy: RenderStrategy): RenderStrategyDecorator(renderStrategy) {
+    override fun getDataTypeForConstant(): DataType {
+        if(super.getDataTypeForConstant() == DataType.STRING_JAVA) {
+            return DataType.STRING_CSHARPE
+        }
+        else {
+            return super.getDataTypeForConstant()
+        }
+    }
+}
+
+
 ///////////////////////
 class RenderStrategyNameAreaNumberInteger: RenderStrategyBase() , RenderStrategy {
     override fun getValueForConstant(epsgNumber: Int): String {

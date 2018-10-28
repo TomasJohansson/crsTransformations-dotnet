@@ -1,6 +1,7 @@
 package com.programmerare.crsCodeGeneration.constantsGenerator
 
 import com.programmerare.crsCodeGeneration.CodeGeneratorBase
+import com.programmerare.crsCodeGeneration.utils.JavaPackageToCSharpeNamespaceConverter
 import java.io.File
 
 // This class generates constants classes into subfolders of this folder:
@@ -160,47 +161,99 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         }
     }
 
+    // TODO refactor away this boolean and its if staments with instead using polymorphism
+    private var shouldGenerateClassesForJava = true // if false then C# instead
+
+
+    fun generateFilesWithJavaConstants() {
+        shouldGenerateClassesForJava = true
+        generateFilesWithConstants()
+    }
+
+    fun generateFilesWithCSharpeConstants() {
+        shouldGenerateClassesForJava = false
+        generateFilesWithConstants()
+    }
+
     // Generates classes with constants based on database with EPSG codes:
     // http://www.epsg.org/EPSGDataset/DownloadDataset.aspx
-    fun generateFilesWithJavaConstants() {
+    // The method is used both for generating Java constants and C# constants.
+    // The java constants is intended to be (at least potentially) used within
+    // the same Kotlin/Java project, while the C# code is of course not.
+    // The C# code can be copied manually to some other project.
+    // For this reason, the directory detination are different for Java classes and C# classes.
+    // The location for the C# classes will be similar to the CSV file which can be generated i.e.
+    // within the following directory:
+    //      ...\crsCodeGeneration\src\main\resources\generated\
+    // while the Java constants will become generated to the following location:
+    //      ....\crsConstants\src\main\java\
+    fun generateFilesWithConstants() {
         populateListWithNameOfConstants()
 
         // Generate Totally 12 classes below in 6 packages with 2 classes per package:
-        generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger())
-        generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString())
+        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger())
+        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString())
 
-        generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger())
-        generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaString())
+        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger())
+        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaString())
 
-        generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger())
-        generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameString())
+        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger())
+        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameString())
 
-        generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberInteger())
-        generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString())
+        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberInteger())
+        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString())
 
-        generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), sortByNumber = true)
-        generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(), sortByNumber = true)
+        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), sortByNumber = true)
+        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(), sortByNumber = true)
 
-        generateJavaFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), sortByNumber = true)
-        generateJavaFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
+        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), sortByNumber = true)
+        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
     }
 
-    private fun generateJavaFileWithConstants(
-        nameOfJavaClass: String,
-        nameOfJavaPackage: String,
+    private fun getDirectoryWhereTheClassFilesShouldBeGenerated(): File {
+        if(shouldGenerateClassesForJava) {
+            return getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CONSTANTS, RELATIVE_PATH_TO_JAVA_FILES)
+        }
+        else { // C#
+            return getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION, RELATIVE_PATH_TO_TARGET_DIRECTORY_FOR_GENERATED_CODE_WITHIN_RESOURCES_DIRECTORY + "/csharpe_constants", throwExceptionIfNotExisting = false)
+        }
+    }
+
+    private fun generateClassFileWithConstants(
+        nameOfClass: String,
+        nameOfPackage: String,
         renderStrategy: RenderStrategy,
         sortByNumber: Boolean = false
     ) {
-        constantNameRenderer.renderStrategy = renderStrategy
-        val directoryWhereTheJavaFilesShouldBeGenerated = getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CONSTANTS, RELATIVE_PATH_TO_JAVA_FILES)
-        var javaFileToBecomeCreated = getJavaFileToBecomeCreated(nameOfJavaClass, nameOfJavaPackage, directoryWhereTheJavaFilesShouldBeGenerated)
+        constantNameRenderer.renderStrategy = if(shouldGenerateClassesForJava) renderStrategy else RenderStrategyDecoratorForCSharpe(renderStrategy)
+        val directoryWhereTheClassFilesShouldBeGenerated = getDirectoryWhereTheClassFilesShouldBeGenerated()
+        val nameOfPackageOrNamespace = getNameOfPackageOrNamespaceToBeGenerated(nameOfPackage)
+        var classFileToBecomeCreated = getClassFileToBecomeCreated(nameOfClass, nameOfPackageOrNamespace, directoryWhereTheClassFilesShouldBeGenerated)
         val constantsSorted: List<ConstantTypeNameValue> =
             if(sortByNumber)
                 nameOfConstants.sortedBy { it.epsgNumber }
             else
                 nameOfConstants.sortedBy { it.getNameForConstant() }
-        val constantsInformation = ConstantsInformation(nameOfJavaClass, nameOfJavaPackage, constants = constantsSorted)
-        generateJavaFileWithConstants(javaFileToBecomeCreated, constantsInformation, NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CONSTANTS)
+        val constantsInformation = ConstantsInformation(nameOfClass, nameOfPackageOrNamespace, constants = constantsSorted)
+        generateClassFileWithConstants(classFileToBecomeCreated, constantsInformation, getNameOfFreemarkerTemplateForConstants())
+    }
+
+    private fun getNameOfFreemarkerTemplateForConstants(): String {
+        if(shouldGenerateClassesForJava) {
+            return NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_JAVA_CONSTANTS
+        }
+        else {
+            return NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSHARPE_CONSTANTS
+        }
+    }
+
+    private fun getNameOfPackageOrNamespaceToBeGenerated(nameOfJavaPackage: String): String {
+        if(this.shouldGenerateClassesForJava) {
+            return nameOfJavaPackage;
+        }
+        else { // C#
+            return JavaPackageToCSharpeNamespaceConverter.getAsNameOfCSharpeNameSpace(nameOfJavaPackage)
+        }
     }
 
 
@@ -247,11 +300,11 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         )
     }
 
-    private fun getJavaFileToBecomeCreated(nameOfClassToBeGenerated: String, nameOfPackageToBeGenerated: String, directoryWhereTheJavaFilesShouldBeGenerated: File): File {
-        val fullClassName = nameOfPackageToBeGenerated + "." + nameOfClassToBeGenerated // e.g. "com.programmerare.crsConstants.EpsgNumber"
-        val relativePathToJavaFile = fullClassName.replace('.', '/') + FILE_EXTENSION_FOR_JAVA_FILE // "com/programmerare/crsConstants/EpsgNumber.java"
-        val javaFileToBecomeCreated = directoryWhereTheJavaFilesShouldBeGenerated.resolve(relativePathToJavaFile)
-        val dir = javaFileToBecomeCreated.parentFile
+    private fun getClassFileToBecomeCreated(nameOfClassToBeGenerated: String, nameOfPackageOrNamespaceToBeGenerated: String, directoryWhereTheClassFilesShouldBeGenerated: File): File {
+        val fullClassName = nameOfPackageOrNamespaceToBeGenerated + "." + nameOfClassToBeGenerated // e.g. "com.programmerare.crsConstants.EpsgNumber"
+        val relativePathToClassFile = fullClassName.replace('.', '/') + getFileExtensionForClassFile() // "com/programmerare/crsConstants/EpsgNumber.java"
+        val classFileToBecomeCreated = directoryWhereTheClassFilesShouldBeGenerated.resolve(relativePathToClassFile)
+        val dir = classFileToBecomeCreated.parentFile
         if(!dir.exists()) {
             val result: Boolean = dir.mkdirs()
             if(result) {
@@ -265,18 +318,34 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         if(!dir.isDirectory) {
             throw RuntimeException("Not directory: " + dir.absolutePath)
         }
-        return javaFileToBecomeCreated
+        return classFileToBecomeCreated
     }
 
-    private fun generateJavaFileWithConstants(
+    private fun getFileExtensionForClassFile(): String {
+        if(this.shouldGenerateClassesForJava) {
+            return FILE_EXTENSION_FOR_JAVA_FILE
+        }
+        else {
+            return FILE_EXTENSION_FOR_CSHARPE_FILE
+        }
+    }
+
+    private fun generateClassFileWithConstants(
         javaFileToBecomeCreated: File,
         constantsInformation: ConstantsInformation,
         nameOfFreemarkerTemplate: String
     ) {
         val root = HashMap<String, Any>()
         root.put(FREEMARKER_PROPERTY_NAME_OF_CONSTANTS, constantsInformation.constants)
-        root.put(FREEMARKER_PROPERTY_NAME_OF_JAVA_PACKAGE, constantsInformation.nameOfJavaPackage);
-        root.put(FREEMARKER_PROPERTY_NAME_OF_JAVA_CLASS, constantsInformation.nameOfJavaClass);
+        root.put(FREEMARKER_PROPERTY_NAME_OF_PACKAGE_OR_NAMESPACE, constantsInformation.nameOfPackageOrNamespace);
+        root.put(FREEMARKER_PROPERTY_NAME_OF_CLASS, constantsInformation.nameOfClass);
+
+        val rowsForClassLevelComment = listOf(
+            "The constants in this file was generated based on data from EPSG " + getEpsgVersion(false),
+            "http://www.epsg-registry.org",
+            "http://www.epsg.org"
+        )
+        root.put(FREEMARKER_PROPERTY_NAME_OF_CLASS_LEVEL_COMMENTS, rowsForClassLevelComment);
 
         super.createFile(
             nameOfFreemarkerTemplate,
@@ -329,7 +398,7 @@ class ConstantClassGenerator : CodeGeneratorBase() {
                 constantClassGenerator.generateCsvFile()
             }
             else if(typeOfFilesToBeGenerated == "csharpe") {
-                println("Generation of C# constants is NOT YET implemented")
+                constantClassGenerator.generateFilesWithCSharpeConstants()
             }
             else {
                 println("Unsupported argument: " + typeOfFilesToBeGenerated)
@@ -362,10 +431,13 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         }
 
         private const val FREEMARKER_PROPERTY_NAME_OF_CONSTANTS = "constants"
-        private const val FREEMARKER_PROPERTY_NAME_OF_JAVA_CLASS = "nameOfJavaClass"
-        private const val FREEMARKER_PROPERTY_NAME_OF_JAVA_PACKAGE = "nameOfJavaPackage"
+        private const val FREEMARKER_PROPERTY_NAME_OF_CLASS = "nameOfClass"
+        private const val FREEMARKER_PROPERTY_NAME_OF_PACKAGE_OR_NAMESPACE = "nameOfPackageOrNamespace"
+        private const val FREEMARKER_PROPERTY_NAME_OF_CLASS_LEVEL_COMMENTS = "rowsForClassLevelComment"
 
-        private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CONSTANTS = "Constants.ftlh"
+
+        private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_JAVA_CONSTANTS = "ConstantsJava.ftlh"
+        private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSHARPE_CONSTANTS = "ConstantsCSharpe.ftlh"
         private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_FILE = "CsvFileWithEpsgNumberAndCrsNameAndAreaName.ftlh"
 
 
@@ -378,8 +450,13 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         private fun setEpsgVersion(epsgVersion: String) {
             _epsgVersion = epsgVersion
         }
-        private fun getEpsgVersion() : String {
-            return _epsgVersion
+        private fun getEpsgVersion(useUnderScoresInsteadOfDots: Boolean = true) : String {
+            if(useUnderScoresInsteadOfDots) {
+                return _epsgVersion.replace('.','_')
+            }
+            else {
+                return _epsgVersion.replace('_','.')
+            }
         }
         private fun getPackageNameSuffix(): String {
             return "." + getEpsgVersion()
