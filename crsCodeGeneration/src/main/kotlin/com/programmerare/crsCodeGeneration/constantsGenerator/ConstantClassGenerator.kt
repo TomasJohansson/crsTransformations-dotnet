@@ -279,35 +279,41 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         populateListWithNameOfConstants()
 
         // Generate Totally 12 classes below in 6 packages with 2 classes per package:
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger())
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString())
+        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger())
+        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString())
 
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger())
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNameNumberArea(), RenderStrategyNameNumberAreaString())
+        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger())
+        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNameNumberArea(), RenderStrategyNameNumberAreaString())
 
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger())
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNumberName(), RenderStrategyAreaNumberNameString())
+        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger())
+        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForAreaNumberName(), RenderStrategyAreaNumberNameString())
 
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberInteger())
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString())
+        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForAreaNameNumber(), RenderStrategyAreaNameNumberInteger())
+        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString())
 
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), sortByNumber = true)
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(), sortByNumber = true)
+        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), sortByNumber = true)
+        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(), sortByNumber = true)
 
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), sortByNumber = true)
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
+        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), sortByNumber = true)
+        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
     }
 
 
+    /**
+     * @param nameOfJavaPackage the input string the name of a java package but it will be transformed
+     *  to the name of a C# namespace if C# constants will be rendered.
+     *  For example java package "com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4"
+     *  would be renamed to C# namespace "Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4"
+     */
     private fun generateClassFileWithConstants(
         nameOfClass: String,
-        nameOfPackage: String,
+        nameOfJavaPackage: String,
         renderStrategy: RenderStrategy,
         sortByNumber: Boolean = false
     ) {
         constantNameRenderer.renderStrategy = this.programmingLanguageStrategy.getRenderStrategy(renderStrategy)
         val directoryWhereTheClassFilesShouldBeGenerated = this.programmingLanguageStrategy.getDirectoryWhereTheClassFilesShouldBeGenerated()
-        val nameOfPackageOrNamespace = this.programmingLanguageStrategy.getNameOfPackageOrNamespaceToBeGenerated(nameOfPackage)
+        val nameOfPackageOrNamespace = this.programmingLanguageStrategy.getNameOfPackageOrNamespaceToBeGenerated(nameOfJavaPackage)
         var classFileToBecomeCreated = getClassFileToBecomeCreated(nameOfClass, nameOfPackageOrNamespace, directoryWhereTheClassFilesShouldBeGenerated)
         val constantsSorted: List<ConstantTypeNameValue> =
             if(sortByNumber)
@@ -363,24 +369,28 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         )
     }
 
-    private fun getNameOfPackageForNameAreaNumber(): String {
+    // ---------------------------------------------------------------------
+    // These methods below returns names of java packages but they may be converted
+    // to names of C# namespaces by using a method tested in 'JavaPackageToCSharpeNamespaceConverterTest'
+    private fun getNameOfJavaPackageForNameAreaNumber(): String {
         return PACKAGE_NAME_PREFIX + "constantsByNameAreaNumber" + getPackageNameSuffix()
     }
-    private fun getNameOfPackageForNameNumberArea(): String {
+    private fun getNameOfJavaPackageForNameNumberArea(): String {
         return PACKAGE_NAME_PREFIX + "constantsByNameNumberArea" + getPackageNameSuffix()
     }
-    private fun getNameOfPackageForAreaNumberName(): String {
+    private fun getNameOfJavaPackageForAreaNumberName(): String {
         return PACKAGE_NAME_PREFIX + "constantsByAreaNumberName" + getPackageNameSuffix()
     }
-    private fun getNameOfPackageForAreaNameNumber(): String {
+    private fun getNameOfJavaPackageForAreaNameNumber(): String {
         return PACKAGE_NAME_PREFIX + "constantsByAreaNameNumber" + getPackageNameSuffix()
     }
-    private fun getNameOfPackageForNumberAreaName(): String {
+    private fun getNameOfJavaPackageForNumberAreaName(): String {
         return PACKAGE_NAME_PREFIX + "constantsByNumberAreaName" + getPackageNameSuffix()
     }
-    private fun getNameOfPackageForNumberNameArea(): String {
+    private fun getNameOfJavaPackageForNumberNameArea(): String {
         return PACKAGE_NAME_PREFIX + "constantsByNumberNameArea" + getPackageNameSuffix()
     }
+    // ---------------------------------------------------------------------
 
     // ---------------------------------------------------------------------
     // This method 'generateCsvFile' does not really belong within this class,
