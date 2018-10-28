@@ -3,8 +3,8 @@ package com.programmerare.crsTransformations.compositeTransformations
 import com.programmerare.crsTransformations.*
 
 internal class CompositeStrategyForWeightedAverageValue(
-        private val crsTransformationFacades: List<CrsTransformationFacade>,
-        private val weights: Map<String, Double>
+    private val crsTransformationFacades: List<CrsTransformationFacade>,
+    private val weights: Map<String, Double>
 ) : CompositeStrategyBase(crsTransformationFacades), CompositeStrategy {
 
     override fun shouldContinueIterationOfFacadesToInvoke(lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
@@ -36,10 +36,15 @@ internal class CompositeStrategyForWeightedAverageValue(
             var avgLat = sumLat / weightSum
             var avgLon = sumLon / weightSum
             val coordRes = Coordinate.createFromYLatitudeXLongitude(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
-            return TransformResultImplementation(inputCoordinate, outputCoordinate = coordRes, exception = null, isSuccess = true, crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult)
+            return TransformResultImplementation(
+                inputCoordinate,
+                outputCoordinate = coordRes,
+                exception = null,
+                isSuccess = true,
+                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult
+            )
         }
         else {
-            // TODO: aggregate mroe from the results e.g. exception messages
             return TransformResultImplementation(inputCoordinate, outputCoordinate = null, exception = null, isSuccess = false, crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult)
         }
     }
@@ -56,6 +61,5 @@ internal class CompositeStrategyForWeightedAverageValue(
             }
             return CompositeStrategyForWeightedAverageValue(facades, map)
         }
-
     }
 }

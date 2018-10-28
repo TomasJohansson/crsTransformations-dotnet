@@ -11,12 +11,14 @@ internal class CompositeStrategyForChainOfResponsibility(
     }
 
     override fun calculateAggregatedResult(
-            allResults: List<TransformResult>,
-            inputCoordinate: Coordinate,
-            crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
-            crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
+        allResults: List<TransformResult>,
+        inputCoordinate: Coordinate,
+        crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
+        crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
     ): TransformResult {
         if(allResults.size == 1 && allResults.get(0).isSuccess) {
+            // there should never be more than one result with the ChainOfResponsibility implementation
+            // since the calculation is interrupted at the first succeful result
             return TransformResultImplementation(inputCoordinate, outputCoordinate = allResults.get(0).outputCoordinate, exception = null, isSuccess = true, crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult)
         }
         else {
