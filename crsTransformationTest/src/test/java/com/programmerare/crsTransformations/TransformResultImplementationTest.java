@@ -19,7 +19,7 @@ public class TransformResultImplementationTest {
 
     @BeforeEach
     void beforeEach() {
-        inputCoordinate = Coordinate.createFromXLongYLat(0.0, 0.0, 1234);
+        inputCoordinate = Coordinate.createFromXLongitudeYLatitude(0.0, 0.0, 1234);
         outputCoordinate = inputCoordinate;
 
         // the mock below is currently not used any more than as a convenient way

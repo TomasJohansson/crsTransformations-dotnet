@@ -9,12 +9,12 @@ data class Coordinate private constructor(
     // which are named to indicate the order of the longitude and latitude parameters.
     companion object {
         @JvmStatic // https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html
-        fun createFromXLongYLat(
+        fun createFromXLongitudeYLatitude(
             xLongitude: Double,
             yLatitude: Double,
             epsgNumber: Int
         ): Coordinate {
-            return createFromXLongYLat(
+            return createFromXLongitudeYLatitude(
                 xLongitude,
                 yLatitude,
                 CrsIdentifier.createFromEpsgNumber(epsgNumber)
@@ -22,12 +22,12 @@ data class Coordinate private constructor(
         }
 
         @JvmStatic
-        fun createFromYLatXLong(
+        fun createFromYLatitudeXLongitude(
             yLatitude: Double,
             xLongitude: Double,
             epsgNumber: Int
         ): Coordinate {
-            return createFromXLongYLat(
+            return createFromXLongitudeYLatitude(
                 xLongitude,
                 yLatitude,
                 CrsIdentifier.createFromEpsgNumber(epsgNumber)
@@ -35,12 +35,12 @@ data class Coordinate private constructor(
         }
 
         @JvmStatic
-        fun createFromXLongYLat(
+        fun createFromXLongitudeYLatitude(
             xLongitude: Double,
             yLatitude: Double,
             crsCode: String
         ): Coordinate {
-            return createFromXLongYLat(
+            return createFromXLongitudeYLatitude(
                 xLongitude,
                 yLatitude,
                 CrsIdentifier.createFromCrsCode(crsCode)
@@ -48,12 +48,12 @@ data class Coordinate private constructor(
         }
 
         @JvmStatic
-        fun createFromYLatXLong(
+        fun createFromYLatitudeXLongitude(
             yLatitude: Double,
             xLongitude: Double,
             crsCode: String
         ): Coordinate {
-            return createFromXLongYLat(
+            return createFromXLongitudeYLatitude(
                 xLongitude,
                 yLatitude,
                 CrsIdentifier.createFromCrsCode(crsCode)
@@ -61,12 +61,12 @@ data class Coordinate private constructor(
         }
 
         @JvmStatic
-        fun createFromYLatXLong(
+        fun createFromYLatitudeXLongitude(
             yLatitude: Double,
             xLongitude: Double,
             crsIdentifier: CrsIdentifier
         ): Coordinate {
-            return createFromXLongYLat(
+            return createFromXLongitudeYLatitude(
                 xLongitude,
                 yLatitude,
                 crsIdentifier
@@ -74,7 +74,7 @@ data class Coordinate private constructor(
         }
 
         @JvmStatic
-        fun createFromXLongYLat(
+        fun createFromXLongitudeYLatitude(
             xLongitude: Double,
             yLatitude: Double,
             crsIdentifier: CrsIdentifier
@@ -98,7 +98,7 @@ data class Coordinate private constructor(
          * The "GPS coordinate system" WGS84 is assumed when using this factory method.
          */
         @JvmStatic
-        fun createFromLongLat(
+        fun createFromLongitudeLatitude(
             longitude: Double,
             latitude: Double
         ): Coordinate {
@@ -113,7 +113,7 @@ data class Coordinate private constructor(
          * The "GPS coordinate system" WGS84 is assumed when using this factory method.
          */
         @JvmStatic
-        fun createFromLatLong(
+        fun createFromLatitudeLongitude(
             latitude: Double,
             longitude: Double
         ): Coordinate {

@@ -44,11 +44,11 @@ public class CompositeStrategyTestsUsingTestDoubles {
         medianLongitude = 18.4;
         averageLongitude = 18.52;
 
-        outputCoordinateWgs84ForImplementation_1 = Coordinate.createFromLatLong(outputLatitudes[0],outputLongitudes[3]);
-        outputCoordinateWgs84ForImplementation_2 = Coordinate.createFromLatLong(outputLatitudes[2],outputLongitudes[1]);
-        outputCoordinateWgs84ForImplementation_3 = Coordinate.createFromLatLong(outputLatitudes[4],outputLongitudes[4]);
-        outputCoordinateWgs84ForImplementation_4 = Coordinate.createFromLatLong(outputLatitudes[1],outputLongitudes[0]);
-        outputCoordinateWgs84ForImplementation_5 = Coordinate.createFromLatLong(outputLatitudes[3],outputLongitudes[2]);
+        outputCoordinateWgs84ForImplementation_1 = Coordinate.createFromLatitudeLongitude(outputLatitudes[0],outputLongitudes[3]);
+        outputCoordinateWgs84ForImplementation_2 = Coordinate.createFromLatitudeLongitude(outputLatitudes[2],outputLongitudes[1]);
+        outputCoordinateWgs84ForImplementation_3 = Coordinate.createFromLatitudeLongitude(outputLatitudes[4],outputLongitudes[4]);
+        outputCoordinateWgs84ForImplementation_4 = Coordinate.createFromLatitudeLongitude(outputLatitudes[1],outputLongitudes[0]);
+        outputCoordinateWgs84ForImplementation_5 = Coordinate.createFromLatitudeLongitude(outputLatitudes[3],outputLongitudes[2]);
         outputCoordinates = Arrays.asList(outputCoordinateWgs84ForImplementation_1, outputCoordinateWgs84ForImplementation_2, outputCoordinateWgs84ForImplementation_3, outputCoordinateWgs84ForImplementation_4, outputCoordinateWgs84ForImplementation_5);
 
         facadeImplementation_1 = mock(CrsTransformationFacade.class);
@@ -57,7 +57,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         facadeImplementation_4 = mock(CrsTransformationFacade.class);
         facadeImplementation_5 = mock(CrsTransformationFacade.class);
 
-        inputCoordinateSweref99 = Coordinate.createFromYLatXLong(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        inputCoordinateSweref99 = Coordinate.createFromYLatitudeXLongitude(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
 
         TransformResult r1 = new TransformResultImplementation(
             inputCoordinateSweref99,
@@ -119,7 +119,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         Coordinate result = averageFacade.transform(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(result);
 
-        // Coordinate expectedAverageCoordinate = Coordinate.createFromLatLong(averageLatitude, averageLongitude);
+        // Coordinate expectedAverageCoordinate = Coordinate.createFromLatitudeLongitude(averageLatitude, averageLongitude);
         // assertEquals(expectedAverageCoordinate, result); // this failed because latitude was 59.31999999999999 instead of 59.32
         assertEquals(averageLatitude,  result.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
         assertEquals(averageLongitude, result.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
@@ -168,7 +168,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         }
         final double weightedLat = totLats / totWeights;
         final double weightedLon = totLons / totWeights;
-        final Coordinate expectedWeightedAverage = Coordinate.createFromLatLong(weightedLat, weightedLon);
+        final Coordinate expectedWeightedAverage = Coordinate.createFromLatitudeLongitude(weightedLat, weightedLon);
 
         List<FacadeAndWeight> weightedFacades = Arrays.asList(
             FacadeAndWeight.createFromInstance(facadeImplementation_1, weights[0]),

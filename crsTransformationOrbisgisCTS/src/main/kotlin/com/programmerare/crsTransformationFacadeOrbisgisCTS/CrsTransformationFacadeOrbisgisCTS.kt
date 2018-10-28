@@ -28,6 +28,6 @@ class CrsTransformationFacadeOrbisgisCTS : CrsTransformationFacadeBaseLeaf(), Cr
         val coordinateOperation = CoordinateOperationFactory.getMostPrecise(coordinateOperations);
         val inputCoordinateArray = doubleArrayOf(inputCoordinate.xLongitude, inputCoordinate.yLatitude)
         val outputCoordinateArray = coordinateOperation.transform(inputCoordinateArray)
-        return Coordinate.createFromYLatXLong(yLatitude = outputCoordinateArray[1], xLongitude = outputCoordinateArray[0], crsIdentifier = crsIdentifierForOutputCoordinateSystem)
+        return Coordinate.createFromYLatitudeXLongitude(yLatitude = outputCoordinateArray[1], xLongitude = outputCoordinateArray[0], crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }
 }

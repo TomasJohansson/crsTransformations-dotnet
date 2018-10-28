@@ -5,7 +5,7 @@ import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.CrsIdentifier;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import org.junit.jupiter.api.Test;
-import java.util.Arrays;
+
 import java.util.List;
 import java.util.Set;
 import java.util.function.ToDoubleFunction;
@@ -40,6 +40,6 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
         double averageLon = getAverage(resultCoordinates, c -> c.getXLongitude());
         Set<CrsIdentifier> set = resultCoordinates.stream().map(c -> c.getCrsIdentifier()).collect(Collectors.toSet());
         assertEquals(1, set.size(), "all coordinates should have the same CRS, since thet should all be the result of a transform to the same CRS");
-        return Coordinate.createFromYLatXLong(averageLat, averageLon, resultCoordinates.get(0).getCrsIdentifier());
+        return Coordinate.createFromYLatitudeXLongitude(averageLat, averageLon, resultCoordinates.get(0).getCrsIdentifier());
     }
 }

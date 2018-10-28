@@ -35,7 +35,7 @@ class CompositeStrategyForAverageValue(private val crsTransformationFacades: Lis
         if(successCount > 0) {
             var avgLat = sumLat / successCount
             var avgLon = sumLon / successCount
-            val coordRes = Coordinate.createFromYLatXLong(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
+            val coordRes = Coordinate.createFromYLatitudeXLongitude(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
             return TransformResultImplementation(inputCoordinate, outputCoordinate = coordRes, exception = null, isSuccess = true, crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult)
         }
         else {

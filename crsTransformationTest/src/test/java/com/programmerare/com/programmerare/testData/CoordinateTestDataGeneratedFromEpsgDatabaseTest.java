@@ -1,7 +1,7 @@
 package com.programmerare.com.programmerare.testData;
 
 import com.google.common.io.Resources;
-import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_3.EpsgCode;
+import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgCode;
 import com.programmerare.crsTransformationFacadeGeoPackageNGA.CrsTransformationFacadeGeoPackageNGA;
 import com.programmerare.crsTransformationFacadeGeoTools.CrsTransformationFacadeGeoTools;
 import com.programmerare.crsTransformations.Coordinate;
@@ -85,15 +85,15 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
         long startTime = System.nanoTime();
         for (EpsgCrsAndAreaCodeWithCoordinates item : coordinatesFromGeneratedCsvFile) {
-            final Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongYLat(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
+            final Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongitudeYLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
             final TransformResult resultOfTransformationFromWGS84 = crsTransformationFacade.transformToResultObject(inputCoordinateWGS84, item.epsgCrsCode);
             TransformResult resultOfTransformationBackToWGS84 = null;
             if (resultOfTransformationFromWGS84.isSuccess()) {
                 resultOfTransformationBackToWGS84 = crsTransformationFacade.transformToResultObject(resultOfTransformationFromWGS84.getOutputCoordinate(), EpsgCode.WORLD__WGS_84__4326);
             }
             testResultItems.add(new TestResultItem(item, inputCoordinateWGS84, resultOfTransformationFromWGS84, resultOfTransformationBackToWGS84));
-            if (counter++ % 1000 == 0) // just to show some progress
-                System.out.println("counter: " + counter + " (of the total " + coordinatesFromGeneratedCsvFile.size() + ") for facade " + crsTransformationFacade.getClass().getSimpleName()); // to show some progress
+            if (counter++ % 500 == 0) // just to show some progress
+                System.out.println(this.getClass().getSimpleName() + " , counter: " + counter + " (of the total " + coordinatesFromGeneratedCsvFile.size() + ") for facade " + crsTransformationFacade.getClass().getSimpleName()); // to show some progress
             // if(counter > 300) break;
         }
         long elapsedNanos = System.nanoTime() - startTime;
@@ -231,7 +231,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
      */
     private void testOneRowFromCsvFile(CrsTransformationFacade crsTransformationFacade, String oneRowFromCsvFile) {
         EpsgCrsAndAreaCodeWithCoordinates item = createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile("3006|1225|Sweden|17.083659606206545|61.98770256318016");
-        final Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongYLat(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
+        final Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongitudeYLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
         final TransformResult resultOfTransformationFromWGS84 = crsTransformationFacade.transformToResultObject(inputCoordinateWGS84, item.epsgCrsCode);
         if(!resultOfTransformationFromWGS84.isSuccess()) {
             System.out.println(resultOfTransformationFromWGS84.getException());

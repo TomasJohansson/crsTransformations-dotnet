@@ -23,7 +23,7 @@ class CrsTransformationFacadeGeoPackageNGA : CrsTransformationFacadeBaseLeaf(), 
         val projectionTransform = projection.getTransformation(outputEPSGnumber)  // sweref 99
         val inputPoint = Point(inputCoordinate.xLongitude, inputCoordinate.yLatitude)
         val outputPoint = projectionTransform.transform(inputPoint)
-        val outputCoordinate = Coordinate.createFromXLongYLat(outputPoint.getX(), outputPoint.getY(), crsIdentifierForOutputCoordinateSystem)
+        val outputCoordinate = Coordinate.createFromXLongitudeYLatitude(outputPoint.getX(), outputPoint.getY(), crsIdentifierForOutputCoordinateSystem)
         return outputCoordinate
     }
 }

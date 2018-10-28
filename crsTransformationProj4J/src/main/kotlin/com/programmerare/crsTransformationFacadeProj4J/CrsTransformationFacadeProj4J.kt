@@ -25,6 +25,6 @@ class CrsTransformationFacadeProj4J : CrsTransformationFacadeBaseLeaf(), CrsTran
         val projCoordinateInput = ProjCoordinate(inputCoordinate.xLongitude, inputCoordinate.yLatitude)
         val projCoordinateOutput = ProjCoordinate()
         coordinateTransform.transform(projCoordinateInput, projCoordinateOutput)
-        return Coordinate.createFromXLongYLat(projCoordinateOutput.x, projCoordinateOutput.y, crsIdentifierForOutputCoordinateSystem)
+        return Coordinate.createFromXLongitudeYLatitude(projCoordinateOutput.x, projCoordinateOutput.y, crsIdentifierForOutputCoordinateSystem)
     }
 }

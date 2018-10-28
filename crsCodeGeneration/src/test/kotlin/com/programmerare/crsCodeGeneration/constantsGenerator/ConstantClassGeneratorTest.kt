@@ -8,7 +8,7 @@ internal class ConstantClassGeneratorTest {
 
     @Test
     fun getEmptyStringIfNoError() {
-        val args: Array<String> = arrayOf("v9_5_3", "dbName", "dbUser", "dbPassword")
+        val args: Array<String> = arrayOf("v9_5_3", "dbName", "dbUser", "dbPassword", "java")
         val result = ConstantClassGenerator.getValidationErrorMessageOrEmptyStringIfNoError(args)
         assertEquals("", result)
     }

@@ -54,7 +54,7 @@ class CrsTransformationFacadeGooberCTL : CrsTransformationFacadeBaseLeaf(), CrsT
         }
 
         if (positionToReturn != null) {
-            return Coordinate.createFromYLatXLong(yLatitude = positionToReturn.latitude, xLongitude = positionToReturn.longitude, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
+            return Coordinate.createFromYLatitudeXLongitude(yLatitude = positionToReturn.latitude, xLongitude = positionToReturn.longitude, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
         } else if (
             // not direct support for transforming directly between SWEREF99 and RT90
             // but can do it by first transforming to WGS84 and then to the other

@@ -19,7 +19,7 @@ class ExtensionsForStringTest {
         assertEquals(className, crsTransformationFacade.javaClass.name)
 
         // below trying to use the above created object to really make sure it works
-        val coordinateWgs84 = Coordinate.Companion.createFromYLatXLong(59.330231, 18.059196, EpsgNumber._4326__WGS_84__WORLD)
+        val coordinateWgs84 = Coordinate.Companion.createFromYLatitudeXLongitude(59.330231, 18.059196, EpsgNumber._4326__WGS_84__WORLD)
         val resultSweref99 = crsTransformationFacade.transformToResultObject(coordinateWgs84, EpsgNumber._3006__SWEREF99_TM__SWEDEN)
         assertTrue(resultSweref99.isSuccess)
     }

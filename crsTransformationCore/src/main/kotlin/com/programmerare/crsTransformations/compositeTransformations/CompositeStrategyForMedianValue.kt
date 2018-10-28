@@ -31,7 +31,7 @@ class CompositeStrategyForMedianValue(private val crsTransformationFacades: List
             val lons = successFulCoordinateResults.map { it.xLongitude }
             val medianLat = getMedianValue(lats)
             val medianLon = getMedianValue(lons)
-            val outputCoordinate = Coordinate.createFromYLatXLong(medianLat, medianLon, crsIdentifierForOutputCoordinateSystem)
+            val outputCoordinate = Coordinate.createFromYLatitudeXLongitude(medianLat, medianLon, crsIdentifierForOutputCoordinateSystem)
             return TransformResultImplementation(inputCoordinate, outputCoordinate = outputCoordinate, exception = null, isSuccess = true, crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult)
         }
     }

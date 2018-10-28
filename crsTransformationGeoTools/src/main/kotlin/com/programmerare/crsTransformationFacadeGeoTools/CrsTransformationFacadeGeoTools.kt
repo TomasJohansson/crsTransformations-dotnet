@@ -46,6 +46,6 @@ class CrsTransformationFacadeGeoTools : CrsTransformationFacadeBaseLeaf(), CrsTr
         val lon = outputCoordinate.x
         val lat = outputCoordinate.y
 
-        return Coordinate.createFromYLatXLong(yLatitude = lat, xLongitude = lon, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
+        return Coordinate.createFromYLatitudeXLongitude(yLatitude = lat, xLongitude = lon, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }
 }

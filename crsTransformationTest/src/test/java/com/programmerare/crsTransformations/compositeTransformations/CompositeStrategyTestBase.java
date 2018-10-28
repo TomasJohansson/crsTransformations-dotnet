@@ -55,7 +55,7 @@ abstract class CompositeStrategyTestBase {
             facadeGeoPackageNGA
         );
 
-        wgs84coordinate = Coordinate.createFromYLatXLong(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
+        wgs84coordinate = Coordinate.createFromYLatitudeXLongitude(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
 
         resultCoordinateGeoTools = facadeGeoTools.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         resultCoordinateGooberCTL = facadeGooberCTL.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);

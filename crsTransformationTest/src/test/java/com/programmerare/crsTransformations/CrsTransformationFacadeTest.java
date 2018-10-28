@@ -73,7 +73,7 @@ final class CrsTransformationFacadeTest {
 
         // transform back and forth (from sweref1200 to sweref1500 and then back to sweref1200)
         // and then check if you got the same as the original sweref1200
-        Coordinate inputCoordinateSweref1200 = Coordinate.createFromXLongYLat(sweref1200_X, sweref1200_Y, epsgNumberForSweref991200);
+        Coordinate inputCoordinateSweref1200 = Coordinate.createFromXLongitudeYLatitude(sweref1200_X, sweref1200_Y, epsgNumberForSweref991200);
         transformBackAndForthAndAssertResult(crsTransformationFacade, inputCoordinateSweref1200, epsgNumberForSweref991500);
     }
 
@@ -106,7 +106,7 @@ final class CrsTransformationFacadeTest {
         double sweref99_Y_expected = 6580822;
         double sweref99_X_expected = 674032;
 
-        Coordinate inputCoordinate = Coordinate.createFromXLongYLat(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+        Coordinate inputCoordinate = Coordinate.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
         Coordinate outputCoordinate = crsTransformationFacade.transform(inputCoordinate, epsgNumberForSweref99TM);
         assertEquals(sweref99_Y_expected, outputCoordinate.getYLatitude(), 0.5);
         assertEquals(sweref99_X_expected, outputCoordinate.getXLongitude(), 0.5);
@@ -119,7 +119,7 @@ final class CrsTransformationFacadeTest {
         double wgs84Lat_expected = 59.330231;
         double wgs84Lon_expected = 18.059196;
 
-        Coordinate inputCoordinate = Coordinate.createFromXLongYLat(rt90_X, rt90_Y, epsgNumberForRT90);
+        Coordinate inputCoordinate = Coordinate.createFromXLongitudeYLatitude(rt90_X, rt90_Y, epsgNumberForRT90);
 
         Coordinate outputCoordinate = crsTransformationFacade.transform(inputCoordinate, epsgNumberForWgs84);
         assertEquals(wgs84Lat_expected, outputCoordinate.getYLatitude(), 0.1);
@@ -157,8 +157,8 @@ final class CrsTransformationFacadeTest {
         double yLat2, double xLon2,
         String description
     ) {
-        final Coordinate coordinate1 = Coordinate.createFromXLongYLat(xLon1, yLat1, epsgNumber1);
-        final Coordinate coordinate2 = Coordinate.createFromXLongYLat(xLon2, yLat2, epsgNumber2);
+        final Coordinate coordinate1 = Coordinate.createFromXLongitudeYLatitude(xLon1, yLat1, epsgNumber1);
+        final Coordinate coordinate2 = Coordinate.createFromXLongitudeYLatitude(xLon2, yLat2, epsgNumber2);
         final Coordinate outputForCoordinate1 = crsTransformationFacade.transform(coordinate1, epsgNumber2);
         final Coordinate outputForCoordinate2 = crsTransformationFacade.transform(coordinate2, epsgNumber1);
 
@@ -219,7 +219,7 @@ final class CrsTransformationFacadeTest {
         String description,
         double wgs84Lat, double wgs84Lon // ignore the rest of columns for this test method
     ) {
-       Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongYLat(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+       Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
         for (CrsTransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
             for (Integer epsgNumber : epsgNumbersForSwedishProjectionsUsingMeterAsUnit) {
                 transformBackAndForthAndAssertResult(crsTransformationFacade, inputCoordinateWGS84, epsgNumber);
@@ -252,7 +252,7 @@ final class CrsTransformationFacadeTest {
         String description,
         double wgs84Lat, double wgs84Lon // ignore the rest of columns for this test method
     ) {
-        Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongYLat(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+        Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
         for (int i = 0; i < crsTransformationFacadeImplementations.size()-1; i++) {
             for (int j = i+1; j < crsTransformationFacadeImplementations.size(); j++) {
                 for (Integer epsgNumber : epsgNumbersForSwedishProjectionsUsingMeterAsUnit) {
@@ -270,7 +270,7 @@ final class CrsTransformationFacadeTest {
     @DisplayName("Testing TransformResult with expected failure")
     @Test
     void transformToResultObjectWithUnvalidInputCoordinate() {
-        Coordinate unvalidInputCoordinate = Coordinate.createFromXLongYLat(-999999.0, -999999.0, -9999);
+        Coordinate unvalidInputCoordinate = Coordinate.createFromXLongitudeYLatitude(-999999.0, -999999.0, -9999);
         for (CrsTransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
             TransformResult transformResult = crsTransformationFacade.transformToResultObject(unvalidInputCoordinate, -888888);
             assertNotNull(transformResult);
@@ -285,7 +285,7 @@ final class CrsTransformationFacadeTest {
     void transformToResultObjectWithValidInputCoordinate() {
         double wgs84Lat = 59.330231;
         double wgs84Lon = 18.059196;
-        Coordinate wgs84InputCoordinate = Coordinate.createFromXLongYLat(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+        Coordinate wgs84InputCoordinate = Coordinate.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
 
         for (CrsTransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
             TransformResult transformResult = crsTransformationFacade.transformToResultObject(wgs84InputCoordinate, epsgNumberForSweref99TM);

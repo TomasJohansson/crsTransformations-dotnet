@@ -42,7 +42,7 @@ class CompositeStrategyForWeightedAverageValue(
         if(successCount > 0) {
             var avgLat = sumLat / weightSum
             var avgLon = sumLon / weightSum
-            val coordRes = Coordinate.createFromYLatXLong(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
+            val coordRes = Coordinate.createFromYLatitudeXLongitude(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
             return TransformResultImplementation(inputCoordinate, outputCoordinate = coordRes, exception = null, isSuccess = true, crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult)
         }
         else {
