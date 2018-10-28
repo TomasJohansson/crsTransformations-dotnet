@@ -298,4 +298,9 @@ final class CrsTransformationFacadeTest {
         }
     }
 
+    enum CoordinateReferenceSystemUnit {
+        DEGREES,
+        METERS,
+        UNKNOWN
+    }
 }
