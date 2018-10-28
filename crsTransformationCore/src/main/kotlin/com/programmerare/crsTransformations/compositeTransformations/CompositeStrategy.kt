@@ -5,7 +5,7 @@ import com.programmerare.crsTransformations.CrsIdentifier
 import com.programmerare.crsTransformations.CrsTransformationFacade
 import com.programmerare.crsTransformations.TransformResult
 
-interface CompositeStrategy {
+internal interface CompositeStrategy {
     fun getAllTransformationFacadesInTheOrderTheyShouldBeInvoked(): List<CrsTransformationFacade>
 
     fun shouldContinueIterationOfFacadesToInvoke(lastResultOrNullIfNoPrevious: TransformResult?) : Boolean

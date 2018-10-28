@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
 
-class CompositeStrategyForChainOfResponsibility(private val crsTransformationFacades: List<CrsTransformationFacade>) : CompositeStrategy {
+internal class CompositeStrategyForChainOfResponsibility(private val crsTransformationFacades: List<CrsTransformationFacade>) : CompositeStrategy {
 
     override fun getAllTransformationFacadesInTheOrderTheyShouldBeInvoked(): List<CrsTransformationFacade> {
         return crsTransformationFacades

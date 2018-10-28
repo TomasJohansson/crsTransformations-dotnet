@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
 
-class CompositeStrategyForAverageValue(private val crsTransformationFacades: List<CrsTransformationFacade>) : CompositeStrategy {
+internal class CompositeStrategyForAverageValue(private val crsTransformationFacades: List<CrsTransformationFacade>) : CompositeStrategy {
     override fun getAllTransformationFacadesInTheOrderTheyShouldBeInvoked(): List<CrsTransformationFacade> {
         return crsTransformationFacades
     }

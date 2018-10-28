@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
 
-class CompositeStrategyForMedianValue(private val crsTransformationFacades: List<CrsTransformationFacade>) : CompositeStrategy {
+internal class CompositeStrategyForMedianValue(private val crsTransformationFacades: List<CrsTransformationFacade>) : CompositeStrategy {
 
     override fun getAllTransformationFacadesInTheOrderTheyShouldBeInvoked(): List<CrsTransformationFacade> {
         return crsTransformationFacades

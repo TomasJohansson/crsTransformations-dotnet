@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.CrsTransformationFacade
 
-class FacadeAndWeight private constructor(
+internal class FacadeAndWeight private constructor(
     val crsTransformationFacade: CrsTransformationFacade,
     val weight: Double
 ) {
@@ -15,6 +15,7 @@ class FacadeAndWeight private constructor(
             val crsTransformationFacade = Class.forName(crsTransformationFacadeClassName).getDeclaredConstructor().newInstance() as CrsTransformationFacade
             return FacadeAndWeight(crsTransformationFacade, weight)
         }
+
         @JvmStatic
         fun createFromInstance(
             crsTransformationFacade: CrsTransformationFacade,

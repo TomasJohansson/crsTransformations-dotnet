@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
 
-class CompositeStrategyForWeightedAverageValue(
+internal class CompositeStrategyForWeightedAverageValue(
         private val crsTransformationFacades: List<CrsTransformationFacade>,
         private val weights: Map<String, Double>
 ) : CompositeStrategy {

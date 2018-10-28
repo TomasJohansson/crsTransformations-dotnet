@@ -3,7 +3,7 @@ package com.programmerare.crsTransformations
 import java.lang.IllegalStateException
 import java.lang.RuntimeException
 
-class TransformResultImplementation(
+internal class TransformResultImplementation(
     override val inputCoordinate: Coordinate,
     outputCoordinate: Coordinate?,
     override val exception: Throwable?,
