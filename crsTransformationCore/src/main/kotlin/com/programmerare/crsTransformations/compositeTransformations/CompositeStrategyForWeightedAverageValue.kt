@@ -5,10 +5,7 @@ import com.programmerare.crsTransformations.*
 internal class CompositeStrategyForWeightedAverageValue(
         private val crsTransformationFacades: List<CrsTransformationFacade>,
         private val weights: Map<String, Double>
-) : CompositeStrategy {
-    override fun getAllTransformationFacadesInTheOrderTheyShouldBeInvoked(): List<CrsTransformationFacade> {
-        return crsTransformationFacades
-    }
+) : CompositeStrategyBase(crsTransformationFacades), CompositeStrategy {
 
     override fun shouldContinueIterationOfFacadesToInvoke(lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
         return true
