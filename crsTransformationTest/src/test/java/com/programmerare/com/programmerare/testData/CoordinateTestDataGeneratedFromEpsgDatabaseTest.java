@@ -86,10 +86,10 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         long startTime = System.nanoTime();
         for (EpsgCrsAndAreaCodeWithCoordinates item : coordinatesFromGeneratedCsvFile) {
             final Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongitudeYLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
-            final TransformResult resultOfTransformationFromWGS84 = crsTransformationFacade.transformToResultObject(inputCoordinateWGS84, item.epsgCrsCode);
+            final TransformResult resultOfTransformationFromWGS84 = crsTransformationFacade.transform(inputCoordinateWGS84, item.epsgCrsCode);
             TransformResult resultOfTransformationBackToWGS84 = null;
             if (resultOfTransformationFromWGS84.isSuccess()) {
-                resultOfTransformationBackToWGS84 = crsTransformationFacade.transformToResultObject(resultOfTransformationFromWGS84.getOutputCoordinate(), EpsgCode.WORLD__WGS_84__4326);
+                resultOfTransformationBackToWGS84 = crsTransformationFacade.transform(resultOfTransformationFromWGS84.getOutputCoordinate(), EpsgCode.WORLD__WGS_84__4326);
             }
             testResultItems.add(new TestResultItem(item, inputCoordinateWGS84, resultOfTransformationFromWGS84, resultOfTransformationBackToWGS84));
             if (counter++ % 500 == 0) // just to show some progress
@@ -232,7 +232,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     private void testOneRowFromCsvFile(CrsTransformationFacade crsTransformationFacade, String oneRowFromCsvFile) {
         EpsgCrsAndAreaCodeWithCoordinates item = createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile("3006|1225|Sweden|17.083659606206545|61.98770256318016");
         final Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongitudeYLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
-        final TransformResult resultOfTransformationFromWGS84 = crsTransformationFacade.transformToResultObject(inputCoordinateWGS84, item.epsgCrsCode);
+        final TransformResult resultOfTransformationFromWGS84 = crsTransformationFacade.transform(inputCoordinateWGS84, item.epsgCrsCode);
         if(!resultOfTransformationFromWGS84.isSuccess()) {
             System.out.println(resultOfTransformationFromWGS84.getException());
         }

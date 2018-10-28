@@ -272,7 +272,7 @@ final class CrsTransformationFacadeTest {
     void transformToResultObjectWithUnvalidInputCoordinate() {
         Coordinate unvalidInputCoordinate = Coordinate.createFromXLongitudeYLatitude(-999999.0, -999999.0, -9999);
         for (CrsTransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
-            TransformResult transformResult = crsTransformationFacade.transformToResultObject(unvalidInputCoordinate, -888888);
+            TransformResult transformResult = crsTransformationFacade.transform(unvalidInputCoordinate, -888888);
             assertNotNull(transformResult);
             assertFalse(transformResult.isSuccess());
             assertNotNull(transformResult.getException());
@@ -288,7 +288,7 @@ final class CrsTransformationFacadeTest {
         Coordinate wgs84InputCoordinate = Coordinate.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
 
         for (CrsTransformationFacade crsTransformationFacade : crsTransformationFacadeImplementations) {
-            TransformResult transformResult = crsTransformationFacade.transformToResultObject(wgs84InputCoordinate, epsgNumberForSweref99TM);
+            TransformResult transformResult = crsTransformationFacade.transform(wgs84InputCoordinate, epsgNumberForSweref99TM);
             assertNotNull(transformResult);
             assertTrue(transformResult.isSuccess());
             assertNull(transformResult.getException());

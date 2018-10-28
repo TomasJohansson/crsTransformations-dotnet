@@ -96,11 +96,11 @@ public class CompositeStrategyTestsUsingTestDoubles {
         );
         CrsIdentifier crsIdentifierWGS84 = CrsIdentifier.createFromEpsgNumber(EpsgNumber._4326__WGS_84__WORLD);
 
-        when(facadeImplementation_1.transformToResultObject(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r1);
-        when(facadeImplementation_2.transformToResultObject(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r2);
-        when(facadeImplementation_3.transformToResultObject(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r3);
-        when(facadeImplementation_4.transformToResultObject(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r4);
-        when(facadeImplementation_5.transformToResultObject(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r5);
+        when(facadeImplementation_1.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r1);
+        when(facadeImplementation_2.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r2);
+        when(facadeImplementation_3.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r3);
+        when(facadeImplementation_4.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r4);
+        when(facadeImplementation_5.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r5);
 
         allFacades = Arrays.asList(
             facadeImplementation_1,

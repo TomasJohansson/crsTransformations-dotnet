@@ -18,17 +18,17 @@ interface CrsTransformationFacade {
     ): Coordinate
 
 
-    fun transformToResultObject(
+    fun transform(
         inputCoordinate: Coordinate,
         epsgNumberForOutputCoordinateSystem: Int
     ): TransformResult
 
-    fun transformToResultObject(
+    fun transform(
         inputCoordinate: Coordinate,
         crsCodeForOutputCoordinateSystem: String
     ): TransformResult
 
-    fun transformToResultObject(
+    fun transform(
         inputCoordinate: Coordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): TransformResult

@@ -39,27 +39,27 @@ abstract class CrsTransformationFacadeBase : CrsTransformationFacade {
     ): Coordinate
 
 
-    override final fun transformToResultObject(
+    override final fun transform(
         inputCoordinate: Coordinate,
         epsgNumberForOutputCoordinateSystem: Int
     ): TransformResult {
-        return transformToResultObject(
+        return transform(
             inputCoordinate,
             CrsIdentifier.createFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
         )
     }
 
-    override final fun transformToResultObject(
+    override final fun transform(
         inputCoordinate: Coordinate,
         crsCodeForOutputCoordinateSystem: String
     ): TransformResult {
-        return transformToResultObject(
+        return transform(
             inputCoordinate,
             CrsIdentifier.createFromCrsCode(crsCodeForOutputCoordinateSystem)
         )
     }
 
-//    override final fun transformToResultObject(
+//    override final fun transform(
 //        inputCoordinate: Coordinate,
 //        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
 //    ): TransformResult {

@@ -6,7 +6,7 @@ import java.lang.RuntimeException
 final class CrsTransformationFacadeComposite private constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationFacadeBase(), CrsTransformationFacade {
 
     override final protected fun transformHook(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): Coordinate {
-        val transformResult = transformToResultObject(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+        val transformResult = transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
         if(transformResult.isSuccess) {
             return transformResult.outputCoordinate
         }
@@ -15,13 +15,13 @@ final class CrsTransformationFacadeComposite private constructor(protected val c
         }
     }
 
-    override final fun transformToResultObject(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
+    override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
         val crsTransformationFacades = compositeStrategy.getAllTransformationFacadesInTheOrderTheyShouldBeInvoked()
         val list = mutableListOf<TransformResult>()
         var lastResultOrNullIfNoPrevious: TransformResult? = null
         for (facade: CrsTransformationFacade in crsTransformationFacades) {
             if(compositeStrategy.shouldInvokeNextFacade(list, lastResultOrNullIfNoPrevious, facade)) {
-                val res = facade.transformToResultObject(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+                val res = facade.transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
                 list.add(res)
                 lastResultOrNullIfNoPrevious = res
             }
