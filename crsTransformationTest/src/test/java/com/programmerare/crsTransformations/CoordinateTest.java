@@ -11,6 +11,7 @@ class CoordinateTest {
     private final double xLongitude = 12.34;
     private final double yLatitude = 56.67;
     private final int epsgNumber = EpsgNumber._3006__SWEREF99_TM__SWEDEN;
+    private final String epsgCode = EpsgCode._3006__SWEREF99_TM__SWEDEN;
 
     @Test
     void trivialCreateCoordinateTest() {
@@ -121,5 +122,64 @@ class CoordinateTest {
             Coordinate.createFromLatitudeLongitude(59.123456789, 18.123456789000),
             Coordinate.createFromLatitudeLongitude(59.123456789, 18.123456789001)
         );
+    }
+
+
+    @Test
+    void assertEqualsWhenUsingEquivalentXYmethods() {
+        Coordinate c1, c2, c3, c4, c5, c6, c7, c8, c9;
+
+        // the last parameter is an integer for these three:
+        c1 = Coordinate.createFromXLongitudeYLatitude(xLongitude, yLatitude, epsgNumber);
+        c2 = Coordinate.lonLat(xLongitude, yLatitude, epsgNumber);
+        c3 = Coordinate.xy(xLongitude, yLatitude, epsgNumber);
+
+        // the last parameter is s string for these three:
+        c4 = Coordinate.createFromXLongitudeYLatitude(xLongitude, yLatitude, epsgCode);
+        c5 = Coordinate.lonLat(xLongitude, yLatitude, epsgCode);
+        c6 = Coordinate.xy(xLongitude, yLatitude, epsgCode);
+
+        CrsIdentifier crsIdentifier = CrsIdentifier.createFromEpsgNumber(epsgNumber);
+        c7 = Coordinate.createFromXLongitudeYLatitude(xLongitude, yLatitude, crsIdentifier);
+        c8 = Coordinate.lonLat(xLongitude, yLatitude, crsIdentifier);
+        c9 = Coordinate.xy(xLongitude, yLatitude, crsIdentifier);
+
+        assertEquals(c1, c2);
+        assertEquals(c1, c3);
+        assertEquals(c1, c4);
+        assertEquals(c1, c5);
+        assertEquals(c1, c6);
+        assertEquals(c1, c7);
+        assertEquals(c1, c8);
+        assertEquals(c1, c9);
+    }
+
+    @Test
+    void assertEqualsWhenUsingEquivalentYXmethods() {
+        Coordinate c1, c2, c3, c4, c5, c6, c7, c8, c9;
+
+        // the last parameter is an integer for these three:
+        c1 = Coordinate.createFromYLatitudeXLongitude(yLatitude, xLongitude, epsgNumber);
+        c2 = Coordinate.latLon(yLatitude, xLongitude, epsgNumber);
+        c3 = Coordinate.yx(yLatitude, xLongitude, epsgNumber);
+
+        // the last parameter is s string for these three:
+        c4 = Coordinate.createFromYLatitudeXLongitude(yLatitude, xLongitude, epsgCode);
+        c5 = Coordinate.latLon(yLatitude, xLongitude, epsgCode);
+        c6 = Coordinate.yx(yLatitude, xLongitude, epsgCode);
+
+        CrsIdentifier crsIdentifier = CrsIdentifier.createFromEpsgNumber(epsgNumber);
+        c7 = Coordinate.createFromYLatitudeXLongitude(yLatitude, xLongitude, crsIdentifier);
+        c8 = Coordinate.latLon(yLatitude, xLongitude, crsIdentifier);
+        c9 = Coordinate.yx(yLatitude, xLongitude, crsIdentifier);
+
+        assertEquals(c1, c2);
+        assertEquals(c1, c3);
+        assertEquals(c1, c4);
+        assertEquals(c1, c5);
+        assertEquals(c1, c6);
+        assertEquals(c1, c7);
+        assertEquals(c1, c8);
+        assertEquals(c1, c9);
     }
 }
