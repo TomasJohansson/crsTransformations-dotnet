@@ -161,17 +161,15 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         }
     }
 
-    // TODO refactor away this boolean and its if staments with instead using polymorphism
-    private var shouldGenerateClassesForJava = true // if false then C# instead
-
+    private var programmingLanguageStrategy: ProgrammingLanguageStrategy = ProgrammingLanguageJavaStrategy()
 
     fun generateFilesWithJavaConstants() {
-        shouldGenerateClassesForJava = true
+        programmingLanguageStrategy = ProgrammingLanguageJavaStrategy()
         generateFilesWithConstants()
     }
 
     fun generateFilesWithCSharpeConstants() {
-        shouldGenerateClassesForJava = false
+        programmingLanguageStrategy = ProgrammingLanguageCSharpeStrategy()
         generateFilesWithConstants()
     }
 
@@ -210,14 +208,6 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
     }
 
-    private fun getDirectoryWhereTheClassFilesShouldBeGenerated(): File {
-        if(shouldGenerateClassesForJava) {
-            return getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CONSTANTS, RELATIVE_PATH_TO_JAVA_FILES)
-        }
-        else { // C#
-            return getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION, RELATIVE_PATH_TO_TARGET_DIRECTORY_FOR_GENERATED_CODE_WITHIN_RESOURCES_DIRECTORY + "/csharpe_constants", throwExceptionIfNotExisting = false)
-        }
-    }
 
     private fun generateClassFileWithConstants(
         nameOfClass: String,
@@ -225,9 +215,9 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         renderStrategy: RenderStrategy,
         sortByNumber: Boolean = false
     ) {
-        constantNameRenderer.renderStrategy = if(shouldGenerateClassesForJava) renderStrategy else RenderStrategyDecoratorForCSharpe(renderStrategy)
-        val directoryWhereTheClassFilesShouldBeGenerated = getDirectoryWhereTheClassFilesShouldBeGenerated()
-        val nameOfPackageOrNamespace = getNameOfPackageOrNamespaceToBeGenerated(nameOfPackage)
+        constantNameRenderer.renderStrategy = this.programmingLanguageStrategy.getRenderStrategy(renderStrategy)
+        val directoryWhereTheClassFilesShouldBeGenerated = this.programmingLanguageStrategy.getDirectoryWhereTheClassFilesShouldBeGenerated()
+        val nameOfPackageOrNamespace = this.programmingLanguageStrategy.getNameOfPackageOrNamespaceToBeGenerated(nameOfPackage)
         var classFileToBecomeCreated = getClassFileToBecomeCreated(nameOfClass, nameOfPackageOrNamespace, directoryWhereTheClassFilesShouldBeGenerated)
         val constantsSorted: List<ConstantTypeNameValue> =
             if(sortByNumber)
@@ -235,27 +225,8 @@ class ConstantClassGenerator : CodeGeneratorBase() {
             else
                 nameOfConstants.sortedBy { it.getNameForConstant() }
         val constantsInformation = ConstantsInformation(nameOfClass, nameOfPackageOrNamespace, constants = constantsSorted)
-        generateClassFileWithConstants(classFileToBecomeCreated, constantsInformation, getNameOfFreemarkerTemplateForConstants())
+        generateClassFileWithConstants(classFileToBecomeCreated, constantsInformation, this.programmingLanguageStrategy.getNameOfFreemarkerTemplateForConstants())
     }
-
-    private fun getNameOfFreemarkerTemplateForConstants(): String {
-        if(shouldGenerateClassesForJava) {
-            return NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_JAVA_CONSTANTS
-        }
-        else {
-            return NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSHARPE_CONSTANTS
-        }
-    }
-
-    private fun getNameOfPackageOrNamespaceToBeGenerated(nameOfJavaPackage: String): String {
-        if(this.shouldGenerateClassesForJava) {
-            return nameOfJavaPackage;
-        }
-        else { // C#
-            return JavaPackageToCSharpeNamespaceConverter.getAsNameOfCSharpeNameSpace(nameOfJavaPackage)
-        }
-    }
-
 
     /**
      * Creates a pipe character separated file (but the file extension "csv" indicates comma as separator)
@@ -302,7 +273,7 @@ class ConstantClassGenerator : CodeGeneratorBase() {
 
     private fun getClassFileToBecomeCreated(nameOfClassToBeGenerated: String, nameOfPackageOrNamespaceToBeGenerated: String, directoryWhereTheClassFilesShouldBeGenerated: File): File {
         val fullClassName = nameOfPackageOrNamespaceToBeGenerated + "." + nameOfClassToBeGenerated // e.g. "com.programmerare.crsConstants.EpsgNumber"
-        val relativePathToClassFile = fullClassName.replace('.', '/') + getFileExtensionForClassFile() // "com/programmerare/crsConstants/EpsgNumber.java"
+        val relativePathToClassFile = fullClassName.replace('.', '/') + this.programmingLanguageStrategy.getFileExtensionForClassFile() // "com/programmerare/crsConstants/EpsgNumber.java"
         val classFileToBecomeCreated = directoryWhereTheClassFilesShouldBeGenerated.resolve(relativePathToClassFile)
         val dir = classFileToBecomeCreated.parentFile
         if(!dir.exists()) {
@@ -319,15 +290,6 @@ class ConstantClassGenerator : CodeGeneratorBase() {
             throw RuntimeException("Not directory: " + dir.absolutePath)
         }
         return classFileToBecomeCreated
-    }
-
-    private fun getFileExtensionForClassFile(): String {
-        if(this.shouldGenerateClassesForJava) {
-            return FILE_EXTENSION_FOR_JAVA_FILE
-        }
-        else {
-            return FILE_EXTENSION_FOR_CSHARPE_FILE
-        }
     }
 
     private fun generateClassFileWithConstants(
@@ -373,6 +335,48 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         return PACKAGE_NAME_PREFIX + "constantsByNumberNameArea" + getPackageNameSuffix()
     }
 
+    interface ProgrammingLanguageStrategy {
+        fun getNameOfFreemarkerTemplateForConstants(): String
+        fun getDirectoryWhereTheClassFilesShouldBeGenerated(): File
+        fun getRenderStrategy(renderStrategy: RenderStrategy): RenderStrategy
+        fun getNameOfPackageOrNamespaceToBeGenerated(nameOfJavaPackage: String): String
+        fun getFileExtensionForClassFile(): String
+    }
+    inner class ProgrammingLanguageCSharpeStrategy: ProgrammingLanguageStrategy {
+        override fun getRenderStrategy(renderStrategy: RenderStrategy): RenderStrategy {
+            // purpose: render "string" (C#) instead of "String" (Java)
+            return RenderStrategyDecoratorForCSharpe(renderStrategy)
+        }
+        override fun getNameOfFreemarkerTemplateForConstants(): String {
+            return NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSHARPE_CONSTANTS
+        }
+        override fun getDirectoryWhereTheClassFilesShouldBeGenerated(): File {
+            return getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION, RELATIVE_PATH_TO_TARGET_DIRECTORY_FOR_GENERATED_CODE_WITHIN_RESOURCES_DIRECTORY + "/csharpe_constants", throwExceptionIfNotExisting = false)
+        }
+        override fun getNameOfPackageOrNamespaceToBeGenerated(nameOfJavaPackage: String): String {
+            return JavaPackageToCSharpeNamespaceConverter.getAsNameOfCSharpeNameSpace(nameOfJavaPackage)
+        }
+        override fun getFileExtensionForClassFile(): String {
+            return FILE_EXTENSION_FOR_CSHARPE_FILE
+        }
+    }
+    inner class ProgrammingLanguageJavaStrategy: ProgrammingLanguageStrategy {
+        override fun getRenderStrategy(renderStrategy: RenderStrategy): RenderStrategy {
+            return renderStrategy
+        }
+        override fun getNameOfFreemarkerTemplateForConstants(): String {
+            return NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_JAVA_CONSTANTS
+        }
+        override fun getDirectoryWhereTheClassFilesShouldBeGenerated(): File {
+            return getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CONSTANTS, RELATIVE_PATH_TO_JAVA_FILES)
+        }
+        override fun getNameOfPackageOrNamespaceToBeGenerated(nameOfJavaPackage: String): String {
+            return nameOfJavaPackage;
+        }
+        override fun getFileExtensionForClassFile(): String {
+            return FILE_EXTENSION_FOR_JAVA_FILE
+        }
+    }
 
     companion object {
         @JvmStatic
