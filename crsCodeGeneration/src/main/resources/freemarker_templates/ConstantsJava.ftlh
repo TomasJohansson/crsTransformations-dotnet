@@ -11,6 +11,7 @@ public class ${nameOfClass} {
 
     /**
     * ${constant.documentationCommentForConstant}
+    * https://epsg.io/${constant.epsgNumber?c}
     */
     public final static ${constant.dataTypeForConstant.dataTypeName} ${constant.nameForConstant} = ${constant.valueForConstant?no_esc};
     </#list>
