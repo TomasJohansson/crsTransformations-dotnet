@@ -1,5 +1,11 @@
 package com.programmerare.crsTransformations
 
+/**
+ * The methods 'transformToCoordinate' can throw exception when transformation fails.
+ * The methods 'transform' should always return an object,
+ * but then you should check failures with 'TransformResult.isSuccess'.
+ *
+ */
 interface CrsTransformationFacade {
 
     fun transformToCoordinate(
