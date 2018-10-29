@@ -10,7 +10,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CrsTransformationFacadeFactoryTest {
+public class CrsTransformationFacadeLeafFactoryTest {
 
     @Test
     void createCrsTransformationFacade() {
@@ -19,37 +19,37 @@ public class CrsTransformationFacadeFactoryTest {
         final String classNameGoober = "com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL";
         assertEquals(classNameGoober, CrsTransformationFacadeGooberCTL.class.getName());
 
-        crsTransformationFacade = CrsTransformationFacadeFactory.createCrsTransformationFacade(CrsTransformationFacadeGooberCTL.class.getName());
+        crsTransformationFacade = CrsTransformationFacadeLeafFactory.createCrsTransformationFacade(CrsTransformationFacadeGooberCTL.class.getName());
         assertNotNull(crsTransformationFacade);
 
-        assertNotNull(CrsTransformationFacadeFactory.createCrsTransformationFacade(CrsTransformationFacadeGeoPackageNGA.class.getName()));
-        assertNotNull(CrsTransformationFacadeFactory.createCrsTransformationFacade(CrsTransformationFacadeGeoTools.class.getName()));
-        assertNotNull(CrsTransformationFacadeFactory.createCrsTransformationFacade(CrsTransformationFacadeOrbisgisCTS.class.getName()));
-        assertNotNull(CrsTransformationFacadeFactory.createCrsTransformationFacade(CrsTransformationFacadeProj4J.class.getName()));
+        assertNotNull(CrsTransformationFacadeLeafFactory.createCrsTransformationFacade(CrsTransformationFacadeGeoPackageNGA.class.getName()));
+        assertNotNull(CrsTransformationFacadeLeafFactory.createCrsTransformationFacade(CrsTransformationFacadeGeoTools.class.getName()));
+        assertNotNull(CrsTransformationFacadeLeafFactory.createCrsTransformationFacade(CrsTransformationFacadeOrbisgisCTS.class.getName()));
+        assertNotNull(CrsTransformationFacadeLeafFactory.createCrsTransformationFacade(CrsTransformationFacadeProj4J.class.getName()));
 
     }
 
 
     @Test
     void isCrsTransformationFacade() {
-        assertFalse(CrsTransformationFacadeFactory.isCrsTransformationFacade(null));
-        assertFalse(CrsTransformationFacadeFactory.isCrsTransformationFacade(""));
-        assertFalse(CrsTransformationFacadeFactory.isCrsTransformationFacade("  "));
-        assertFalse(CrsTransformationFacadeFactory.isCrsTransformationFacade(" x "));
-        assertFalse(CrsTransformationFacadeFactory.isCrsTransformationFacade("abc"));
+        assertFalse(CrsTransformationFacadeLeafFactory.isCrsTransformationFacade(null));
+        assertFalse(CrsTransformationFacadeLeafFactory.isCrsTransformationFacade(""));
+        assertFalse(CrsTransformationFacadeLeafFactory.isCrsTransformationFacade("  "));
+        assertFalse(CrsTransformationFacadeLeafFactory.isCrsTransformationFacade(" x "));
+        assertFalse(CrsTransformationFacadeLeafFactory.isCrsTransformationFacade("abc"));
 
         // this test class i.e. the below "this" does not imlpement the interface so therefore assertFalse below
-        assertFalse(CrsTransformationFacadeFactory.isCrsTransformationFacade(this.getClass().getName()));
+        assertFalse(CrsTransformationFacadeLeafFactory.isCrsTransformationFacade(this.getClass().getName()));
 
-        assertTrue(CrsTransformationFacadeFactory.isCrsTransformationFacade(CrsTransformationFacadeGooberCTL.class.getName()));
-        assertTrue(CrsTransformationFacadeFactory.isCrsTransformationFacade(CrsTransformationFacadeGeoPackageNGA.class.getName()));
-        assertTrue(CrsTransformationFacadeFactory.isCrsTransformationFacade(CrsTransformationFacadeGeoTools.class.getName()));
-        assertTrue(CrsTransformationFacadeFactory.isCrsTransformationFacade(CrsTransformationFacadeOrbisgisCTS.class.getName()));
-        assertTrue(CrsTransformationFacadeFactory.isCrsTransformationFacade(CrsTransformationFacadeProj4J.class.getName()));
+        assertTrue(CrsTransformationFacadeLeafFactory.isCrsTransformationFacade(CrsTransformationFacadeGooberCTL.class.getName()));
+        assertTrue(CrsTransformationFacadeLeafFactory.isCrsTransformationFacade(CrsTransformationFacadeGeoPackageNGA.class.getName()));
+        assertTrue(CrsTransformationFacadeLeafFactory.isCrsTransformationFacade(CrsTransformationFacadeGeoTools.class.getName()));
+        assertTrue(CrsTransformationFacadeLeafFactory.isCrsTransformationFacade(CrsTransformationFacadeOrbisgisCTS.class.getName()));
+        assertTrue(CrsTransformationFacadeLeafFactory.isCrsTransformationFacade(CrsTransformationFacadeProj4J.class.getName()));
 
-        List<String> classNamesForAllKnownImplementations = CrsTransformationFacadeFactory.getClassNamesForAllKnownImplementations();
+        List<String> classNamesForAllKnownImplementations = CrsTransformationFacadeLeafFactory.getClassNamesForAllKnownImplementations();
         for (String className : classNamesForAllKnownImplementations) {
-            assertTrue(CrsTransformationFacadeFactory.isCrsTransformationFacade(className));
+            assertTrue(CrsTransformationFacadeLeafFactory.isCrsTransformationFacade(className));
         }
     }
 
@@ -57,7 +57,7 @@ public class CrsTransformationFacadeFactoryTest {
 
     @Test
     void getInstancesOfAllKnownAvailableImplementations() {
-        List<CrsTransformationFacade> list = CrsTransformationFacadeFactory.getInstancesOfAllKnownAvailableImplementations();
+        List<CrsTransformationFacade> list = CrsTransformationFacadeLeafFactory.getInstancesOfAllKnownAvailableImplementations();
         assertEquals(NUMBER_OF_IMPLEMENTATIONS, list.size());
         for (CrsTransformationFacade crsTransformationFacade : list) {
             assertNotNull(crsTransformationFacade);
@@ -72,7 +72,7 @@ public class CrsTransformationFacadeFactoryTest {
         //    System.out.println(CrsTransformationFacadeOrbisgisCTS.class.getName());
         //    System.out.println(CrsTransformationFacadeProj4J.class.getName());
 
-        List<String> classNamesForAllKnownImplementations = CrsTransformationFacadeFactory.getClassNamesForAllKnownImplementations();
+        List<String> classNamesForAllKnownImplementations = CrsTransformationFacadeLeafFactory.getClassNamesForAllKnownImplementations();
         assertEquals(NUMBER_OF_IMPLEMENTATIONS, classNamesForAllKnownImplementations.size());
 
         assertTrue(classNamesForAllKnownImplementations.contains("com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL"));

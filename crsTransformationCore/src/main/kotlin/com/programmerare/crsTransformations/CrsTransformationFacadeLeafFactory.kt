@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations
 
-object CrsTransformationFacadeFactory {
+object CrsTransformationFacadeLeafFactory {
 
     /**
      * @param crsTransformationFacadeClassName the full class name (i.e. including the package name)

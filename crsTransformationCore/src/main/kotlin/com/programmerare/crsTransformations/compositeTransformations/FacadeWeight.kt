@@ -1,7 +1,7 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.CrsTransformationFacade
-import com.programmerare.crsTransformations.CrsTransformationFacadeFactory
+import com.programmerare.crsTransformations.CrsTransformationFacadeLeafFactory
 
 class FacadeWeight private constructor(
     val crsTransformationFacade: CrsTransformationFacade,
@@ -18,7 +18,7 @@ class FacadeWeight private constructor(
             crsTransformationFacadeClassName: String,
             weight: Double
         ): FacadeWeight {
-            val crsTransformationFacade = CrsTransformationFacadeFactory.createCrsTransformationFacade(crsTransformationFacadeClassName)
+            val crsTransformationFacade = CrsTransformationFacadeLeafFactory.createCrsTransformationFacade(crsTransformationFacadeClassName)
             return FacadeWeight(crsTransformationFacade, weight)
         }
 
