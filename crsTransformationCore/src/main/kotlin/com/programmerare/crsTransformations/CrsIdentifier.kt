@@ -1,5 +1,18 @@
 package com.programmerare.crsTransformations
 
+/**
+ * CRS = Coordinate Reference System (a.k.a. SRS = Spatial Reference System)
+ * https://en.wikipedia.org/wiki/Spatial_reference_system
+ *
+ * EPSG = European Petroleum Survey Group.
+ * EPSG was a scientific organization which created a widely used database
+ * of Earth ellipsoids, geodetic datums, geographic and projected coordinate systems,
+ * units of measurement, etc.
+ * https://en.wikipedia.org/wiki/International_Association_of_Oil_%26_Gas_Producers
+ * http://www.epsg-registry.org
+ * http://www.epsg.org
+ * http://epsg.io/
+ */
 data class CrsIdentifier private constructor(
     val crsCode: String,
     val isEpsgCode: Boolean,
