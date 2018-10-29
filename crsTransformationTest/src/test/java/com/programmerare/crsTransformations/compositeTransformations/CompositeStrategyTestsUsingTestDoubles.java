@@ -19,8 +19,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
     private static Coordinate inputCoordinateSweref99;
     private static Coordinate outputCoordinateWgs84ForImplementation_1, outputCoordinateWgs84ForImplementation_2, outputCoordinateWgs84ForImplementation_3, outputCoordinateWgs84ForImplementation_4, outputCoordinateWgs84ForImplementation_5;
     private static List<Coordinate> outputCoordinates;
-    private static CrsTransformationFacade facadeImplementation_1, facadeImplementation_2, facadeImplementation_3, facadeImplementation_4, facadeImplementation_5;
-    private static List<CrsTransformationFacade> allFacades;
+    private static CrsTransformationFacade leafFacadeImplementation_1, leafFacadeImplementation_2, leafFacadeImplementation_3, leafFacadeImplementation_4, leafFacadeImplementation_5;
+    private static List<CrsTransformationFacade> allLeafFacades;
 
     @BeforeAll
     static void beforeAll() {
@@ -51,63 +51,63 @@ public class CompositeStrategyTestsUsingTestDoubles {
         outputCoordinateWgs84ForImplementation_5 = Coordinate.createFromLatitudeLongitude(outputLatitudes[3],outputLongitudes[2]);
         outputCoordinates = Arrays.asList(outputCoordinateWgs84ForImplementation_1, outputCoordinateWgs84ForImplementation_2, outputCoordinateWgs84ForImplementation_3, outputCoordinateWgs84ForImplementation_4, outputCoordinateWgs84ForImplementation_5);
 
-        facadeImplementation_1 = mock(CrsTransformationFacade.class);
-        facadeImplementation_2 = mock(CrsTransformationFacade.class);
-        facadeImplementation_3 = mock(CrsTransformationFacade.class);
-        facadeImplementation_4 = mock(CrsTransformationFacade.class);
-        facadeImplementation_5 = mock(CrsTransformationFacade.class);
+        leafFacadeImplementation_1 = mock(CrsTransformationFacade.class);
+        leafFacadeImplementation_2 = mock(CrsTransformationFacade.class);
+        leafFacadeImplementation_3 = mock(CrsTransformationFacade.class);
+        leafFacadeImplementation_4 = mock(CrsTransformationFacade.class);
+        leafFacadeImplementation_5 = mock(CrsTransformationFacade.class);
 
         inputCoordinateSweref99 = Coordinate.createFromYLatitudeXLongitude(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
 
-        TransformResult r1 = new TransformResultImplementation(
+        TransformResult leafResult1 = new TransformResultImplementation(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_1,
             null,
             true,
-            facadeImplementation_1
+            leafFacadeImplementation_1
         );
-        TransformResult r2 = new TransformResultImplementation(
+        TransformResult leafResult2 = new TransformResultImplementation(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_2,
             null,
             true,
-            facadeImplementation_2
+            leafFacadeImplementation_2
         );
-        TransformResult r3 = new TransformResultImplementation(
+        TransformResult leafResult3 = new TransformResultImplementation(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_3,
             null,
             true,
-            facadeImplementation_3
+            leafFacadeImplementation_3
         );
-        TransformResult r4 = new TransformResultImplementation(
+        TransformResult leafResult4 = new TransformResultImplementation(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_4,
             null,
             true,
-            facadeImplementation_4
+            leafFacadeImplementation_4
         );
         TransformResult r5 = new TransformResultImplementation(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_5,
             null,
             true,
-            facadeImplementation_5
+            leafFacadeImplementation_5
         );
         CrsIdentifier crsIdentifierWGS84 = CrsIdentifier.createFromEpsgNumber(EpsgNumber._4326__WGS_84__WORLD);
 
-        when(facadeImplementation_1.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r1);
-        when(facadeImplementation_2.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r2);
-        when(facadeImplementation_3.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r3);
-        when(facadeImplementation_4.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r4);
-        when(facadeImplementation_5.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r5);
+        when(leafFacadeImplementation_1.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(leafResult1);
+        when(leafFacadeImplementation_2.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(leafResult2);
+        when(leafFacadeImplementation_3.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(leafResult3);
+        when(leafFacadeImplementation_4.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(leafResult4);
+        when(leafFacadeImplementation_5.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r5);
 
-        allFacades = Arrays.asList(
-            facadeImplementation_1,
-            facadeImplementation_2,
-            facadeImplementation_3,
-            facadeImplementation_4,
-            facadeImplementation_5
+        allLeafFacades = Arrays.asList(
+            leafFacadeImplementation_1,
+            leafFacadeImplementation_2,
+            leafFacadeImplementation_3,
+            leafFacadeImplementation_4,
+            leafFacadeImplementation_5
         );
     }
 
@@ -115,45 +115,45 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     @Test
     void averageFacadeTest() {
-        CrsTransformationFacade averageFacade = CrsTransformationFacadeComposite.createCrsTransformationAverage(allFacades);
-        Coordinate result = averageFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
-        assertNotNull(result);
+        CrsTransformationFacade averageCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationAverage(allLeafFacades);
+        Coordinate resultCoordinate = averageCompositeFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        assertNotNull(resultCoordinate);
 
         // Coordinate expectedAverageCoordinate = Coordinate.createFromLatitudeLongitude(averageLatitude, averageLongitude);
         // assertEquals(expectedAverageCoordinate, result); // this failed because latitude was 59.31999999999999 instead of 59.32
-        assertEquals(averageLatitude,  result.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(averageLongitude, result.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(averageLatitude,  resultCoordinate.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(averageLongitude, resultCoordinate.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
     }
 
     @Test
     void medianFacadeTest() {
-        CrsTransformationFacade averageFacade = CrsTransformationFacadeComposite.createCrsTransformationMedian(allFacades);
-        Coordinate result = averageFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
-        assertNotNull(result);
+        CrsTransformationFacade medianCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationMedian(allLeafFacades);
+        Coordinate resultCoordinate = medianCompositeFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        assertNotNull(resultCoordinate);
 
-        assertEquals(medianLatitude,  result.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(medianLongitude, result.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(medianLatitude,  resultCoordinate.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(medianLongitude, resultCoordinate.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
     }
 
     @Test
     void ChainOfResponsibilityFacadeTest() {
-        CrsTransformationFacade averageFacade = CrsTransformationFacadeComposite.createCrsTransformationChainOfResponsibility(allFacades);
-        Coordinate result = averageFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
-        assertNotNull(result);
+        CrsTransformationFacade chainOfResponsibilityCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationChainOfResponsibility(allLeafFacades);
+        Coordinate resultCoordinate = chainOfResponsibilityCompositeFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        assertNotNull(resultCoordinate);
 
         // The assumption below (according to the setup code in the "before" method in this JUnit class)
-        // is that the first facade in the above list allFacades will return the result outputCoordinateWgs84ForImplementation_1
-        assertEquals(outputCoordinateWgs84ForImplementation_1.getYLatitude(),  result.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(outputCoordinateWgs84ForImplementation_1.getXLongitude(), result.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        // is that the first facade in the above list allLeafFacades will return the result outputCoordinateWgs84ForImplementation_1
+        assertEquals(outputCoordinateWgs84ForImplementation_1.getYLatitude(),  resultCoordinate.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(outputCoordinateWgs84ForImplementation_1.getXLongitude(), resultCoordinate.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
     }
 
     @Test
     void weightedAverageFacadeTest() {
-        when(facadeImplementation_1.getNameOfImplementation()).thenReturn("1");
-        when(facadeImplementation_2.getNameOfImplementation()).thenReturn("2");
-        when(facadeImplementation_3.getNameOfImplementation()).thenReturn("3");
-        when(facadeImplementation_4.getNameOfImplementation()).thenReturn("4");
-        when(facadeImplementation_5.getNameOfImplementation()).thenReturn("5");
+        when(leafFacadeImplementation_1.getNameOfImplementation()).thenReturn("1");
+        when(leafFacadeImplementation_2.getNameOfImplementation()).thenReturn("2");
+        when(leafFacadeImplementation_3.getNameOfImplementation()).thenReturn("3");
+        when(leafFacadeImplementation_4.getNameOfImplementation()).thenReturn("4");
+        when(leafFacadeImplementation_5.getNameOfImplementation()).thenReturn("5");
 
         final double[] weights = {1,2,4,5,9};
         double totWeights = 0;
@@ -171,15 +171,15 @@ public class CompositeStrategyTestsUsingTestDoubles {
         final Coordinate expectedWeightedAverage = Coordinate.createFromLatitudeLongitude(weightedLat, weightedLon);
 
         List<FacadeWeight> weightedFacades = Arrays.asList(
-            FacadeWeight.createFromInstance(facadeImplementation_1, weights[0]),
-            FacadeWeight.createFromInstance(facadeImplementation_2, weights[1]),
-            FacadeWeight.createFromInstance(facadeImplementation_3, weights[2]),
-            FacadeWeight.createFromInstance(facadeImplementation_4, weights[3]),
-            FacadeWeight.createFromInstance(facadeImplementation_5, weights[4])
+            FacadeWeight.createFromInstance(leafFacadeImplementation_1, weights[0]),
+            FacadeWeight.createFromInstance(leafFacadeImplementation_2, weights[1]),
+            FacadeWeight.createFromInstance(leafFacadeImplementation_3, weights[2]),
+            FacadeWeight.createFromInstance(leafFacadeImplementation_4, weights[3]),
+            FacadeWeight.createFromInstance(leafFacadeImplementation_5, weights[4])
         );
 
-        final CrsTransformationFacade weightedAverageFacade = CrsTransformationFacadeComposite.createCrsTransformationWeightedAverage(weightedFacades);
-        final Coordinate result = weightedAverageFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        final CrsTransformationFacade weightedAverageCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationWeightedAverage(weightedFacades);
+        final Coordinate result = weightedAverageCompositeFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(result);
 
         assertEquals(expectedWeightedAverage.getYLatitude(),  result.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
