@@ -40,12 +40,12 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
     @Test
     void createCompositeStrategyForWeightedAverageValue() {
 
-        final List<FacadeAndWeight> weights = Arrays.asList(
-            FacadeAndWeight.createFromInstance(new CrsTransformationFacadeGeoTools(), weightForGeoTools),
-            FacadeAndWeight.createFromInstance(new CrsTransformationFacadeGooberCTL(), weightForGoober),
-            FacadeAndWeight.createFromInstance(new CrsTransformationFacadeOrbisgisCTS(), weightForOrbis),
-            FacadeAndWeight.createFromInstance(new CrsTransformationFacadeProj4J(), weightForProj4J),
-            FacadeAndWeight.createFromInstance(new CrsTransformationFacadeGeoPackageNGA(), weightForGeoPackageNGA)
+        final List<FacadeWeight> weights = Arrays.asList(
+            FacadeWeight.createFromInstance(new CrsTransformationFacadeGeoTools(), weightForGeoTools),
+            FacadeWeight.createFromInstance(new CrsTransformationFacadeGooberCTL(), weightForGoober),
+            FacadeWeight.createFromInstance(new CrsTransformationFacadeOrbisgisCTS(), weightForOrbis),
+            FacadeWeight.createFromInstance(new CrsTransformationFacadeProj4J(), weightForProj4J),
+            FacadeWeight.createFromInstance(new CrsTransformationFacadeGeoPackageNGA(), weightForGeoPackageNGA)
         );
         final CrsTransformationFacadeComposite facade = CrsTransformationFacadeComposite.createCrsTransformationWeightedAverage(weights);
         createCompositeStrategyForWeightedAverageValueHelper(facade);
@@ -59,12 +59,12 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         final String classNameProj4J = CrsTransformationFacadeProj4J.class.getName() ;
         final String classNameGeoPackageNGA = CrsTransformationFacadeGeoPackageNGA.class.getName() ;
 
-        final List<FacadeAndWeight> weights = Arrays.asList(
-            FacadeAndWeight.createFromStringWithFullClassNameForImplementation(classNameGeoTools, weightForGeoTools),
-            FacadeAndWeight.createFromStringWithFullClassNameForImplementation(classNameGoober, weightForGoober),
-            FacadeAndWeight.createFromStringWithFullClassNameForImplementation(classNameOrbis, weightForOrbis),
-            FacadeAndWeight.createFromStringWithFullClassNameForImplementation(classNameProj4J, weightForProj4J),
-            FacadeAndWeight.createFromStringWithFullClassNameForImplementation(classNameGeoPackageNGA, weightForGeoPackageNGA)
+        final List<FacadeWeight> weights = Arrays.asList(
+            FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameGeoTools, weightForGeoTools),
+            FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameGoober, weightForGoober),
+            FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameOrbis, weightForOrbis),
+            FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameProj4J, weightForProj4J),
+            FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameGeoPackageNGA, weightForGeoPackageNGA)
         );
         final CrsTransformationFacadeComposite facade = CrsTransformationFacadeComposite.createCrsTransformationWeightedAverage(weights);
         createCompositeStrategyForWeightedAverageValueHelper(facade);

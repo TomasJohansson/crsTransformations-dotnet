@@ -170,12 +170,12 @@ public class CompositeStrategyTestsUsingTestDoubles {
         final double weightedLon = totLons / totWeights;
         final Coordinate expectedWeightedAverage = Coordinate.createFromLatitudeLongitude(weightedLat, weightedLon);
 
-        List<FacadeAndWeight> weightedFacades = Arrays.asList(
-            FacadeAndWeight.createFromInstance(facadeImplementation_1, weights[0]),
-            FacadeAndWeight.createFromInstance(facadeImplementation_2, weights[1]),
-            FacadeAndWeight.createFromInstance(facadeImplementation_3, weights[2]),
-            FacadeAndWeight.createFromInstance(facadeImplementation_4, weights[3]),
-            FacadeAndWeight.createFromInstance(facadeImplementation_5, weights[4])
+        List<FacadeWeight> weightedFacades = Arrays.asList(
+            FacadeWeight.createFromInstance(facadeImplementation_1, weights[0]),
+            FacadeWeight.createFromInstance(facadeImplementation_2, weights[1]),
+            FacadeWeight.createFromInstance(facadeImplementation_3, weights[2]),
+            FacadeWeight.createFromInstance(facadeImplementation_4, weights[3]),
+            FacadeWeight.createFromInstance(facadeImplementation_5, weights[4])
         );
 
         final CrsTransformationFacade weightedAverageFacade = CrsTransformationFacadeComposite.createCrsTransformationWeightedAverage(weightedFacades);

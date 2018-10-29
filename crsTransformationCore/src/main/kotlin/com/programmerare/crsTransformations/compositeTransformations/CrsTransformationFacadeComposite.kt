@@ -7,7 +7,7 @@ import com.programmerare.crsTransformations.CrsTransformationFacadeBase
 import com.programmerare.crsTransformations.TransformResult
 import java.lang.RuntimeException
 
-internal final class CrsTransformationFacadeComposite private constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationFacadeBase(), CrsTransformationFacade {
+final class CrsTransformationFacadeComposite private constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationFacadeBase(), CrsTransformationFacade {
 
     override final protected fun transformHook(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): Coordinate {
         val transformResult = transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
@@ -54,7 +54,7 @@ internal final class CrsTransformationFacadeComposite private constructor(protec
         }
 
         @JvmStatic
-        fun createCrsTransformationWeightedAverage(weightedFacades: List<FacadeAndWeight>): CrsTransformationFacadeComposite {
+        fun createCrsTransformationWeightedAverage(weightedFacades: List<FacadeWeight>): CrsTransformationFacadeComposite {
             return CrsTransformationFacadeComposite(
                 CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(weightedFacades)
             )

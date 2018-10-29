@@ -45,19 +45,25 @@ internal class CompositeStrategyForWeightedAverageValue(
             )
         }
         else {
-            return TransformResultImplementation(inputCoordinate, outputCoordinate = null, exception = null, isSuccess = false, crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult)
+            return TransformResultImplementation(
+                inputCoordinate,
+                outputCoordinate = null,
+                exception = null,
+                isSuccess = false,
+                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult
+            )
         }
     }
 
     companion object {
         @JvmStatic
         fun createCompositeStrategyForWeightedAverageValue(
-            weightedFacades: List<FacadeAndWeight>
+            weightedFacades: List<FacadeWeight>
         ): CompositeStrategyForWeightedAverageValue {
             val facades: List<CrsTransformationFacade> = weightedFacades.map { it -> it.crsTransformationFacade }
             val map = HashMap<String, Double>()
-            for (faw: FacadeAndWeight in weightedFacades) {
-                map[faw.crsTransformationFacade.getNameOfImplementation()] = faw.weight
+            for (fw: FacadeWeight in weightedFacades) {
+                map[fw.crsTransformationFacade.getNameOfImplementation()] = fw.weight
             }
             return CompositeStrategyForWeightedAverageValue(facades, map)
         }
