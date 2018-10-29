@@ -14,7 +14,7 @@ public class CompositeStrategyForChainOfResponsibilityTest extends CompositeStra
 
     @Test
     void createCRStransformationFacadeChainOfResponsibility() {
-        CrsTransformationFacade chainOfResponsibilityCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationChainOfResponsibility(
+        CrsTransformationFacade chainOfResponsibilityCompositeFacade = CrsTransformationFacadeCompositeFactory.createCrsTransformationChainOfResponsibility(
             // note that geotools should be the first item in the below list defined in the baseclass,
             // and therefore geotools should be the implementation providing the result
             super.allFacades

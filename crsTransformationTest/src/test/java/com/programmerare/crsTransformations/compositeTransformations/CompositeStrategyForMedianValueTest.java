@@ -21,7 +21,7 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
     void transformWithFacadeCompositeMedianTest() {
         Coordinate expectedCoordinateWithMedianLatitudeAndLongitude = calculateMedianCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
 
-        CrsTransformationFacade medianCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationMedian(
+        CrsTransformationFacade medianCompositeFacade = CrsTransformationFacadeCompositeFactory.createCrsTransformationMedian(
             allFacades
         );
         TransformResult medianResult = medianCompositeFacade.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);

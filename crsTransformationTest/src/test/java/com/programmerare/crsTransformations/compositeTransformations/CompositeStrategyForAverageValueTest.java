@@ -23,7 +23,7 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
     void createCRStransformationFacadeAverage() {
         Coordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
 
-        CrsTransformationFacade averageCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationAverage(
+        CrsTransformationFacade averageCompositeFacade = CrsTransformationFacadeCompositeFactory.createCrsTransformationAverage(
             allFacades
         );
         TransformResult averageResult = averageCompositeFacade.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);

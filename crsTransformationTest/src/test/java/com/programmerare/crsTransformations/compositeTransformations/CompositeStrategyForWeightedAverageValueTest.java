@@ -50,7 +50,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
             FacadeWeight.createFromInstance(new CrsTransformationFacadeProj4J(), weightForProj4J),
             FacadeWeight.createFromInstance(new CrsTransformationFacadeGeoPackageNGA(), weightForGeoPackageNGA)
         );
-        final CrsTransformationFacadeComposite facade = CrsTransformationFacadeComposite.createCrsTransformationWeightedAverage(weights);
+        final CrsTransformationFacadeComposite facade = CrsTransformationFacadeCompositeFactory.createCrsTransformationWeightedAverage(weights);
         createCompositeStrategyForWeightedAverageValueHelper(facade);
     }
 
@@ -70,7 +70,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
             FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameGeoPackageNGA, weightForGeoPackageNGA)
         );
 
-        final CrsTransformationFacadeComposite weightedAverageCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationWeightedAverage(weights);
+        final CrsTransformationFacadeComposite weightedAverageCompositeFacade = CrsTransformationFacadeCompositeFactory.createCrsTransformationWeightedAverage(weights);
         createCompositeStrategyForWeightedAverageValueHelper(weightedAverageCompositeFacade);
     }
 

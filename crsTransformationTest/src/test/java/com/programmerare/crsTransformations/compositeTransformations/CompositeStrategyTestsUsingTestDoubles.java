@@ -124,7 +124,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     @Test
     void averageFacadeTest() {
-        CrsTransformationFacadeComposite averageCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationAverage(allLeafFacades);
+        CrsTransformationFacadeComposite averageCompositeFacade = CrsTransformationFacadeCompositeFactory.createCrsTransformationAverage(allLeafFacades);
         Coordinate resultCoordinate = averageCompositeFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(resultCoordinate);
 
@@ -141,7 +141,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     @Test
     void medianFacadeTest() {
-        CrsTransformationFacadeComposite medianCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationMedian(allLeafFacades);
+        CrsTransformationFacadeComposite medianCompositeFacade = CrsTransformationFacadeCompositeFactory.createCrsTransformationMedian(allLeafFacades);
         Coordinate resultCoordinate = medianCompositeFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(resultCoordinate);
 
@@ -156,7 +156,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     @Test
     void ChainOfResponsibilityFacadeTest() {
-        CrsTransformationFacadeComposite chainOfResponsibilityCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationChainOfResponsibility(allLeafFacades);
+        CrsTransformationFacadeComposite chainOfResponsibilityCompositeFacade = CrsTransformationFacadeCompositeFactory.createCrsTransformationChainOfResponsibility(allLeafFacades);
         Coordinate resultCoordinate = chainOfResponsibilityCompositeFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(resultCoordinate);
 
@@ -202,7 +202,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             FacadeWeight.createFromInstance(leafFacadeImplementation_5, weights[4])
         );
 
-        final CrsTransformationFacadeComposite weightedAverageCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationWeightedAverage(weightedFacades);
+        final CrsTransformationFacadeComposite weightedAverageCompositeFacade = CrsTransformationFacadeCompositeFactory.createCrsTransformationWeightedAverage(weightedFacades);
         final Coordinate result = weightedAverageCompositeFacade.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(result);
 

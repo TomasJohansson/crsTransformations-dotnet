@@ -7,7 +7,7 @@ import com.programmerare.crsTransformations.CrsTransformationFacadeBase
 import com.programmerare.crsTransformations.TransformResult
 import java.lang.RuntimeException
 
-final class CrsTransformationFacadeComposite private constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationFacadeBase(), CrsTransformationFacade {
+final class CrsTransformationFacadeComposite internal constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationFacadeBase(), CrsTransformationFacade {
 
     override final protected fun transformHook(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): Coordinate {
         val transformResult = transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
@@ -32,41 +32,5 @@ final class CrsTransformationFacadeComposite private constructor(protected val c
             lastResultOrNullIfNoPrevious = res
         }
         return compositeStrategy.calculateAggregatedResult(list, inputCoordinate, crsIdentifierForOutputCoordinateSystem, this)
-    }
-
-    companion object {
-        @JvmStatic
-        fun createCrsTransformationMedian(list: List<CrsTransformationFacade>): CrsTransformationFacadeComposite {
-            return CrsTransformationFacadeComposite(
-                CompositeStrategyForMedianValue(
-                    list
-                )
-            )
-        }
-
-        @JvmStatic
-        fun createCrsTransformationAverage(list: List<CrsTransformationFacade>): CrsTransformationFacadeComposite {
-            return CrsTransformationFacadeComposite(
-                CompositeStrategyForAverageValue(
-                    list
-                )
-            )
-        }
-
-        @JvmStatic
-        fun createCrsTransformationWeightedAverage(weightedFacades: List<FacadeWeight>): CrsTransformationFacadeComposite {
-            return CrsTransformationFacadeComposite(
-                CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(weightedFacades)
-            )
-        }
-
-        @JvmStatic
-        fun createCrsTransformationChainOfResponsibility(list: List<CrsTransformationFacade>): CrsTransformationFacadeComposite {
-            return CrsTransformationFacadeComposite(
-                CompositeStrategyForChainOfResponsibility(
-                    list
-                )
-            )
-        }
     }
 }
