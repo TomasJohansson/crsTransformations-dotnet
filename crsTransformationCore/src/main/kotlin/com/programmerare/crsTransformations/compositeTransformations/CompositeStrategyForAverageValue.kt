@@ -16,20 +16,13 @@ internal class CompositeStrategyForAverageValue(
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
         crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
     ): TransformResult {
-        var successCount = 0
-        var sumLat = 0.0
-        var sumLon = 0.0
-        for (res: TransformResult in allResults) {
-            if(res.isSuccess) {
-                successCount++
-                val coord = res.outputCoordinate
-                sumLat += coord.yLatitude
-                sumLon += coord.xLongitude
-            }
-        }
+        val successfulCoordinates = allResults.filter { it.isSuccess }.map { it.outputCoordinate }
+        val successCount = successfulCoordinates.size
         if(successCount > 0) {
-            var avgLat = sumLat / successCount
-            var avgLon = sumLon / successCount
+            val sumLat = successfulCoordinates.map { it.yLatitude }.sum()
+            val sumLon = successfulCoordinates.map { it.xLongitude }.sum()
+            val avgLat = sumLat / successCount
+            val avgLon = sumLon / successCount
             val coordRes = Coordinate.createFromYLatitudeXLongitude(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
             return TransformResultImplementation(
                 inputCoordinate,
