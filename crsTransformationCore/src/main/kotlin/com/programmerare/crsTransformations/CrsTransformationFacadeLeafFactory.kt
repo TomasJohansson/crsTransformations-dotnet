@@ -1,5 +1,7 @@
 package com.programmerare.crsTransformations
 
+import com.programmerare.crsTransformations.extensionfunctions.createCrsTransformationFacadeFromFullClassName
+
 object CrsTransformationFacadeLeafFactory {
 
     /**
@@ -8,7 +10,7 @@ object CrsTransformationFacadeLeafFactory {
      */
     @JvmStatic
     fun createCrsTransformationFacade(crsTransformationFacadeClassName: String): CrsTransformationFacade {
-        val crsTransformationFacade = Class.forName(crsTransformationFacadeClassName).getDeclaredConstructor().newInstance() as CrsTransformationFacade
+        val crsTransformationFacade: CrsTransformationFacade = crsTransformationFacadeClassName.createCrsTransformationFacadeFromFullClassName()
         return crsTransformationFacade
     }
 
