@@ -7,6 +7,8 @@ import com.programmerare.crsTransformationFacadeGeoTools.CrsTransformationFacade
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsTransformations.TransformResult;
+import org.junit.jupiter.api.Disabled;
+import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;
 
 import java.io.File;
@@ -22,11 +24,18 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+//@Tag()
 class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
     private final static double DELTA_LIMIT_FOR_SUCCESS = 0.0001;
 
+    // To run all tests excluding tests labeled with @Tag("SlowTest")
+    // as below, in IntelliJ IDEA:
+    // Run --> Edit configuration --> Junit --> Test kind --> Tags --> Tag expression: !SlowTest
+
     @Test
+    // @Disabled
+    @Tag("SlowTest") // about five minutes for this test method while all other (approx 80) tests take about one minute
     void testAllTransformationsInGeneratedCsvFileWithDifferentImplementations() {
         List<EpsgCrsAndAreaCodeWithCoordinates> list = getCoordinatesFromGeneratedCsvFile();
 
