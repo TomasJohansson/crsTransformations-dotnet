@@ -23,7 +23,8 @@ internal class CompositeStrategyForMedianValue(
                 outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
-                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult
+                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
+                subResults = allResults
             )
         }
         else {
@@ -37,7 +38,8 @@ internal class CompositeStrategyForMedianValue(
                 outputCoordinate = outputCoordinate,
                 exception = null,
                 isSuccess = true,
-                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult
+                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
+                subResults = allResults
             )
         }
     }

@@ -41,7 +41,8 @@ internal class CompositeStrategyForWeightedAverageValue(
                 outputCoordinate = coordRes,
                 exception = null,
                 isSuccess = true,
-                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult
+                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
+                subResults = allResults
             )
         }
         else {
@@ -50,7 +51,8 @@ internal class CompositeStrategyForWeightedAverageValue(
                 outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
-                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult
+                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
+                subResults = allResults
             )
         }
     }

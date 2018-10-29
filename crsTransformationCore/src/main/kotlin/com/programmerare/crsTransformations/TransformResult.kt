@@ -6,4 +6,5 @@ interface TransformResult {
     val exception: Throwable?
     val isSuccess: Boolean
     val crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
+    val subResults: List<TransformResult>
 }

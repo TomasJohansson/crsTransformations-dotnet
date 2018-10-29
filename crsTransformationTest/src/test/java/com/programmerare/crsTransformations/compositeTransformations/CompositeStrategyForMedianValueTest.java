@@ -3,12 +3,15 @@ package com.programmerare.crsTransformations.compositeTransformations;
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
+import com.programmerare.crsTransformations.TransformResult;
 import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
 
@@ -18,11 +21,16 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
     void transformWithFacadeCompositeMedianTest() {
         Coordinate expectedCoordinateWithMedianLatitudeAndLongitude = calculateMedianCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
 
-        CrsTransformationFacade facadeComposite = CrsTransformationFacadeComposite.createCrsTransformationMedian(
+        CrsTransformationFacade medianCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationMedian(
             allFacades
         );
+        TransformResult medianResult = medianCompositeFacade.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        assertNotNull(medianResult);
+        assertTrue(medianResult.isSuccess());
+        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), medianResult.getSubResults().size());
 
-        Coordinate coordinateReturnedByMedianFacade = facadeComposite.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        Coordinate coordinateReturnedByMedianFacade = medianResult.getOutputCoordinate();
+
         // The same transformation as above has been done in the base class for the individual facades
         assertEquals(expectedCoordinateWithMedianLatitudeAndLongitude.getXLongitude(), coordinateReturnedByMedianFacade.getXLongitude(), delta);
         assertEquals(expectedCoordinateWithMedianLatitudeAndLongitude.getYLatitude(), coordinateReturnedByMedianFacade.getYLatitude(), delta);

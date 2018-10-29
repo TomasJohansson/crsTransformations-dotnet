@@ -4,6 +4,7 @@ import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.CrsIdentifier;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
+import com.programmerare.crsTransformations.TransformResult;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -11,19 +12,27 @@ import java.util.Set;
 import java.util.function.ToDoubleFunction;
 import java.util.stream.Collectors;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestBase {
+
+    private final static double delta = 0.000000001;
 
     @Test
     void createCRStransformationFacadeAverage() {
         Coordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
 
-        CrsTransformationFacade facadeComposite = CrsTransformationFacadeComposite.createCrsTransformationAverage(
+        CrsTransformationFacade averageCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationAverage(
             allFacades
         );
-        Coordinate coordinateReturnedByCompositeFacade = facadeComposite.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        TransformResult averageResult = averageCompositeFacade.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        assertNotNull(averageResult);
+        assertTrue(averageResult.isSuccess());
+        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), averageResult.getSubResults().size());
 
-        double delta = 0.000000001;
+        Coordinate coordinateReturnedByCompositeFacade = averageResult.getOutputCoordinate();
+
         assertEquals(coordinateWithAverageLatitudeAndLongitude.getXLongitude(), coordinateReturnedByCompositeFacade.getXLongitude(), delta);
         assertEquals(coordinateWithAverageLatitudeAndLongitude.getYLatitude(), coordinateReturnedByCompositeFacade.getYLatitude(), delta);
         // assertEquals(coordinateWithAverageLatitudeAndLongitude, coordinateReturnedByCompositeFacade);

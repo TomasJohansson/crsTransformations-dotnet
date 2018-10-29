@@ -7,6 +7,7 @@ import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacad
 import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFacadeOrbisgisCTS;
 import com.programmerare.crsTransformationFacadeProj4J.CrsTransformationFacadeProj4J;
 import com.programmerare.crsTransformations.Coordinate;
+import com.programmerare.crsTransformations.TransformResult;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -17,6 +18,8 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.number.OrderingComparison.greaterThan;
 import static org.hamcrest.number.OrderingComparison.lessThan;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTestBase {
 
@@ -66,22 +69,30 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
             FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameProj4J, weightForProj4J),
             FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameGeoPackageNGA, weightForGeoPackageNGA)
         );
-        final CrsTransformationFacadeComposite facade = CrsTransformationFacadeComposite.createCrsTransformationWeightedAverage(weights);
-        createCompositeStrategyForWeightedAverageValueHelper(facade);
+
+        final CrsTransformationFacadeComposite weightedAverageCompositeFacade = CrsTransformationFacadeComposite.createCrsTransformationWeightedAverage(weights);
+        createCompositeStrategyForWeightedAverageValueHelper(weightedAverageCompositeFacade);
     }
 
-    private void createCompositeStrategyForWeightedAverageValueHelper(CrsTransformationFacadeComposite facade) {
-        final Coordinate coordinateResult = facade.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+    private void createCompositeStrategyForWeightedAverageValueHelper(
+        CrsTransformationFacadeComposite weightedAverageCompositeFacade
+    ) {
+        TransformResult weightedAverageResult = weightedAverageCompositeFacade.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        assertNotNull(weightedAverageResult);
+        assertTrue(weightedAverageResult.isSuccess());
+        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), weightedAverageResult.getSubResults().size());
 
-        assertEquals(coordinateWithExpectedWeightedValues.getYLatitude(), coordinateResult.getYLatitude(), SMALL_DELTA_VALUE);
-        assertEquals(coordinateWithExpectedWeightedValues.getXLongitude(), coordinateResult.getXLongitude(), SMALL_DELTA_VALUE);
+        Coordinate weightedAverageCoordinate = weightedAverageResult.getOutputCoordinate();
+
+        assertEquals(coordinateWithExpectedWeightedValues.getYLatitude(), weightedAverageCoordinate.getYLatitude(), SMALL_DELTA_VALUE);
+        assertEquals(coordinateWithExpectedWeightedValues.getXLongitude(), weightedAverageCoordinate.getXLongitude(), SMALL_DELTA_VALUE);
 
         // The logic for the tests below:
         // The tested result should of course be very close to the expected result,
         // i.e. the differences (longitude and latitude differences)
         // // should be less than a very small SMALL_DELTA_VALUE value
-        final double diffLatTestedFacade = Math.abs(coordinateWithExpectedWeightedValues.getYLatitude() - coordinateResult.getYLatitude());
-        final double diffLonTestedFacade = Math.abs(coordinateWithExpectedWeightedValues.getXLongitude() - coordinateResult.getXLongitude());
+        final double diffLatTestedFacade = Math.abs(coordinateWithExpectedWeightedValues.getYLatitude() - weightedAverageCoordinate.getYLatitude());
+        final double diffLonTestedFacade = Math.abs(coordinateWithExpectedWeightedValues.getXLongitude() - weightedAverageCoordinate.getXLongitude());
         assertThat(diffLatTestedFacade, lessThan(SMALL_DELTA_VALUE));// assertTrue(diffLatTestedFacade < SMALL_DELTA_VALUE);
         assertThat(diffLonTestedFacade, lessThan(SMALL_DELTA_VALUE));
 

@@ -36,7 +36,8 @@ internal class CompositeStrategyForAverageValue(
                 outputCoordinate = coordRes,
                 exception = null,
                 isSuccess = true,
-                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult
+                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
+                subResults = allResults
             )
         }
         else {
@@ -45,7 +46,8 @@ internal class CompositeStrategyForAverageValue(
                 outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
-                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult
+                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
+                subResults = allResults
             )
         }
    }
