@@ -53,7 +53,7 @@ public class CrsTransformationFacadeLeafFactoryTest {
         }
     }
 
-    private final static int NUMBER_OF_IMPLEMENTATIONS = 5;
+    public final static int NUMBER_OF_IMPLEMENTATIONS = 5;
 
     @Test
     void getInstancesOfAllKnownAvailableImplementations() {
