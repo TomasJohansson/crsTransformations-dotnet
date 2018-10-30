@@ -388,16 +388,16 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     @Test
     @Tag(TestCategory.SideEffectPrintingConsoleOutput)
     void showDifferenceIfSignificantTest() {
-        TestResultItem.DIFFERENCE difference = showDifferenceIfSignificant(
+        DifferenceWhenComparingCoordinateValues differenceWhenComparingCoordinateValues = showDifferenceIfSignificant(
             "35.00827072383671|31.517029225386523|2039|200816.30213267874|602774.2381723676|35.00827072137521|31.517029283149466",
             "35.00827072383671|31.517029225386523|2039|200816.30213267755|602774.2381723677|35.00827072137521|31.517029283149473",
             deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
             true // shouldAlsoDisplayDifferencesWhenValueIsMissing
         );
-        if(difference != TestResultItem.DIFFERENCE.SIGNIFICANT_VALUE_DIFFERENCE) {
-//            System.out.println("no significant difference");
+        if(differenceWhenComparingCoordinateValues != DifferenceWhenComparingCoordinateValues.SIGNIFICANT_VALUE_DIFFERENCE) {
+//            System.out.println("no significant differenceWhenComparingCoordinateValues");
         }
-        assertNotEquals(difference, TestResultItem.DIFFERENCE.SIGNIFICANT_VALUE_DIFFERENCE);
+        assertNotEquals(differenceWhenComparingCoordinateValues, DifferenceWhenComparingCoordinateValues.SIGNIFICANT_VALUE_DIFFERENCE);
     }
 
     private void compareWithRegressionFileContent(
@@ -437,7 +437,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         System.out.println("-------------------------------------------------");
     }
 
-    private TestResultItem.DIFFERENCE showDifferenceIfSignificant(
+    private DifferenceWhenComparingCoordinateValues showDifferenceIfSignificant(
         String lineFromFileWithRegressionResults,
         String lineFromFileWithRegressionResults2,
         double deltaValueForDifferencesToIgnore,
@@ -445,19 +445,19 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     ) {
         TestResultItem t1 = new TestResultItem(lineFromFileWithRegressionResults);
         TestResultItem t2 = new TestResultItem(lineFromFileWithRegressionResults2);
-        TestResultItem.DIFFERENCE diff = t1.isDeltaDifferenceSignificant(t2, deltaValueForDifferencesToIgnore);
+        DifferenceWhenComparingCoordinateValues diff = t1.isDeltaDifferenceSignificant(t2, deltaValueForDifferencesToIgnore);
         if(
             (shouldAlsoDisplayDifferencesWhenValueIsMissing &&
                 (
-                    diff == TestResultItem.DIFFERENCE.SIGNIFICANT_VALUE_DIFFERENCE
+                    diff == DifferenceWhenComparingCoordinateValues.SIGNIFICANT_VALUE_DIFFERENCE
                     ||
-                    diff == TestResultItem.DIFFERENCE.EXISTING_VS_NOT_EXISTING
+                    diff == DifferenceWhenComparingCoordinateValues.EXISTING_VS_NOT_EXISTING
                 )
             )
             ||
             ( !shouldAlsoDisplayDifferencesWhenValueIsMissing &&
                 (
-                    diff == TestResultItem.DIFFERENCE.SIGNIFICANT_VALUE_DIFFERENCE
+                    diff == DifferenceWhenComparingCoordinateValues.SIGNIFICANT_VALUE_DIFFERENCE
                 )
             )
         ) {
@@ -694,17 +694,12 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             return Coordinate.latLon(lat, lon);
         }
 
-        public enum DIFFERENCE {
-            EXISTING_VS_NOT_EXISTING,
-            SIGNIFICANT_VALUE_DIFFERENCE,
-            NO
-        }
         /**
          * @param that
          * @param deltaValueForDifferencesToIgnore
          * @return
          */
-        public DIFFERENCE isDeltaDifferenceSignificant(
+        public DifferenceWhenComparingCoordinateValues isDeltaDifferenceSignificant(
             TestResultItem that,
             double deltaValueForDifferencesToIgnore
         ) {
@@ -713,10 +708,10 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             boolean thatXIsDouble = isValueExistingAndDouble(that.wgs84targetX);
             boolean thatYIsDouble = isValueExistingAndDouble(that.wgs84targetY);
             if(thisXIsDouble != thatXIsDouble) {
-                return DIFFERENCE.EXISTING_VS_NOT_EXISTING;
+                return DifferenceWhenComparingCoordinateValues.EXISTING_VS_NOT_EXISTING;
             }
             if(thisYIsDouble != thatYIsDouble) {
-                return DIFFERENCE.EXISTING_VS_NOT_EXISTING;
+                return DifferenceWhenComparingCoordinateValues.EXISTING_VS_NOT_EXISTING;
             }
             if(thisYIsDouble && thisXIsDouble) { // then the others are also double according to above
                 double thisLat = Double.parseDouble(this.wgs84targetY);
@@ -734,10 +729,10 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 //                System.out.println("thatLon " + thatLon);
 
                 if(diffLon > deltaValueForDifferencesToIgnore || diffLat > deltaValueForDifferencesToIgnore) {
-                    return DIFFERENCE.SIGNIFICANT_VALUE_DIFFERENCE;
+                    return DifferenceWhenComparingCoordinateValues.SIGNIFICANT_VALUE_DIFFERENCE;
                 }
             }
-            return DIFFERENCE.NO;
+            return DifferenceWhenComparingCoordinateValues.NO;
         }
 
         private boolean isValueExistingAndDouble(String value) {
@@ -789,6 +784,13 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
                 ", centroidY=" + centroidY +
                 '}';
         }
+    }
+
+
+    public enum DifferenceWhenComparingCoordinateValues {
+        EXISTING_VS_NOT_EXISTING,
+        SIGNIFICANT_VALUE_DIFFERENCE,
+        NO
     }
 }
 //// The test results below were created when the following delta value was used:
