@@ -18,10 +18,7 @@ import java.net.URL;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.List;
+import java.util.*;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -299,10 +296,63 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     // -------------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------------
     // -------------------------------------------------------------------------------------
-    // TODO: create some method which will compare files for more than two implementations
-    // at a time, to find the outliers that are signinficantly different for the others,
+    //
+    // Below: comparing files for more than two implementations at a time,
+    // to find the outliers that are significantly different for the others,
     // i.e. to make it easier to find implementations which are potentially very incorrect (buggy)
     // for transformatsion regarding a certain EPSG code where the significant differences were found
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
+    void findPotentialBuggyImplementations() {
+        final File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
+        final File gooberFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Goober")[0];
+        final File ngaFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("NGA")[0];
+        final File orbisFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Orbis")[0];
+        final File projFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Proj")[0];
+        final List<File> filesToCompare = Arrays.asList(geoToolsFile, gooberFile, ngaFile, orbisFile, projFile);
+        final double deltaValueForDifferencesToIgnore = 0.001;
+        compareFiles(
+            filesToCompare,
+            deltaValueForDifferencesToIgnore
+        );
+    }
+
+    private void compareFiles(
+        final List<File> filesToCompare,
+        final double deltaValueForDifferencesToIgnore
+    ) {
+        final ResultAggregator resultAggregator = new ResultAggregator();
+        final boolean shouldShowALLdifferences = deltaValueForDifferencesToIgnore < 0;
+        final List<List<String>> listOfRowsPerFile = new ArrayList<List<String>>();
+        int numberOfRowsInFile = -1;
+        for(File file: filesToCompare) {
+            final List<String> rowsInFile = getAllLinesFromTextFileUTF8(file);
+            listOfRowsPerFile.add(rowsInFile);
+            resultAggregator.addRowsFromFile(rowsInFile, file);
+            if(numberOfRowsInFile < 0) {
+                numberOfRowsInFile = rowsInFile.size();
+            }
+            else {
+                if(rowsInFile.size() != numberOfRowsInFile) {
+                    final String errorMessage = "Not even the same number of rows in the files";
+                    System.out.println(errorMessage);
+                    throw new RuntimeException(errorMessage);
+                }
+            }
+        }
+        final Set<Integer> indexesForRowsWithSignificantDifference = resultAggregator.getIndexesForRowsWithSignificantDifference(deltaValueForDifferencesToIgnore);
+        for (Integer ind : indexesForRowsWithSignificantDifference) {
+            System.out.println("-----------------");
+            System.out.println("index " + ind);
+            for (int i=0; i < listOfRowsPerFile.size(); i++) {
+                final File file = filesToCompare.get(i);
+                final String rowContent = listOfRowsPerFile.get(i).get(ind);
+                System.out.println(rowContent + " ; " + file.getName());
+            }
+        }
+        System.out.println("-------------------------------------------------");
+    }
     // -------------------------------------------------------------------------------------
 
 
