@@ -121,8 +121,8 @@ public class TransformResultImplementationTest {
         assertTrue(resultsStatistic.isStatisticsAvailable());
 
         assertEquals(4, resultsStatistic.getNumberOfResults());
-        assertEquals(expectedLatDiffMax, resultsStatistic.getMaxDiffLatitude());
-        assertEquals(expectedLonDiffMax, resultsStatistic.getMaxDiffLongitude());
+        assertEquals(expectedLatDiffMax, resultsStatistic.getMaxDiffYLatitude());
+        assertEquals(expectedLonDiffMax, resultsStatistic.getMaxDiffXLongitude());
 
         final Coordinate coordinateAverage = resultsStatistic.getCoordinateAverage();
         final Coordinate coordinateMean = resultsStatistic.getCoordinateMedian();

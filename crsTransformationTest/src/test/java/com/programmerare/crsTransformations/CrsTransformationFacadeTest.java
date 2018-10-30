@@ -304,8 +304,8 @@ final class CrsTransformationFacadeTest {
         assertNotNull(resultsStatistic);
         assertTrue(resultsStatistic.isStatisticsAvailable());
         assertEquals(1, resultsStatistic.getNumberOfResults());
-        assertEquals(0, resultsStatistic.getMaxDiffLatitude());
-        assertEquals(0, resultsStatistic.getMaxDiffLongitude());
+        assertEquals(0, resultsStatistic.getMaxDiffYLatitude());
+        assertEquals(0, resultsStatistic.getMaxDiffXLongitude());
         assertEquals(transformResult.getOutputCoordinate(), resultsStatistic.getCoordinateAverage());
         assertEquals(transformResult.getOutputCoordinate(), resultsStatistic.getCoordinateMedian());
     }

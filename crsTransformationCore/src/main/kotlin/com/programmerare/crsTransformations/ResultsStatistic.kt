@@ -37,7 +37,7 @@ class ResultsStatistic(private val results: List<TransformResult>) {
         getMaxDiff(_latitudes)
     }
 
-    fun getMaxDiffLatitude(): Double {
+    fun getMaxDiffYLatitude(): Double {
         return _maxDiffLatitudes
     }
 
@@ -45,7 +45,7 @@ class ResultsStatistic(private val results: List<TransformResult>) {
         getMaxDiff(_longitudes)
     }
 
-    fun getMaxDiffLongitude(): Double {
+    fun getMaxDiffXLongitude(): Double {
         return _maxDiffLongitudes
     }
 
