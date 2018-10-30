@@ -4,12 +4,13 @@ import com.google.common.io.Resources;
 import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgCode;
 import com.programmerare.crsTransformationFacadeGeoPackageNGA.CrsTransformationFacadeGeoPackageNGA;
 import com.programmerare.crsTransformationFacadeGeoTools.CrsTransformationFacadeGeoTools;
+import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL;
+import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFacadeOrbisgisCTS;
+import com.programmerare.crsTransformationFacadeProj4J.CrsTransformationFacadeProj4J;
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.CrsTransformationFacade;
 import com.programmerare.crsTransformations.TransformResult;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.*;
 
 import java.io.File;
 import java.io.IOException;
@@ -24,32 +25,70 @@ import java.util.concurrent.TimeUnit;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-//@Tag()
+// TODO: programmatically compare the results in two ways:
+//  - Compare results with itself with different versions of the same library when having done an upgrade
+//  - Compare results with different libraries
+
+/**
+ * The CSV file used in this test:
+ *  src/test/resources/generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv
+ * The above file ahs been created with the following class:
+ *  \crsCodeGeneration\src\main\kotlin\com\programmerare\crsCodeGeneration\coordinateTestDataGenerator\CoordinateTestDataGenerator.kt
+ * The relevant columns are the first column (EPSG code) and the last two column with WGS84 coordinates.
+ * The WGS84 coordinate defines the "centroid" within an area where some other coordinate
+ * system is used (and that other coordinate system is defined byt the EPSG code in the first column)
+ * Thus the file defines a list of appropriate WGS84 coordinates which can be transformed back and forth
+ * to/from the coordinate system in the first EPSG column.
+ */
 class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
+    private final static String OUTPUT_DIRECTORY_FOR_REGRESSION_RESULTS = "src/test/resources/regression_results";
+
+    // the below file is used with method 'Resources.getResource' (the path is test/resources/generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv )
+    private final static String INPUT_TEST_DATA_FILE = "generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv";
+
+    private boolean createNewRegressionFile = true;
+
     private final static double DELTA_LIMIT_FOR_SUCCESS = 0.0001;
+
+    private static List<EpsgCrsAndAreaCodeWithCoordinates> list;
+
+    @BeforeAll
+    static void before() {
+        list = getCoordinatesFromGeneratedCsvFile();
+    }
 
     // To run all tests excluding tests labeled with @Tag("SlowTest")
     // as below, in IntelliJ IDEA:
     // Run --> Edit configuration --> Junit --> Test kind --> Tags --> Tag expression: !SlowTest
 
     @Test
+    // @Tag("SlowTest") // actually not at all slow but very fast since very few coordinate systems are supported
+    @Tag("SideEffectFileCreation") // test/resources/regression_results/
+    void testAllTransformationsInGeneratedCsvFileWithGoober() {
+        TestResult testResultForGoober = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeGooberCTL(), list);
+        handleTestResults(
+            testResultForGoober,
+            DELTA_LIMIT_FOR_SUCCESS,
+            createNewRegressionFile,
+            "_version_1.1" // build.gradle: implementation("com.github.goober:coordinate-transformation-library:1.1")
+        );
+    }
+
+    @Test
     // @Disabled
-    @Tag("SlowTest") // about five minutes for this test method while all other (approx 80) tests take about one minute
-    void testAllTransformationsInGeneratedCsvFileWithDifferentImplementations() {
-        List<EpsgCrsAndAreaCodeWithCoordinates> list = getCoordinatesFromGeneratedCsvFile();
-
-        boolean createNewRegressionFile = true;
-        //boolean createNewRegressionFile = false;
-
-        double deltaLimitForSuccess = DELTA_LIMIT_FOR_SUCCESS;
-
+    @Tag("SlowTest") // e.g. 224 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
+    @Tag("SideEffectFileCreation") // test/resources/regression_results/
+    void testAllTransformationsInGeneratedCsvFileWithGeoTools() {
+        //    seconds: 224
+        //    countOfSuccess: 4036
+        //    countOfFailures: 2399
         TestResult testResultForGeoTools = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeGeoTools(), list);
         handleTestResults(
             testResultForGeoTools,
-            deltaLimitForSuccess,
+            DELTA_LIMIT_FOR_SUCCESS,
             createNewRegressionFile,
-            "_version_20.0"
+            "_version_20.0"  // build.gradle: implementation("org.geotools:gt-main:20.0")
             // file created: "test/resources/regression_results/CrsTransformationFacadeGeoTools_version_20.0_.csv
         );
         // There are differences in the above generated file (when using version 20.0 instead of 19.1)
@@ -58,31 +97,61 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         // then try to figure out if it is improvement or the opposite.
         // If the later version seem to have introduced a bug/error then try to report it to the GeoTools project
 
-        TestResult testResultForGeoPackage = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeGeoPackageNGA(), list);
-        handleTestResults(
-            testResultForGeoPackage,
-            deltaLimitForSuccess,
-            createNewRegressionFile,
-            "_version_3.1.0"
-            // file created: "test/resources/regression_results/CrsTransformationFacadeGeoPackageNGA_version_3.1.0.csv
-        );
-        // The above created latest output file "CrsTransformationFacadeGeoPackageNGA_version_3.1.0.csv"
-        // was identical with the file created for the previous version (generated by GeoPackage 3.0.0)
-
-        /*
-        TestResult testResultForGoober = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeGooberCTL(), list);
-        handleTestResults(testResultForGoober, deltaLimitForSuccess, createNewRegressionFile);
-
-        TestResult testResultForProj4J = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeProj4J(), list);
-        handleTestResults(testResultForProj4J, deltaLimitForSuccess, createNewRegressionFile);
-
-        TestResult testResultForOrbisgis = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeOrbisgisCTS(), list);
-        handleTestResults(testResultForOrbisgis, deltaLimitForSuccess, createNewRegressionFile);
-        */
         // TODO: compute standard deviations for the results e.g.
         // the deviations from the original coordinate when transforming back and forth,
         // and also compare them with each other and caluclate the standard deviation
         // from the median value ...
+    }
+
+    @Test
+    @Tag("SlowTest") // e.g. 122 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
+    @Tag("SideEffectFileCreation")
+    void testAllTransformationsInGeneratedCsvFileWithGeoPackage() {
+        //    seconds: 122
+        //    countOfSuccess: 3918
+        //    countOfFailures: 2517
+        TestResult testResultForGeoPackage = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeGeoPackageNGA(), list);
+        handleTestResults(
+            testResultForGeoPackage,
+            DELTA_LIMIT_FOR_SUCCESS,
+            createNewRegressionFile,
+            "_version_3.1.0" // build.gradle: compile group: 'mil.nga.geopackage', name: 'geopackage', version: '3.1.0'
+            // file created: "test/resources/regression_results/CrsTransformationFacadeGeoPackageNGA_version_3.1.0.csv
+        );
+        // The above created latest output file "CrsTransformationFacadeGeoPackageNGA_version_3.1.0.csv"
+        // was identical with the file created for the previous version (generated by GeoPackage 3.0.0)
+    }
+
+    @Test
+    @Tag("SlowTest") // e.g. 201 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
+    @Tag("SideEffectFileCreation")
+    void testAllTransformationsInGeneratedCsvFileWithProj4J() {
+        //    seconds: 201
+        //    countOfSuccess: 3916
+        //    countOfFailures: 2519
+        TestResult testResultForProj4J = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeProj4J(), list);
+        handleTestResults(
+            testResultForProj4J,
+            DELTA_LIMIT_FOR_SUCCESS,
+            createNewRegressionFile,
+            "_version_0.1.0" // build.gradle: implementation("org.osgeo:proj4j:0.1.0")
+        );
+    }
+
+    @Test
+    @Tag("SlowTest") // e.g. 384 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
+    @Tag("SideEffectFileCreation")
+    void testAllTransformationsInGeneratedCsvFileWithOrbisgis() {
+        //    seconds: 384
+        //    countOfSuccess: 3799
+        //    countOfFailures: 2636
+        TestResult testResultForOrbisgis = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeOrbisgisCTS(), list);
+        handleTestResults(
+            testResultForOrbisgis,
+            DELTA_LIMIT_FOR_SUCCESS,
+            createNewRegressionFile,
+            "_version_1.5.1" // build.gradle: implementation("org.orbisgis:cts:1.5.1")
+        );
     }
 
     private TestResult runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(
@@ -122,7 +191,12 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
      * @param deltaLimitForSuccess
      * @param createNewRegressionFile if false, then instead compare with previous regression file
      */
-    private void handleTestResults(TestResult testResult, double deltaLimitForSuccess, boolean createNewRegressionFile, String fileNameSuffixExcludingExtension) {
+    private void handleTestResults(
+        TestResult testResult,
+        double deltaLimitForSuccess,
+        boolean createNewRegressionFile,
+        String fileNameSuffixExcludingExtension
+    ) {
         System.out.println("-------------------------------");
         System.out.println("testResults for " + testResult.facade.getClass().getSimpleName());
         System.out.println("seconds: " + testResult.totalNumberOfSecondsForAllTransformations);
@@ -174,7 +248,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         // https://docs.oracle.com/javase/7/docs/api/java/io/File.html
         // "... system property user.dir, and is typically the directory in which the Java virtual machine was invoked"
         File userDir = new File(System.getProperty("user.dir"));
-        File directoryForRegressionsResults = new File(userDir, "src/test/resources/regression_results");
+        File directoryForRegressionsResults = new File(userDir, OUTPUT_DIRECTORY_FOR_REGRESSION_RESULTS);
         if (!directoryForRegressionsResults.exists() || !directoryForRegressionsResults.isDirectory()) {
             throw new RuntimeException("Directory does not exist: " + directoryForRegressionsResults.getAbsolutePath());
         }
@@ -208,11 +282,10 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
      *  and from shapefile with polygon used for creating the coordinates as centroid points
      *  within a certain area where the EPSG code is defined to be used)
      */
-    private List<EpsgCrsAndAreaCodeWithCoordinates> getCoordinatesFromGeneratedCsvFile() {
+    private static List<EpsgCrsAndAreaCodeWithCoordinates> getCoordinatesFromGeneratedCsvFile() {
         final ArrayList<EpsgCrsAndAreaCodeWithCoordinates> list = new ArrayList<>();
         try {
-            final String pathToTestDataFile = "generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv";
-            final URL url = Resources.getResource(pathToTestDataFile);
+            final URL url = Resources.getResource(INPUT_TEST_DATA_FILE);
             final List<String> lines = Resources.readLines(url, Charset.forName("UTF-8"));
             for (String line : lines) {
                 final EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(line);
@@ -225,29 +298,32 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     // @Test
-    void temporaryTestAsStartingPointOfExecutionWhenTroubleShooting() {
-        testOneRowFromCsvFile(
-            new CrsTransformationFacadeGeoPackageNGA(),
-            "3006|1225|Sweden|17.083659606206545|61.98770256318016"
-        );
-    }
+//    void temporaryTestAsStartingPointOfExecutionWhenTroubleShooting() {
+//        testOneRowFromCsvFile(
+//            new CrsTransformationFacadeGeoPackageNGA(),
+//            "3006|1225|Sweden|17.083659606206545|61.98770256318016"
+//        );
+//    }
 
-    /**
-     *
-     * @param crsTransformationFacade
-     * @param oneRowFromCsvFile e.g. "3006|1225|Sweden|17.083659606206545|61.98770256318016"
-     *  (can be copied from the file "generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv" )
-     */
-    private void testOneRowFromCsvFile(CrsTransformationFacade crsTransformationFacade, String oneRowFromCsvFile) {
-        EpsgCrsAndAreaCodeWithCoordinates item = createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile("3006|1225|Sweden|17.083659606206545|61.98770256318016");
-        final Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongitudeYLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
-        final TransformResult resultOfTransformationFromWGS84 = crsTransformationFacade.transform(inputCoordinateWGS84, item.epsgCrsCode);
-        if(!resultOfTransformationFromWGS84.isSuccess()) {
-            System.out.println(resultOfTransformationFromWGS84.getException());
-        }
-        assertTrue(resultOfTransformationFromWGS84.isSuccess());
-    }
-    private EpsgCrsAndAreaCodeWithCoordinates createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(String line) {
+//    /**
+//     *
+//     * @param crsTransformationFacade
+//     * @param oneRowFromCsvFile e.g. "3006|1225|Sweden|17.083659606206545|61.98770256318016"
+//     *  (can be copied from the file "generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv" )
+//     */
+//    private void testOneRowFromCsvFile(
+//        CrsTransformationFacade crsTransformationFacade,
+//        String oneRowFromCsvFile
+//    ) {
+//        EpsgCrsAndAreaCodeWithCoordinates item = createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(oneRowFromCsvFile);
+//        final Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongitudeYLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
+//        final TransformResult resultOfTransformationFromWGS84 = crsTransformationFacade.transform(inputCoordinateWGS84, item.epsgCrsCode);
+//        if(!resultOfTransformationFromWGS84.isSuccess()) {
+//            System.out.println(resultOfTransformationFromWGS84.getException());
+//        }
+//        assertTrue(resultOfTransformationFromWGS84.isSuccess());
+//    }
+    private static EpsgCrsAndAreaCodeWithCoordinates createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(String line) {
         final String trimmedLine = line.trim();
         // e.g. "3006|1225|Sweden|17.083659606206545|61.98770256318016"
         final String[] parts = trimmedLine.split("\\|");
@@ -306,7 +382,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         }
     }
 
-    class EpsgCrsAndAreaCodeWithCoordinates {
+    static class EpsgCrsAndAreaCodeWithCoordinates {
         final int epsgCrsCode;
         final int epsgAreaCode;
         final String epsgAreaName;
