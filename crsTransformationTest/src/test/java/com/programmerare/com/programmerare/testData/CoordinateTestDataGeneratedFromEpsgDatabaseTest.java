@@ -24,9 +24,7 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 // TODO: programmatically compare the results in two ways:
 //  - Compare results with itself with different versions of the same library when having done an upgrade
@@ -269,58 +267,144 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     @Tag("SideEffectPrintingConsoleOutput")
     void compareResultsForDifferentVersionsOfGeoTools() {
         // filename e.g. "CrsTransformationFacadeGeoTools_version_20.0.csv"
-        compareTheTwoLatestVersion("GeoTools", deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation);
+        compareTheTwoLatestVersion(
+            "GeoTools",
+            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
+            true // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
     }
 
     @Test // currently not a real test with assertions but printing console output with differences
     @Tag("SideEffectPrintingConsoleOutput")
     void compareResultsForDifferentVersionsOfNGA() {
         // filename e.g. "CrsTransformationFacadeGeoPackageNGA_version_3.1.0.csv"
-        compareTheTwoLatestVersion("NGA", deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation);
+        compareTheTwoLatestVersion(
+            "NGA",
+            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
+            true // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
     }
 
     @Test // currently not a real test with assertions but printing console output with differences
     @Tag("SideEffectPrintingConsoleOutput")
     void compareResultsForDifferentVersionsOfGoober() {
         // filename e.g. "CrsTransformationFacadeGooberCTL_version_1.1.csv"
-        compareTheTwoLatestVersion("Goober", deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation);
+        compareTheTwoLatestVersion(
+            "Goober",
+            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
+            true // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
     }
 
     @Test // currently not a real test with assertions but printing console output with differences
     @Tag("SideEffectPrintingConsoleOutput")
     void compareResultsForDifferentVersionsOfOrbis() {
         // filename e.g. "CrsTransformationFacadeOrbisgisCTS_version_1.5.1.csv"
-        compareTheTwoLatestVersion("Orbis", deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation);
+        compareTheTwoLatestVersion(
+            "Orbis",
+            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
+            true // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
     }
 
     @Test // currently not a real test with assertions but printing console output with differences
     @Tag("SideEffectPrintingConsoleOutput")
     void compareResultsForDifferentVersionsOfProj4J() {
         // filename e.g. "CrsTransformationFacadeProj4J_version_0.1.0.csv"
-        compareTheTwoLatestVersion("Proj4J", deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation);
+        compareTheTwoLatestVersion(
+            "Proj4J",
+            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
+            true // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
     }
 
     private final static double deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation = 0.000000000001;
+
+    private final static double deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation = 0.00001;
+    // -------------------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------------------
+    // Comparing the latest results of GeoTools with the results from the other files
+    // (since GeoTools seem to support the greatest number of EPSG codes, based on the file sizes for the regression files)
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag("SideEffectPrintingConsoleOutput")
+    void compareResultsForLatestGeoToolsAndGoober() {
+        // filenames e.g. "CrsTransformationFacadeGeoTools_version_20.0.csv" and "CrsTransformationFacadeGooberCTL_version_1.1.csv"
+        File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
+        File gooberFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Goober")[0];
+        compareWithRegressionFileContent(
+            geoToolsFile,
+            gooberFile,
+            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
+            false // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag("SideEffectPrintingConsoleOutput")
+    void compareResultsForLatestGeoToolsAndGeoPackageNGA() {
+        File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
+        File geoPackageNGAFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("NGA")[0];
+        compareWithRegressionFileContent(
+            geoToolsFile,
+            geoPackageNGAFile,
+            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
+            false // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag("SideEffectPrintingConsoleOutput")
+    void compareResultsForLatestGeoToolsAndProj4J() {
+        File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
+        File proj4JFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Proj4J")[0];
+        compareWithRegressionFileContent(
+            geoToolsFile,
+            proj4JFile,
+            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
+            false // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag("SideEffectPrintingConsoleOutput")
+    void compareResultsForLatestGeoToolsAndOrbisgis() {
+        File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
+        File orbisFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Orbis")[0];
+        compareWithRegressionFileContent(
+            geoToolsFile,
+            orbisFile,
+            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
+            false // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+    // -------------------------------------------------------------------------------------
+    // TODO: create some method which will compare files for more than two implementations
+    // at a time, to find the outliers that are signinficantly different for the others,
+    // i.e. to make it easier to find implementations which are potentially very incorrect (buggy)
+    // for transformatsion regarding a certain EPSG code where the significant differences were found
     // -------------------------------------------------------------------------------------
 
     @Test
     @Tag("SideEffectPrintingConsoleOutput")
     void showDifferenceIfSignificantTest() {
-        boolean isDifferenceIfSignificant = showDifferenceIfSignificant(
+        TestResultItem.DIFFERENCE difference = showDifferenceIfSignificant(
             "35.00827072383671|31.517029225386523|2039|200816.30213267874|602774.2381723676|35.00827072137521|31.517029283149466",
             "35.00827072383671|31.517029225386523|2039|200816.30213267755|602774.2381723677|35.00827072137521|31.517029283149473",
-                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation
+            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
+            true // shouldAlsoDisplayDifferencesWhenValueIsMissing
         );
-        if(!isDifferenceIfSignificant) {
+        if(difference != TestResultItem.DIFFERENCE.SIGNIFICANT_VALUE_DIFFERENCE) {
 //            System.out.println("no significant difference");
         }
-        assertFalse(isDifferenceIfSignificant);
+        assertNotEquals(difference, TestResultItem.DIFFERENCE.SIGNIFICANT_VALUE_DIFFERENCE);
     }
 
     private void compareWithRegressionFileContent(
         File fileWithLatestResults,
         File fileWithSecondLatestResults,
-        double deltaValueForDifferencesToIgnore // if negative value then show ANY difference
+        double deltaValueForDifferencesToIgnore, // if negative value then show ANY difference
+        boolean shouldAlsoDisplayDifferencesWhenValueIsMissing
     ) {
         boolean shouldShowALLdifferences = deltaValueForDifferencesToIgnore < 0;
         System.out.println("-------------------------------------------------");
@@ -344,7 +428,8 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
                     showDifferenceIfSignificant(
                         linesWithLatestResults.get(i),
                         linesWithSecondLatestResults.get(i),
-                        deltaValueForDifferencesToIgnore
+                        deltaValueForDifferencesToIgnore,
+                        shouldAlsoDisplayDifferencesWhenValueIsMissing
                     );
                 }
             }
@@ -352,20 +437,35 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         System.out.println("-------------------------------------------------");
     }
 
-    private boolean showDifferenceIfSignificant(
+    private TestResultItem.DIFFERENCE showDifferenceIfSignificant(
         String lineFromFileWithRegressionResults,
         String lineFromFileWithRegressionResults2,
-        double deltaValueForDifferencesToIgnore
+        double deltaValueForDifferencesToIgnore,
+        boolean shouldAlsoDisplayDifferencesWhenValueIsMissing
     ) {
         TestResultItem t1 = new TestResultItem(lineFromFileWithRegressionResults);
         TestResultItem t2 = new TestResultItem(lineFromFileWithRegressionResults2);
-        boolean b = t1.isDeltaDifferenceSignificant(t2, deltaValueForDifferencesToIgnore);
-        if(b) {
+        TestResultItem.DIFFERENCE diff = t1.isDeltaDifferenceSignificant(t2, deltaValueForDifferencesToIgnore);
+        if(
+            (shouldAlsoDisplayDifferencesWhenValueIsMissing &&
+                (
+                    diff == TestResultItem.DIFFERENCE.SIGNIFICANT_VALUE_DIFFERENCE
+                    ||
+                    diff == TestResultItem.DIFFERENCE.EXISTING_VS_NOT_EXISTING
+                )
+            )
+            ||
+            ( !shouldAlsoDisplayDifferencesWhenValueIsMissing &&
+                (
+                    diff == TestResultItem.DIFFERENCE.SIGNIFICANT_VALUE_DIFFERENCE
+                )
+            )
+        ) {
             System.out.println("Diff lines with significant delta " + deltaValueForDifferencesToIgnore + " : ");
             System.out.println(lineFromFileWithRegressionResults);
             System.out.println(lineFromFileWithRegressionResults2);
         }
-        return b;
+        return diff;
     }
 
     private List<String> getAllLinesFromTextFileUTF8(File file) {
@@ -454,7 +554,8 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
      */
     private void compareTheTwoLatestVersion(
         String partOfTheFileName,
-        double deltaValueForDifferencesToIgnore
+        double deltaValueForDifferencesToIgnore,
+        boolean shouldAlsoDisplayDifferencesWhenValueIsMissing
     ) {
         File[] files = getFilesWithRegressionsResultsSortedWithLatesFirst(partOfTheFileName);
         if(files.length < 2) {
@@ -462,7 +563,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             return;
         }
         //compareWithRegressionFileContent(files[0], files[1], 0.0000000000000001);
-        compareWithRegressionFileContent(files[0], files[1], deltaValueForDifferencesToIgnore);
+        compareWithRegressionFileContent(files[0], files[1], deltaValueForDifferencesToIgnore, shouldAlsoDisplayDifferencesWhenValueIsMissing);
     }
 
     private void sortFilesWithLatestFirst(File[] files) {
@@ -493,7 +594,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         }
     }
 
-    class TestResultItem {
+    static class TestResultItem {
         private String wgs84sourceX , wgs84sourceY , epsgCrsCode;
         private String epsgTargetSourceX = "", epsgTargetSourceY = "", wgs84targetX = "", wgs84targetY = "";
         private final static String SEPARATOR = "|";
@@ -531,10 +632,14 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             this.wgs84sourceX = array[0];
             this.wgs84sourceY = array[1];
             this.epsgCrsCode = array[2];
-            this.epsgTargetSourceX = array[3];
-            this.epsgTargetSourceY = array[4];
-            this.wgs84targetX = array[5];
-            this.wgs84targetY = array[6];
+            if(array.length > 4) {
+                this.epsgTargetSourceX = array[3];
+                this.epsgTargetSourceY = array[4];
+                if(array.length > 6) {
+                    this.wgs84targetX = array[5];
+                    this.wgs84targetY = array[6];
+                }
+            }
         }
 
         TestResultItem(
@@ -589,7 +694,17 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             return Coordinate.latLon(lat, lon);
         }
 
-        public boolean isDeltaDifferenceSignificant(
+        public enum DIFFERENCE {
+            EXISTING_VS_NOT_EXISTING,
+            SIGNIFICANT_VALUE_DIFFERENCE,
+            NO
+        }
+        /**
+         * @param that
+         * @param deltaValueForDifferencesToIgnore
+         * @return
+         */
+        public DIFFERENCE isDeltaDifferenceSignificant(
             TestResultItem that,
             double deltaValueForDifferencesToIgnore
         ) {
@@ -598,10 +713,10 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             boolean thatXIsDouble = isValueExistingAndDouble(that.wgs84targetX);
             boolean thatYIsDouble = isValueExistingAndDouble(that.wgs84targetY);
             if(thisXIsDouble != thatXIsDouble) {
-                return true;
+                return DIFFERENCE.EXISTING_VS_NOT_EXISTING;
             }
             if(thisYIsDouble != thatYIsDouble) {
-                return true;
+                return DIFFERENCE.EXISTING_VS_NOT_EXISTING;
             }
             if(thisYIsDouble && thisXIsDouble) { // then the others are also double according to above
                 double thisLat = Double.parseDouble(this.wgs84targetY);
@@ -619,10 +734,10 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 //                System.out.println("thatLon " + thatLon);
 
                 if(diffLon > deltaValueForDifferencesToIgnore || diffLat > deltaValueForDifferencesToIgnore) {
-                    return true;
+                    return DIFFERENCE.SIGNIFICANT_VALUE_DIFFERENCE;
                 }
             }
-            return false;
+            return DIFFERENCE.NO;
         }
 
         private boolean isValueExistingAndDouble(String value) {
