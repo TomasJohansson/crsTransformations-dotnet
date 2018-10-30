@@ -264,6 +264,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         }
     }
 
+    // -------------------------------------------------------------------------------------
     @Test // currently not a real test with assertions but printing console output with differences
     @Tag("SideEffectPrintingConsoleOutput")
     void compareResultsForDifferentVersionsOfGeoTools() {
@@ -300,6 +301,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     private final static double deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation = 0.000000000001;
+    // -------------------------------------------------------------------------------------
 
     @Test
     @Tag("SideEffectPrintingConsoleOutput")
@@ -435,12 +437,8 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
 
-    /**
-     * @param partOfTheFileName e.g. "GeoTools" to match file names such as "CrsTransformationFacadeGeoTools_version_19.1"
-     */
-    private void compareTheTwoLatestVersion(
-        String partOfTheFileName,
-        double deltaValueForDifferencesToIgnore
+    private File[] getFilesWithRegressionsResultsSortedWithLatesFirst(
+        String partOfTheFileName
     ) {
         File directoryForRegressionsResults = getDirectoryForRegressionsResults();
         File[] files = directoryForRegressionsResults.listFiles(file -> file.getName().contains(partOfTheFileName));
@@ -448,8 +446,19 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         for (File f : files) {
             System.out.println(f.getName());
         }
+        return files;
+    }
+
+    /**
+     * @param partOfTheFileName e.g. "GeoTools" to match file names such as "CrsTransformationFacadeGeoTools_version_19.1"
+     */
+    private void compareTheTwoLatestVersion(
+        String partOfTheFileName,
+        double deltaValueForDifferencesToIgnore
+    ) {
+        File[] files = getFilesWithRegressionsResultsSortedWithLatesFirst(partOfTheFileName);
         if(files.length < 2) {
-            System.out.println("There are not two files containing the filename part " + partOfTheFileName + " in the directory " + directoryForRegressionsResults.getAbsolutePath());
+            System.out.println("There are not two files containing the filename part " + partOfTheFileName + " in the directory " + getDirectoryForRegressionsResults().getAbsolutePath());
             return;
         }
         //compareWithRegressionFileContent(files[0], files[1], 0.0000000000000001);
