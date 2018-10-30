@@ -208,13 +208,13 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         for (TestResultItem testResultItem : testResultItems) {
             String s = testResultItem.getResultStringForRegressionFile();
             linesWithCurrentResults.add(s);
-            isSuccess = testResultItem.resultOfTransformationFromWGS84.isSuccess();
+            isSuccess = testResultItem.isSuccessfulTransformationFromWGS84();
             if (isSuccess) {
-                TransformResult resultOfTransformationBackToWGS84 = testResultItem.resultOfTransformationBackToWGS84;
-                isSuccess = resultOfTransformationBackToWGS84 != null && resultOfTransformationBackToWGS84.isSuccess();
+                isSuccess  = testResultItem.isSuccessfulTransformationBackToWGS84();
                 if (isSuccess) {
-                    Coordinate inputCoordinateWGS84 = testResultItem.inputCoordinateWGS84;
-                    Coordinate wgs84Again = resultOfTransformationBackToWGS84.getOutputCoordinate();
+                    Coordinate inputCoordinateWGS84 = testResultItem.getInputCoordinateWGS84();
+                    //Coordinate wgs84Again = resultOfTransformationBackToWGS84.getOutputCoordinate();
+                    Coordinate wgs84Again = testResultItem.getCoordinateOutputTransformationBackToWGS84();
                     final double deltaLong = Math.abs(inputCoordinateWGS84.getXLongitude() - wgs84Again.getXLongitude());
                     final double deltaLat = Math.abs(inputCoordinateWGS84.getYLatitude() - wgs84Again.getYLatitude());
                     isSuccess = deltaLong < deltaLimitForSuccess && deltaLat < deltaLimitForSuccess;
@@ -353,32 +353,89 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     class TestResultItem {
-        private final EpsgCrsAndAreaCodeWithCoordinates item;
-        private final Coordinate inputCoordinateWGS84;
-        private final TransformResult resultOfTransformationFromWGS84;
-        private final TransformResult resultOfTransformationBackToWGS84;
-
-        TestResultItem(EpsgCrsAndAreaCodeWithCoordinates item, Coordinate inputCoordinateWGS84, TransformResult resultOfTransformationFromWGS84, TransformResult resultOfTransformationBackToWGS84) {
-            this.item = item;
-            this.inputCoordinateWGS84 = inputCoordinateWGS84;
-            this.resultOfTransformationFromWGS84 = resultOfTransformationFromWGS84;
-            this.resultOfTransformationBackToWGS84 = resultOfTransformationBackToWGS84;
-        }
-
+        private String wgs84sourceX , wgs84sourceY , epsgCrsCode;
+        private String epsgTargetSourceX = "", epsgTargetSourceY = "", wgs84targetX = "", wgs84targetY = "";
         private final static String SEPARATOR = "|";
 
         public String getResultStringForRegressionFile() {
-            String res1 = SEPARATOR + SEPARATOR; // two separators arae as many as will be used below if successful content will be used between the separators
-            String res2 = res1;
+            return
+                wgs84sourceX + SEPARATOR +
+                wgs84sourceY + SEPARATOR +
+                epsgCrsCode + SEPARATOR +
+                epsgTargetSourceX + SEPARATOR +
+                epsgTargetSourceY + SEPARATOR +
+                wgs84targetX + SEPARATOR +
+                wgs84targetY;
+        }
+
+        TestResultItem( // This constructor was added in a refactoring to be used later when comparing files ...
+            String wgs84sourceX ,
+            String wgs84sourceY ,
+            String epsgCrsCode ,
+            String epsgTargetSourceX ,
+            String epsgTargetSourceY ,
+            String wgs84targetX ,
+            String wgs84targetY
+        ) {
+            this.wgs84sourceX = wgs84sourceX;
+            this.wgs84sourceY = wgs84sourceY;
+            this.epsgCrsCode = epsgCrsCode;
+            this.epsgTargetSourceX = epsgTargetSourceX;
+            this.epsgTargetSourceY = epsgTargetSourceY;
+            this.wgs84targetX = wgs84targetX;
+            this.wgs84targetY = wgs84targetY;
+        }
+
+        TestResultItem(
+            EpsgCrsAndAreaCodeWithCoordinates item,
+            Coordinate inputCoordinateWGS84,
+            TransformResult resultOfTransformationFromWGS84,
+            TransformResult resultOfTransformationBackToWGS84
+        ) {
+            wgs84sourceX = "" + item.centroidX;
+            wgs84sourceY = "" + item.centroidY;
+            epsgCrsCode = "" + item.epsgCrsCode;
             if (resultOfTransformationFromWGS84 != null && resultOfTransformationFromWGS84.isSuccess()) {
                 final Coordinate outputCoordinate = resultOfTransformationFromWGS84.getOutputCoordinate();
-                res1 = SEPARATOR + outputCoordinate.getXLongitude() + SEPARATOR + outputCoordinate.getYLatitude();
+                epsgTargetSourceX = "" + outputCoordinate.getXLongitude();
+                epsgTargetSourceY = "" + outputCoordinate.getYLatitude();
             }
             if (resultOfTransformationBackToWGS84 != null && resultOfTransformationBackToWGS84.isSuccess()) {
                 final Coordinate outputCoordinate = resultOfTransformationBackToWGS84.getOutputCoordinate();
-                res2 = SEPARATOR + outputCoordinate.getXLongitude() + SEPARATOR + outputCoordinate.getYLatitude();
+                wgs84targetX = "" + outputCoordinate.getXLongitude();
+                wgs84targetY = "" + outputCoordinate.getYLatitude();
             }
-            return item.centroidX + SEPARATOR + item.centroidY + SEPARATOR + item.epsgCrsCode + res1 + res2;
+        }
+
+        public Coordinate getInputCoordinateWGS84() {
+            double lat = Double.parseDouble(wgs84sourceY);
+            double lon = Double.parseDouble(wgs84sourceX);
+            return Coordinate.latLon(lat, lon);
+        }
+
+        public boolean isSuccessfulTransformationFromWGS84() {
+            if(epsgTargetSourceX == null || epsgTargetSourceY== null) return false;
+            if(epsgTargetSourceX.isEmpty() || epsgTargetSourceY.isEmpty()) return false;
+            // TODO: to improve this we should also verify that the values are doubles
+            return true;
+        }
+
+        public boolean isSuccessfulTransformationBackToWGS84() {
+            if(wgs84targetX == null || wgs84targetY == null) return false;
+            if(wgs84targetX.isEmpty() || wgs84targetY.isEmpty()) return false;
+            // TODO: to improve this we should also verify that the values are doubles
+            return true;
+        }
+
+        public Coordinate getCoordinateOutputTransformationBackToWGS84() {
+            if(!isSuccessfulTransformationBackToWGS84()) {
+                return null;
+            }
+            // TODO: to improve this we should also verify that the values are doubles
+            // i.e. exception might be thrown below
+            double lat = Double.parseDouble(wgs84targetY);
+            double lon = Double.parseDouble(wgs84targetX);
+            return Coordinate.latLon(lat, lon);
         }
     }
 
