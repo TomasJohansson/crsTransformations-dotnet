@@ -16,16 +16,13 @@ internal class CompositeStrategyForAverageValue(
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
         crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
     ): TransformResult {
-        // TODO: reuse the new ResultsStatistic for the calculation
-        
-        val successfulCoordinates = allResults.filter { it.isSuccess }.map { it.outputCoordinate }
-        val successCount = successfulCoordinates.size
-        if(successCount > 0) {
-            val sumLat = successfulCoordinates.map { it.yLatitude }.sum()
-            val sumLon = successfulCoordinates.map { it.xLongitude }.sum()
-            val avgLat = sumLat / successCount
-            val avgLon = sumLon / successCount
-            val coordRes = Coordinate.createFromYLatitudeXLongitude(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
+        val resultsStatistic = ResultsStatistic(allResults)
+        // TODO: pass the instance of the above resultsStatistic to the TransformResultImplementation
+        // instead of letting it create a new ... since it will become lazy load here regarding the average value
+
+        // TOOD: reuse the below code which is VERY similar in CompositeStrategyForAverageValue and CompositeStrategyForMedianValue
+        if(resultsStatistic.isStatisticsAvailable()) {
+            val coordRes = resultsStatistic.getCoordinateAverage()  // THE ONLY DIFFERENCE in the above mentioned two classes
             return TransformResultImplementation(
                 inputCoordinate,
                 outputCoordinate = coordRes,

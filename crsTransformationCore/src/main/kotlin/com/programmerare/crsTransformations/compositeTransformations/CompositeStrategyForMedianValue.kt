@@ -1,7 +1,6 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
-import com.programmerare.crsTransformations.utils.MedianValueUtility
 
 internal class CompositeStrategyForMedianValue(
     private val crsTransformationFacades: List<CrsTransformationFacade>
@@ -17,31 +16,28 @@ internal class CompositeStrategyForMedianValue(
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
         crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
     ): TransformResult {
+        val resultsStatistic = ResultsStatistic(allResults)
+        // TODO: pass the instance of the above resultsStatistic to the TransformResultImplementation
+        // instead of letting it create a new ... since it will become lazy load here regarding the average value
 
-        // TODO: reuse the new ResultsStatistic for the calculation
-
-        val successFulCoordinateResults = allResults.filter { it.isSuccess }.map { it.outputCoordinate }
-        if(allResults.size == 0) {
+        // TOOD: reuse the below code which is VERY similar in CompositeStrategyForAverageValue and CompositeStrategyForMedianValue
+        if(resultsStatistic.isStatisticsAvailable()) {
+            val coordRes = resultsStatistic.getCoordinateMean() // THE ONLY DIFFERENCE in the above mentioned two classes
             return TransformResultImplementation(
                 inputCoordinate,
-                outputCoordinate = null,
+                outputCoordinate = coordRes,
                 exception = null,
-                isSuccess = false,
+                isSuccess = true,
                 crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
                 subResults = allResults
             )
         }
         else {
-            val lats = successFulCoordinateResults.map { it.yLatitude }
-            val lons = successFulCoordinateResults.map { it.xLongitude }
-            val medianLat = MedianValueUtility.getMedianValue(lats)
-            val medianLon = MedianValueUtility.getMedianValue(lons)
-            val outputCoordinate = Coordinate.createFromYLatitudeXLongitude(medianLat, medianLon, crsIdentifierForOutputCoordinateSystem)
             return TransformResultImplementation(
                 inputCoordinate,
-                outputCoordinate = outputCoordinate,
+                outputCoordinate = null,
                 exception = null,
-                isSuccess = true,
+                isSuccess = false,
                 crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
                 subResults = allResults
             )
