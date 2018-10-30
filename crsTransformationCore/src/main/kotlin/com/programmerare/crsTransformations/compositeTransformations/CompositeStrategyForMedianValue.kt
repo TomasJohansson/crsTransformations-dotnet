@@ -17,6 +17,9 @@ internal class CompositeStrategyForMedianValue(
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
         crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
     ): TransformResult {
+
+        // TODO: reuse the new ResultsStatistic for the calculation
+
         val successFulCoordinateResults = allResults.filter { it.isSuccess }.map { it.outputCoordinate }
         if(allResults.size == 0) {
             return TransformResultImplementation(

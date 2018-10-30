@@ -13,4 +13,6 @@ interface TransformResult {
      * then all the individual "leaf" results are returned in this list.
      */
     val subResults: List<TransformResult>
+
+    val resultsStatistic: ResultsStatistic
 }

@@ -34,4 +34,18 @@ class TransformResultImplementation(
             // since that scenario should be enforced in the init construction
             return _outputCoordinate!!
         }
+
+    private val _resultsStatistic: ResultsStatistic by lazy {
+        if(this.subResults.size == 0) {
+            ResultsStatistic(listOf<TransformResult>(this))
+        }
+        else {
+            ResultsStatistic(subResults)
+        }
+    }
+
+    override val resultsStatistic: ResultsStatistic
+        get() {
+            return _resultsStatistic
+        }
 }

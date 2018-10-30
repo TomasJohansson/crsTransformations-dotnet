@@ -16,6 +16,8 @@ internal class CompositeStrategyForAverageValue(
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
         crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
     ): TransformResult {
+        // TODO: reuse the new ResultsStatistic for the calculation
+        
         val successfulCoordinates = allResults.filter { it.isSuccess }.map { it.outputCoordinate }
         val successCount = successfulCoordinates.size
         if(successCount > 0) {

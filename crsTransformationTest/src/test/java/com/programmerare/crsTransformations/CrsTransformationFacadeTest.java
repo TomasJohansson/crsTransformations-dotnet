@@ -295,7 +295,19 @@ final class CrsTransformationFacadeTest {
             Coordinate outputCoordinate = transformResult.getOutputCoordinate();
             assertNotNull(outputCoordinate);
             assertEquals(outputCoordinate.getCrsIdentifier().getEpsgNumber(), epsgNumberForSweref99TM);
+            assertResultStatisticsForLeafImplementation(transformResult);
         }
+    }
+
+    private void assertResultStatisticsForLeafImplementation(TransformResult transformResult) {
+        final ResultsStatistic resultsStatistic = transformResult.getResultsStatistic();
+        assertNotNull(resultsStatistic);
+        assertTrue(resultsStatistic.isStatisticsAvailable());
+        assertEquals(1, resultsStatistic.getNumberOfResults());
+        assertEquals(0, resultsStatistic.getMaxDiffLatitude());
+        assertEquals(0, resultsStatistic.getMaxDiffLongitude());
+        assertEquals(transformResult.getOutputCoordinate(), resultsStatistic.getCoordinateAverage());
+        assertEquals(transformResult.getOutputCoordinate(), resultsStatistic.getCoordinateMean());
     }
 
     enum CoordinateReferenceSystemUnit {
