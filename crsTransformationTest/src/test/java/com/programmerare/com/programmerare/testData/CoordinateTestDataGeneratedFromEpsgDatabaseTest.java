@@ -65,7 +65,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
     @Test
     // @Tag("SlowTest") // actually not at all slow but very fast since very few coordinate systems are supported
-    @Tag("SideEffectFileCreation") // test/resources/regression_results/
+    @Tag(TestCategory.SideEffectFileCreation) // test/resources/regression_results/
     void testAllTransformationsInGeneratedCsvFileWithGoober() {
         TestResult testResultForGoober = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationFacadeGooberCTL(), list);
         handleTestResults(
@@ -78,8 +78,8 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
     @Test
     // @Disabled
-    @Tag("SlowTest") // e.g. 224 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
-    @Tag("SideEffectFileCreation") // test/resources/regression_results/
+    @Tag(TestCategory.SlowTest) // e.g. 224 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
+    @Tag(TestCategory.SideEffectFileCreation) // test/resources/regression_results/
     void testAllTransformationsInGeneratedCsvFileWithGeoTools() {
         //    seconds: 224
         //    countOfSuccess: 4036
@@ -105,8 +105,8 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     @Test
-    @Tag("SlowTest") // e.g. 122 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
-    @Tag("SideEffectFileCreation")
+    @Tag(TestCategory.SlowTest) // e.g. 122 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
+    @Tag(TestCategory.SideEffectFileCreation)
     void testAllTransformationsInGeneratedCsvFileWithGeoPackage() {
         //    seconds: 122
         //    countOfSuccess: 3918
@@ -124,8 +124,8 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     @Test
-    @Tag("SlowTest") // e.g. 201 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
-    @Tag("SideEffectFileCreation")
+    @Tag(TestCategory.SlowTest) // e.g. 201 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
+    @Tag(TestCategory.SideEffectFileCreation)
     void testAllTransformationsInGeneratedCsvFileWithProj4J() {
         //    seconds: 201
         //    countOfSuccess: 3916
@@ -140,8 +140,8 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     @Test
-    @Tag("SlowTest") // e.g. 384 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
-    @Tag("SideEffectFileCreation")
+    @Tag(TestCategory.SlowTest) // e.g. 384 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
+    @Tag(TestCategory.SideEffectFileCreation)
     void testAllTransformationsInGeneratedCsvFileWithOrbisgis() {
         //    seconds: 384
         //    countOfSuccess: 3799
@@ -264,7 +264,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
     // -------------------------------------------------------------------------------------
     @Test // currently not a real test with assertions but printing console output with differences
-    @Tag("SideEffectPrintingConsoleOutput")
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
     void compareResultsForDifferentVersionsOfGeoTools() {
         // filename e.g. "CrsTransformationFacadeGeoTools_version_20.0.csv"
         compareTheTwoLatestVersion(
@@ -275,7 +275,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     @Test // currently not a real test with assertions but printing console output with differences
-    @Tag("SideEffectPrintingConsoleOutput")
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
     void compareResultsForDifferentVersionsOfNGA() {
         // filename e.g. "CrsTransformationFacadeGeoPackageNGA_version_3.1.0.csv"
         compareTheTwoLatestVersion(
@@ -286,7 +286,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     @Test // currently not a real test with assertions but printing console output with differences
-    @Tag("SideEffectPrintingConsoleOutput")
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
     void compareResultsForDifferentVersionsOfGoober() {
         // filename e.g. "CrsTransformationFacadeGooberCTL_version_1.1.csv"
         compareTheTwoLatestVersion(
@@ -297,7 +297,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     @Test // currently not a real test with assertions but printing console output with differences
-    @Tag("SideEffectPrintingConsoleOutput")
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
     void compareResultsForDifferentVersionsOfOrbis() {
         // filename e.g. "CrsTransformationFacadeOrbisgisCTS_version_1.5.1.csv"
         compareTheTwoLatestVersion(
@@ -308,7 +308,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     @Test // currently not a real test with assertions but printing console output with differences
-    @Tag("SideEffectPrintingConsoleOutput")
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
     void compareResultsForDifferentVersionsOfProj4J() {
         // filename e.g. "CrsTransformationFacadeProj4J_version_0.1.0.csv"
         compareTheTwoLatestVersion(
@@ -327,7 +327,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     // Comparing the latest results of GeoTools with the results from the other files
     // (since GeoTools seem to support the greatest number of EPSG codes, based on the file sizes for the regression files)
     @Test // currently not a real test with assertions but printing console output with differences
-    @Tag("SideEffectPrintingConsoleOutput")
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
     void compareResultsForLatestGeoToolsAndGoober() {
         // filenames e.g. "CrsTransformationFacadeGeoTools_version_20.0.csv" and "CrsTransformationFacadeGooberCTL_version_1.1.csv"
         File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
@@ -341,7 +341,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     @Test // currently not a real test with assertions but printing console output with differences
-    @Tag("SideEffectPrintingConsoleOutput")
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
     void compareResultsForLatestGeoToolsAndGeoPackageNGA() {
         File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
         File geoPackageNGAFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("NGA")[0];
@@ -354,7 +354,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     @Test // currently not a real test with assertions but printing console output with differences
-    @Tag("SideEffectPrintingConsoleOutput")
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
     void compareResultsForLatestGeoToolsAndProj4J() {
         File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
         File proj4JFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Proj4J")[0];
@@ -367,7 +367,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     }
 
     @Test // currently not a real test with assertions but printing console output with differences
-    @Tag("SideEffectPrintingConsoleOutput")
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
     void compareResultsForLatestGeoToolsAndOrbisgis() {
         File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
         File orbisFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Orbis")[0];
@@ -386,7 +386,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     // -------------------------------------------------------------------------------------
 
     @Test
-    @Tag("SideEffectPrintingConsoleOutput")
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
     void showDifferenceIfSignificantTest() {
         TestResultItem.DIFFERENCE difference = showDifferenceIfSignificant(
             "35.00827072383671|31.517029225386523|2039|200816.30213267874|602774.2381723676|35.00827072137521|31.517029283149466",
