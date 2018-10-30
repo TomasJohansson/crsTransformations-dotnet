@@ -33,4 +33,7 @@ public class TestCategory {
      * Used for a method which can take more than one minute (and potentiall much more than one minute)
      */
     public final static String SlowTest = "SlowTest";
+    // To run all tests excluding tests labeled with @Tag("SlowTest") or @Tag(TestCategory.SideEffectFileCreation)
+    // as below, in IntelliJ IDEA:
+    // Run --> Edit configuration --> Junit --> Test kind --> Tags --> Tag expression: !SlowTest
 }
