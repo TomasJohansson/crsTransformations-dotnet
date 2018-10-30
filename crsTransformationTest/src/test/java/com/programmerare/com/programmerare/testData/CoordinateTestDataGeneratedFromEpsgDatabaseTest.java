@@ -19,10 +19,13 @@ import java.nio.charset.Charset;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 // TODO: programmatically compare the results in two ways:
@@ -233,8 +236,6 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         final File file = getFileForRegressionResults(testResult.facade, fileNameSuffixExcludingExtension);
         if (createNewRegressionFile) {
             createNewRegressionFile(file, linesWithCurrentResults);
-        } else {
-            compareWithRegressionFileContent(file, linesWithCurrentResults);
         }
     }
 
@@ -263,16 +264,113 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         }
     }
 
-    private void compareWithRegressionFileContent(File file, ArrayList<String> linesWithCurrentResults) {
-        final List<String> linesWithPreviousResults;
-        try {
-            linesWithPreviousResults = Resources.readLines(file.toURI().toURL(), Charset.forName("UTF-8"));
-            assertEquals(linesWithPreviousResults.size(), linesWithCurrentResults.size(), "Not even the same number of results as previously");
-            for (int i = 0; i < linesWithPreviousResults.size(); i++) {
-                assertEquals(linesWithPreviousResults.get(i), linesWithCurrentResults.get(i));
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag("SideEffectPrintingConsoleOutput")
+    void compareResultsForDifferentVersionsOfGeoTools() {
+        // filename e.g. "CrsTransformationFacadeGeoTools_version_20.0.csv"
+        compareTheTwoLatestVersion("GeoTools", deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation);
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag("SideEffectPrintingConsoleOutput")
+    void compareResultsForDifferentVersionsOfNGA() {
+        // filename e.g. "CrsTransformationFacadeGeoPackageNGA_version_3.1.0.csv"
+        compareTheTwoLatestVersion("NGA", deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation);
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag("SideEffectPrintingConsoleOutput")
+    void compareResultsForDifferentVersionsOfGoober() {
+        // filename e.g. "CrsTransformationFacadeGooberCTL_version_1.1.csv"
+        compareTheTwoLatestVersion("Goober", deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation);
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag("SideEffectPrintingConsoleOutput")
+    void compareResultsForDifferentVersionsOfOrbis() {
+        // filename e.g. "CrsTransformationFacadeOrbisgisCTS_version_1.5.1.csv"
+        compareTheTwoLatestVersion("Orbis", deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation);
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag("SideEffectPrintingConsoleOutput")
+    void compareResultsForDifferentVersionsOfProj4J() {
+        // filename e.g. "CrsTransformationFacadeProj4J_version_0.1.0.csv"
+        compareTheTwoLatestVersion("Proj4J", deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation);
+    }
+
+    private final static double deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation = 0.000000000001;
+
+    @Test
+    @Tag("SideEffectPrintingConsoleOutput")
+    void showDifferenceIfSignificantTest() {
+        boolean isDifferenceIfSignificant = showDifferenceIfSignificant(
+            "35.00827072383671|31.517029225386523|2039|200816.30213267874|602774.2381723676|35.00827072137521|31.517029283149466",
+            "35.00827072383671|31.517029225386523|2039|200816.30213267755|602774.2381723677|35.00827072137521|31.517029283149473",
+                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation
+        );
+        if(!isDifferenceIfSignificant) {
+//            System.out.println("no significant difference");
+        }
+        assertFalse(isDifferenceIfSignificant);
+    }
+
+    private void compareWithRegressionFileContent(
+        File fileWithLatestResults,
+        File fileWithSecondLatestResults,
+        double deltaValueForDifferencesToIgnore // if negative value then show ANY difference
+    ) {
+        boolean shouldShowALLdifferences = deltaValueForDifferencesToIgnore < 0;
+        System.out.println("-------------------------------------------------");
+        System.out.println("Will now compare the files " + fileWithLatestResults.getName() + " and " + fileWithSecondLatestResults.getName());
+        final List<String> linesWithLatestResults = getAllLinesFromTextFileUTF8(fileWithLatestResults);
+        final List<String> linesWithSecondLatestResults = getAllLinesFromTextFileUTF8(fileWithSecondLatestResults);
+
+        // assertEquals(linesWithLatestResults.size(), linesWithSecondLatestResults.size(), "Not even the same number of results as previously");
+        if(linesWithLatestResults.size() != linesWithSecondLatestResults.size()) {
+            System.out.println("Not even the same number of results as previously: " + linesWithLatestResults.size() + " vs " + linesWithSecondLatestResults.size());
+        }
+        for (int i = 0; i < linesWithLatestResults.size(); i++) {
+            //assertEquals(linesWithLatestResults.get(i), linesWithSecondLatestResults.get(i));
+            if(!linesWithLatestResults.get(i).equals(linesWithSecondLatestResults.get(i))) {
+                if(shouldShowALLdifferences) {
+                    System.out.println("Diff lines:");
+                    System.out.println(linesWithLatestResults.get(i));
+                    System.out.println(linesWithSecondLatestResults.get(i));
+                }
+                else {
+                    showDifferenceIfSignificant(
+                        linesWithLatestResults.get(i),
+                        linesWithSecondLatestResults.get(i),
+                        deltaValueForDifferencesToIgnore
+                    );
+                }
             }
+        }
+        System.out.println("-------------------------------------------------");
+    }
+
+    private boolean showDifferenceIfSignificant(
+        String lineFromFileWithRegressionResults,
+        String lineFromFileWithRegressionResults2,
+        double deltaValueForDifferencesToIgnore
+    ) {
+        TestResultItem t1 = new TestResultItem(lineFromFileWithRegressionResults);
+        TestResultItem t2 = new TestResultItem(lineFromFileWithRegressionResults2);
+        boolean b = t1.isDeltaDifferenceSignificant(t2, deltaValueForDifferencesToIgnore);
+        if(b) {
+            System.out.println("Diff lines with significant delta " + deltaValueForDifferencesToIgnore + " : ");
+            System.out.println(lineFromFileWithRegressionResults);
+            System.out.println(lineFromFileWithRegressionResults2);
+        }
+        return b;
+    }
+
+    private List<String> getAllLinesFromTextFileUTF8(File file) {
+        try {
+            return Resources.readLines(file.toURI().toURL(), Charset.forName("UTF-8"));
         } catch (IOException e) {
-            e.printStackTrace();
+            throw new RuntimeException(e);
         }
     }
 
@@ -336,6 +434,40 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         );
     }
 
+
+    /**
+     * @param partOfTheFileName e.g. "GeoTools" to match file names such as "CrsTransformationFacadeGeoTools_version_19.1"
+     */
+    private void compareTheTwoLatestVersion(
+        String partOfTheFileName,
+        double deltaValueForDifferencesToIgnore
+    ) {
+        File directoryForRegressionsResults = getDirectoryForRegressionsResults();
+        File[] files = directoryForRegressionsResults.listFiles(file -> file.getName().contains(partOfTheFileName));
+        sortFilesWithLatestFirst(files);
+        for (File f : files) {
+            System.out.println(f.getName());
+        }
+        if(files.length < 2) {
+            System.out.println("There are not two files containing the filename part " + partOfTheFileName + " in the directory " + directoryForRegressionsResults.getAbsolutePath());
+            return;
+        }
+        //compareWithRegressionFileContent(files[0], files[1], 0.0000000000000001);
+        compareWithRegressionFileContent(files[0], files[1], deltaValueForDifferencesToIgnore);
+    }
+
+    private void sortFilesWithLatestFirst(File[] files) {
+        Arrays.sort(files, new Comparator<File>() {
+            @Override
+            public int compare(File o1, File o2) {
+                long diff = o2.lastModified() - o1.lastModified();
+                if(diff > 0) return 1;
+                if(diff < 0) return -1;
+                return 0;
+            }
+        });
+    }
+
     class TestResult {
         private final CrsTransformationFacade facade;
         private final long totalNumberOfSecondsForAllTransformations;
@@ -384,6 +516,16 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             this.epsgTargetSourceY = epsgTargetSourceY;
             this.wgs84targetX = wgs84targetX;
             this.wgs84targetY = wgs84targetY;
+        }
+        TestResultItem(String lineFromRow) {
+            String[] array = lineFromRow.split("\\" + SEPARATOR);
+            this.wgs84sourceX = array[0];
+            this.wgs84sourceY = array[1];
+            this.epsgCrsCode = array[2];
+            this.epsgTargetSourceX = array[3];
+            this.epsgTargetSourceY = array[4];
+            this.wgs84targetX = array[5];
+            this.wgs84targetY = array[6];
         }
 
         TestResultItem(
@@ -436,6 +578,56 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             double lat = Double.parseDouble(wgs84targetY);
             double lon = Double.parseDouble(wgs84targetX);
             return Coordinate.latLon(lat, lon);
+        }
+
+        public boolean isDeltaDifferenceSignificant(
+            TestResultItem that,
+            double deltaValueForDifferencesToIgnore
+        ) {
+            boolean thisXIsDouble = isValueExistingAndDouble(this.wgs84targetX);
+            boolean thisYIsDouble = isValueExistingAndDouble(this.wgs84targetY);
+            boolean thatXIsDouble = isValueExistingAndDouble(that.wgs84targetX);
+            boolean thatYIsDouble = isValueExistingAndDouble(that.wgs84targetY);
+            if(thisXIsDouble != thatXIsDouble) {
+                return true;
+            }
+            if(thisYIsDouble != thatYIsDouble) {
+                return true;
+            }
+            if(thisYIsDouble && thisXIsDouble) { // then the others are also double according to above
+                double thisLat = Double.parseDouble(this.wgs84targetY);
+                double thisLon = Double.parseDouble(this.wgs84targetX);
+
+                double thatLat = Double.parseDouble(that.wgs84targetY);
+                double thatLon = Double.parseDouble(that.wgs84targetX);
+
+                double diffLat = Math.abs(thisLat - thatLat);
+                double diffLon = Math.abs(thisLon - thatLon);
+
+//                System.out.println("diffLat " + diffLat);
+//                System.out.println("diffLon " + diffLon);
+//                System.out.println("thisLon " + thisLon);
+//                System.out.println("thatLon " + thatLon);
+
+                if(diffLon > deltaValueForDifferencesToIgnore || diffLat > deltaValueForDifferencesToIgnore) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        private boolean isValueExistingAndDouble(String value) {
+            if (value == null) return false;
+            if (value.isEmpty()) return false;
+            // TODO improve the code below, maybe with a regular expression instead,
+            // see the documentation of 'Double.valueOf(String)'
+            try {
+                Double.parseDouble(value);
+                return true;
+            }
+            catch(Exception e) {
+                return false;
+            }
         }
     }
 
