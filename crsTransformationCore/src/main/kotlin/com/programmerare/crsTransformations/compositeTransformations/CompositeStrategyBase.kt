@@ -19,11 +19,9 @@ internal abstract class CompositeStrategyBase
         allResults: List<TransformResult>,
         inputCoordinate: Coordinate,
         crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade,
+        resultsStatistic: ResultsStatistic,
         medianOrAverage: () -> Coordinate
     ): TransformResult {
-        val resultsStatistic = ResultsStatistic(allResults)
-        // TODO: pass the instance of the above resultsStatistic to the TransformResultImplementation
-        // instead of letting it create a new ... since it will become lazy load here regarding the average value
         if(resultsStatistic.isStatisticsAvailable()) {
             //  val coordRes = resultsStatistic.getCoordinateMean() // THE ONLY DIFFERENCE in the above mentioned two classes
             //  val coordRes = resultsStatistic.getCoordinateAverage()  // THE ONLY DIFFERENCE in the above mentioned two classes
@@ -34,7 +32,8 @@ internal abstract class CompositeStrategyBase
                 exception = null,
                 isSuccess = true,
                 crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
-                subResults = allResults
+                subResults = allResults,
+                _nullableResultsStatistic = resultsStatistic
             )
         }
         else {
@@ -44,7 +43,8 @@ internal abstract class CompositeStrategyBase
                 exception = null,
                 isSuccess = false,
                 crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
-                subResults = allResults
+                subResults = allResults,
+                _nullableResultsStatistic = resultsStatistic
             )
         }
     }

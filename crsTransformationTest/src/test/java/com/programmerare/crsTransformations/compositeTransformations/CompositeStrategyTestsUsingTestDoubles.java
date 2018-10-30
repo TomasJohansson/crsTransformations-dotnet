@@ -69,7 +69,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
             null,
             true,
             leafFacadeImplementation_1,
-            new ArrayList<TransformResult>()
+            new ArrayList<TransformResult>(),
+            null
         );
         TransformResult leafResult2 = new TransformResultImplementation(
             inputCoordinateSweref99,
@@ -77,7 +78,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
             null,
             true,
             leafFacadeImplementation_2,
-            new ArrayList<TransformResult>()
+            new ArrayList<TransformResult>(),
+            null
         );
         TransformResult leafResult3 = new TransformResultImplementation(
             inputCoordinateSweref99,
@@ -85,7 +87,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
             null,
             true,
             leafFacadeImplementation_3,
-            new ArrayList<TransformResult>()
+            new ArrayList<TransformResult>(),
+            null
         );
         TransformResult leafResult4 = new TransformResultImplementation(
             inputCoordinateSweref99,
@@ -93,7 +96,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
             null,
             true,
             leafFacadeImplementation_4,
-            new ArrayList<TransformResult>()
+            new ArrayList<TransformResult>(),
+            null
         );
         TransformResult r5 = new TransformResultImplementation(
             inputCoordinateSweref99,
@@ -101,7 +105,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
             null,
             true,
             leafFacadeImplementation_5,
-            new ArrayList<TransformResult>()
+            new ArrayList<TransformResult>(),
+            null
         );
         crsIdentifierWGS84 = CrsIdentifier.createFromEpsgNumber(EpsgNumber._4326__WGS_84__WORLD);
 

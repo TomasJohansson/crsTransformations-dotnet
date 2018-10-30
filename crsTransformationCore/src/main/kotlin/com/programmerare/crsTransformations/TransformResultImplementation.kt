@@ -9,7 +9,8 @@ class TransformResultImplementation(
     override val exception: Throwable?,
     override val isSuccess: Boolean,
     override val crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade,
-    override val subResults: List<TransformResult> = listOf<TransformResult>() // empty list default for the "leaf" transformations, but the composite should have non-empty list)
+    override val subResults: List<TransformResult> = listOf<TransformResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
+    _nullableResultsStatistic: ResultsStatistic? = null
 ): TransformResult {
 
     private val _outputCoordinate: Coordinate? = outputCoordinate
@@ -36,7 +37,10 @@ class TransformResultImplementation(
         }
 
     private val _resultsStatistic: ResultsStatistic by lazy {
-        if(this.subResults.size == 0) {
+        if(_nullableResultsStatistic != null) {
+            _nullableResultsStatistic
+        }
+        else if(this.subResults.size == 0) {
             ResultsStatistic(listOf<TransformResult>(this))
         }
         else {

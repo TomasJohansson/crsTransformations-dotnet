@@ -21,6 +21,7 @@ internal class CompositeStrategyForAverageValue(
             allResults,
             inputCoordinate,
             crsTransformationFacadeThatCreatedTheResult,
+            resultsStatistic,
             { resultsStatistic.getCoordinateAverage() }
         )
    }

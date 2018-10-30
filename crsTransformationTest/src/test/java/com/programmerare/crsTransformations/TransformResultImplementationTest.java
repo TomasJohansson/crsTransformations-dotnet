@@ -34,13 +34,13 @@ public class TransformResultImplementationTest {
 
     @Test
     void transformNotSucessTest() {
-        transformResult = new TransformResultImplementation(inputCoordinate, null, null, false, crsTransformationFacade, new ArrayList<TransformResult>());
+        transformResult = new TransformResultImplementation(inputCoordinate, null, null, false, crsTransformationFacade, new ArrayList<TransformResult>(), null);
         assertFalse(transformResult.isSuccess());
     }
 
     @Test
     void transformSucessTest() {
-        transformResult = new TransformResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationFacade, new ArrayList<TransformResult>());
+        transformResult = new TransformResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationFacade, new ArrayList<TransformResult>(), null);
         assertTrue(transformResult.isSuccess());
     }
 
@@ -48,7 +48,7 @@ public class TransformResultImplementationTest {
     void unvalidTransformResultConstructionWhenSuccessIsFalseButCoordinateProvided() {
         assertThrows(
             IllegalStateException.class,
-            () -> new TransformResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationFacade, new ArrayList<TransformResult>()),
+            () -> new TransformResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationFacade, new ArrayList<TransformResult>(), null),
             "unvalid TransformResult object construction should throw exception when success false is combined with output coordinate"
         );
     }
@@ -58,7 +58,7 @@ public class TransformResultImplementationTest {
         outputCoordinate = null;
         assertThrows(
             IllegalStateException.class,
-            () -> new TransformResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationFacade, new ArrayList<TransformResult>()),
+            () -> new TransformResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationFacade, new ArrayList<TransformResult>(), null),
             "unvalid TransformResult object construction should throw exception when success true is combined with null as output coordinate"
         );
     }
@@ -66,7 +66,7 @@ public class TransformResultImplementationTest {
     @Test
     void preconditionViolationWhenTryingToAccessCoordinateWhenSuccessFalse() {
         outputCoordinate = null;
-        transformResult = new TransformResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationFacade, new ArrayList<TransformResult>());
+        transformResult = new TransformResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationFacade, new ArrayList<TransformResult>(), null);
         Exception e = assertThrows(
             RuntimeException.class,
             () -> transformResult.getOutputCoordinate(),
@@ -109,12 +109,12 @@ public class TransformResultImplementationTest {
 
 
         final List<TransformResult> results = Arrays.asList(
-            new TransformResultImplementation(c, c1, null, true, f, l),
-            new TransformResultImplementation(c, c2, null, true, f, l),
-            new TransformResultImplementation(c, c3, null, true, f, l),
-            new TransformResultImplementation(c, c4, null, true, f, l)
+            new TransformResultImplementation(c, c1, null, true, f, l, null),
+            new TransformResultImplementation(c, c2, null, true, f, l, null),
+            new TransformResultImplementation(c, c3, null, true, f, l, null),
+            new TransformResultImplementation(c, c4, null, true, f, l, null)
         );
-        final TransformResult transformResult = new TransformResultImplementation(c, c, null, true, f, results);
+        final TransformResult transformResult = new TransformResultImplementation(c, c, null, true, f, results, null);
 
         final ResultsStatistic resultsStatistic = transformResult.getResultsStatistic();
         assertNotNull(resultsStatistic);
