@@ -5,7 +5,16 @@ abstract class CrsTransformationFacadeBaseLeaf : CrsTransformationFacadeBase(), 
     override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
         try {
             val outputCoordinate = transformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
-            return TransformResultImplementation(inputCoordinate, outputCoordinate, exception = null, isSuccess = outputCoordinate != null, crsTransformationFacadeThatCreatedTheResult = this)
+            if(
+                java.lang.Double.isNaN(outputCoordinate.yLatitude)
+                ||
+                java.lang.Double.isNaN(outputCoordinate.xLongitude)
+            ) {
+                return TransformResultImplementation(inputCoordinate, null, exception = null, isSuccess = false, crsTransformationFacadeThatCreatedTheResult = this)
+            }
+            else {
+                return TransformResultImplementation(inputCoordinate, outputCoordinate, exception = null, isSuccess = outputCoordinate != null, crsTransformationFacadeThatCreatedTheResult = this)
+            }
         }
         catch (e: Throwable) {
             return TransformResultImplementation(inputCoordinate, null, exception = e, isSuccess = false, crsTransformationFacadeThatCreatedTheResult = this)
