@@ -26,10 +26,6 @@ import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-// TODO: programmatically compare the results in two ways:
-//  - Compare results with itself with different versions of the same library when having done an upgrade
-//  - Compare results with different libraries
-
 /**
  * The CSV file used in this test:
  *  src/test/resources/generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv
@@ -58,6 +54,11 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     static void before() {
         list = getCoordinatesFromGeneratedCsvFile();
     }
+
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
+    // Below: "tests" labeled with 'TestCategory.SideEffectFileCreation'
 
     // To run all tests excluding tests labeled with @Tag("SlowTest")
     // as below, in IntelliJ IDEA:
@@ -154,6 +155,154 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             "_version_1.5.1" // build.gradle: implementation("org.orbisgis:cts:1.5.1")
         );
     }
+
+    // Above: "tests" labeled with 'TestCategory.SideEffectFileCreation'
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
+
+
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
+    // Below: "tests" comparing results with different versions of the same implementation
+
+    private final static double deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation = 0.000000000001;
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
+    void compareResultsForDifferentVersionsOfGeoTools() {
+        // filename e.g. "CrsTransformationFacadeGeoTools_version_20.0.csv"
+        compareTheTwoLatestVersion(
+                "GeoTools",
+                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
+                true // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
+    void compareResultsForDifferentVersionsOfNGA() {
+        // filename e.g. "CrsTransformationFacadeGeoPackageNGA_version_3.1.0.csv"
+        compareTheTwoLatestVersion(
+                "NGA",
+                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
+                true // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
+    void compareResultsForDifferentVersionsOfGoober() {
+        // filename e.g. "CrsTransformationFacadeGooberCTL_version_1.1.csv"
+        compareTheTwoLatestVersion(
+                "Goober",
+                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
+                true // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
+    void compareResultsForDifferentVersionsOfOrbis() {
+        // filename e.g. "CrsTransformationFacadeOrbisgisCTS_version_1.5.1.csv"
+        compareTheTwoLatestVersion(
+                "Orbis",
+                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
+                true // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
+    void compareResultsForDifferentVersionsOfProj4J() {
+        // filename e.g. "CrsTransformationFacadeProj4J_version_0.1.0.csv"
+        compareTheTwoLatestVersion(
+                "Proj4J",
+                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
+                true // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+
+    // Above: "tests" comparing results with different versions of the same implementation
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
+
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
+
+    // Below: "tests" comparing results with different implementations
+
+    private final static double deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation = 0.00001;
+
+    // -------------------------------------------------------------------------------------
+    // Comparing the latest results of GeoTools with the results from the other files
+    // (since GeoTools seem to support the greatest number of EPSG codes, based on the file sizes for the regression files)
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
+    void compareResultsForLatestGeoToolsAndGoober() {
+        // filenames e.g. "CrsTransformationFacadeGeoTools_version_20.0.csv" and "CrsTransformationFacadeGooberCTL_version_1.1.csv"
+        File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
+        File gooberFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Goober")[0];
+        compareWithRegressionFileContent(
+                geoToolsFile,
+                gooberFile,
+                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
+                false // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
+    void compareResultsForLatestGeoToolsAndGeoPackageNGA() {
+        File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
+        File geoPackageNGAFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("NGA")[0];
+        compareWithRegressionFileContent(
+                geoToolsFile,
+                geoPackageNGAFile,
+                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
+                false // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
+    void compareResultsForLatestGeoToolsAndProj4J() {
+        File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
+        File proj4JFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Proj4J")[0];
+        compareWithRegressionFileContent(
+                geoToolsFile,
+                proj4JFile,
+                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
+                false // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+
+    @Test // currently not a real test with assertions but printing console output with differences
+    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
+    void compareResultsForLatestGeoToolsAndOrbisgis() {
+        File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
+        File orbisFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Orbis")[0];
+        compareWithRegressionFileContent(
+                geoToolsFile,
+                orbisFile,
+                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
+                false // shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
+    }
+
+    // Above: "tests" comparing results with different implementations
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
+    // -------------------------------------------------------------------------------------
+    // TODO: create some method which will compare files for more than two implementations
+    // at a time, to find the outliers that are signinficantly different for the others,
+    // i.e. to make it easier to find implementations which are potentially very incorrect (buggy)
+    // for transformatsion regarding a certain EPSG code where the significant differences were found
+    // -------------------------------------------------------------------------------------
+
 
     private TestResult runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(
         CrsTransformationFacade crsTransformationFacade,
@@ -261,129 +410,6 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             e.printStackTrace();
         }
     }
-
-    // -------------------------------------------------------------------------------------
-    @Test // currently not a real test with assertions but printing console output with differences
-    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    void compareResultsForDifferentVersionsOfGeoTools() {
-        // filename e.g. "CrsTransformationFacadeGeoTools_version_20.0.csv"
-        compareTheTwoLatestVersion(
-            "GeoTools",
-            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
-            true // shouldAlsoDisplayDifferencesWhenValueIsMissing
-        );
-    }
-
-    @Test // currently not a real test with assertions but printing console output with differences
-    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    void compareResultsForDifferentVersionsOfNGA() {
-        // filename e.g. "CrsTransformationFacadeGeoPackageNGA_version_3.1.0.csv"
-        compareTheTwoLatestVersion(
-            "NGA",
-            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
-            true // shouldAlsoDisplayDifferencesWhenValueIsMissing
-        );
-    }
-
-    @Test // currently not a real test with assertions but printing console output with differences
-    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    void compareResultsForDifferentVersionsOfGoober() {
-        // filename e.g. "CrsTransformationFacadeGooberCTL_version_1.1.csv"
-        compareTheTwoLatestVersion(
-            "Goober",
-            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
-            true // shouldAlsoDisplayDifferencesWhenValueIsMissing
-        );
-    }
-
-    @Test // currently not a real test with assertions but printing console output with differences
-    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    void compareResultsForDifferentVersionsOfOrbis() {
-        // filename e.g. "CrsTransformationFacadeOrbisgisCTS_version_1.5.1.csv"
-        compareTheTwoLatestVersion(
-            "Orbis",
-            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
-            true // shouldAlsoDisplayDifferencesWhenValueIsMissing
-        );
-    }
-
-    @Test // currently not a real test with assertions but printing console output with differences
-    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    void compareResultsForDifferentVersionsOfProj4J() {
-        // filename e.g. "CrsTransformationFacadeProj4J_version_0.1.0.csv"
-        compareTheTwoLatestVersion(
-            "Proj4J",
-            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
-            true // shouldAlsoDisplayDifferencesWhenValueIsMissing
-        );
-    }
-
-    private final static double deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation = 0.000000000001;
-
-    private final static double deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation = 0.00001;
-    // -------------------------------------------------------------------------------------
-
-    // -------------------------------------------------------------------------------------
-    // Comparing the latest results of GeoTools with the results from the other files
-    // (since GeoTools seem to support the greatest number of EPSG codes, based on the file sizes for the regression files)
-    @Test // currently not a real test with assertions but printing console output with differences
-    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    void compareResultsForLatestGeoToolsAndGoober() {
-        // filenames e.g. "CrsTransformationFacadeGeoTools_version_20.0.csv" and "CrsTransformationFacadeGooberCTL_version_1.1.csv"
-        File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
-        File gooberFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Goober")[0];
-        compareWithRegressionFileContent(
-            geoToolsFile,
-            gooberFile,
-            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
-            false // shouldAlsoDisplayDifferencesWhenValueIsMissing
-        );
-    }
-
-    @Test // currently not a real test with assertions but printing console output with differences
-    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    void compareResultsForLatestGeoToolsAndGeoPackageNGA() {
-        File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
-        File geoPackageNGAFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("NGA")[0];
-        compareWithRegressionFileContent(
-            geoToolsFile,
-            geoPackageNGAFile,
-            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
-            false // shouldAlsoDisplayDifferencesWhenValueIsMissing
-        );
-    }
-
-    @Test // currently not a real test with assertions but printing console output with differences
-    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    void compareResultsForLatestGeoToolsAndProj4J() {
-        File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
-        File proj4JFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Proj4J")[0];
-        compareWithRegressionFileContent(
-            geoToolsFile,
-            proj4JFile,
-            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
-            false // shouldAlsoDisplayDifferencesWhenValueIsMissing
-        );
-    }
-
-    @Test // currently not a real test with assertions but printing console output with differences
-    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    void compareResultsForLatestGeoToolsAndOrbisgis() {
-        File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
-        File orbisFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Orbis")[0];
-        compareWithRegressionFileContent(
-            geoToolsFile,
-            orbisFile,
-            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
-            false // shouldAlsoDisplayDifferencesWhenValueIsMissing
-        );
-    }
-    // -------------------------------------------------------------------------------------
-    // TODO: create some method which will compare files for more than two implementations
-    // at a time, to find the outliers that are signinficantly different for the others,
-    // i.e. to make it easier to find implementations which are potentially very incorrect (buggy)
-    // for transformatsion regarding a certain EPSG code where the significant differences were found
-    // -------------------------------------------------------------------------------------
 
     @Test
     @Tag(TestCategory.SideEffectPrintingConsoleOutput)
