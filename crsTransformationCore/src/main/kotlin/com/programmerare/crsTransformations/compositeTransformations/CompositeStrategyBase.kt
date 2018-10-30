@@ -23,7 +23,7 @@ internal abstract class CompositeStrategyBase
         medianOrAverage: () -> Coordinate
     ): TransformResult {
         if(resultsStatistic.isStatisticsAvailable()) {
-            //  val coordRes = resultsStatistic.getCoordinateMean() // THE ONLY DIFFERENCE in the above mentioned two classes
+            //  val coordRes = resultsStatistic.getCoordinateMedian() // THE ONLY DIFFERENCE in the above mentioned two classes
             //  val coordRes = resultsStatistic.getCoordinateAverage()  // THE ONLY DIFFERENCE in the above mentioned two classes
             val coordRes: Coordinate = medianOrAverage() // this line replaced the above two lines in different subclasses when doing refactoring
             return TransformResultImplementation(

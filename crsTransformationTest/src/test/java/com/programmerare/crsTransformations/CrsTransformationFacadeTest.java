@@ -307,7 +307,7 @@ final class CrsTransformationFacadeTest {
         assertEquals(0, resultsStatistic.getMaxDiffLatitude());
         assertEquals(0, resultsStatistic.getMaxDiffLongitude());
         assertEquals(transformResult.getOutputCoordinate(), resultsStatistic.getCoordinateAverage());
-        assertEquals(transformResult.getOutputCoordinate(), resultsStatistic.getCoordinateMean());
+        assertEquals(transformResult.getOutputCoordinate(), resultsStatistic.getCoordinateMedian());
     }
 
     enum CoordinateReferenceSystemUnit {

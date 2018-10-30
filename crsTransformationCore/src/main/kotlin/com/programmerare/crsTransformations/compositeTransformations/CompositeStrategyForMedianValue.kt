@@ -22,7 +22,7 @@ internal class CompositeStrategyForMedianValue(
             inputCoordinate,
             crsTransformationFacadeThatCreatedTheResult,
             resultsStatistic,
-            { resultsStatistic.getCoordinateMean() }
+            { resultsStatistic.getCoordinateMedian() }
         )
     }
 }

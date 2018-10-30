@@ -49,7 +49,7 @@ class ResultsStatistic(private val results: List<TransformResult>) {
         return _maxDiffLongitudes
     }
 
-    private val _coordinateMean: Coordinate by lazy {
+    private val _coordinateMedian: Coordinate by lazy {
         val lon = MedianValueUtility.getMedianValue(_longitudes)
         val lat = MedianValueUtility.getMedianValue(_latitudes)
         val coord = Coordinate.createFromXLongitudeYLatitude(lon, lat, _sucessfulCoordinates.get(0).crsIdentifier)
@@ -72,9 +72,9 @@ class ResultsStatistic(private val results: List<TransformResult>) {
     /**
      * Precondition: isStatisticsAvailable must return true
      */
-    fun getCoordinateMean(): Coordinate {
+    fun getCoordinateMedian(): Coordinate {
         throwExceptionIfPreconditionViolated()
-        return _coordinateMean
+        return _coordinateMedian
     }
 
     /**
