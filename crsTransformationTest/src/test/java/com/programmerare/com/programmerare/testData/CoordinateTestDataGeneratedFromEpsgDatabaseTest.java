@@ -37,6 +37,8 @@ import static org.junit.jupiter.api.Assertions.*;
  * Thus the file defines a list of appropriate WGS84 coordinates which can be transformed back and forth
  * to/from the coordinate system in the first EPSG column.
  */
+@Disabled // you may want to temporary change this line if you want to run the "tests"
+// (and also see comments in the class TestCategory regarding that this "test" file creates files and produces output to the console)
 class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
     private final static String OUTPUT_DIRECTORY_FOR_REGRESSION_RESULTS = "src/test/resources/regression_results";
