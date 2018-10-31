@@ -52,4 +52,18 @@ class TransformResultImplementation(
         get() {
             return _resultsStatistic
         }
+
+    override fun isReliable(
+        minimumNumberOfSuccesfulResults: Int,
+        maxDeltaValueForXLongitudeAndYLatitude: Double
+    ): Boolean {
+        val numberOfResults = this.resultsStatistic.getNumberOfResults()
+        val maxX = this.resultsStatistic.getMaxDiffXLongitude()
+        val maxY = this.resultsStatistic.getMaxDiffYLatitude()
+        val okNumber = numberOfResults >= minimumNumberOfSuccesfulResults
+        val okX = maxX <= maxDeltaValueForXLongitudeAndYLatitude
+        val okY = maxY <= maxDeltaValueForXLongitudeAndYLatitude
+        return okNumber && okX && okY
+    }
+
 }
