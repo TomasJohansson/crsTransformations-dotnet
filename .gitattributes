@@ -1,1 +1,3 @@
 *.cs linguist-generated=true
+crsConstants linguist-detectable=false
+crsTransformationTest linguist-detectable=false
