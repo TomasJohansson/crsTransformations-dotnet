@@ -55,8 +55,8 @@ subprojects {
 
         // https://mvnrepository.com/artifact/mil.nga.geopackage/geopackage
         // https://github.com/ngageoint/GeoPackage
-        compile group: 'mil.nga.geopackage', name: 'geopackage', version: '3.1.0' // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
-        compile group: 'mil.nga.geopackage', name: 'geopackage-core', version: '3.1.0'
+        implementation group: 'mil.nga.geopackage', name: 'geopackage', version: '3.1.0' // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
+        implementation group: 'mil.nga.geopackage', name: 'geopackage-core', version: '3.1.0'
 
         // https://mvnrepository.com/artifact/com.github.goober/coordinate-transformation-library
         implementation("com.github.goober:coordinate-transformation-library:1.1") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
@@ -80,8 +80,8 @@ subprojects {
         // http://geotools.org/
         // https://sourceforge.net/projects/geotools/
         // Used for shapefile parsing in the code generation module:
-        compile group: 'org.geotools', name: 'gt-data', version: '20.0' // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
-        compile group: 'org.geotools', name: 'gt-shapefile', version: '20.0'
+        implementation group: 'org.geotools', name: 'gt-data', version: '20.0' // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
+        implementation group: 'org.geotools', name: 'gt-shapefile', version: '20.0'
 
         // ---------------------------------------------------------------------------
 
@@ -89,7 +89,7 @@ subprojects {
 
         // https://mvnrepository.com/artifact/com.google.guava/guava
         // https://github.com/google/guava/releases
-        compile group: 'com.google.guava', name: 'guava', version: '27.0-jre'
+        implementation group: 'com.google.guava', name: 'guava', version: '27.0-jre'
     }
     test {
         // Enable JUnit 5 (Gradle 4.6+).
@@ -143,9 +143,9 @@ project(':crsTransformationTest') {
 //        implementation("group:org.geotools:gt-data:19.1")
 //        implementation("group:org.geotools:gt-shapefile:19.1")
 // https://mvnrepository.com/artifact/org.geotools/gt-shapefile
-//        compile group: 'org.geotools', name: 'gt-shapefile', version: '19.1'
+//        implementation group: 'org.geotools', name: 'gt-shapefile', version: '19.1'
         // https://mvnrepository.com/artifact/org.mockito/mockito-core
-        testCompile group: 'org.mockito', name: 'mockito-core', version: '2.23.0'
+        testImplementation group: 'org.mockito', name: 'mockito-core', version: '2.23.0'
     }
 }
 
@@ -172,7 +172,7 @@ project(':crsCodeGeneration') {
         implementation("org.freemarker:freemarker:2.3.28")
 
         // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
-        compile group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
+        implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
 
         // https://mvnrepository.com/artifact/org.springframework/spring-jdbc
         // https://github.com/spring-projects/spring-framework/releases
