@@ -1,1 +1,2 @@
 include ':crsTransformationCore', ':crsTransformationGeoTools', ':crsTransformationGooberCTL', ':crsTransformationOrbisgisCTS', ':crsTransformationProj4J', ':crsTransformationGeoPackageNGA', ':crsTransformationTest', ':crsCodeGeneration', ':crsConstants'
+enableFeaturePreview('STABLE_PUBLISHING') // The new, stable behavior can be switched on by adding the following to your settings file: enableFeaturePreview('STABLE_PUBLISHING') // https://docs.gradle.org/current/userguide/publishing_maven.html
