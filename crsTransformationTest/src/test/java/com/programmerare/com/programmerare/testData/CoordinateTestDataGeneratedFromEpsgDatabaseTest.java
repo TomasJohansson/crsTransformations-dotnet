@@ -41,7 +41,11 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     private final static String OUTPUT_DIRECTORY_FOR_REGRESSION_RESULTS = "src/test/resources/regression_results";
 
     // the below file is used with method 'Resources.getResource' (the path is test/resources/generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv )
+    // and the content (columns) of the file are as below:
+    // e.g. "3006|1225|Sweden|17.083659606206545|61.98770256318016"
+    //      epsgCrsCode | epsgAreaCode | epsgAreaName | centroidX | centroidY
     private final static String INPUT_TEST_DATA_FILE = "generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv";
+
 
     private boolean createNewRegressionFile = true;
 
@@ -304,7 +308,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
     @Test // currently not a real test with assertions but printing console output with differences
     @Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    void findPotentialBuggyImplementations() {
+    void findPotentialBuggyImplementations() { // similarly named method in another class, see comment there (current class name: CoordinateTestDataGeneratedFromEpsgDatabaseTest2')
         final File geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
         final File gooberFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Goober")[0];
         final File ngaFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("NGA")[0];
@@ -560,7 +564,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
      *  and from shapefile with polygon used for creating the coordinates as centroid points
      *  within a certain area where the EPSG code is defined to be used)
      */
-    private static List<EpsgCrsAndAreaCodeWithCoordinates> getCoordinatesFromGeneratedCsvFile() {
+    public static List<EpsgCrsAndAreaCodeWithCoordinates> getCoordinatesFromGeneratedCsvFile() {
         final ArrayList<EpsgCrsAndAreaCodeWithCoordinates> list = new ArrayList<>();
         try {
             final URL url = Resources.getResource(INPUT_TEST_DATA_FILE);
