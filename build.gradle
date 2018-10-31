@@ -103,7 +103,10 @@ project(':crsTransformationGeoTools') {
         // https://mvnrepository.com/artifact/org.geotools/gt-main?repo=boundless
         implementation("org.geotools:gt-main:20.0") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
         implementation("org.geotools:gt-epsg-hsql:20.0") // runtime exception if this is not included: org.opengis.referencing.NoSuchAuthorityCodeException: No code "EPSG:4326" from authority "EPSG" found for object of type "EngineeringCRS".
-        implementation("javax.media:jai_core:1.1.3") // otherwise geotools causes this: Could not find jai_core.jar (javax.media:jai_core:1.1.3)
+
+        // temporary disabling the below dependency becaause of jitpack problem not finding the jar file 
+        // implementation("javax.media:jai_core:1.1.3") // otherwise geotools causes this: Could not find jai_core.jar (javax.media:jai_core:1.1.3)
+
         // https://mvnrepository.com/artifact/org.geotools/gt-data?repo=boundless
         // https://mvnrepository.com/artifact/org.geotools/gt-shapefile?repo=boundless
         // https://mvnrepository.com/artifact/org.geotools/gt-main?repo=boundless
