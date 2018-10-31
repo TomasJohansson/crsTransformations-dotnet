@@ -143,11 +143,35 @@ project(':crsTransformationGeoTools') {
     dependencies {
         implementation project(':crsTransformationCore')
     }
+    publishing {
+        publications {
+            crsTransformationGeoTools(MavenPublication) {
+                groupId = 'com.programmerare.crs-transformations'
+                artifactId = 'crs-transformations-geotools'
+                version = '0.9'
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+            }
+        }
+    }
 }
 
 project(':crsTransformationGooberCTL') {
     dependencies {
         implementation project(':crsTransformationCore')
+    }
+    publishing {
+        publications {
+            crsTransformationGooberCTL(MavenPublication) {
+                groupId = 'com.programmerare.crs-transformations'
+                artifactId = 'crs-transformations-goober'
+                version = '0.9'
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+            }
+        }
     }
 }
 
@@ -155,17 +179,53 @@ project(':crsTransformationOrbisgisCTS') {
     dependencies {
         implementation project(':crsTransformationCore')
     }
+    publishing {
+        publications {
+            crsTransformationOrbisgisCTS(MavenPublication) {
+                groupId = 'com.programmerare.crs-transformations'
+                artifactId = 'crs-transformations-orbisgis'
+                version = '0.9'
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+            }
+        }
+    }
 }
 
 project(':crsTransformationProj4J') {
     dependencies {
         implementation project(':crsTransformationCore')
     }
+    publishing {
+        publications {
+            crsTransformationProj4J(MavenPublication) {
+                groupId = 'com.programmerare.crs-transformations'
+                artifactId = 'crs-transformations-proj4j'
+                version = '0.9'
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+            }
+        }
+    }    
 }
 
 project(':crsTransformationGeoPackageNGA') {
     dependencies {
         implementation project(':crsTransformationCore')
+    }
+    publishing {
+        publications {
+            crsTransformationGeoPackageNGA(MavenPublication) {
+                groupId = 'com.programmerare.crs-transformations'
+                artifactId = 'crs-transformations-nga'
+                version = '0.9'
+                from components.java
+                artifact sourcesJar
+                artifact javadocJar
+            }
+        }
     }
 }
 
@@ -204,13 +264,27 @@ project(':crsCodeGeneration') {
     project(':crsTransformationCore') {
         publishing {
             publications {
-                maven(MavenPublication) {
+                crsTransformationCore(MavenPublication) {
                     groupId = 'com.programmerare.crs-transformations'
                     artifactId = 'crs-transformations-core'
                     version = '0.9'
                     from components.java
                     artifact sourcesJar
                     artifact javadocJar
+                }
+            }
+        }
+    }
+    project(':crsConstants') {
+        publishing {
+            publications {
+                crsConstants(MavenPublication) {
+                    groupId = 'com.programmerare.crs-transformations'
+                    artifactId = 'crs-transformations-constants'
+                    version = '0.9'
+                    from components.java
+                    artifact sourcesJar
+                    // artifact javadocJar // should be enabled but currently disabled since it takes a very long time
                 }
             }
         }
@@ -228,3 +302,16 @@ project(':crsCodeGeneration') {
         implementation("org.springframework:spring-jdbc:5.1.1.RELEASE")
     }
 }
+// https://stackoverflow.com/questions/35143514/publishing-of-a-modular-library-to-maven-using-gradle
+//subprojects{
+//    publishing {
+//        publications {
+//            "$project.name"(MavenPublication) {
+//                groupId project.group
+//                artifactId project.name
+//                version project.version
+//                from components.java
+//            }
+//        }
+//    }
+//}
