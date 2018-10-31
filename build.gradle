@@ -20,14 +20,7 @@ plugins {
     // which you can verify by running "gradlew tasks" (i.e. run the command with and without the above 'maven-publish')
 }
 
-subprojects {
-    apply plugin: 'java'
-    apply plugin: 'kotlin'
-    apply plugin: 'org.jetbrains.dokka'
-
-    group = 'com.programmerare.crsTransformations'
-    version = '1.0'
-
+allprojects {
     repositories {
         // GeoTools
         // http://docs.geotools.org/latest/userguide/tutorial/quickstart/maven.html
@@ -45,6 +38,15 @@ subprojects {
         jcenter()
         google()
     }
+}
+
+subprojects {
+    apply plugin: 'java'
+    apply plugin: 'kotlin'
+    apply plugin: 'org.jetbrains.dokka'
+
+    group = 'com.programmerare.crsTransformations'
+    version = '1.0'
 
     sourceCompatibility = 1.8
     compileKotlin {
