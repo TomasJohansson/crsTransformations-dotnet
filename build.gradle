@@ -28,6 +28,24 @@ subprojects {
     group = 'com.programmerare.crsTransformations'
     version = '1.0'
 
+    repositories {
+        // GeoTools
+        // http://docs.geotools.org/latest/userguide/tutorial/quickstart/maven.html
+        // https://github.com/geotools/geotools/blob/master/pom.xml
+        maven {
+            url "http://maven.geotoolkit.org/"
+        }
+        maven {
+            url "https://repo.boundlessgeo.com/release/"
+        }
+        maven {
+            url "http://download.osgeo.org/webdav/geotools/"
+        }
+        mavenCentral()
+        jcenter()
+        google()
+    }
+
     sourceCompatibility = 1.8
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
@@ -49,22 +67,6 @@ subprojects {
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
         from sourceSets.main.allSource
-    }
-
-    repositories {
-        // GeoTools
-        // http://docs.geotools.org/latest/userguide/tutorial/quickstart/maven.html
-        // https://github.com/geotools/geotools/blob/master/pom.xml
-        maven {
-            url "https://repo.boundlessgeo.com/release/"
-        }
-        maven {
-            url "http://download.osgeo.org/webdav/geotools/"
-        }
-
-        mavenCentral()
-        jcenter()
-        google()
     }
 
     dependencies {
