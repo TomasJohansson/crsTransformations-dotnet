@@ -80,3 +80,7 @@ hs_err_pid*
 # However, currently MariaDB (MySQL) SQL insert statements files are used instead of MS Access MDB files
 # and those files can be put in the "data_files"  driectory to avoid them to be saved in GIT
 data_files/
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle/wrapper/gradle-wrapper.jar
+# "Adding the JAR file to version control is expected." https://docs.gradle.org/current/userguide/gradle_wrapper.html
