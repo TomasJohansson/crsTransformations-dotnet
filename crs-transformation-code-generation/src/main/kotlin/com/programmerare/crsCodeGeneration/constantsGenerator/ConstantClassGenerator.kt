@@ -138,6 +138,12 @@ import java.io.File
  */
 class ConstantClassGenerator : CodeGeneratorBase() {
     // --------------------------------------------------------------------------------
+
+    /**
+     * Not intended to be used with ".Companion" from client code.
+     * The reason for its existence has to do with the fact that the
+     * JVM class has been created with the programming language Kotlin.
+     */
     companion object {
         @JvmStatic
         fun main(args: Array<String>) {

@@ -20,6 +20,12 @@ data class Coordinate private constructor(
 ) {
     // The constructor is private to force client code to use the below factory methods
     // which are named to indicate the order of the longitude and latitude parameters.
+
+    /**
+     * Not intended to be used with ".Companion" from client code.
+     * The reason for its existence has to do with the fact that the
+     * JVM class has been created with the programming language Kotlin.
+     */
     companion object {
         // -------------------------------------------------------------------------
         @JvmStatic // https://kotlinlang.org/docs/reference/java-to-kotlin-interop.html

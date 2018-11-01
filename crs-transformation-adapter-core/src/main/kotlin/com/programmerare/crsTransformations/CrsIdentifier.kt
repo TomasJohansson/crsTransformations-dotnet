@@ -19,6 +19,11 @@ data class CrsIdentifier private constructor(
     val epsgNumber: Int
 ) {
 
+    /**
+     * Not intended to be used with ".Companion" from client code.
+     * The reason for its existence has to do with the fact that the
+     * JVM class has been created with the programming language Kotlin.
+     */
     companion object {
         private const val EPSG_PREFIX_UPPERCASED = "EPSG:"
         private const val LENGTH_OF_EPSG_PREFIX = EPSG_PREFIX_UPPERCASED.length
