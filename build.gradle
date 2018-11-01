@@ -223,7 +223,9 @@ project(':crs-transformation-adapter-impl-nga') {
 
 project(':crs-transformation-adapter-test') {
     dependencies {
-        implementation project(':crs-transformation-adapter-core'), project(':crs-transformation-adapter-impl-orbisgis'), project(':crs-transformation-adapter-impl-goober'), project(':crs-transformation-adapter-impl-geotools'), project(':crs-transformation-adapter-impl-proj4j'), project(':crs-transformation-adapter-impl-nga'), project(':crs-transformation-constants')
+        // implementation project(':crs-transformation-adapter-core'), project(':crs-transformation-adapter-impl-orbisgis'), project(':crs-transformation-adapter-impl-goober'), project(':crs-transformation-adapter-impl-geotools'), project(':crs-transformation-adapter-impl-proj4j'), project(':crs-transformation-adapter-impl-nga'), project(':crs-transformation-constants')
+		// the above row includes geotools which is temporary disabled because of jitpack problems , https://github.com/TomasJohansson/crsTransformations/commit/6b570bf811b9ea7d51c620d451e5526f886c24d3
+		implementation project(':crs-transformation-adapter-core'), project(':crs-transformation-adapter-impl-orbisgis'), project(':crs-transformation-adapter-impl-goober'), project(':crs-transformation-adapter-impl-proj4j'), project(':crs-transformation-adapter-impl-nga'), project(':crs-transformation-constants')
         // https://mvnrepository.com/artifact/org.geotools/gt-shapefile
 //        implementation("group:org.geotools:gt-shapefile:19.1")
 //        implementation("group:org.geotools:gt-data:19.1")
