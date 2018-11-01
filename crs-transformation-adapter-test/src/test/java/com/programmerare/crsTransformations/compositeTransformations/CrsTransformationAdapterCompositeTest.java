@@ -14,7 +14,7 @@ public class CrsTransformationAdapterCompositeTest {
     void isReliableTest() {
         final CrsTransformationAdapterComposite crsTransformationComposite = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian();
 
-        final Coordinate wgs84coordinateInSweden = Coordinate.latLon(59.31,18.04);
+        final Coordinate wgs84coordinateInSweden = CoordinateFactory.latLon(59.31,18.04);
         final TransformResult resultWhenTransformingToSwedishCRS = crsTransformationComposite.transform(wgs84coordinateInSweden, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         assertNotNull(resultWhenTransformingToSwedishCRS);
         assertTrue(resultWhenTransformingToSwedishCRS.isSuccess());

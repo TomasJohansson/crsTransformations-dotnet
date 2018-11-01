@@ -77,7 +77,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
             System.setErr(nullStream);
 
             final EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = coordinatesFromGeneratedCsvFile.get(i);
-            final Coordinate coordinateInputWgs84 = Coordinate.createFromYLatitudeXLongitude(epsgCrsAndAreaCodeWithCoordinates.centroidY, epsgCrsAndAreaCodeWithCoordinates.centroidX, wgs84);
+            final Coordinate coordinateInputWgs84 = CoordinateFactory.createFromYLatitudeXLongitude(epsgCrsAndAreaCodeWithCoordinates.centroidY, epsgCrsAndAreaCodeWithCoordinates.centroidX, wgs84);
 
             final TransformResult resultOutputFromWgs4 = crsTransformationComposite.transform(coordinateInputWgs84, epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode);
             if(!resultOutputFromWgs4.isSuccess()) continue;
@@ -120,7 +120,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
     private void verifyFiveImplementations(
         final CrsTransformationAdapterComposite crsTransformationAdapterComposite
     ) {
-        final Coordinate input = Coordinate.latLon(59, 18);
+        final Coordinate input = CoordinateFactory.latLon(59, 18);
         final TransformResult result = crsTransformationAdapterComposite.transform(input, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         assertNotNull(result);
         assertTrue(result.isSuccess());

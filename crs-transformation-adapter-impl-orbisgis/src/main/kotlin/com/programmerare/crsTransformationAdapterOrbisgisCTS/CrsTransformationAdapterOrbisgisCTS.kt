@@ -4,6 +4,7 @@ import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
+import com.programmerare.crsTransformations.createFromYLatitudeXLongitude
 import org.cts.CRSFactory;
 import org.cts.crs.GeodeticCRS;
 import org.cts.op.CoordinateOperationFactory;
@@ -28,6 +29,6 @@ class CrsTransformationAdapterOrbisgisCTS : CrsTransformationAdapterBaseLeaf(), 
         val coordinateOperation = CoordinateOperationFactory.getMostPrecise(coordinateOperations);
         val inputCoordinateArray = doubleArrayOf(inputCoordinate.xLongitude, inputCoordinate.yLatitude)
         val outputCoordinateArray = coordinateOperation.transform(inputCoordinateArray)
-        return Coordinate.createFromYLatitudeXLongitude(yLatitude = outputCoordinateArray[1], xLongitude = outputCoordinateArray[0], crsIdentifier = crsIdentifierForOutputCoordinateSystem)
+        return createFromYLatitudeXLongitude(yLatitude = outputCoordinateArray[1], xLongitude = outputCoordinateArray[0], crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }
 }

@@ -10,6 +10,7 @@ import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
+import com.programmerare.crsTransformations.createFromYLatitudeXLongitude
 import java.util.*
 
 // " goober/coordinate-transformation-library "
@@ -54,7 +55,7 @@ class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), Cr
         }
 
         if (positionToReturn != null) {
-            return Coordinate.createFromYLatitudeXLongitude(yLatitude = positionToReturn.latitude, xLongitude = positionToReturn.longitude, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
+            return createFromYLatitudeXLongitude(yLatitude = positionToReturn.latitude, xLongitude = positionToReturn.longitude, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
         } else if (
             // not direct support for transforming directly between SWEREF99 and RT90
             // but can do it by first transforming to WGS84 and then to the other

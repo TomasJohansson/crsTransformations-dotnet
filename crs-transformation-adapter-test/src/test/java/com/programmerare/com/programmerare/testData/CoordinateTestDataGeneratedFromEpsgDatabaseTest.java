@@ -369,7 +369,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
         long startTime = System.nanoTime();
         for (EpsgCrsAndAreaCodeWithCoordinates item : coordinatesFromGeneratedCsvFile) {
-            final Coordinate inputCoordinateWGS84 = Coordinate.createFromXLongitudeYLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
+            final Coordinate inputCoordinateWGS84 = CoordinateFactory.createFromXLongitudeYLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
             final TransformResult resultOfTransformationFromWGS84 = crsTransformationAdapter.transform(inputCoordinateWGS84, item.epsgCrsCode);
             TransformResult resultOfTransformationBackToWGS84 = null;
             if (resultOfTransformationFromWGS84.isSuccess()) {

@@ -58,7 +58,7 @@ public class TestResultItem {
     public Coordinate getInputCoordinateWGS84() {
         double lat = Double.parseDouble(wgs84sourceY);
         double lon = Double.parseDouble(wgs84sourceX);
-        return Coordinate.latLon(lat, lon);
+        return CoordinateFactory.latLon(lat, lon);
     }
 
     public boolean isSuccessfulTransformationFromWGS84() {
@@ -83,7 +83,7 @@ public class TestResultItem {
         // i.e. exception might be thrown below
         double lat = Double.parseDouble(wgs84targetY);
         double lon = Double.parseDouble(wgs84targetX);
-        return Coordinate.latLon(lat, lon);
+        return CoordinateFactory.latLon(lat, lon);
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
 import com.programmerare.crsTransformations.Coordinate;
+import com.programmerare.crsTransformations.CoordinateFactory;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.TransformResult;
@@ -41,7 +42,7 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
         List<Double> latitudesSorted = coordinateResultsForTheDifferentImplementations.stream().map(x -> x.getYLatitude()).collect(Collectors.toList());
         double medianLongitude = MedianValueUtility.getMedianValue(longitudesSorted);
         double medianLatitude = MedianValueUtility.getMedianValue(latitudesSorted);
-        return Coordinate.createFromXLongitudeYLatitude(medianLongitude, medianLatitude, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        return CoordinateFactory.createFromXLongitudeYLatitude(medianLongitude, medianLatitude, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
     }
 
 }

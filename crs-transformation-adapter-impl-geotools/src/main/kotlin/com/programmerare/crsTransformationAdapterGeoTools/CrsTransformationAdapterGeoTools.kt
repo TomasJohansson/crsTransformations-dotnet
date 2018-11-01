@@ -1,15 +1,16 @@
 package com.programmerare.crsTransformationAdapterGeoTools
 
 // build.gradle: implementation("org.geotools:gt-main:20.0")
+import com.programmerare.crsTransformations.createFromYLatitudeXLongitude
+import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
+import com.programmerare.crsTransformations.CrsTransformationAdapter
+import com.programmerare.crsTransformations.Coordinate
+import com.programmerare.crsTransformations.CrsIdentifier
 import org.locationtech.jts.geom.GeometryFactory // jts-core-...jar
 import org.geotools.geometry.jts.JTSFactoryFinder // gt-main-...jar
 import org.geotools.referencing.CRS
 import org.opengis.referencing.crs.CoordinateReferenceSystem
 import org.opengis.referencing.operation.MathTransform
-import com.programmerare.crsTransformations.CrsTransformationAdapter
-import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
-import com.programmerare.crsTransformations.Coordinate
-import com.programmerare.crsTransformations.CrsIdentifier
 import org.geotools.geometry.jts.JTS
 
 
@@ -46,6 +47,6 @@ class CrsTransformationAdapterGeoTools : CrsTransformationAdapterBaseLeaf(), Crs
         val lon = outputCoordinate.x
         val lat = outputCoordinate.y
 
-        return Coordinate.createFromYLatitudeXLongitude(yLatitude = lat, xLongitude = lon, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
+        return createFromYLatitudeXLongitude(yLatitude = lat, xLongitude = lon, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }
 }

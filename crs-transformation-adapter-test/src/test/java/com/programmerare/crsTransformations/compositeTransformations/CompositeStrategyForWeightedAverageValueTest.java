@@ -7,6 +7,7 @@ import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdap
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
 import com.programmerare.crsTransformations.Coordinate;
+import com.programmerare.crsTransformations.CoordinateFactory;
 import com.programmerare.crsTransformations.TransformResult;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -144,6 +145,6 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
                 weightForGeoPackageNGA * resultCoordinateProj4J.getXLongitude();
 
         final double totWeights = weightForGeoTools + weightForGoober + weightForOrbis + weightForProj4J + weightForGeoPackageNGA;
-        return Coordinate.createFromYLatitudeXLongitude( latitudeWeightedSum/totWeights, longitutdeWeightedSum/totWeights, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        return CoordinateFactory.createFromYLatitudeXLongitude( latitudeWeightedSum/totWeights, longitutdeWeightedSum/totWeights, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
     }
 }

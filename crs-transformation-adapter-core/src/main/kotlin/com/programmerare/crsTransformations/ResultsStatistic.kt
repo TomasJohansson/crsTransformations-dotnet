@@ -52,11 +52,11 @@ class ResultsStatistic(private val results: List<TransformResult>) {
     private val _coordinateMedian: Coordinate by lazy {
         val lon = MedianValueUtility.getMedianValue(_longitudes)
         val lat = MedianValueUtility.getMedianValue(_latitudes)
-        val coord = Coordinate.createFromXLongitudeYLatitude(lon, lat, _sucessfulCoordinates.get(0).crsIdentifier)
+        val coord = createFromXLongitudeYLatitude(lon, lat, _sucessfulCoordinates.get(0).crsIdentifier)
         coord
     }
     private val _coordinateAverage: Coordinate by lazy {
-        Coordinate.createFromXLongitudeYLatitude(_longitudes.average(), _latitudes.average(), _sucessfulCoordinates.get(0).crsIdentifier)
+        createFromXLongitudeYLatitude(_longitudes.average(), _latitudes.average(), _sucessfulCoordinates.get(0).crsIdentifier)
     }
 
 

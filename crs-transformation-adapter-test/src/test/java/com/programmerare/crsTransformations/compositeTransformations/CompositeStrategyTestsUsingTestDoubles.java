@@ -48,11 +48,11 @@ public class CompositeStrategyTestsUsingTestDoubles {
         medianLongitude = 18.4;
         averageLongitude = 18.52;
 
-        outputCoordinateWgs84ForImplementation_1 = Coordinate.createFromLatitudeLongitude(outputLatitudes[0],outputLongitudes[3]);
-        outputCoordinateWgs84ForImplementation_2 = Coordinate.createFromLatitudeLongitude(outputLatitudes[2],outputLongitudes[1]);
-        outputCoordinateWgs84ForImplementation_3 = Coordinate.createFromLatitudeLongitude(outputLatitudes[4],outputLongitudes[4]);
-        outputCoordinateWgs84ForImplementation_4 = Coordinate.createFromLatitudeLongitude(outputLatitudes[1],outputLongitudes[0]);
-        outputCoordinateWgs84ForImplementation_5 = Coordinate.createFromLatitudeLongitude(outputLatitudes[3],outputLongitudes[2]);
+        outputCoordinateWgs84ForImplementation_1 = CoordinateFactory.createFromLatitudeLongitude(outputLatitudes[0],outputLongitudes[3]);
+        outputCoordinateWgs84ForImplementation_2 = CoordinateFactory.createFromLatitudeLongitude(outputLatitudes[2],outputLongitudes[1]);
+        outputCoordinateWgs84ForImplementation_3 = CoordinateFactory.createFromLatitudeLongitude(outputLatitudes[4],outputLongitudes[4]);
+        outputCoordinateWgs84ForImplementation_4 = CoordinateFactory.createFromLatitudeLongitude(outputLatitudes[1],outputLongitudes[0]);
+        outputCoordinateWgs84ForImplementation_5 = CoordinateFactory.createFromLatitudeLongitude(outputLatitudes[3],outputLongitudes[2]);
         outputCoordinates = Arrays.asList(outputCoordinateWgs84ForImplementation_1, outputCoordinateWgs84ForImplementation_2, outputCoordinateWgs84ForImplementation_3, outputCoordinateWgs84ForImplementation_4, outputCoordinateWgs84ForImplementation_5);
 
         leafAdapterImplementation_1 = mock(CrsTransformationAdapter.class);
@@ -61,7 +61,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         leafAdapterImplementation_4 = mock(CrsTransformationAdapter.class);
         leafAdapterImplementation_5 = mock(CrsTransformationAdapter.class);
 
-        inputCoordinateSweref99 = Coordinate.createFromYLatitudeXLongitude(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        inputCoordinateSweref99 = CoordinateFactory.createFromYLatitudeXLongitude(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
 
         TransformResult leafResult1 = new TransformResultImplementation(
             inputCoordinateSweref99,
@@ -133,7 +133,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         Coordinate resultCoordinate = averageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(resultCoordinate);
 
-        // Coordinate expectedAverageCoordinate = Coordinate.createFromLatitudeLongitude(averageLatitude, averageLongitude);
+        // Coordinate expectedAverageCoordinate = CoordinateFactory.createFromLatitudeLongitude(averageLatitude, averageLongitude);
         // assertEquals(expectedAverageCoordinate, result); // this failed because latitude was 59.31999999999999 instead of 59.32
         assertEquals(averageLatitude,  resultCoordinate.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
         assertEquals(averageLongitude, resultCoordinate.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
@@ -197,7 +197,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         }
         final double weightedLat = totLats / totWeights;
         final double weightedLon = totLons / totWeights;
-        final Coordinate expectedWeightedAverage = Coordinate.createFromLatitudeLongitude(weightedLat, weightedLon);
+        final Coordinate expectedWeightedAverage = CoordinateFactory.createFromLatitudeLongitude(weightedLat, weightedLon);
 
         List<AdapterWeight> weightedAdapters = Arrays.asList(
             AdapterWeight.createFromInstance(leafAdapterImplementation_1, weights[0]),
