@@ -20,6 +20,8 @@ plugins {
     // which you can verify by running "gradlew tasks" (i.e. run the command with and without the above 'maven-publish')
 }
 
+ext.crsTransformationVersion = '0.9'
+
 allprojects {
     repositories {
         // GeoTools
@@ -38,15 +40,17 @@ allprojects {
         jcenter()
         google()
     }
-}
+	
 
+}
+		
 subprojects {
     apply plugin: 'java'
     apply plugin: 'kotlin'
     apply plugin: 'org.jetbrains.dokka'
 
     group = 'com.programmerare.crs-transformation'
-    version = '0.9'
+    version = rootProject.crsTransformationVersion
 
     sourceCompatibility = 1.8
     compileKotlin {
@@ -122,7 +126,7 @@ project(':crs-transformation-adapter-impl-geotools') {
             crstransformationsgeotools(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-adapter-impl-geotools'
-                version = '0.9'
+                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -143,7 +147,7 @@ project(':crs-transformation-adapter-impl-goober') {
             crstransformationsgoober(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-adapter-impl-goober'
-                version = '0.9'
+                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -164,7 +168,7 @@ project(':crs-transformation-adapter-impl-orbisgis') {
             crstransformationsorbisgis(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-adapter-impl-orbisgis'
-                version = '0.9'
+                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -185,7 +189,7 @@ project(':crs-transformation-adapter-impl-proj4j') {
             crstransformationsproj4j(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-adapter-impl-proj4j'
-                version = '0.9'
+                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -208,7 +212,7 @@ project(':crs-transformation-adapter-impl-nga') {
             crstransformationsnga(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-adapter-impl-nga'
-                version = '0.9'
+                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -299,7 +303,7 @@ project(':crs-transformation-adapter-core') {
             crstransformationscore(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-adapter-core'
-                version = '0.9'
+                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -314,7 +318,7 @@ project(':crs-transformation-constants') {
             crstransformationsconstants(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-constants'
-                version = '0.9'
+                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 // artifact javadocJar // should be enabled but currently disabled since it takes a very long time
@@ -323,6 +327,8 @@ project(':crs-transformation-constants') {
     }
 }
 
+
+		
 // https://stackoverflow.com/questions/35143514/publishing-of-a-modular-library-to-maven-using-gradle
 //subprojects{
 //    publishing {
