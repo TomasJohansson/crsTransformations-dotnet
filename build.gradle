@@ -55,6 +55,7 @@ subprojects {
     sourceCompatibility = 1.8
     compileKotlin {
         kotlinOptions.jvmTarget = "1.8"
+        kotlinOptions.javaParameters = true //Will retain parameter names e.g. useful for intellisense parameter information instead of "arg0" and "arg1" and so on
     }
     compileTestKotlin {
         kotlinOptions.jvmTarget = "1.8"
