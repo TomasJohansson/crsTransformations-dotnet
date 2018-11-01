@@ -108,7 +108,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             new ArrayList<TransformResult>(),
             null
         );
-        crsIdentifierWGS84 = CrsIdentifier.createFromEpsgNumber(EpsgNumber._4326__WGS_84__WORLD);
+        crsIdentifierWGS84 = CrsIdentifierFactory.createFromEpsgNumber(EpsgNumber._4326__WGS_84__WORLD);
 
         when(leafAdapterImplementation_1.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(leafResult1);
         when(leafAdapterImplementation_2.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(leafResult2);

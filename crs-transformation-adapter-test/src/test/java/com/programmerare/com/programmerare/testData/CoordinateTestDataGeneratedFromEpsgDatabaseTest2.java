@@ -1,10 +1,7 @@
 package com.programmerare.com.programmerare.testData;
 
 import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.Coordinate;
-import com.programmerare.crsTransformations.CrsIdentifier;
-import com.programmerare.crsTransformations.ResultsStatistic;
-import com.programmerare.crsTransformations.TransformResult;
+import com.programmerare.crsTransformations.*;
 import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterComposite;
 import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory;
 import org.junit.jupiter.api.Disabled;
@@ -45,7 +42,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
 
         final List<TransformResult> transformResultsWithLargeDifferences = new ArrayList<TransformResult>();
 
-        final CrsIdentifier wgs84 = CrsIdentifier.createFromEpsgNumber(EpsgNumber.WORLD__WGS_84__4326);
+        final CrsIdentifier wgs84 = CrsIdentifierFactory.createFromEpsgNumber(EpsgNumber.WORLD__WGS_84__4326);
 
         final double deltaDiff = 0.01; // fairly large value to only find the large differences (potential large problems/bugs)
         // when the delta value above is 0.01 then about 80 EPSG codes are found i.e. there

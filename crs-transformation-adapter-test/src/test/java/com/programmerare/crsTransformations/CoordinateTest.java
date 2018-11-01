@@ -40,7 +40,7 @@ class CoordinateTest {
 
     @Test
     void createCoordinatesWithCrsIdentifierButWithDifferentOrderOfLatLongParameters() {
-        CrsIdentifier crsIdentifier = CrsIdentifier.createFromEpsgNumber(3006);
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(3006);
         Coordinate coordinate1 = CoordinateFactory.createFromXLongitudeYLatitude(xLongitude, yLatitude, crsIdentifier);
         Coordinate coordinate2 = CoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, crsIdentifier);
         assertEqualCoordinates(coordinate1, coordinate2);
@@ -141,7 +141,7 @@ class CoordinateTest {
         c5 = CoordinateFactory.lonLat(xLongitude, yLatitude, epsgCode);
         c6 = CoordinateFactory.xy(xLongitude, yLatitude, epsgCode);
 
-        CrsIdentifier crsIdentifier = CrsIdentifier.createFromEpsgNumber(epsgNumber);
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(epsgNumber);
         c7 = CoordinateFactory.createFromXLongitudeYLatitude(xLongitude, yLatitude, crsIdentifier);
         c8 = CoordinateFactory.lonLat(xLongitude, yLatitude, crsIdentifier);
         c9 = CoordinateFactory.xy(xLongitude, yLatitude, crsIdentifier);
@@ -170,7 +170,7 @@ class CoordinateTest {
         c5 = CoordinateFactory.latLon(yLatitude, xLongitude, epsgCode);
         c6 = CoordinateFactory.yx(yLatitude, xLongitude, epsgCode);
 
-        CrsIdentifier crsIdentifier = CrsIdentifier.createFromEpsgNumber(epsgNumber);
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(epsgNumber);
         c7 = CoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, crsIdentifier);
         c8 = CoordinateFactory.latLon(yLatitude, xLongitude, crsIdentifier);
         c9 = CoordinateFactory.yx(yLatitude, xLongitude, crsIdentifier);

@@ -9,7 +9,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
         // this Template Method is invoking the below overloaded hook method in subclasses
         return transformHook(
             inputCoordinate,
-            CrsIdentifier.createFromCrsCode(crsCodeForOutputCoordinateSystem)
+            createFromCrsCode(crsCodeForOutputCoordinateSystem)
         )
     }
 
@@ -19,7 +19,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
     ): Coordinate {
         return transformHook(
             inputCoordinate,
-            CrsIdentifier.createFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
+            createFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
         )
     }
 
@@ -45,7 +45,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
     ): TransformResult {
         return transform(
             inputCoordinate,
-            CrsIdentifier.createFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
+            createFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
         )
     }
 
@@ -55,7 +55,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
     ): TransformResult {
         return transform(
             inputCoordinate,
-            CrsIdentifier.createFromCrsCode(crsCodeForOutputCoordinateSystem)
+            createFromCrsCode(crsCodeForOutputCoordinateSystem)
         )
     }
 
@@ -63,7 +63,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
 //        inputCoordinate: Coordinate,
 //        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
 //    ): TransformResult {
-//        return transformHook(inputCoordinate, CrsIdentifier.createFromCrsCode(crsCodeForOutputCoordinateSystem))
+//        return transformHook(inputCoordinate, CrsIdentifierFactory.createFromCrsCode(crsCodeForOutputCoordinateSystem))
 //    }
 
 

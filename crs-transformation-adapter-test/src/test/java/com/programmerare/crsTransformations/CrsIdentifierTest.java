@@ -14,7 +14,7 @@ public class CrsIdentifierTest {
 
     @Test
     void createFromCrsCodeTrimmedButWithoutUppercasingButNotEpsg() {
-        CrsIdentifier crsIdentifier = CrsIdentifier.createFromCrsCode("  abc  ");
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromCrsCode("  abc  ");
         assertEquals("abc", crsIdentifier.getCrsCode());
         assertEquals(false, crsIdentifier.isEpsgCode());
     }
@@ -22,7 +22,7 @@ public class CrsIdentifierTest {
     @Test
     void createFromEpsgNumber() {
         // SWEREF99TM = 3006
-        CrsIdentifier crsIdentifier = CrsIdentifier.createFromEpsgNumber(3006);
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(3006);
         Assertions.assertEquals(EpsgCode._3006__SWEREF99_TM__SWEDEN, crsIdentifier.getCrsCode());
         assertEquals(true, crsIdentifier.isEpsgCode());
         Assertions.assertEquals(EpsgNumber._3006__SWEREF99_TM__SWEDEN, crsIdentifier.getEpsgNumber());
@@ -30,7 +30,7 @@ public class CrsIdentifierTest {
 
     @Test
     void createFromCrsCodeWithLowerCasedEpsg() {
-        CrsIdentifier crsIdentifier = CrsIdentifier.createFromCrsCode("  epsg:4326  ");
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromCrsCode("  epsg:4326  ");
         // the input should become trimmed and uppercased "EPSG"
         assertEquals("EPSG:4326", crsIdentifier.getCrsCode());
         assertEquals(true, crsIdentifier.isEpsgCode());
@@ -41,7 +41,7 @@ public class CrsIdentifierTest {
     void createFromCrsCodeNullShouldFail() {
         IllegalArgumentException exception = assertThrows(
             IllegalArgumentException.class,
-            () -> CrsIdentifier.createFromCrsCode(null), // should fail
+            () -> CrsIdentifierFactory.createFromCrsCode(null), // should fail
             "Must not be null"
         );
         assertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-null");
@@ -51,7 +51,7 @@ public class CrsIdentifierTest {
     void createFromCrsCodeWithOnlyWhiteSpaceShouldFail() {
         IllegalArgumentException exception = assertThrows(
             IllegalArgumentException.class,
-            () -> CrsIdentifier.createFromCrsCode("   "), // should fail
+            () -> CrsIdentifierFactory.createFromCrsCode("   "), // should fail
             "Must not be empty string"
         );
         assertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-empty");
@@ -59,8 +59,8 @@ public class CrsIdentifierTest {
 
     @Test
     void equalsTestWhenCreatingFromEpsgNumberAndFromCrsCode() {
-        CrsIdentifier fromEpsgNumber    = CrsIdentifier.createFromEpsgNumber(3006);
-        CrsIdentifier fromCrsCode       = CrsIdentifier.createFromCrsCode("  epsg:3006   ");
+        CrsIdentifier fromEpsgNumber    = CrsIdentifierFactory.createFromEpsgNumber(3006);
+        CrsIdentifier fromCrsCode       = CrsIdentifierFactory.createFromCrsCode("  epsg:3006   ");
         assertEquals(fromEpsgNumber, fromCrsCode);
         assertEquals(fromEpsgNumber.hashCode(), fromCrsCode.hashCode());
     }

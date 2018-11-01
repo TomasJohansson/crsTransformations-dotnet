@@ -28,7 +28,7 @@ fun createFromXLongitudeYLatitude(
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
-            CrsIdentifier.createFromEpsgNumber(epsgNumber)
+            createFromEpsgNumber(epsgNumber)
     )
 }
 
@@ -68,7 +68,7 @@ fun createFromYLatitudeXLongitude(
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
-            CrsIdentifier.createFromEpsgNumber(epsgNumber)
+            createFromEpsgNumber(epsgNumber)
     )
 }
 
@@ -109,7 +109,7 @@ fun createFromXLongitudeYLatitude(
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
-            CrsIdentifier.createFromCrsCode(crsCode)
+            createFromCrsCode(crsCode)
     )
 }
 
@@ -150,7 +150,7 @@ fun createFromYLatitudeXLongitude(
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
-            CrsIdentifier.createFromCrsCode(crsCode)
+            createFromCrsCode(crsCode)
     )
 }
 
@@ -263,7 +263,7 @@ fun lonLat(
  * Therefore it is default for the factory method not specifying
  * the coordinate reference system.
  */
-private val COORDINATE_REFERENCE_SYSTEM_WGS84 = CrsIdentifier.createFromEpsgNumber(4326)
+private val COORDINATE_REFERENCE_SYSTEM_WGS84 = createFromEpsgNumber(4326)
 
 // -------------------------------------------------------------------------
 /**
