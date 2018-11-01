@@ -1,0 +1,6 @@
+This adapter/facade library "GooberCTL" is licensed in the same way as the adaptee library itself as specified below.
+
+The license for "goober/coordinate-transformation-library" is Apache License 2.0.
+https://github.com/goober/coordinate-transformation-library/blob/master/LICENSE
+https://github.com/goober/coordinate-transformation-library
+https://github.com/goober/coordinate-transformation-library/blob/master/build.gradle

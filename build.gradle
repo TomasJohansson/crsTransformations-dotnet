@@ -45,7 +45,7 @@ subprojects {
     apply plugin: 'kotlin'
     apply plugin: 'org.jetbrains.dokka'
 
-    group = 'com.programmerare.crsTransformations'
+    group = 'com.programmerare.crs-transformations'
     version = '1.0'
 
     sourceCompatibility = 1.8
@@ -96,9 +96,9 @@ subprojects {
 // (with the new version number in the file suffix) and compared with previous result
 // (e.g. comparing the files manually with WinMerge until more automation has been implemented)
 // ---------------------------------------------------------------------------
-project(':crsTransformationGeoTools') {
+project(':crs-transformations-geotools') {
     dependencies {
-        implementation project(':crsTransformationCore')
+        implementation project(':crs-transformations-core')
 
         // https://mvnrepository.com/artifact/org.geotools/gt-main?repo=boundless
         implementation("org.geotools:gt-main:20.0") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
@@ -119,7 +119,7 @@ project(':crsTransformationGeoTools') {
     }
     publishing {
         publications {
-            crsTransformationGeoTools(MavenPublication) {
+            crstransformationsgeotools(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformations'
                 artifactId = 'crs-transformations-geotools'
                 version = '0.9'
@@ -131,16 +131,16 @@ project(':crsTransformationGeoTools') {
     }
 }
 
-project(':crsTransformationGooberCTL') {
+project(':crs-transformations-goober') {
     dependencies {
-        implementation project(':crsTransformationCore')
+        implementation project(':crs-transformations-core')
 
         // https://mvnrepository.com/artifact/com.github.goober/coordinate-transformation-library
         implementation("com.github.goober:coordinate-transformation-library:1.1") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
     }
     publishing {
         publications {
-            crsTransformationGooberCTL(MavenPublication) {
+            crstransformationsgoober(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformations'
                 artifactId = 'crs-transformations-goober'
                 version = '0.9'
@@ -152,16 +152,16 @@ project(':crsTransformationGooberCTL') {
     }
 }
 
-project(':crsTransformationOrbisgisCTS') {
+project(':crs-transformations-orbisgis') {
     dependencies {
-        implementation project(':crsTransformationCore')
+        implementation project(':crs-transformations-core')
 
         // https://mvnrepository.com/artifact/org.orbisgis/cts
         implementation("org.orbisgis:cts:1.5.1") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
     }
     publishing {
         publications {
-            crsTransformationOrbisgisCTS(MavenPublication) {
+            crstransformationsorbisgis(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformations'
                 artifactId = 'crs-transformations-orbisgis'
                 version = '0.9'
@@ -173,16 +173,16 @@ project(':crsTransformationOrbisgisCTS') {
     }
 }
 
-project(':crsTransformationProj4J') {
+project(':crs-transformations-proj4j') {
     dependencies {
-        implementation project(':crsTransformationCore')
+        implementation project(':crs-transformations-core')
 
         // https://mvnrepository.com/artifact/org.osgeo/proj4j
         implementation("org.osgeo:proj4j:0.1.0") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
     }
     publishing {
         publications {
-            crsTransformationProj4J(MavenPublication) {
+            crstransformationsproj4j(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformations'
                 artifactId = 'crs-transformations-proj4j'
                 version = '0.9'
@@ -194,9 +194,9 @@ project(':crsTransformationProj4J') {
     }    
 }
 
-project(':crsTransformationGeoPackageNGA') {
+project(':crs-transformations-nga') {
     dependencies {
-        implementation project(':crsTransformationCore')
+        implementation project(':crs-transformations-core')
 
         // https://mvnrepository.com/artifact/mil.nga.geopackage/geopackage
         // https://github.com/ngageoint/GeoPackage
@@ -205,7 +205,7 @@ project(':crsTransformationGeoPackageNGA') {
     }
     publishing {
         publications {
-            crsTransformationGeoPackageNGA(MavenPublication) {
+            crstransformationsnga(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformations'
                 artifactId = 'crs-transformations-nga'
                 version = '0.9'
@@ -217,9 +217,9 @@ project(':crsTransformationGeoPackageNGA') {
     }
 }
 
-project(':crsTransformationTest') {
+project(':crs-transformations-test') {
     dependencies {
-        implementation project(':crsTransformationCore'), project(':crsTransformationOrbisgisCTS'), project(':crsTransformationGooberCTL'), project(':crsTransformationGeoTools'), project(':crsTransformationProj4J'), project(':crsTransformationGeoPackageNGA'), project(':crsConstants')
+        implementation project(':crs-transformations-core'), project(':crs-transformations-orbisgis'), project(':crs-transformations-goober'), project(':crs-transformations-geotools'), project(':crs-transformations-proj4j'), project(':crs-transformations-nga'), project(':crs-transformations-constants')
         // https://mvnrepository.com/artifact/org.geotools/gt-shapefile
 //        implementation("group:org.geotools:gt-shapefile:19.1")
 //        implementation("group:org.geotools:gt-data:19.1")
@@ -242,21 +242,21 @@ project(':crsTransformationTest') {
     }
 }
 
-project(':crsCodeGeneration') {
+project(':crs-transformations-code-generation') {
     // command line execution  examples:
     // gradle generateClassesWithEpsgConstants --args="v9_5_4 epsg_version_9_5_4 dbUserName dbUserPassword java"
     // gradle generateClassesWithEpsgConstants --args="v9_5_4 epsg_version_9_5_4 dbUserName dbUserPassword csv"
     task generateClassesWithEpsgConstants(type:JavaExec) {
-        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator"
+        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crs-transformations-code-generation.constantsGenerator.ConstantClassGenerator"
         classpath = sourceSets.main.runtimeClasspath
     }
 
     // command line execution
     // gradle generateCsvTestDataFromEpsgDatabaseAndShapefile
     // or, if something else than the default/hardcoded class name should be used:
-    // gradle generateCsvTestDataFromEpsgDatabaseAndShapefile -PmainClass=com.programmerare.crsCodeGeneration.coordinateTestDataGenerator.CoordinateTestDataGenerator
+    // gradle generateCsvTestDataFromEpsgDatabaseAndShapefile -PmainClass=com.programmerare.crs-transformations-code-generation.coordinateTestDataGenerator.CoordinateTestDataGenerator
     task generateCsvTestDataFromEpsgDatabaseAndShapefile(type:JavaExec) {
-        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crsCodeGeneration.coordinateTestDataGenerator.CoordinateTestDataGenerator"
+        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crs-transformations-code-generation.coordinateTestDataGenerator.CoordinateTestDataGenerator"
         classpath = sourceSets.main.runtimeClasspath
     }
 
@@ -293,10 +293,10 @@ project(':crsCodeGeneration') {
     }
 }
 
-project(':crsTransformationCore') {
+project(':crs-transformations-core') {
     publishing {
         publications {
-            crsTransformationCore(MavenPublication) {
+            crstransformationscore(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformations'
                 artifactId = 'crs-transformations-core'
                 version = '0.9'
@@ -308,10 +308,10 @@ project(':crsTransformationCore') {
     }
 }
 
-project(':crsConstants') {
+project(':crs-transformations-constants') {
     publishing {
         publications {
-            crsConstants(MavenPublication) {
+            crstransformationsconstants(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformations'
                 artifactId = 'crs-transformations-constants'
                 version = '0.9'

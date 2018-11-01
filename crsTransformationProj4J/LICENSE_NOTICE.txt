@@ -1,6 +1,0 @@
-This adapter/facade library "Proj4J" is licensed in the same way as the adaptee library itself as specified below.
-
-The license for "Proj4J/proj4j" is the Apache License, Version 2.0.
-https://trac.osgeo.org/proj4j/wiki/WikiStart#License
-https://github.com/Proj4J/proj4j
-http://central.maven.org/maven2/org/osgeo/proj4j/0.1.0/proj4j-0.1.0.pom
