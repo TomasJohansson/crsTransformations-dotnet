@@ -4,6 +4,8 @@ import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumbe
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgCode;
 import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;

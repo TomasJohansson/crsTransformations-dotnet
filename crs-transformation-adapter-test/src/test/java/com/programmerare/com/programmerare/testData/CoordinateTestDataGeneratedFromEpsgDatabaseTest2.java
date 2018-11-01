@@ -6,6 +6,8 @@ import com.programmerare.crsTransformations.compositeTransformations.CrsTransfor
 import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory;
 import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Tag;
 import org.junit.jupiter.api.Test;

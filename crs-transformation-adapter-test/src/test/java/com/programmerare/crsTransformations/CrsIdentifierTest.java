@@ -6,6 +6,8 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgCode;
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -73,7 +75,7 @@ public class CrsIdentifierTest {
         IllegalArgumentException exception,
         String expectedStringToBeContainedInExceptionMessage
     ) {
-        // the exception message is currently something like this: "Parameter specified as non-null is null: method com.programmerare.crsTransformations.CrsIdentifier$Companion.createFromCrsCode, parameter crsCode"
+        // the exception message is currently something like this: "Parameter specified as non-null is null: method com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier$Companion.createFromCrsCode, parameter crsCode"
         // (potentially fragile to test the message strings but it does not really change often, and in such a rare scenario, then easy to fix)
         assertThat(exception.getMessage(), containsString(expectedStringToBeContainedInExceptionMessage));
     }

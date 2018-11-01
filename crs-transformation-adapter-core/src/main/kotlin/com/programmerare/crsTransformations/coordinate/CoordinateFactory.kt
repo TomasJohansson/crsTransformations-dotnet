@@ -24,9 +24,9 @@ package com.programmerare.crsTransformations.coordinate
 // (when using Java we do not see that problem but rather a class
 //   CoordinateFactory with all these function as static method in that class)
 
-import com.programmerare.crsTransformations.CrsIdentifier
-import com.programmerare.crsTransformations.createFromCrsCode
-import com.programmerare.crsTransformations.createFromEpsgNumber
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
+import com.programmerare.crsTransformations.crsIdentifier.createFromCrsCode
+import com.programmerare.crsTransformations.crsIdentifier.createFromEpsgNumber
 
 // -------------------------------------------------------------------------
 

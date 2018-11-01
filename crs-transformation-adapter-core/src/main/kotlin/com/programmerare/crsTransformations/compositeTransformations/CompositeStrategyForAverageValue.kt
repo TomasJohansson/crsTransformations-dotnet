@@ -2,6 +2,7 @@ package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
 import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 
 internal class CompositeStrategyForAverageValue(
     private val crsTransformationAdapters: List<CrsTransformationAdapter>

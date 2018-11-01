@@ -1,6 +1,7 @@
 package com.programmerare.crsTransformations
 
 import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 
 abstract class CrsTransformationAdapterBaseLeaf : CrsTransformationAdapterBase(), CrsTransformationAdapter {
 

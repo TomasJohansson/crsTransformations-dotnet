@@ -1,6 +1,9 @@
 package com.programmerare.crsTransformations
 
 import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
+import com.programmerare.crsTransformations.crsIdentifier.createFromCrsCode
+import com.programmerare.crsTransformations.crsIdentifier.createFromEpsgNumber
 
 abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
 
@@ -11,7 +14,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
         // this Template Method is invoking the below overloaded hook method in subclasses
         return transformHook(
             inputCoordinate,
-            createFromCrsCode(crsCodeForOutputCoordinateSystem)
+                createFromCrsCode(crsCodeForOutputCoordinateSystem)
         )
     }
 
@@ -21,7 +24,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
     ): Coordinate {
         return transformHook(
             inputCoordinate,
-            createFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
+                createFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
         )
     }
 
@@ -47,7 +50,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
     ): TransformResult {
         return transform(
             inputCoordinate,
-            createFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
+                createFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
         )
     }
 
@@ -57,7 +60,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
     ): TransformResult {
         return transform(
             inputCoordinate,
-            createFromCrsCode(crsCodeForOutputCoordinateSystem)
+                createFromCrsCode(crsCodeForOutputCoordinateSystem)
         )
     }
 

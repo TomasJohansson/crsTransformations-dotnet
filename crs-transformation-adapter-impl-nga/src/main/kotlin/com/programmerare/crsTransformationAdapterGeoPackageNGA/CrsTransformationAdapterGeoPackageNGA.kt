@@ -3,7 +3,7 @@ package com.programmerare.crsTransformationAdapterGeoPackageNGA
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.coordinate.Coordinate
-import com.programmerare.crsTransformations.CrsIdentifier
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import com.programmerare.crsTransformations.coordinate.createFromXLongitudeYLatitude
 import mil.nga.sf.Point
 import mil.nga.sf.proj.ProjectionFactory

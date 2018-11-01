@@ -1,6 +1,7 @@
 package com.programmerare.crsTransformations
 
 import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 
 /**
  * The methods 'transformToCoordinate' can throw exception when transformation fails.

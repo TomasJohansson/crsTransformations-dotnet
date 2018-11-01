@@ -1,4 +1,4 @@
-package com.programmerare.crsTransformations
+package com.programmerare.crsTransformations.crsIdentifier
 
 /**
  * CRS = Coordinate Reference System (a.k.a. SRS = Spatial Reference System)

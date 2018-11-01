@@ -9,7 +9,7 @@ import com.github.goober.coordinatetransformation.positions.WGS84Position
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.coordinate.Coordinate
-import com.programmerare.crsTransformations.CrsIdentifier
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
 import java.util.*
 

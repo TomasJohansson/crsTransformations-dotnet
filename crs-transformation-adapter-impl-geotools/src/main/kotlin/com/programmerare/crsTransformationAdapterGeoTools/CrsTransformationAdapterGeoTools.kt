@@ -5,7 +5,7 @@ import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongi
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.coordinate.Coordinate
-import com.programmerare.crsTransformations.CrsIdentifier
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import org.locationtech.jts.geom.GeometryFactory // jts-core-...jar
 import org.geotools.geometry.jts.JTSFactoryFinder // gt-main-...jar
 import org.geotools.referencing.CRS

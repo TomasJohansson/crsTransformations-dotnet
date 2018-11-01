@@ -8,6 +8,7 @@ import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapter
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
