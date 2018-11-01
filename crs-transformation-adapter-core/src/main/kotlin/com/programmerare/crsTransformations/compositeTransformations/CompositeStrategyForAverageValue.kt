@@ -1,6 +1,7 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
+import com.programmerare.crsTransformations.coordinate.Coordinate
 
 internal class CompositeStrategyForAverageValue(
     private val crsTransformationAdapters: List<CrsTransformationAdapter>
@@ -11,10 +12,10 @@ internal class CompositeStrategyForAverageValue(
     }
 
     override fun calculateAggregatedResult(
-        allResults: List<TransformResult>,
-        inputCoordinate: Coordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
-        crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
+            allResults: List<TransformResult>,
+            inputCoordinate: Coordinate,
+            crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
+            crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): TransformResult {
         val resultsStatistic = ResultsStatistic(allResults)
         return this.calculateAggregatedResultBase(

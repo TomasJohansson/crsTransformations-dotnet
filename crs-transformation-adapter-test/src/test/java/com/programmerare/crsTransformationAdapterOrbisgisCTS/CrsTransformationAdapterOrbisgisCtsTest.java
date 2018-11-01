@@ -1,10 +1,10 @@
 package com.programmerare.crsTransformationAdapterOrbisgisCTS;
 
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.Coordinate;
-import com.programmerare.crsTransformations.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.ResultsStatistic;
 import com.programmerare.crsTransformations.TransformResult;
+import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;

@@ -1,4 +1,6 @@
-package com.programmerare.crsTransformations
+package com.programmerare.crsTransformations.coordinate
+
+import com.programmerare.crsTransformations.CrsIdentifier
 
 /**
  * TODO general (class level) documentation about the different factory methods

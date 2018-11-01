@@ -2,10 +2,10 @@ package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.TransformResult
-import com.programmerare.crsTransformations.Coordinate
+import com.programmerare.crsTransformations.coordinate.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
 import com.programmerare.crsTransformations.TransformResultImplementation
-import com.programmerare.crsTransformations.createFromYLatitudeXLongitude
+import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
 
 internal class CompositeStrategyForWeightedAverageValue(
         private val crsTransformationAdapters: List<CrsTransformationAdapter>,
@@ -17,10 +17,10 @@ internal class CompositeStrategyForWeightedAverageValue(
     }
 
     override fun calculateAggregatedResult(
-        allResults: List<TransformResult>,
-        inputCoordinate: Coordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
-        crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
+            allResults: List<TransformResult>,
+            inputCoordinate: Coordinate,
+            crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
+            crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): TransformResult {
         var successCount = 0
         var sumLat = 0.0

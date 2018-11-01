@@ -1,5 +1,7 @@
 package com.programmerare.crsTransformations
 
+import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.createFromXLongitudeYLatitude
 import com.programmerare.crsTransformations.utils.MedianValueUtility
 import java.lang.RuntimeException
 

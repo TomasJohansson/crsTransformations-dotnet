@@ -1,5 +1,7 @@
 package com.programmerare.crsTransformations
 
+import com.programmerare.crsTransformations.coordinate.Coordinate
+
 /**
  * The methods 'transformToCoordinate' can throw exception when transformation fails.
  * The methods 'transform' should always return an object,
@@ -9,34 +11,34 @@ package com.programmerare.crsTransformations
 interface CrsTransformationAdapter {
 
     fun transformToCoordinate(
-        inputCoordinate: Coordinate,
-        epsgNumberForOutputCoordinateSystem: Int
+            inputCoordinate: Coordinate,
+            epsgNumberForOutputCoordinateSystem: Int
     ): Coordinate
 
     fun transformToCoordinate(
-        inputCoordinate: Coordinate,
-        crsCodeForOutputCoordinateSystem: String
+            inputCoordinate: Coordinate,
+            crsCodeForOutputCoordinateSystem: String
     ): Coordinate
 
     fun transformToCoordinate(
-        inputCoordinate: Coordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+            inputCoordinate: Coordinate,
+            crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate
 
 
     fun transform(
-        inputCoordinate: Coordinate,
-        epsgNumberForOutputCoordinateSystem: Int
+            inputCoordinate: Coordinate,
+            epsgNumberForOutputCoordinateSystem: Int
     ): TransformResult
 
     fun transform(
-        inputCoordinate: Coordinate,
-        crsCodeForOutputCoordinateSystem: String
+            inputCoordinate: Coordinate,
+            crsCodeForOutputCoordinateSystem: String
     ): TransformResult
 
     fun transform(
-        inputCoordinate: Coordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+            inputCoordinate: Coordinate,
+            crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): TransformResult
 
     /**

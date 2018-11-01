@@ -1,7 +1,7 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.Coordinate;
+import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
 import com.programmerare.crsTransformations.TransformResult;
 import org.junit.jupiter.api.Test;

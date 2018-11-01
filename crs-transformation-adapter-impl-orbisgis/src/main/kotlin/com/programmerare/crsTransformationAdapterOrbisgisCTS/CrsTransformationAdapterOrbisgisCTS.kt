@@ -2,9 +2,9 @@ package com.programmerare.crsTransformationAdapterOrbisgisCTS
 
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
-import com.programmerare.crsTransformations.Coordinate
+import com.programmerare.crsTransformations.coordinate.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
-import com.programmerare.crsTransformations.createFromYLatitudeXLongitude
+import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
 import org.cts.CRSFactory;
 import org.cts.crs.GeodeticCRS;
 import org.cts.op.CoordinateOperationFactory;
@@ -15,8 +15,8 @@ import org.cts.registry.EPSGRegistry;
 class CrsTransformationAdapterOrbisgisCTS : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     override protected fun transformHook(
-        inputCoordinate: Coordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+            inputCoordinate: Coordinate,
+            crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate {
         val crsFactory: CRSFactory = CRSFactory()
         val registryManager = crsFactory.registryManager

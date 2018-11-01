@@ -8,9 +8,9 @@ import com.github.goober.coordinatetransformation.positions.SWEREF99Position.SWE
 import com.github.goober.coordinatetransformation.positions.WGS84Position
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
-import com.programmerare.crsTransformations.Coordinate
+import com.programmerare.crsTransformations.coordinate.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
-import com.programmerare.crsTransformations.createFromYLatitudeXLongitude
+import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
 import java.util.*
 
 // " goober/coordinate-transformation-library "
@@ -18,8 +18,8 @@ import java.util.*
 class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     override protected fun transformHook(
-        inputCoordinate: Coordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+            inputCoordinate: Coordinate,
+            crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate {
         if(!inputCoordinate.crsIdentifier.isEpsgCode) {
             throwIllegalArgumentException(inputCoordinate.crsIdentifier)

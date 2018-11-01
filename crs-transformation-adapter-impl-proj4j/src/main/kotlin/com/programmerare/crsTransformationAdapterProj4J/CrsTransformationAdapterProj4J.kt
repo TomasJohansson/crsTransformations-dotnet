@@ -5,9 +5,9 @@ import org.osgeo.proj4j.CoordinateTransformFactory;
 import org.osgeo.proj4j.ProjCoordinate;
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
-import com.programmerare.crsTransformations.Coordinate
+import com.programmerare.crsTransformations.coordinate.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
-import com.programmerare.crsTransformations.createFromXLongitudeYLatitude
+import com.programmerare.crsTransformations.coordinate.createFromXLongitudeYLatitude
 
 // " Proj4J/proj4j "
 // https://github.com/Proj4J/proj4j
@@ -17,8 +17,8 @@ class CrsTransformationAdapterProj4J : CrsTransformationAdapterBaseLeaf(), CrsTr
     private var crsFactory: CRSFactory = CRSFactory()
 
     override protected fun transformHook(
-        inputCoordinate: Coordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+            inputCoordinate: Coordinate,
+            crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate {
         val sourceCrs = crsFactory.createFromName(inputCoordinate.crsIdentifier.crsCode)
         val targetCrs = crsFactory.createFromName(crsIdentifierForOutputCoordinateSystem.crsCode)

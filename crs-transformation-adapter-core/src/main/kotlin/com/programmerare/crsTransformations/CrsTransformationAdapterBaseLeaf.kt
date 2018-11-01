@@ -1,5 +1,7 @@
 package com.programmerare.crsTransformations
 
+import com.programmerare.crsTransformations.coordinate.Coordinate
+
 abstract class CrsTransformationAdapterBaseLeaf : CrsTransformationAdapterBase(), CrsTransformationAdapter {
 
     override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {

@@ -1,10 +1,10 @@
 package com.programmerare.crsTransformationAdapterGeoTools
 
 // build.gradle: implementation("org.geotools:gt-main:20.0")
-import com.programmerare.crsTransformations.createFromYLatitudeXLongitude
+import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.CrsTransformationAdapter
-import com.programmerare.crsTransformations.Coordinate
+import com.programmerare.crsTransformations.coordinate.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
 import org.locationtech.jts.geom.GeometryFactory // jts-core-...jar
 import org.geotools.geometry.jts.JTSFactoryFinder // gt-main-...jar
@@ -25,8 +25,8 @@ class CrsTransformationAdapterGeoTools : CrsTransformationAdapterBaseLeaf(), Crs
     }
 
     override protected fun transformHook(
-        inputCoordinate: Coordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+            inputCoordinate: Coordinate,
+            crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): Coordinate {
         val sourceCRS: CoordinateReferenceSystem = CRS.decode(inputCoordinate.crsIdentifier.crsCode, true)
         val targetCRS: CoordinateReferenceSystem = CRS.decode(crsIdentifierForOutputCoordinateSystem.crsCode, true)

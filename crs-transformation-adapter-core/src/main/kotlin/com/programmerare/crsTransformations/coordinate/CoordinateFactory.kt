@@ -4,7 +4,7 @@
  * The Java class name: com.programmerare.crsTransformations.CoordinateFactory
  * From Kotlin code the methods are package level functions
  * and each function can be imported as if it would be a class, for example:
- *  import com.programmerare.crsTransformations.createFromXLongitudeYLatitude
+ *  import com.programmerare.crsTransformations.coordinate.createFromXLongitudeYLatitude
  *
  *  One advantage with using package level function instead of Kotlin object
  *  is that with a Kotlin object you can get the same kind of static
@@ -16,7 +16,17 @@
  *  but with package level function the Java clients will not even see such an "INSTANCE".
  */
 @file:JvmName("CoordinateFactory")
-package com.programmerare.crsTransformations
+package com.programmerare.crsTransformations.coordinate
+// The reason for having Coordinate and this CoordinateFactory
+// in a package of its own is to avoid "polluting" the base
+// package from lots of package level function defined in this file
+// when using Kotlin code.
+// (when using Java we do not see that problem but rather a class
+//   CoordinateFactory with all these function as static method in that class)
+
+import com.programmerare.crsTransformations.CrsIdentifier
+import com.programmerare.crsTransformations.createFromCrsCode
+import com.programmerare.crsTransformations.createFromEpsgNumber
 
 // -------------------------------------------------------------------------
 

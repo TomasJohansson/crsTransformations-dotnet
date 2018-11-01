@@ -6,9 +6,9 @@ import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapt
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
-import com.programmerare.crsTransformations.Coordinate;
-import com.programmerare.crsTransformations.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.TransformResult;
+import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 

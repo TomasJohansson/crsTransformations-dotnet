@@ -1,6 +1,7 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
+import com.programmerare.crsTransformations.coordinate.Coordinate
 
 internal abstract class CompositeStrategyBase
     (private val crsTransformationAdapters: List<CrsTransformationAdapter>)

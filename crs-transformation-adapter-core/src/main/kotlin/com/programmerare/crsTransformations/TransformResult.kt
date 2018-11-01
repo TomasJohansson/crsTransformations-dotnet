@@ -1,5 +1,7 @@
 package com.programmerare.crsTransformations
 
+import com.programmerare.crsTransformations.coordinate.Coordinate
+
 interface TransformResult {
     val inputCoordinate: Coordinate
     val outputCoordinate: Coordinate

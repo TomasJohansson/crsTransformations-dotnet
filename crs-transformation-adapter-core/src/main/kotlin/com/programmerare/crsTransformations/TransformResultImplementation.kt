@@ -1,5 +1,6 @@
 package com.programmerare.crsTransformations
 
+import com.programmerare.crsTransformations.coordinate.Coordinate
 import java.lang.IllegalStateException
 import java.lang.RuntimeException
 

@@ -6,9 +6,10 @@ import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdap
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
-import com.programmerare.crsTransformations.Coordinate;
+import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 
+import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.util.Arrays;

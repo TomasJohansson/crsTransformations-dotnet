@@ -1,7 +1,8 @@
 package com.programmerare.com.programmerare.testData;
 
-import com.programmerare.crsTransformations.Coordinate;
+import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.TransformResult;
+import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
 
 public class TestResultItem {
     private String wgs84sourceX , wgs84sourceY , epsgCrsCode;

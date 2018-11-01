@@ -1,6 +1,7 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
+import com.programmerare.crsTransformations.coordinate.Coordinate
 
 internal class CompositeStrategyForChainOfResponsibility(
     private val crsTransformationAdapters: List<CrsTransformationAdapter>
@@ -11,10 +12,10 @@ internal class CompositeStrategyForChainOfResponsibility(
     }
 
     override fun calculateAggregatedResult(
-        allResults: List<TransformResult>,
-        inputCoordinate: Coordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
-        crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
+            allResults: List<TransformResult>,
+            inputCoordinate: Coordinate,
+            crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
+            crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): TransformResult {
         if(allResults.size == 1 && allResults.get(0).isSuccess) {
             // there should never be more than one result with the ChainOfResponsibility implementation

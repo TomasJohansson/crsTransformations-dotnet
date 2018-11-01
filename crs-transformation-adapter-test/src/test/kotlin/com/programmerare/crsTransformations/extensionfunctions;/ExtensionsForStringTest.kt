@@ -1,7 +1,7 @@
 package com.programmerare.crsTransformations.extensionfunctions
 
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL
-import com.programmerare.crsTransformations.createFromYLatitudeXLongitude
+import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber
 import org.junit.jupiter.api.Test
