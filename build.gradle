@@ -46,7 +46,7 @@ subprojects {
     apply plugin: 'org.jetbrains.dokka'
 
     group = 'com.programmerare.crs-transformation'
-    version = '1.0'
+    version = '0.9'
 
     sourceCompatibility = 1.8
     compileKotlin {
