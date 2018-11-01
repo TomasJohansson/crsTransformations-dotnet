@@ -99,6 +99,7 @@ subprojects {
 // (with the new version number in the file suffix) and compared with previous result
 // (e.g. comparing the files manually with WinMerge until more automation has been implemented)
 // ---------------------------------------------------------------------------
+/*
 project(':crs-transformation-adapter-impl-geotools') {
     dependencies {
         implementation project(':crs-transformation-adapter-core')
@@ -133,7 +134,7 @@ project(':crs-transformation-adapter-impl-geotools') {
         }
     }
 }
-
+*/
 project(':crs-transformation-adapter-impl-goober') {
     dependencies {
         implementation project(':crs-transformation-adapter-core')
