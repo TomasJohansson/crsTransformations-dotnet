@@ -76,8 +76,8 @@ class CoordinateTest {
         assertEquals(coordinate1.hashCode(), coordinate2.hashCode());
         assertEquals(coordinate1, coordinate2);
         // Note that the above assertion is not reliable since double fields are used.
-        // Example below from an assertion failure in class CrsTransformationFacadeAverageTest:
-        // assertEquals(coordinateWithAverageLatitudeAndLongitude, coordinateReturnedByCompositeFacade);
+        // Example below from an assertion failure in class CrsTransformationAdapterAverageTest:
+        // assertEquals(coordinateWithAverageLatitudeAndLongitude, coordinateReturnedByCompositeAdapter);
         // Expected :Coordinate(xLongitude=674032.3572074446, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
         // Actual   :Coordinate(xLongitude=674032.3572074447, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
     }

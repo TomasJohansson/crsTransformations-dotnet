@@ -3,7 +3,7 @@ package com.programmerare.crsTransformations;
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL;
+import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -20,7 +20,7 @@ public class TransformResultImplementationTest {
     private Coordinate inputCoordinate;
     private Coordinate outputCoordinate;
 
-    private CrsTransformationFacade crsTransformationFacade;
+    private CrsTransformationAdapter crsTransformationAdapter;
 
     @BeforeEach
     void beforeEach() {
@@ -29,18 +29,18 @@ public class TransformResultImplementationTest {
 
         // the mock below is currently not used any more than as a convenient way
         // of constructing an instance of the interface
-        crsTransformationFacade = mock(CrsTransformationFacade.class);
+        crsTransformationAdapter = mock(CrsTransformationAdapter.class);
     }
 
     @Test
     void transformNotSucessTest() {
-        transformResult = new TransformResultImplementation(inputCoordinate, null, null, false, crsTransformationFacade, new ArrayList<TransformResult>(), null);
+        transformResult = new TransformResultImplementation(inputCoordinate, null, null, false, crsTransformationAdapter, new ArrayList<TransformResult>(), null);
         assertFalse(transformResult.isSuccess());
     }
 
     @Test
     void transformSucessTest() {
-        transformResult = new TransformResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationFacade, new ArrayList<TransformResult>(), null);
+        transformResult = new TransformResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationAdapter, new ArrayList<TransformResult>(), null);
         assertTrue(transformResult.isSuccess());
     }
 
@@ -48,7 +48,7 @@ public class TransformResultImplementationTest {
     void unvalidTransformResultConstructionWhenSuccessIsFalseButCoordinateProvided() {
         assertThrows(
             IllegalStateException.class,
-            () -> new TransformResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationFacade, new ArrayList<TransformResult>(), null),
+            () -> new TransformResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationAdapter, new ArrayList<TransformResult>(), null),
             "unvalid TransformResult object construction should throw exception when success false is combined with output coordinate"
         );
     }
@@ -58,7 +58,7 @@ public class TransformResultImplementationTest {
         outputCoordinate = null;
         assertThrows(
             IllegalStateException.class,
-            () -> new TransformResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationFacade, new ArrayList<TransformResult>(), null),
+            () -> new TransformResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationAdapter, new ArrayList<TransformResult>(), null),
             "unvalid TransformResult object construction should throw exception when success true is combined with null as output coordinate"
         );
     }
@@ -66,7 +66,7 @@ public class TransformResultImplementationTest {
     @Test
     void preconditionViolationWhenTryingToAccessCoordinateWhenSuccessFalse() {
         outputCoordinate = null;
-        transformResult = new TransformResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationFacade, new ArrayList<TransformResult>(), null);
+        transformResult = new TransformResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationAdapter, new ArrayList<TransformResult>(), null);
         Exception e = assertThrows(
             RuntimeException.class,
             () -> transformResult.getOutputCoordinate(),
@@ -104,7 +104,7 @@ public class TransformResultImplementationTest {
 
 
         c = Coordinate.latLon(0, 0); // input, not used here in this test
-        CrsTransformationFacade f = new CrsTransformationFacadeGooberCTL(); // not used, might use a mock instead
+        CrsTransformationAdapter f = new CrsTransformationAdapterGooberCTL(); // not used, might use a mock instead
         List<TransformResult>  l = Arrays.asList();
 
 

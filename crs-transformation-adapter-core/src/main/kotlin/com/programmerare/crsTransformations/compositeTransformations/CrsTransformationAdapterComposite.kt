@@ -2,12 +2,12 @@ package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
-import com.programmerare.crsTransformations.CrsTransformationFacade
-import com.programmerare.crsTransformations.CrsTransformationFacadeBase
+import com.programmerare.crsTransformations.CrsTransformationAdapter
+import com.programmerare.crsTransformations.CrsTransformationAdapterBase
 import com.programmerare.crsTransformations.TransformResult
 import java.lang.RuntimeException
 
-final class CrsTransformationFacadeComposite internal constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationFacadeBase(), CrsTransformationFacade {
+final class CrsTransformationAdapterComposite internal constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationAdapterBase(), CrsTransformationAdapter {
 
     override final protected fun transformHook(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): Coordinate {
         val transformResult = transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
@@ -20,14 +20,14 @@ final class CrsTransformationFacadeComposite internal constructor(protected val 
     }
 
     override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
-        val allCrsTransformationFacades = compositeStrategy.getAllTransformationFacadesInTheOrderTheyShouldBeInvoked()
+        val allCrsTransformationAdapters = compositeStrategy.getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
         val list = mutableListOf<TransformResult>()
         var lastResultOrNullIfNoPrevious: TransformResult? = null
-        for (crsTransformationFacade: CrsTransformationFacade in allCrsTransformationFacades) {
-            if(!compositeStrategy.shouldContinueIterationOfFacadesToInvoke(lastResultOrNullIfNoPrevious)) {
+        for (crsTransformationAdapter: CrsTransformationAdapter in allCrsTransformationAdapters) {
+            if(!compositeStrategy.shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious)) {
                 break
             }
-            val res = crsTransformationFacade.transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+            val res = crsTransformationAdapter.transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
             list.add(res)
             lastResultOrNullIfNoPrevious = res
         }

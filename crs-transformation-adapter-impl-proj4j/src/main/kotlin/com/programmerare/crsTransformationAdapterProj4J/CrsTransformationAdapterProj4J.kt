@@ -1,16 +1,16 @@
-package com.programmerare.crsTransformationFacadeProj4J
+package com.programmerare.crsTransformationAdapterProj4J
 
 import org.osgeo.proj4j.CRSFactory;
 import org.osgeo.proj4j.CoordinateTransformFactory;
 import org.osgeo.proj4j.ProjCoordinate;
-import com.programmerare.crsTransformations.CrsTransformationFacade
-import com.programmerare.crsTransformations.CrsTransformationFacadeBaseLeaf
+import com.programmerare.crsTransformations.CrsTransformationAdapter
+import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
 
 // " Proj4J/proj4j "
 // https://github.com/Proj4J/proj4j
-class CrsTransformationFacadeProj4J : CrsTransformationFacadeBaseLeaf(), CrsTransformationFacade {
+class CrsTransformationAdapterProj4J : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     private var coordinateTransformFactory: CoordinateTransformFactory = CoordinateTransformFactory()
     private var crsFactory: CRSFactory = CRSFactory()

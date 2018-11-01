@@ -8,11 +8,11 @@ import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-public class CrsTransformationFacadeCompositeTest {
+public class CrsTransformationAdapterCompositeTest {
 
     @Test
     void isReliableTest() {
-        final CrsTransformationFacadeComposite crsTransformationComposite = CrsTransformationFacadeCompositeFactory.createCrsTransformationMedian();
+        final CrsTransformationAdapterComposite crsTransformationComposite = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian();
 
         final Coordinate wgs84coordinateInSweden = Coordinate.latLon(59.31,18.04);
         final TransformResult resultWhenTransformingToSwedishCRS = crsTransformationComposite.transform(wgs84coordinateInSweden, EpsgNumber.SWEDEN__SWEREF99_TM__3006);

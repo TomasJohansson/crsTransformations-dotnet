@@ -5,7 +5,7 @@ interface TransformResult {
     val outputCoordinate: Coordinate
     val exception: Throwable?
     val isSuccess: Boolean
-    val crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
+    val crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
 
     /**
      * Empty list if the transform implementation is a concrete "Leaf"

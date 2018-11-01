@@ -3,10 +3,10 @@ package com.programmerare.crsTransformations.compositeTransformations
 import com.programmerare.crsTransformations.*
 
 internal class CompositeStrategyForMedianValue(
-    private val crsTransformationFacades: List<CrsTransformationFacade>
-) : CompositeStrategyBase(crsTransformationFacades), CompositeStrategy {
+    private val crsTransformationAdapters: List<CrsTransformationAdapter>
+) : CompositeStrategyBase(crsTransformationAdapters), CompositeStrategy {
 
-    override fun shouldContinueIterationOfFacadesToInvoke(lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
+    override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
         return true
     }
 
@@ -14,13 +14,13 @@ internal class CompositeStrategyForMedianValue(
         allResults: List<TransformResult>,
         inputCoordinate: Coordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
-        crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
+        crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): TransformResult {
         val resultsStatistic = ResultsStatistic(allResults)
         return this.calculateAggregatedResultBase(
             allResults,
             inputCoordinate,
-            crsTransformationFacadeThatCreatedTheResult,
+            crsTransformationAdapterThatCreatedTheResult,
             resultsStatistic,
             { resultsStatistic.getCoordinateMedian() }
         )

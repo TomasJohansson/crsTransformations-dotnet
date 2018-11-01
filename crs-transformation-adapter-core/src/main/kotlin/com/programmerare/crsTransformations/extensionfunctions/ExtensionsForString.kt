@@ -1,9 +1,9 @@
 @file:JvmName("StringUtils")
 package com.programmerare.crsTransformations.extensionfunctions
 
-import com.programmerare.crsTransformations.CrsTransformationFacade
+import com.programmerare.crsTransformations.CrsTransformationAdapter
 
-fun String.createCrsTransformationFacadeFromFullClassName(): CrsTransformationFacade {
-    val crsTransformationFacade = Class.forName(this).getDeclaredConstructor().newInstance() as CrsTransformationFacade
-    return crsTransformationFacade
+fun String.createCrsTransformationAdapterFromFullClassName(): CrsTransformationAdapter {
+    val crsTransformationAdapter = Class.forName(this).getDeclaredConstructor().newInstance() as CrsTransformationAdapter
+    return crsTransformationAdapter
 }

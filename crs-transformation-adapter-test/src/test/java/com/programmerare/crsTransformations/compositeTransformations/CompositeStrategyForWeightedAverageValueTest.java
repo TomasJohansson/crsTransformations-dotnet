@@ -1,11 +1,11 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformationFacadeGeoPackageNGA.CrsTransformationFacadeGeoPackageNGA;
-import com.programmerare.crsTransformationFacadeGeoTools.CrsTransformationFacadeGeoTools;
-import com.programmerare.crsTransformationFacadeGooberCTL.CrsTransformationFacadeGooberCTL;
-import com.programmerare.crsTransformationFacadeOrbisgisCTS.CrsTransformationFacadeOrbisgisCTS;
-import com.programmerare.crsTransformationFacadeProj4J.CrsTransformationFacadeProj4J;
+import com.programmerare.crsTransformationAdapterGeoPackageNGA.CrsTransformationAdapterGeoPackageNGA;
+import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools;
+import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
+import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
+import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.TransformResult;
 import org.junit.jupiter.api.BeforeAll;
@@ -43,41 +43,41 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
     @Test
     void createCompositeStrategyForWeightedAverageValue() {
 
-        final List<FacadeWeight> weights = Arrays.asList(
-            FacadeWeight.createFromInstance(new CrsTransformationFacadeGeoTools(), weightForGeoTools),
-            FacadeWeight.createFromInstance(new CrsTransformationFacadeGooberCTL(), weightForGoober),
-            FacadeWeight.createFromInstance(new CrsTransformationFacadeOrbisgisCTS(), weightForOrbis),
-            FacadeWeight.createFromInstance(new CrsTransformationFacadeProj4J(), weightForProj4J),
-            FacadeWeight.createFromInstance(new CrsTransformationFacadeGeoPackageNGA(), weightForGeoPackageNGA)
+        final List<AdapterWeight> weights = Arrays.asList(
+            AdapterWeight.createFromInstance(new CrsTransformationAdapterGeoTools(), weightForGeoTools),
+            AdapterWeight.createFromInstance(new CrsTransformationAdapterGooberCTL(), weightForGoober),
+            AdapterWeight.createFromInstance(new CrsTransformationAdapterOrbisgisCTS(), weightForOrbis),
+            AdapterWeight.createFromInstance(new CrsTransformationAdapterProj4J(), weightForProj4J),
+            AdapterWeight.createFromInstance(new CrsTransformationAdapterGeoPackageNGA(), weightForGeoPackageNGA)
         );
-        final CrsTransformationFacadeComposite facade = CrsTransformationFacadeCompositeFactory.createCrsTransformationWeightedAverage(weights);
-        createCompositeStrategyForWeightedAverageValueHelper(facade);
+        final CrsTransformationAdapterComposite adapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(weights);
+        createCompositeStrategyForWeightedAverageValueHelper(adapter);
     }
 
     @Test
     void createCompositeStrategyForWeightedAverageValueFromStringsWithReflection() {
-        final String classNameGeoTools = CrsTransformationFacadeGeoTools.class.getName() ;
-        final String classNameGoober = CrsTransformationFacadeGooberCTL.class.getName() ;
-        final String classNameOrbis = CrsTransformationFacadeOrbisgisCTS.class.getName() ;
-        final String classNameProj4J = CrsTransformationFacadeProj4J.class.getName() ;
-        final String classNameGeoPackageNGA = CrsTransformationFacadeGeoPackageNGA.class.getName() ;
+        final String classNameGeoTools = CrsTransformationAdapterGeoTools.class.getName() ;
+        final String classNameGoober = CrsTransformationAdapterGooberCTL.class.getName() ;
+        final String classNameOrbis = CrsTransformationAdapterOrbisgisCTS.class.getName() ;
+        final String classNameProj4J = CrsTransformationAdapterProj4J.class.getName() ;
+        final String classNameGeoPackageNGA = CrsTransformationAdapterGeoPackageNGA.class.getName() ;
 
-        final List<FacadeWeight> weights = Arrays.asList(
-            FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameGeoTools, weightForGeoTools),
-            FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameGoober, weightForGoober),
-            FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameOrbis, weightForOrbis),
-            FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameProj4J, weightForProj4J),
-            FacadeWeight.createFromStringWithFullClassNameForImplementation(classNameGeoPackageNGA, weightForGeoPackageNGA)
+        final List<AdapterWeight> weights = Arrays.asList(
+            AdapterWeight.createFromStringWithFullClassNameForImplementation(classNameGeoTools, weightForGeoTools),
+            AdapterWeight.createFromStringWithFullClassNameForImplementation(classNameGoober, weightForGoober),
+            AdapterWeight.createFromStringWithFullClassNameForImplementation(classNameOrbis, weightForOrbis),
+            AdapterWeight.createFromStringWithFullClassNameForImplementation(classNameProj4J, weightForProj4J),
+            AdapterWeight.createFromStringWithFullClassNameForImplementation(classNameGeoPackageNGA, weightForGeoPackageNGA)
         );
 
-        final CrsTransformationFacadeComposite weightedAverageCompositeFacade = CrsTransformationFacadeCompositeFactory.createCrsTransformationWeightedAverage(weights);
-        createCompositeStrategyForWeightedAverageValueHelper(weightedAverageCompositeFacade);
+        final CrsTransformationAdapterComposite weightedAverageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(weights);
+        createCompositeStrategyForWeightedAverageValueHelper(weightedAverageCompositeAdapter);
     }
 
     private void createCompositeStrategyForWeightedAverageValueHelper(
-        CrsTransformationFacadeComposite weightedAverageCompositeFacade
+            CrsTransformationAdapterComposite weightedAverageCompositeAdapter
     ) {
-        TransformResult weightedAverageResult = weightedAverageCompositeFacade.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        TransformResult weightedAverageResult = weightedAverageCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertNotNull(weightedAverageResult);
         assertTrue(weightedAverageResult.isSuccess());
         assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), weightedAverageResult.getSubResults().size());
@@ -91,10 +91,10 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         // The tested result should of course be very close to the expected result,
         // i.e. the differences (longitude and latitude differences)
         // // should be less than a very small SMALL_DELTA_VALUE value
-        final double diffLatTestedFacade = Math.abs(coordinateWithExpectedWeightedValues.getYLatitude() - weightedAverageCoordinate.getYLatitude());
-        final double diffLonTestedFacade = Math.abs(coordinateWithExpectedWeightedValues.getXLongitude() - weightedAverageCoordinate.getXLongitude());
-        assertThat(diffLatTestedFacade, lessThan(SMALL_DELTA_VALUE));// assertTrue(diffLatTestedFacade < SMALL_DELTA_VALUE);
-        assertThat(diffLonTestedFacade, lessThan(SMALL_DELTA_VALUE));
+        final double diffLatTestedAdapter = Math.abs(coordinateWithExpectedWeightedValues.getYLatitude() - weightedAverageCoordinate.getYLatitude());
+        final double diffLonTestedAdapter = Math.abs(coordinateWithExpectedWeightedValues.getXLongitude() - weightedAverageCoordinate.getXLongitude());
+        assertThat(diffLatTestedAdapter, lessThan(SMALL_DELTA_VALUE));// assertTrue(diffLatTestedAdapter < SMALL_DELTA_VALUE);
+        assertThat(diffLonTestedAdapter, lessThan(SMALL_DELTA_VALUE));
 
         // Now in the rest of the assertions below,
         // the difference between the individual results which were weighted

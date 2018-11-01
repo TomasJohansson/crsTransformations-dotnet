@@ -6,7 +6,7 @@ package com.programmerare.crsTransformations
  * but then you should check failures with 'TransformResult.isSuccess'.
  *
  */
-interface CrsTransformationFacade {
+interface CrsTransformationAdapter {
 
     fun transformToCoordinate(
         inputCoordinate: Coordinate,

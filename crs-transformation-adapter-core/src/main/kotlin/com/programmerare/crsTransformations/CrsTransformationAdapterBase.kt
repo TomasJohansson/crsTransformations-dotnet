@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations
 
-abstract class CrsTransformationFacadeBase : CrsTransformationFacade {
+abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
 
     override final fun transformToCoordinate(
         inputCoordinate: Coordinate,

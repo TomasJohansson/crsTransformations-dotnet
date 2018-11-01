@@ -3,11 +3,11 @@ package com.programmerare.crsTransformations.compositeTransformations
 import com.programmerare.crsTransformations.*
 
 internal abstract class CompositeStrategyBase
-    (private val crsTransformationFacades: List<CrsTransformationFacade>)
+    (private val crsTransformationAdapters: List<CrsTransformationAdapter>)
     : CompositeStrategy {
 
-    override final fun getAllTransformationFacadesInTheOrderTheyShouldBeInvoked(): List<CrsTransformationFacade> {
-        return crsTransformationFacades
+    override final fun getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked(): List<CrsTransformationAdapter> {
+        return crsTransformationAdapters
     }
 
     /**
@@ -16,11 +16,11 @@ internal abstract class CompositeStrategyBase
      * function parameter of the method
      */
     protected fun calculateAggregatedResultBase(
-        allResults: List<TransformResult>,
-        inputCoordinate: Coordinate,
-        crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade,
-        resultsStatistic: ResultsStatistic,
-        medianOrAverage: () -> Coordinate
+            allResults: List<TransformResult>,
+            inputCoordinate: Coordinate,
+            crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter,
+            resultsStatistic: ResultsStatistic,
+            medianOrAverage: () -> Coordinate
     ): TransformResult {
         if(resultsStatistic.isStatisticsAvailable()) {
             //  val coordRes = resultsStatistic.getCoordinateMedian() // THE ONLY DIFFERENCE in the above mentioned two classes
@@ -31,7 +31,7 @@ internal abstract class CompositeStrategyBase
                 outputCoordinate = coordRes,
                 exception = null,
                 isSuccess = true,
-                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
+                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
                 subResults = allResults,
                 _nullableResultsStatistic = resultsStatistic
             )
@@ -42,7 +42,7 @@ internal abstract class CompositeStrategyBase
                 outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
-                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
+                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
                 subResults = allResults,
                 _nullableResultsStatistic = resultsStatistic
             )

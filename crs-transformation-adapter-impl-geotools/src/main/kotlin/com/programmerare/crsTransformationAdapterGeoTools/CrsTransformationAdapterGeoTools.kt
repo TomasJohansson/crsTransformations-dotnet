@@ -1,4 +1,4 @@
-package com.programmerare.crsTransformationFacadeGeoTools
+package com.programmerare.crsTransformationAdapterGeoTools
 
 // build.gradle: implementation("org.geotools:gt-main:20.0")
 import org.locationtech.jts.geom.GeometryFactory // jts-core-...jar
@@ -6,8 +6,8 @@ import org.geotools.geometry.jts.JTSFactoryFinder // gt-main-...jar
 import org.geotools.referencing.CRS
 import org.opengis.referencing.crs.CoordinateReferenceSystem
 import org.opengis.referencing.operation.MathTransform
-import com.programmerare.crsTransformations.CrsTransformationFacade
-import com.programmerare.crsTransformations.CrsTransformationFacadeBaseLeaf
+import com.programmerare.crsTransformations.CrsTransformationAdapter
+import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
 import org.geotools.geometry.jts.JTS
@@ -15,7 +15,7 @@ import org.geotools.geometry.jts.JTS
 
 // http://docs.geotools.org/
 // https://github.com/geotools/geotools/blob/master/pom.xml
-class CrsTransformationFacadeGeoTools : CrsTransformationFacadeBaseLeaf(), CrsTransformationFacade {
+class CrsTransformationAdapterGeoTools : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     private val geometryFactory: GeometryFactory
 

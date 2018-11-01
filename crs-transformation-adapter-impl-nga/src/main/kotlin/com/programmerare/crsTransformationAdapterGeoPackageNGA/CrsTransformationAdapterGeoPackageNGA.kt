@@ -1,7 +1,7 @@
-package com.programmerare.crsTransformationFacadeGeoPackageNGA
+package com.programmerare.crsTransformationAdapterGeoPackageNGA
 
-import com.programmerare.crsTransformations.CrsTransformationFacade
-import com.programmerare.crsTransformations.CrsTransformationFacadeBaseLeaf
+import com.programmerare.crsTransformations.CrsTransformationAdapter
+import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
 import mil.nga.sf.Point
@@ -11,7 +11,7 @@ import mil.nga.sf.proj.ProjectionFactory
 // https://github.com/ngageoint/geopackage-java
 // https://github.com/ngageoint/geopackage-core-java
 // http://ngageoint.github.io/geopackage-java/
-class CrsTransformationFacadeGeoPackageNGA : CrsTransformationFacadeBaseLeaf(), CrsTransformationFacade {
+class CrsTransformationAdapterGeoPackageNGA : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     override protected fun transformHook(
         inputCoordinate: Coordinate,

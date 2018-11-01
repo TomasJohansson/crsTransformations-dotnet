@@ -1,7 +1,7 @@
-package com.programmerare.crsTransformationFacadeOrbisgisCTS
+package com.programmerare.crsTransformationAdapterOrbisgisCTS
 
-import com.programmerare.crsTransformations.CrsTransformationFacade
-import com.programmerare.crsTransformations.CrsTransformationFacadeBaseLeaf
+import com.programmerare.crsTransformations.CrsTransformationAdapter
+import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
 import org.cts.CRSFactory;
@@ -11,7 +11,7 @@ import org.cts.registry.EPSGRegistry;
 
 // " orbisgis/cts "
 // https://github.com/orbisgis/cts
-class CrsTransformationFacadeOrbisgisCTS : CrsTransformationFacadeBaseLeaf(), CrsTransformationFacade {
+class CrsTransformationAdapterOrbisgisCTS : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     override protected fun transformHook(
         inputCoordinate: Coordinate,

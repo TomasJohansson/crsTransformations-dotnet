@@ -3,10 +3,10 @@ package com.programmerare.crsTransformations.compositeTransformations
 import com.programmerare.crsTransformations.*
 
 internal class CompositeStrategyForChainOfResponsibility(
-    private val crsTransformationFacades: List<CrsTransformationFacade>
-) : CompositeStrategyBase(crsTransformationFacades), CompositeStrategy {
+    private val crsTransformationAdapters: List<CrsTransformationAdapter>
+) : CompositeStrategyBase(crsTransformationAdapters), CompositeStrategy {
 
-    override fun shouldContinueIterationOfFacadesToInvoke(lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
+    override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
         return lastResultOrNullIfNoPrevious == null || !lastResultOrNullIfNoPrevious.isSuccess
     }
 
@@ -14,7 +14,7 @@ internal class CompositeStrategyForChainOfResponsibility(
         allResults: List<TransformResult>,
         inputCoordinate: Coordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
-        crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
+        crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): TransformResult {
         if(allResults.size == 1 && allResults.get(0).isSuccess) {
             // there should never be more than one result with the ChainOfResponsibility implementation
@@ -24,7 +24,7 @@ internal class CompositeStrategyForChainOfResponsibility(
                 outputCoordinate = allResults.get(0).outputCoordinate,
                 exception = null,
                 isSuccess = true,
-                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
+                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
                 subResults = allResults
             )
         }
@@ -34,7 +34,7 @@ internal class CompositeStrategyForChainOfResponsibility(
                 outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
-                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
+                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
                 subResults = allResults
             )
         }

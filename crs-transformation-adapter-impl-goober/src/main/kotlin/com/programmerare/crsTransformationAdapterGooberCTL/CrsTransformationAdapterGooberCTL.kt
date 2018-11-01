@@ -1,4 +1,4 @@
-package com.programmerare.crsTransformationFacadeGooberCTL
+package com.programmerare.crsTransformationAdapterGooberCTL
 
 import com.github.goober.coordinatetransformation.Position
 import com.github.goober.coordinatetransformation.positions.RT90Position.RT90Projection
@@ -6,15 +6,15 @@ import com.github.goober.coordinatetransformation.positions.RT90Position
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position.SWEREFProjection
 import com.github.goober.coordinatetransformation.positions.WGS84Position
-import com.programmerare.crsTransformations.CrsTransformationFacade
-import com.programmerare.crsTransformations.CrsTransformationFacadeBaseLeaf
+import com.programmerare.crsTransformations.CrsTransformationAdapter
+import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.Coordinate
 import com.programmerare.crsTransformations.CrsIdentifier
 import java.util.*
 
 // " goober/coordinate-transformation-library "
 // https://github.com/goober/coordinate-transformation-library
-class CrsTransformationFacadeGooberCTL : CrsTransformationFacadeBaseLeaf(), CrsTransformationFacade {
+class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     override protected fun transformHook(
         inputCoordinate: Coordinate,

@@ -3,11 +3,11 @@ package com.programmerare.crsTransformations.compositeTransformations
 import com.programmerare.crsTransformations.*
 
 internal class CompositeStrategyForWeightedAverageValue(
-    private val crsTransformationFacades: List<CrsTransformationFacade>,
-    private val weights: Map<String, Double>
-) : CompositeStrategyBase(crsTransformationFacades), CompositeStrategy {
+        private val crsTransformationAdapters: List<CrsTransformationAdapter>,
+        private val weights: Map<String, Double>
+) : CompositeStrategyBase(crsTransformationAdapters), CompositeStrategy {
 
-    override fun shouldContinueIterationOfFacadesToInvoke(lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
+    override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
         return true
     }
 
@@ -15,7 +15,7 @@ internal class CompositeStrategyForWeightedAverageValue(
         allResults: List<TransformResult>,
         inputCoordinate: Coordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
-        crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade
+        crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): TransformResult {
         var successCount = 0
         var sumLat = 0.0
@@ -23,7 +23,7 @@ internal class CompositeStrategyForWeightedAverageValue(
         var weightSum = 0.0
         for (res: TransformResult in allResults) {
             if(res.isSuccess) {
-                val weight: Double = weights[res.crsTransformationFacadeThatCreatedTheResult.getNameOfImplementation()]!!
+                val weight: Double = weights[res.crsTransformationAdapterThatCreatedTheResult.getNameOfImplementation()]!!
                 // TODO: ugly !! above
                 successCount++
                 val coord = res.outputCoordinate
@@ -41,7 +41,7 @@ internal class CompositeStrategyForWeightedAverageValue(
                 outputCoordinate = coordRes,
                 exception = null,
                 isSuccess = true,
-                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
+                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
                 subResults = allResults
             )
         }
@@ -51,7 +51,7 @@ internal class CompositeStrategyForWeightedAverageValue(
                 outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
-                crsTransformationFacadeThatCreatedTheResult = crsTransformationFacadeThatCreatedTheResult,
+                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
                 subResults = allResults
             )
         }
@@ -60,14 +60,14 @@ internal class CompositeStrategyForWeightedAverageValue(
     companion object {
         @JvmStatic
         fun createCompositeStrategyForWeightedAverageValue(
-            weightedFacades: List<FacadeWeight>
+                weightedAdapters: List<AdapterWeight>
         ): CompositeStrategyForWeightedAverageValue {
-            val facades: List<CrsTransformationFacade> = weightedFacades.map { it -> it.crsTransformationFacade }
+            val adapters: List<CrsTransformationAdapter> = weightedAdapters.map { it -> it.crsTransformationAdapter }
             val map = HashMap<String, Double>()
-            for (fw: FacadeWeight in weightedFacades) {
-                map[fw.crsTransformationFacade.getNameOfImplementation()] = fw.weight
+            for (fw: AdapterWeight in weightedAdapters) {
+                map[fw.crsTransformationAdapter.getNameOfImplementation()] = fw.weight
             }
-            return CompositeStrategyForWeightedAverageValue(facades, map)
+            return CompositeStrategyForWeightedAverageValue(adapters, map)
         }
     }
 }

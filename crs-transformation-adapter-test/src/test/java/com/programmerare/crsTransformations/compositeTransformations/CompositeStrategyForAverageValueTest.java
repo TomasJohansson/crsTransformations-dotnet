@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
-import com.programmerare.crsTransformations.CrsTransformationFacade;
+import com.programmerare.crsTransformations.CrsTransformationAdapter;
 import com.programmerare.crsTransformations.Coordinate;
 import com.programmerare.crsTransformations.CrsIdentifier;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
@@ -20,22 +20,22 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
     private final static double delta = 0.000000001;
 
     @Test
-    void createCRStransformationFacadeAverage() {
+    void createCRSTransformationAdapterAverage() {
         Coordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
 
-        CrsTransformationFacade averageCompositeFacade = CrsTransformationFacadeCompositeFactory.createCrsTransformationAverage(
-            allFacades
+        CrsTransformationAdapter averageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(
+            allAdapters
         );
-        TransformResult averageResult = averageCompositeFacade.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        TransformResult averageResult = averageCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertNotNull(averageResult);
         assertTrue(averageResult.isSuccess());
         assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), averageResult.getSubResults().size());
 
-        Coordinate coordinateReturnedByCompositeFacade = averageResult.getOutputCoordinate();
+        Coordinate coordinateReturnedByCompositeAdapter = averageResult.getOutputCoordinate();
 
-        assertEquals(coordinateWithAverageLatitudeAndLongitude.getXLongitude(), coordinateReturnedByCompositeFacade.getXLongitude(), delta);
-        assertEquals(coordinateWithAverageLatitudeAndLongitude.getYLatitude(), coordinateReturnedByCompositeFacade.getYLatitude(), delta);
-        // assertEquals(coordinateWithAverageLatitudeAndLongitude, coordinateReturnedByCompositeFacade);
+        assertEquals(coordinateWithAverageLatitudeAndLongitude.getXLongitude(), coordinateReturnedByCompositeAdapter.getXLongitude(), delta);
+        assertEquals(coordinateWithAverageLatitudeAndLongitude.getYLatitude(), coordinateReturnedByCompositeAdapter.getYLatitude(), delta);
+        // assertEquals(coordinateWithAverageLatitudeAndLongitude, coordinateReturnedByCompositeAdapter);
         // Expected :Coordinate(xLongitude=674032.3572074446, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
         // Actual   :Coordinate(xLongitude=674032.3572074447, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
     }

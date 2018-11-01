@@ -1,21 +1,21 @@
 package com.programmerare.com.programmerare.testData;
 
-import com.programmerare.crsTransformations.CrsTransformationFacade;
+import com.programmerare.crsTransformations.CrsTransformationAdapter;
 
 import java.util.List;
 
 public class TestResult {
     // TODO: getters instead of public fields below ...
-    public final CrsTransformationFacade facade;
+    public final CrsTransformationAdapter adapter;
     public final long totalNumberOfSecondsForAllTransformations;
     public final List<TestResultItem> testResultItems;
 
     TestResult(
-        CrsTransformationFacade facade,
-        long totalNumberOfSecondsForAllTransformations,
-        List<TestResultItem> testResultItems
+            CrsTransformationAdapter adapter,
+            long totalNumberOfSecondsForAllTransformations,
+            List<TestResultItem> testResultItems
     ) {
-        this.facade = facade;
+        this.adapter = adapter;
         this.totalNumberOfSecondsForAllTransformations = totalNumberOfSecondsForAllTransformations;
         this.testResultItems = testResultItems;
     }

@@ -4,13 +4,13 @@ import java.lang.IllegalStateException
 import java.lang.RuntimeException
 
 class TransformResultImplementation(
-    override val inputCoordinate: Coordinate,
-    outputCoordinate: Coordinate?,
-    override val exception: Throwable?,
-    override val isSuccess: Boolean,
-    override val crsTransformationFacadeThatCreatedTheResult: CrsTransformationFacade,
-    override val subResults: List<TransformResult> = listOf<TransformResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
-    _nullableResultsStatistic: ResultsStatistic? = null
+        override val inputCoordinate: Coordinate,
+        outputCoordinate: Coordinate?,
+        override val exception: Throwable?,
+        override val isSuccess: Boolean,
+        override val crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter,
+        override val subResults: List<TransformResult> = listOf<TransformResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
+        _nullableResultsStatistic: ResultsStatistic? = null
 ): TransformResult {
 
     private val _outputCoordinate: Coordinate? = outputCoordinate
