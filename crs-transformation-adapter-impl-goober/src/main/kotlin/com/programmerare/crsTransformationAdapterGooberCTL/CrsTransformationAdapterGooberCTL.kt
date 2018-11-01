@@ -91,7 +91,7 @@ class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), Cr
         return rt90Projections.containsKey(this)
     }
 
-    companion object {
+    private companion object {
         private val WGS84 = 4326
 
         private val rt90Projections = HashMap<Int, RT90Position.RT90Projection>()
