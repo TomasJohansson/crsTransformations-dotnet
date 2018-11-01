@@ -313,7 +313,7 @@ project(':crs-transformation-constants') {
         publications {
             crstransformationsconstants(MavenPublication) {
                 groupId = 'com.programmerare.crs-transformation'
-                artifactId = 'crs-transformation-adapter-impl-constants'
+                artifactId = 'crs-transformation-constants'
                 version = '0.9'
                 from components.java
                 artifact sourcesJar
