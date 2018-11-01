@@ -45,7 +45,7 @@ subprojects {
     apply plugin: 'kotlin'
     apply plugin: 'org.jetbrains.dokka'
 
-    group = 'com.programmerare.crs-transformations'
+    group = 'com.programmerare.crs-transformation'
     version = '1.0'
 
     sourceCompatibility = 1.8
@@ -96,9 +96,9 @@ subprojects {
 // (with the new version number in the file suffix) and compared with previous result
 // (e.g. comparing the files manually with WinMerge until more automation has been implemented)
 // ---------------------------------------------------------------------------
-project(':crs-transformations-geotools') {
+project(':crs-transformation-adapter-impl-geotools') {
     dependencies {
-        implementation project(':crs-transformations-core')
+        implementation project(':crs-transformation-adapter-core')
 
         // https://mvnrepository.com/artifact/org.geotools/gt-main?repo=boundless
         implementation("org.geotools:gt-main:20.0") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
@@ -120,8 +120,8 @@ project(':crs-transformations-geotools') {
     publishing {
         publications {
             crstransformationsgeotools(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformations'
-                artifactId = 'crs-transformations-geotools'
+                groupId = 'com.programmerare.crs-transformation'
+                artifactId = 'crs-transformation-adapter-impl-geotools'
                 version = '0.9'
                 from components.java
                 artifact sourcesJar
@@ -131,9 +131,9 @@ project(':crs-transformations-geotools') {
     }
 }
 
-project(':crs-transformations-goober') {
+project(':crs-transformation-adapter-impl-goober') {
     dependencies {
-        implementation project(':crs-transformations-core')
+        implementation project(':crs-transformation-adapter-core')
 
         // https://mvnrepository.com/artifact/com.github.goober/coordinate-transformation-library
         implementation("com.github.goober:coordinate-transformation-library:1.1") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
@@ -141,8 +141,8 @@ project(':crs-transformations-goober') {
     publishing {
         publications {
             crstransformationsgoober(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformations'
-                artifactId = 'crs-transformations-goober'
+                groupId = 'com.programmerare.crs-transformation'
+                artifactId = 'crs-transformation-adapter-impl-goober'
                 version = '0.9'
                 from components.java
                 artifact sourcesJar
@@ -152,9 +152,9 @@ project(':crs-transformations-goober') {
     }
 }
 
-project(':crs-transformations-orbisgis') {
+project(':crs-transformation-adapter-impl-orbisgis') {
     dependencies {
-        implementation project(':crs-transformations-core')
+        implementation project(':crs-transformation-adapter-core')
 
         // https://mvnrepository.com/artifact/org.orbisgis/cts
         implementation("org.orbisgis:cts:1.5.1") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
@@ -162,8 +162,8 @@ project(':crs-transformations-orbisgis') {
     publishing {
         publications {
             crstransformationsorbisgis(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformations'
-                artifactId = 'crs-transformations-orbisgis'
+                groupId = 'com.programmerare.crs-transformation'
+                artifactId = 'crs-transformation-adapter-impl-orbisgis'
                 version = '0.9'
                 from components.java
                 artifact sourcesJar
@@ -173,9 +173,9 @@ project(':crs-transformations-orbisgis') {
     }
 }
 
-project(':crs-transformations-proj4j') {
+project(':crs-transformation-adapter-impl-proj4j') {
     dependencies {
-        implementation project(':crs-transformations-core')
+        implementation project(':crs-transformation-adapter-core')
 
         // https://mvnrepository.com/artifact/org.osgeo/proj4j
         implementation("org.osgeo:proj4j:0.1.0") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
@@ -183,8 +183,8 @@ project(':crs-transformations-proj4j') {
     publishing {
         publications {
             crstransformationsproj4j(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformations'
-                artifactId = 'crs-transformations-proj4j'
+                groupId = 'com.programmerare.crs-transformation'
+                artifactId = 'crs-transformation-adapter-impl-proj4j'
                 version = '0.9'
                 from components.java
                 artifact sourcesJar
@@ -194,9 +194,9 @@ project(':crs-transformations-proj4j') {
     }    
 }
 
-project(':crs-transformations-nga') {
+project(':crs-transformation-adapter-impl-nga') {
     dependencies {
-        implementation project(':crs-transformations-core')
+        implementation project(':crs-transformation-adapter-core')
 
         // https://mvnrepository.com/artifact/mil.nga.geopackage/geopackage
         // https://github.com/ngageoint/GeoPackage
@@ -206,8 +206,8 @@ project(':crs-transformations-nga') {
     publishing {
         publications {
             crstransformationsnga(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformations'
-                artifactId = 'crs-transformations-nga'
+                groupId = 'com.programmerare.crs-transformation'
+                artifactId = 'crs-transformation-adapter-impl-nga'
                 version = '0.9'
                 from components.java
                 artifact sourcesJar
@@ -217,9 +217,9 @@ project(':crs-transformations-nga') {
     }
 }
 
-project(':crs-transformations-test') {
+project(':crs-transformation-adapter-test') {
     dependencies {
-        implementation project(':crs-transformations-core'), project(':crs-transformations-orbisgis'), project(':crs-transformations-goober'), project(':crs-transformations-geotools'), project(':crs-transformations-proj4j'), project(':crs-transformations-nga'), project(':crs-transformations-constants')
+        implementation project(':crs-transformation-adapter-core'), project(':crs-transformation-adapter-impl-orbisgis'), project(':crs-transformation-adapter-impl-goober'), project(':crs-transformation-adapter-impl-geotools'), project(':crs-transformation-adapter-impl-proj4j'), project(':crs-transformation-adapter-impl-nga'), project(':crs-transformation-constants')
         // https://mvnrepository.com/artifact/org.geotools/gt-shapefile
 //        implementation("group:org.geotools:gt-shapefile:19.1")
 //        implementation("group:org.geotools:gt-data:19.1")
@@ -242,21 +242,21 @@ project(':crs-transformations-test') {
     }
 }
 
-project(':crs-transformations-code-generation') {
+project(':crs-transformation-code-generation') {
     // command line execution  examples:
     // gradle generateClassesWithEpsgConstants --args="v9_5_4 epsg_version_9_5_4 dbUserName dbUserPassword java"
     // gradle generateClassesWithEpsgConstants --args="v9_5_4 epsg_version_9_5_4 dbUserName dbUserPassword csv"
     task generateClassesWithEpsgConstants(type:JavaExec) {
-        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crs-transformations-code-generation.constantsGenerator.ConstantClassGenerator"
+        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crs-transformation-adapter-impl-code-generation.constantsGenerator.ConstantClassGenerator"
         classpath = sourceSets.main.runtimeClasspath
     }
 
     // command line execution
     // gradle generateCsvTestDataFromEpsgDatabaseAndShapefile
     // or, if something else than the default/hardcoded class name should be used:
-    // gradle generateCsvTestDataFromEpsgDatabaseAndShapefile -PmainClass=com.programmerare.crs-transformations-code-generation.coordinateTestDataGenerator.CoordinateTestDataGenerator
+    // gradle generateCsvTestDataFromEpsgDatabaseAndShapefile -PmainClass=com.programmerare.crs-transformation-adapter-impl-code-generation.coordinateTestDataGenerator.CoordinateTestDataGenerator
     task generateCsvTestDataFromEpsgDatabaseAndShapefile(type:JavaExec) {
-        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crs-transformations-code-generation.coordinateTestDataGenerator.CoordinateTestDataGenerator"
+        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crs-transformation-adapter-impl-code-generation.coordinateTestDataGenerator.CoordinateTestDataGenerator"
         classpath = sourceSets.main.runtimeClasspath
     }
 
@@ -293,12 +293,12 @@ project(':crs-transformations-code-generation') {
     }
 }
 
-project(':crs-transformations-core') {
+project(':crs-transformation-adapter-core') {
     publishing {
         publications {
             crstransformationscore(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformations'
-                artifactId = 'crs-transformations-core'
+                groupId = 'com.programmerare.crs-transformation'
+                artifactId = 'crs-transformation-adapter-core'
                 version = '0.9'
                 from components.java
                 artifact sourcesJar
@@ -308,12 +308,12 @@ project(':crs-transformations-core') {
     }
 }
 
-project(':crs-transformations-constants') {
+project(':crs-transformation-constants') {
     publishing {
         publications {
             crstransformationsconstants(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformations'
-                artifactId = 'crs-transformations-constants'
+                groupId = 'com.programmerare.crs-transformation'
+                artifactId = 'crs-transformation-adapter-impl-constants'
                 version = '0.9'
                 from components.java
                 artifact sourcesJar
