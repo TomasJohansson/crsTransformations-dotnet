@@ -35,5 +35,4 @@ public class MedianValueUtilityTest {
         // the average of the two middle values 6.0 and 6.5
         assertEquals(6.25, medianValue, delta);
     }
-
 }

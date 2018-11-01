@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations.utils
 
-object MedianValueUtility {
+internal object MedianValueUtility {
     @JvmStatic
     fun getMedianValue(values: kotlin.collections.List<Double>): Double {
         val sortedDescending = values.sortedDescending()
