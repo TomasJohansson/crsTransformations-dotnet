@@ -57,4 +57,16 @@ interface CrsTransformationAdapter {
      * for all implementations.
      */
     fun getShortNameOfImplementation(): String
+
+    /**
+     * @return true if the implementation is a composite but false if leaf implementation
+     */
+    fun isComposite(): Boolean
+
+    /**
+     * @return a list of children/leafs when the implementation is a composite
+     * but if the implementations is a leaf then an empty list should be returned.
+     */
+    fun getTransformationAdapterChildren(): List<CrsTransformationAdapter>
+
 }

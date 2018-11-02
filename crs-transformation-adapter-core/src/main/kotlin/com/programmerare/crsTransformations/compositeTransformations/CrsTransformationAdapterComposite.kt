@@ -33,4 +33,12 @@ final class CrsTransformationAdapterComposite internal constructor(protected val
         }
         return compositeStrategy.calculateAggregatedResult(list, inputCoordinate, crsIdentifierForOutputCoordinateSystem, this)
     }
+
+    override final fun getTransformationAdapterChildren(): List<CrsTransformationAdapter> {
+        return compositeStrategy.getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
+    }
+
+    override final fun isComposite(): Boolean {
+        return true
+    }
 }

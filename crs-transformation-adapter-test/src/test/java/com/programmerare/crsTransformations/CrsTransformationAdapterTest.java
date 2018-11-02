@@ -375,4 +375,31 @@ final class CrsTransformationAdapterTest {
             compositeAdapter.getShortNameOfImplementation()
         );
     }
+
+    @Test
+    void isCompositeTest() {
+        CrsTransformationAdapter compositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+        assertTrue(compositeAdapter.isComposite());
+
+        CrsTransformationAdapter goober = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+        assertFalse( (new CrsTransformationAdapterGeoPackageNGA()).isComposite());
+        assertFalse( (new CrsTransformationAdapterGooberCTL()).isComposite());
+        assertFalse( (new CrsTransformationAdapterGeoTools()).isComposite());
+        assertFalse( (new CrsTransformationAdapterOrbisgisCTS()).isComposite());
+        assertFalse( (new CrsTransformationAdapterProj4J()).isComposite());
+    }
+
+    @Test
+    void getTransformationAdapterChildrenTest() {
+        CrsTransformationAdapter compositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+        // 5 below is fragile but will of course be very trivial to fix if ny implementations would be added
+        assertEquals(5, compositeAdapter.getTransformationAdapterChildren().size());
+
+        CrsTransformationAdapter goober = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+        assertEquals(0,(new CrsTransformationAdapterGeoPackageNGA()).getTransformationAdapterChildren().size());
+        assertEquals(0,(new CrsTransformationAdapterGooberCTL()).getTransformationAdapterChildren().size());
+        assertEquals(0,(new CrsTransformationAdapterGeoTools()).getTransformationAdapterChildren().size());
+        assertEquals(0,(new CrsTransformationAdapterOrbisgisCTS()).getTransformationAdapterChildren().size());
+        assertEquals(0,(new CrsTransformationAdapterProj4J()).getTransformationAdapterChildren().size());
+    }
 }

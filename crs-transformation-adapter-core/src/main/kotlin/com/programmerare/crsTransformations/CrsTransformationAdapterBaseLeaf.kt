@@ -24,4 +24,11 @@ abstract class CrsTransformationAdapterBaseLeaf : CrsTransformationAdapterBase()
         }
     }
 
+    override final fun getTransformationAdapterChildren(): List<CrsTransformationAdapter> {
+        return listOf<CrsTransformationAdapter>()
+    }
+
+    override final fun isComposite(): Boolean {
+        return false
+    }
 }
