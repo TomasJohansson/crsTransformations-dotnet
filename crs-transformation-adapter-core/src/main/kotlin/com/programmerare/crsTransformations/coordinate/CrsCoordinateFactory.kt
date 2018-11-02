@@ -15,7 +15,7 @@
  *      CoordinateFactory.createFromXLongitudeYLatitude ...
  *  but with package level function the Java clients will not even see such an "INSTANCE".
  */
-@file:JvmName("CoordinateFactory")
+@file:JvmName("CrsCoordinateFactory")
 package com.programmerare.crsTransformations.coordinate
 // The reason for having Coordinate and this CoordinateFactory
 // in a package of its own is to avoid "polluting" the base
@@ -34,7 +34,7 @@ fun createFromXLongitudeYLatitude(
         xLongitude: Double,
         yLatitude: Double,
         epsgNumber: Int
-): Coordinate {
+): CrsCoordinate {
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
@@ -46,7 +46,7 @@ fun xy(
         xLongitude: Double,
         yLatitude: Double,
         epsgNumber: Int
-): Coordinate {
+): CrsCoordinate {
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
@@ -58,7 +58,7 @@ fun lonLat(
         xLongitude: Double,
         yLatitude: Double,
         epsgNumber: Int
-): Coordinate {
+): CrsCoordinate {
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
@@ -74,7 +74,7 @@ fun createFromYLatitudeXLongitude(
         yLatitude: Double,
         xLongitude: Double,
         epsgNumber: Int
-): Coordinate {
+): CrsCoordinate {
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
@@ -87,7 +87,7 @@ fun yx(
         yLatitude: Double,
         xLongitude: Double,
         epsgNumber: Int
-): Coordinate {
+): CrsCoordinate {
     return createFromYLatitudeXLongitude(
             yLatitude,
             xLongitude,
@@ -100,7 +100,7 @@ fun latLon(
         yLatitude: Double,
         xLongitude: Double,
         epsgNumber: Int
-): Coordinate {
+): CrsCoordinate {
     return createFromYLatitudeXLongitude(
             yLatitude,
             xLongitude,
@@ -115,7 +115,7 @@ fun createFromXLongitudeYLatitude(
         xLongitude: Double,
         yLatitude: Double,
         crsCode: String
-): Coordinate {
+): CrsCoordinate {
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
@@ -128,7 +128,7 @@ fun xy(
         xLongitude: Double,
         yLatitude: Double,
         crsCode: String
-): Coordinate {
+): CrsCoordinate {
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
@@ -140,7 +140,7 @@ fun lonLat(
         xLongitude: Double,
         yLatitude: Double,
         crsCode: String
-): Coordinate {
+): CrsCoordinate {
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
@@ -156,7 +156,7 @@ fun createFromYLatitudeXLongitude(
         yLatitude: Double,
         xLongitude: Double,
         crsCode: String
-): Coordinate {
+): CrsCoordinate {
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
@@ -168,7 +168,7 @@ fun yx(
         yLatitude: Double,
         xLongitude: Double,
         crsCode: String
-): Coordinate {
+): CrsCoordinate {
     return createFromYLatitudeXLongitude(
             yLatitude,
             xLongitude,
@@ -180,7 +180,7 @@ fun latLon(
         yLatitude: Double,
         xLongitude: Double,
         crsCode: String
-): Coordinate {
+): CrsCoordinate {
     return createFromYLatitudeXLongitude(
             yLatitude,
             xLongitude,
@@ -195,7 +195,7 @@ fun createFromYLatitudeXLongitude(
         yLatitude: Double,
         xLongitude: Double,
         crsIdentifier: CrsIdentifier
-): Coordinate {
+): CrsCoordinate {
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
@@ -207,7 +207,7 @@ fun yx(
         yLatitude: Double,
         xLongitude: Double,
         crsIdentifier: CrsIdentifier
-): Coordinate {
+): CrsCoordinate {
     return createFromYLatitudeXLongitude(
             yLatitude,
             xLongitude,
@@ -219,7 +219,7 @@ fun latLon(
         yLatitude: Double,
         xLongitude: Double,
         crsIdentifier: CrsIdentifier
-): Coordinate {
+): CrsCoordinate {
     return createFromYLatitudeXLongitude(
             yLatitude,
             xLongitude,
@@ -234,8 +234,8 @@ fun createFromXLongitudeYLatitude(
         xLongitude: Double,
         yLatitude: Double,
         crsIdentifier: CrsIdentifier
-): Coordinate {
-    return Coordinate(
+): CrsCoordinate {
+    return CrsCoordinate(
             xLongitude,
             yLatitude,
             crsIdentifier
@@ -246,7 +246,7 @@ fun xy(
         xLongitude: Double,
         yLatitude: Double,
         crsIdentifier: CrsIdentifier
-): Coordinate {
+): CrsCoordinate {
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
@@ -258,7 +258,7 @@ fun lonLat(
         xLongitude: Double,
         yLatitude: Double,
         crsIdentifier: CrsIdentifier
-): Coordinate {
+): CrsCoordinate {
     return createFromXLongitudeYLatitude(
             xLongitude,
             yLatitude,
@@ -283,8 +283,8 @@ private val COORDINATE_REFERENCE_SYSTEM_WGS84 = createFromEpsgNumber(4326)
 fun createFromLongitudeLatitude(
         longitude: Double,
         latitude: Double
-): Coordinate {
-    return Coordinate(
+): CrsCoordinate {
+    return CrsCoordinate(
             longitude,
             latitude,
             COORDINATE_REFERENCE_SYSTEM_WGS84
@@ -294,7 +294,7 @@ fun createFromLongitudeLatitude(
 fun lonLat(
         longitude: Double,
         latitude: Double
-): Coordinate {
+): CrsCoordinate {
     return createFromLongitudeLatitude(
             longitude,
             latitude
@@ -309,8 +309,8 @@ fun lonLat(
 fun createFromLatitudeLongitude(
         latitude: Double,
         longitude: Double
-): Coordinate {
-    return Coordinate(
+): CrsCoordinate {
+    return CrsCoordinate(
             longitude,
             latitude,
             COORDINATE_REFERENCE_SYSTEM_WGS84
@@ -320,7 +320,7 @@ fun createFromLatitudeLongitude(
 fun latLon(
         latitude: Double,
         longitude: Double
-): Coordinate {
+): CrsCoordinate {
     return createFromLatitudeLongitude(
             latitude,
             longitude

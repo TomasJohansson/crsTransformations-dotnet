@@ -8,8 +8,8 @@ import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapter
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterComposite;
 import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory;
-import com.programmerare.crsTransformations.coordinate.Coordinate;
-import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -78,19 +78,19 @@ final class CrsTransformationAdapterTest {
 
         // transform back and forth (from sweref1200 to sweref1500 and then back to sweref1200)
         // and then check if you got the same as the original sweref1200
-        Coordinate inputCoordinateSweref1200 = CoordinateFactory.createFromXLongitudeYLatitude(sweref1200_X, sweref1200_Y, epsgNumberForSweref991200);
+        CrsCoordinate inputCoordinateSweref1200 = CrsCoordinateFactory.createFromXLongitudeYLatitude(sweref1200_X, sweref1200_Y, epsgNumberForSweref991200);
         transformBackAndForthAndAssertResult(crsTransformationAdapter, inputCoordinateSweref1200, epsgNumberForSweref991500);
     }
 
     private void transformBackAndForthAndAssertResult(
             CrsTransformationAdapter crsTransformationAdapter,
-            Coordinate inputCoordinateOriginalCRS,
+            CrsCoordinate inputCoordinateOriginalCRS,
             int epsgNumberForTransformTargetCRS
     ) {
         double delta = getDeltaValueForComparisons(inputCoordinateOriginalCRS.getCrsIdentifier());
 
-        Coordinate outputCoordinateForTransformTargetCRS = crsTransformationAdapter.transformToCoordinate(inputCoordinateOriginalCRS, epsgNumberForTransformTargetCRS);
-        Coordinate outputCoordinateOriginalCRS = crsTransformationAdapter.transformToCoordinate(outputCoordinateForTransformTargetCRS, inputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber());
+        CrsCoordinate outputCoordinateForTransformTargetCRS = crsTransformationAdapter.transformToCoordinate(inputCoordinateOriginalCRS, epsgNumberForTransformTargetCRS);
+        CrsCoordinate outputCoordinateOriginalCRS = crsTransformationAdapter.transformToCoordinate(outputCoordinateForTransformTargetCRS, inputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber());
 
         assertEquals(inputCoordinateOriginalCRS.getXLongitude(), outputCoordinateOriginalCRS.getXLongitude(), delta);
         assertEquals(inputCoordinateOriginalCRS.getYLatitude(), outputCoordinateOriginalCRS.getYLatitude(), delta);
@@ -111,8 +111,8 @@ final class CrsTransformationAdapterTest {
         double sweref99_Y_expected = 6580822;
         double sweref99_X_expected = 674032;
 
-        Coordinate inputCoordinate = CoordinateFactory.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
-        Coordinate outputCoordinate = crsTransformationAdapter.transformToCoordinate(inputCoordinate, epsgNumberForSweref99TM);
+        CrsCoordinate inputCoordinate = CrsCoordinateFactory.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+        CrsCoordinate outputCoordinate = crsTransformationAdapter.transformToCoordinate(inputCoordinate, epsgNumberForSweref99TM);
         assertEquals(sweref99_Y_expected, outputCoordinate.getYLatitude(), 0.5);
         assertEquals(sweref99_X_expected, outputCoordinate.getXLongitude(), 0.5);
     }
@@ -124,9 +124,9 @@ final class CrsTransformationAdapterTest {
         double wgs84Lat_expected = 59.330231;
         double wgs84Lon_expected = 18.059196;
 
-        Coordinate inputCoordinate = CoordinateFactory.createFromXLongitudeYLatitude(rt90_X, rt90_Y, epsgNumberForRT90);
+        CrsCoordinate inputCoordinate = CrsCoordinateFactory.createFromXLongitudeYLatitude(rt90_X, rt90_Y, epsgNumberForRT90);
 
-        Coordinate outputCoordinate = crsTransformationAdapter.transformToCoordinate(inputCoordinate, epsgNumberForWgs84);
+        CrsCoordinate outputCoordinate = crsTransformationAdapter.transformToCoordinate(inputCoordinate, epsgNumberForWgs84);
         assertEquals(wgs84Lat_expected, outputCoordinate.getYLatitude(), 0.1);
         assertEquals(wgs84Lon_expected, outputCoordinate.getXLongitude(), 0.1);
     }
@@ -162,10 +162,10 @@ final class CrsTransformationAdapterTest {
             double yLat2, double xLon2,
             String description
     ) {
-        final Coordinate coordinate1 = CoordinateFactory.createFromXLongitudeYLatitude(xLon1, yLat1, epsgNumber1);
-        final Coordinate coordinate2 = CoordinateFactory.createFromXLongitudeYLatitude(xLon2, yLat2, epsgNumber2);
-        final Coordinate outputForCoordinate1 = crsTransformationAdapter.transformToCoordinate(coordinate1, epsgNumber2);
-        final Coordinate outputForCoordinate2 = crsTransformationAdapter.transformToCoordinate(coordinate2, epsgNumber1);
+        final CrsCoordinate coordinate1 = CrsCoordinateFactory.createFromXLongitudeYLatitude(xLon1, yLat1, epsgNumber1);
+        final CrsCoordinate coordinate2 = CrsCoordinateFactory.createFromXLongitudeYLatitude(xLon2, yLat2, epsgNumber2);
+        final CrsCoordinate outputForCoordinate1 = crsTransformationAdapter.transformToCoordinate(coordinate1, epsgNumber2);
+        final CrsCoordinate outputForCoordinate2 = crsTransformationAdapter.transformToCoordinate(coordinate2, epsgNumber1);
 
         double delta = getDeltaValueForComparisons(epsgNumber2);
         assertEquals(coordinate2.getXLongitude(), outputForCoordinate1.getXLongitude(), delta, description);
@@ -224,7 +224,7 @@ final class CrsTransformationAdapterTest {
         String description,
         double wgs84Lat, double wgs84Lon // ignore the rest of columns for this test method
     ) {
-       Coordinate inputCoordinateWGS84 = CoordinateFactory.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+       CrsCoordinate inputCoordinateWGS84 = CrsCoordinateFactory.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
             for (Integer epsgNumber : epsgNumbersForSwedishProjectionsUsingMeterAsUnit) {
                 transformBackAndForthAndAssertResult(crsTransformationAdapter, inputCoordinateWGS84, epsgNumber);
@@ -235,13 +235,13 @@ final class CrsTransformationAdapterTest {
     private void transformWithTwoImplementationsAndCompareTheResults(
             CrsTransformationAdapter crsTransformationAdapter1,
             CrsTransformationAdapter crsTransformationAdapter2,
-            Coordinate inputCoordinate,
+            CrsCoordinate inputCoordinate,
             int epsgNumberForOutputCoordinate
     ) {
         double delta = getDeltaValueForComparisons(epsgNumberForOutputCoordinate);
 
-        Coordinate outputCoordinate1 = crsTransformationAdapter1.transformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinate);
-        Coordinate outputCoordinate2 = crsTransformationAdapter2.transformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinate);
+        CrsCoordinate outputCoordinate1 = crsTransformationAdapter1.transformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinate);
+        CrsCoordinate outputCoordinate2 = crsTransformationAdapter2.transformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinate);
 
         Supplier<String> errorMessageLongitude = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getXLongitude() - outputCoordinate2.getXLongitude());
         Supplier<String> errorMessageLatitude = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getYLatitude() - outputCoordinate2.getYLatitude());
@@ -257,7 +257,7 @@ final class CrsTransformationAdapterTest {
         String description,
         double wgs84Lat, double wgs84Lon // ignore the rest of columns for this test method
     ) {
-        Coordinate inputCoordinateWGS84 = CoordinateFactory.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+        CrsCoordinate inputCoordinateWGS84 = CrsCoordinateFactory.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
         for (int i = 0; i < crsTransformationAdapterImplementations.size()-1; i++) {
             for (int j = i+1; j < crsTransformationAdapterImplementations.size(); j++) {
                 for (Integer epsgNumber : epsgNumbersForSwedishProjectionsUsingMeterAsUnit) {
@@ -272,12 +272,12 @@ final class CrsTransformationAdapterTest {
         }
     }
 
-    @DisplayName("Testing TransformResult with expected failure")
+    @DisplayName("Testing CrsTransformationResult with expected failure")
     @Test
     void transformToResultObjectWithUnvalidInputCoordinate() {
-        Coordinate unvalidInputCoordinate = CoordinateFactory.createFromXLongitudeYLatitude(-999999.0, -999999.0, -9999);
+        CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.createFromXLongitudeYLatitude(-999999.0, -999999.0, -9999);
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
-            TransformResult transformResult = crsTransformationAdapter.transform(unvalidInputCoordinate, -888888);
+            CrsTransformationResult transformResult = crsTransformationAdapter.transform(unvalidInputCoordinate, -888888);
             assertNotNull(transformResult);
             assertFalse(transformResult.isSuccess());
             assertNotNull(transformResult.getException());
@@ -285,34 +285,34 @@ final class CrsTransformationAdapterTest {
         }
     }
 
-    @DisplayName("Testing TransformResult with expected successe")
+    @DisplayName("Testing CrsTransformationResult with expected successe")
     @Test
     void transformToResultObjectWithValidInputCoordinate() {
         double wgs84Lat = 59.330231;
         double wgs84Lon = 18.059196;
-        Coordinate wgs84InputCoordinate = CoordinateFactory.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
+        CrsCoordinate wgs84InputCoordinate = CrsCoordinateFactory.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
 
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
-            TransformResult transformResult = crsTransformationAdapter.transform(wgs84InputCoordinate, epsgNumberForSweref99TM);
+            CrsTransformationResult transformResult = crsTransformationAdapter.transform(wgs84InputCoordinate, epsgNumberForSweref99TM);
             assertNotNull(transformResult);
             assertTrue(transformResult.isSuccess());
             assertNull(transformResult.getException());
-            Coordinate outputCoordinate = transformResult.getOutputCoordinate();
+            CrsCoordinate outputCoordinate = transformResult.getOutputCoordinate();
             assertNotNull(outputCoordinate);
             assertEquals(outputCoordinate.getCrsIdentifier().getEpsgNumber(), epsgNumberForSweref99TM);
             assertResultStatisticsForLeafImplementation(transformResult);
         }
     }
 
-    private void assertResultStatisticsForLeafImplementation(TransformResult transformResult) {
-        final ResultsStatistic resultsStatistic = transformResult.getResultsStatistic();
-        assertNotNull(resultsStatistic);
-        assertTrue(resultsStatistic.isStatisticsAvailable());
-        assertEquals(1, resultsStatistic.getNumberOfResults());
-        assertEquals(0, resultsStatistic.getMaxDiffYLatitude());
-        assertEquals(0, resultsStatistic.getMaxDiffXLongitude());
-        assertEquals(transformResult.getOutputCoordinate(), resultsStatistic.getCoordinateAverage());
-        assertEquals(transformResult.getOutputCoordinate(), resultsStatistic.getCoordinateMedian());
+    private void assertResultStatisticsForLeafImplementation(CrsTransformationResult transformResult) {
+        final CrsTransformationResultStatistic crsTransformationResultStatistic = transformResult.getCrsTransformationResultStatistic();
+        assertNotNull(crsTransformationResultStatistic);
+        assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
+        assertEquals(1, crsTransformationResultStatistic.getNumberOfResults());
+        assertEquals(0, crsTransformationResultStatistic.getMaxDiffYLatitude());
+        assertEquals(0, crsTransformationResultStatistic.getMaxDiffXLongitude());
+        assertEquals(transformResult.getOutputCoordinate(), crsTransformationResultStatistic.getCoordinateAverage());
+        assertEquals(transformResult.getOutputCoordinate(), crsTransformationResultStatistic.getCoordinateMedian());
     }
 
     enum CoordinateReferenceSystemUnit {
@@ -374,5 +374,32 @@ final class CrsTransformationAdapterTest {
             "Composite",
             compositeAdapter.getShortNameOfImplementation()
         );
+    }
+
+    @Test
+    void isCompositeTest() {
+        CrsTransformationAdapter compositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+        assertTrue(compositeAdapter.isComposite());
+
+        CrsTransformationAdapter goober = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+        assertFalse( (new CrsTransformationAdapterGeoPackageNGA()).isComposite());
+        assertFalse( (new CrsTransformationAdapterGooberCTL()).isComposite());
+        assertFalse( (new CrsTransformationAdapterGeoTools()).isComposite());
+        assertFalse( (new CrsTransformationAdapterOrbisgisCTS()).isComposite());
+        assertFalse( (new CrsTransformationAdapterProj4J()).isComposite());
+    }
+
+    @Test
+    void getTransformationAdapterChildrenTest() {
+        CrsTransformationAdapter compositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+        // 5 below is fragile but will of course be very trivial to fix if ny implementations would be added
+        assertEquals(5, compositeAdapter.getTransformationAdapterChildren().size());
+
+        CrsTransformationAdapter goober = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+        assertEquals(0,(new CrsTransformationAdapterGeoPackageNGA()).getTransformationAdapterChildren().size());
+        assertEquals(0,(new CrsTransformationAdapterGooberCTL()).getTransformationAdapterChildren().size());
+        assertEquals(0,(new CrsTransformationAdapterGeoTools()).getTransformationAdapterChildren().size());
+        assertEquals(0,(new CrsTransformationAdapterOrbisgisCTS()).getTransformationAdapterChildren().size());
+        assertEquals(0,(new CrsTransformationAdapterProj4J()).getTransformationAdapterChildren().size());
     }
 }

@@ -1,46 +1,46 @@
 package com.programmerare.crsTransformations
 
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 
 /**
  * The methods 'transformToCoordinate' can throw exception when transformation fails.
  * The methods 'transform' should always return an object,
- * but then you should check failures with 'TransformResult.isSuccess'.
+ * but then you should check failures with 'TransformationResult.isSuccess'.
  *
  */
 interface CrsTransformationAdapter {
 
     fun transformToCoordinate(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             epsgNumberForOutputCoordinateSystem: Int
-    ): Coordinate
+    ): CrsCoordinate
 
     fun transformToCoordinate(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsCodeForOutputCoordinateSystem: String
-    ): Coordinate
+    ): CrsCoordinate
 
     fun transformToCoordinate(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier
-    ): Coordinate
+    ): CrsCoordinate
 
 
     fun transform(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             epsgNumberForOutputCoordinateSystem: Int
-    ): TransformResult
+    ): CrsTransformationResult
 
     fun transform(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsCodeForOutputCoordinateSystem: String
-    ): TransformResult
+    ): CrsTransformationResult
 
     fun transform(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier
-    ): TransformResult
+    ): CrsTransformationResult
 
     /**
      * Should normally simply return the full class name (including the package name),
@@ -57,4 +57,16 @@ interface CrsTransformationAdapter {
      * for all implementations.
      */
     fun getShortNameOfImplementation(): String
+
+    /**
+     * @return true if the implementation is a composite but false if leaf implementation
+     */
+    fun isComposite(): Boolean
+
+    /**
+     * @return a list of children/leafs when the implementation is a composite
+     * but if the implementations is a leaf then an empty list should be returned.
+     */
+    fun getTransformationAdapterChildren(): List<CrsTransformationAdapter>
+
 }

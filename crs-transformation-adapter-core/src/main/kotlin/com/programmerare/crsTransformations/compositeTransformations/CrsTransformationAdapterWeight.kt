@@ -3,7 +3,7 @@ package com.programmerare.crsTransformations.compositeTransformations
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterLeafFactory
 
-class AdapterWeight private constructor(
+class CrsTransformationAdapterWeight private constructor(
         val crsTransformationAdapter: CrsTransformationAdapter,
         val weight: Double
 ) {
@@ -23,17 +23,17 @@ class AdapterWeight private constructor(
         fun createFromStringWithFullClassNameForImplementation(
             crsTransformationAdapterClassName: String,
             weight: Double
-        ): AdapterWeight {
+        ): CrsTransformationAdapterWeight {
             val crsTransformationAdapter = CrsTransformationAdapterLeafFactory.createCrsTransformationAdapter(crsTransformationAdapterClassName)
-            return AdapterWeight(crsTransformationAdapter, weight)
+            return CrsTransformationAdapterWeight(crsTransformationAdapter, weight)
         }
 
         @JvmStatic
         fun createFromInstance(
                 crsTransformationAdapter: CrsTransformationAdapter,
                 weight: Double
-        ): AdapterWeight{
-            return AdapterWeight(crsTransformationAdapter, weight)
+        ): CrsTransformationAdapterWeight{
+            return CrsTransformationAdapterWeight(crsTransformationAdapter, weight)
         }
     }
 }

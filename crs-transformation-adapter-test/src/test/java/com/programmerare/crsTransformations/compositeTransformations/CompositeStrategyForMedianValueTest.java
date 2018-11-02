@@ -1,10 +1,10 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
-import com.programmerare.crsTransformations.coordinate.Coordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.TransformResult;
-import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.CrsTransformationResult;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import com.programmerare.crsTransformations.utils.MedianValueUtility;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -20,29 +20,29 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
 
     @Test
     void transformWithAdapterCompositeMedianTest() {
-        Coordinate expectedCoordinateWithMedianLatitudeAndLongitude = calculateMedianCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
+        CrsCoordinate expectedCoordinateWithMedianLatitudeAndLongitude = calculateMedianCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
 
         CrsTransformationAdapter medianCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(
             allAdapters
         );
-        TransformResult medianResult = medianCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        CrsTransformationResult medianResult = medianCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertNotNull(medianResult);
         assertTrue(medianResult.isSuccess());
-        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), medianResult.getSubResults().size());
+        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), medianResult.getTransformationResultChildren().size());
 
-        Coordinate coordinateReturnedByMedianAdapter = medianResult.getOutputCoordinate();
+        CrsCoordinate coordinateReturnedByMedianAdapter = medianResult.getOutputCoordinate();
 
         // The same transformation as above has been done in the base class for the individual adapters
         assertEquals(expectedCoordinateWithMedianLatitudeAndLongitude.getXLongitude(), coordinateReturnedByMedianAdapter.getXLongitude(), delta);
         assertEquals(expectedCoordinateWithMedianLatitudeAndLongitude.getYLatitude(), coordinateReturnedByMedianAdapter.getYLatitude(), delta);
     }
 
-    private Coordinate calculateMedianCoordinate(List<Coordinate> coordinateResultsForTheDifferentImplementations) {
+    private CrsCoordinate calculateMedianCoordinate(List<CrsCoordinate> coordinateResultsForTheDifferentImplementations) {
         List<Double> longitudesSorted = coordinateResultsForTheDifferentImplementations.stream().map(x -> x.getXLongitude()).collect(Collectors.toList());
         List<Double> latitudesSorted = coordinateResultsForTheDifferentImplementations.stream().map(x -> x.getYLatitude()).collect(Collectors.toList());
         double medianLongitude = MedianValueUtility.getMedianValue(longitudesSorted);
         double medianLatitude = MedianValueUtility.getMedianValue(latitudesSorted);
-        return CoordinateFactory.createFromXLongitudeYLatitude(medianLongitude, medianLatitude, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        return CrsCoordinateFactory.createFromXLongitudeYLatitude(medianLongitude, medianLatitude, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
     }
 
 }

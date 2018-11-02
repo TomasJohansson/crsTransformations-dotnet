@@ -6,10 +6,10 @@ import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdap
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
-import com.programmerare.crsTransformations.coordinate.Coordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 
-import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.util.Arrays;
@@ -24,19 +24,19 @@ abstract class CompositeStrategyTestBase {
     protected static CrsTransformationAdapter adapterGeoPackageNGA;
 
     protected static List<CrsTransformationAdapter> allAdapters;
-    protected static List<Coordinate> allCoordinateResultsForTheDifferentImplementations;
+    protected static List<CrsCoordinate> allCoordinateResultsForTheDifferentImplementations;
 
     protected static double wgs84Lat = 59.330231;
     protected static double wgs84Lon = 18.059196;
     protected static double sweref99_Y_expected = 6580822;
     protected static double sweref99_X_expected = 674032;
 
-    protected static Coordinate wgs84coordinate;
-    protected static Coordinate resultCoordinateGeoTools;
-    protected static Coordinate resultCoordinateGooberCTL;
-    protected static Coordinate resultCoordinateOrbisgisCTS;
-    protected static Coordinate resultCoordinateProj4J;
-    protected static Coordinate resultCoordinateGeoPackageNGA;
+    protected static CrsCoordinate wgs84coordinate;
+    protected static CrsCoordinate resultCoordinateGeoTools;
+    protected static CrsCoordinate resultCoordinateGooberCTL;
+    protected static CrsCoordinate resultCoordinateOrbisgisCTS;
+    protected static CrsCoordinate resultCoordinateProj4J;
+    protected static CrsCoordinate resultCoordinateGeoPackageNGA;
 
     @BeforeAll
     final static void beforeAll() {
@@ -56,7 +56,7 @@ abstract class CompositeStrategyTestBase {
             adapterGeoPackageNGA
         );
 
-        wgs84coordinate = CoordinateFactory.createFromYLatitudeXLongitude(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
+        wgs84coordinate = CrsCoordinateFactory.createFromYLatitudeXLongitude(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
 
         resultCoordinateGeoTools = adapterGeoTools.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         resultCoordinateGooberCTL = adapterGooberCTL.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);

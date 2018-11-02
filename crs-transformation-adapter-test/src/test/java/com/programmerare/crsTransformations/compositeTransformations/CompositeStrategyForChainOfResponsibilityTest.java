@@ -1,9 +1,9 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.coordinate.Coordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
-import com.programmerare.crsTransformations.TransformResult;
+import com.programmerare.crsTransformations.CrsTransformationResult;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -19,16 +19,16 @@ public class CompositeStrategyForChainOfResponsibilityTest extends CompositeStra
             // and therefore geotools should be the implementation providing the result
             super.allAdapters
         );
-        TransformResult chainOfResponsibilityResult = chainOfResponsibilityCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        CrsTransformationResult chainOfResponsibilityResult = chainOfResponsibilityCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertNotNull(chainOfResponsibilityResult);
         assertTrue(chainOfResponsibilityResult.isSuccess());
-        assertEquals(1, chainOfResponsibilityResult.getSubResults().size());
+        assertEquals(1, chainOfResponsibilityResult.getTransformationResultChildren().size());
 
-        Coordinate coordinateReturnedByCompositeAdapterChainOfResponsibility = chainOfResponsibilityResult.getOutputCoordinate();
+        CrsCoordinate coordinateReturnedByCompositeAdapterChainOfResponsibility = chainOfResponsibilityResult.getOutputCoordinate();
         // The above result of the composite should be equal to the result of GeoTools since it
         // is first in the list of parameters to the constructor and it should produce a result for
         // the input coordinates ... so therefore below assert against the direct result of geotools
-        Coordinate coordinateResultWhenUsingGeoTools = adapterGeoTools.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        CrsCoordinate coordinateResultWhenUsingGeoTools = adapterGeoTools.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertEquals(coordinateResultWhenUsingGeoTools, coordinateReturnedByCompositeAdapterChainOfResponsibility);
     }
 }

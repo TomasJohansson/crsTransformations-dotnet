@@ -1,11 +1,11 @@
 package com.programmerare.crsTransformations
 
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 
 abstract class CrsTransformationAdapterBaseLeaf : CrsTransformationAdapterBase(), CrsTransformationAdapter {
 
-    override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
+    override final fun transform(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult {
         try {
             val outputCoordinate = transformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
             if(
@@ -13,15 +13,22 @@ abstract class CrsTransformationAdapterBaseLeaf : CrsTransformationAdapterBase()
                 ||
                 java.lang.Double.isNaN(outputCoordinate.xLongitude)
             ) {
-                return TransformResultImplementation(inputCoordinate, null, exception = null, isSuccess = false, crsTransformationAdapterThatCreatedTheResult = this)
+                return CrsTransformationResultImplementation(inputCoordinate, null, exception = null, isSuccess = false, crsTransformationAdapterResultSource = this)
             }
             else {
-                return TransformResultImplementation(inputCoordinate, outputCoordinate, exception = null, isSuccess = outputCoordinate != null, crsTransformationAdapterThatCreatedTheResult = this)
+                return CrsTransformationResultImplementation(inputCoordinate, outputCoordinate, exception = null, isSuccess = outputCoordinate != null, crsTransformationAdapterResultSource = this)
             }
         }
         catch (e: Throwable) {
-            return TransformResultImplementation(inputCoordinate, null, exception = e, isSuccess = false, crsTransformationAdapterThatCreatedTheResult = this)
+            return CrsTransformationResultImplementation(inputCoordinate, null, exception = e, isSuccess = false, crsTransformationAdapterResultSource = this)
         }
     }
 
+    override final fun getTransformationAdapterChildren(): List<CrsTransformationAdapter> {
+        return listOf<CrsTransformationAdapter>()
+    }
+
+    override final fun isComposite(): Boolean {
+        return false
+    }
 }

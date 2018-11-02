@@ -4,8 +4,8 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
-import com.programmerare.crsTransformations.coordinate.Coordinate;
-import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -16,17 +16,17 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-public class TransformResultImplementationTest {
+public class CrsTransformationResultImplementationTest {
 
-    private TransformResult transformResult;
-    private Coordinate inputCoordinate;
-    private Coordinate outputCoordinate;
+    private CrsTransformationResult transformResult;
+    private CrsCoordinate inputCoordinate;
+    private CrsCoordinate outputCoordinate;
 
     private CrsTransformationAdapter crsTransformationAdapter;
 
     @BeforeEach
     void beforeEach() {
-        inputCoordinate = CoordinateFactory.createFromXLongitudeYLatitude(0.0, 0.0, 1234);
+        inputCoordinate = CrsCoordinateFactory.createFromXLongitudeYLatitude(0.0, 0.0, 1234);
         outputCoordinate = inputCoordinate;
 
         // the mock below is currently not used any more than as a convenient way
@@ -36,13 +36,13 @@ public class TransformResultImplementationTest {
 
     @Test
     void transformNotSucessTest() {
-        transformResult = new TransformResultImplementation(inputCoordinate, null, null, false, crsTransformationAdapter, new ArrayList<TransformResult>(), null);
+        transformResult = new CrsTransformationResultImplementation(inputCoordinate, null, null, false, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null);
         assertFalse(transformResult.isSuccess());
     }
 
     @Test
     void transformSucessTest() {
-        transformResult = new TransformResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationAdapter, new ArrayList<TransformResult>(), null);
+        transformResult = new CrsTransformationResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null);
         assertTrue(transformResult.isSuccess());
     }
 
@@ -50,7 +50,7 @@ public class TransformResultImplementationTest {
     void unvalidTransformResultConstructionWhenSuccessIsFalseButCoordinateProvided() {
         assertThrows(
             IllegalStateException.class,
-            () -> new TransformResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationAdapter, new ArrayList<TransformResult>(), null),
+            () -> new CrsTransformationResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null),
             "unvalid TransformResult object construction should throw exception when success false is combined with output coordinate"
         );
     }
@@ -60,7 +60,7 @@ public class TransformResultImplementationTest {
         outputCoordinate = null;
         assertThrows(
             IllegalStateException.class,
-            () -> new TransformResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationAdapter, new ArrayList<TransformResult>(), null),
+            () -> new CrsTransformationResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null),
             "unvalid TransformResult object construction should throw exception when success true is combined with null as output coordinate"
         );
     }
@@ -68,7 +68,7 @@ public class TransformResultImplementationTest {
     @Test
     void preconditionViolationWhenTryingToAccessCoordinateWhenSuccessFalse() {
         outputCoordinate = null;
-        transformResult = new TransformResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationAdapter, new ArrayList<TransformResult>(), null);
+        transformResult = new CrsTransformationResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null);
         Exception e = assertThrows(
             RuntimeException.class,
             () -> transformResult.getOutputCoordinate(),
@@ -96,38 +96,38 @@ public class TransformResultImplementationTest {
         double lonMean = (lon2 + lon3 ) / 2;
         double lonAverage = (lon1 + lon2 + lon3 + lon4) / 4;
         double expectedLonDiffMax = lon4-lon1;
-        Coordinate c1, c2, c3, c4, c;
-        c1 = CoordinateFactory.latLon(lat1, lon1);
-        c2 = CoordinateFactory.latLon(lat2, lon2);
-        c3 = CoordinateFactory.latLon(lat3, lon3);
-        c4 = CoordinateFactory.latLon(lat4, lon4);
-        Coordinate expectedCoordinateMean = CoordinateFactory.latLon(latMean, lonMean);
-        Coordinate expectedCoordinateAverage = CoordinateFactory.latLon(latAverage, lonAverage);
+        CrsCoordinate c1, c2, c3, c4, c;
+        c1 = CrsCoordinateFactory.latLon(lat1, lon1);
+        c2 = CrsCoordinateFactory.latLon(lat2, lon2);
+        c3 = CrsCoordinateFactory.latLon(lat3, lon3);
+        c4 = CrsCoordinateFactory.latLon(lat4, lon4);
+        CrsCoordinate expectedCoordinateMean = CrsCoordinateFactory.latLon(latMean, lonMean);
+        CrsCoordinate expectedCoordinateAverage = CrsCoordinateFactory.latLon(latAverage, lonAverage);
 
 
-        c = CoordinateFactory.latLon(0, 0); // input, not used here in this test
+        c = CrsCoordinateFactory.latLon(0, 0); // input, not used here in this test
         CrsTransformationAdapter f = new CrsTransformationAdapterGooberCTL(); // not used, might use a mock instead
-        List<TransformResult>  l = Arrays.asList();
+        List<CrsTransformationResult>  l = Arrays.asList();
 
 
-        final List<TransformResult> results = Arrays.asList(
-            new TransformResultImplementation(c, c1, null, true, f, l, null),
-            new TransformResultImplementation(c, c2, null, true, f, l, null),
-            new TransformResultImplementation(c, c3, null, true, f, l, null),
-            new TransformResultImplementation(c, c4, null, true, f, l, null)
+        final List<CrsTransformationResult> results = Arrays.asList(
+            new CrsTransformationResultImplementation(c, c1, null, true, f, l, null),
+            new CrsTransformationResultImplementation(c, c2, null, true, f, l, null),
+            new CrsTransformationResultImplementation(c, c3, null, true, f, l, null),
+            new CrsTransformationResultImplementation(c, c4, null, true, f, l, null)
         );
-        final TransformResult transformResult = new TransformResultImplementation(c, c, null, true, f, results, null);
+        final CrsTransformationResult transformResult = new CrsTransformationResultImplementation(c, c, null, true, f, results, null);
 
-        final ResultsStatistic resultsStatistic = transformResult.getResultsStatistic();
-        assertNotNull(resultsStatistic);
-        assertTrue(resultsStatistic.isStatisticsAvailable());
+        final CrsTransformationResultStatistic crsTransformationResultStatistic = transformResult.getCrsTransformationResultStatistic();
+        assertNotNull(crsTransformationResultStatistic);
+        assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
 
-        assertEquals(4, resultsStatistic.getNumberOfResults());
-        assertEquals(expectedLatDiffMax, resultsStatistic.getMaxDiffYLatitude());
-        assertEquals(expectedLonDiffMax, resultsStatistic.getMaxDiffXLongitude());
+        assertEquals(4, crsTransformationResultStatistic.getNumberOfResults());
+        assertEquals(expectedLatDiffMax, crsTransformationResultStatistic.getMaxDiffYLatitude());
+        assertEquals(expectedLonDiffMax, crsTransformationResultStatistic.getMaxDiffXLongitude());
 
-        final Coordinate coordinateAverage = resultsStatistic.getCoordinateAverage();
-        final Coordinate coordinateMean = resultsStatistic.getCoordinateMedian();
+        final CrsCoordinate coordinateAverage = crsTransformationResultStatistic.getCoordinateAverage();
+        final CrsCoordinate coordinateMean = crsTransformationResultStatistic.getCoordinateMedian();
         assertNotNull(coordinateAverage);
         assertNotNull(coordinateMean);
         assertEquals(expectedCoordinateMean, coordinateMean);

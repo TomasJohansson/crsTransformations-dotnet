@@ -1,43 +1,43 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 
 internal class CompositeStrategyForChainOfResponsibility(
     private val crsTransformationAdapters: List<CrsTransformationAdapter>
 ) : CompositeStrategyBase(crsTransformationAdapters), CompositeStrategy {
 
-    override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
+    override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: CrsTransformationResult?): Boolean {
         return lastResultOrNullIfNoPrevious == null || !lastResultOrNullIfNoPrevious.isSuccess
     }
 
     override fun calculateAggregatedResult(
-            allResults: List<TransformResult>,
-            inputCoordinate: Coordinate,
+            allResults: List<CrsTransformationResult>,
+            inputCoordinate: CrsCoordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
             crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
-    ): TransformResult {
+    ): CrsTransformationResult {
         if(allResults.size == 1 && allResults.get(0).isSuccess) {
             // there should never be more than one result with the ChainOfResponsibility implementation
             // since the calculation is interrupted at the first succeful result
-            return TransformResultImplementation(
+            return CrsTransformationResultImplementation(
                 inputCoordinate,
                 outputCoordinate = allResults.get(0).outputCoordinate,
                 exception = null,
                 isSuccess = true,
-                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
-                subResults = allResults
+                crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
+                transformationResultChildren = allResults
             )
         }
         else {
-            return TransformResultImplementation(
+            return CrsTransformationResultImplementation(
                 inputCoordinate,
                 outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
-                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
-                subResults = allResults
+                crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
+                transformationResultChildren = allResults
             )
         }
     }

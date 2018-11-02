@@ -1,11 +1,11 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
-import com.programmerare.crsTransformations.coordinate.Coordinate;
-import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.TransformResult;
+import com.programmerare.crsTransformations.CrsTransformationResult;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -22,17 +22,17 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
 
     @Test
     void createCRSTransformationAdapterAverage() {
-        Coordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
+        CrsCoordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
 
         CrsTransformationAdapter averageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(
             allAdapters
         );
-        TransformResult averageResult = averageCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        CrsTransformationResult averageResult = averageCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertNotNull(averageResult);
         assertTrue(averageResult.isSuccess());
-        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), averageResult.getSubResults().size());
+        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), averageResult.getTransformationResultChildren().size());
 
-        Coordinate coordinateReturnedByCompositeAdapter = averageResult.getOutputCoordinate();
+        CrsCoordinate coordinateReturnedByCompositeAdapter = averageResult.getOutputCoordinate();
 
         assertEquals(coordinateWithAverageLatitudeAndLongitude.getXLongitude(), coordinateReturnedByCompositeAdapter.getXLongitude(), delta);
         assertEquals(coordinateWithAverageLatitudeAndLongitude.getYLatitude(), coordinateReturnedByCompositeAdapter.getYLatitude(), delta);
@@ -41,15 +41,15 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
         // Actual   :Coordinate(xLongitude=674032.3572074447, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
     }
 
-    private double getAverage(List<Coordinate> resultCoordinates, ToDoubleFunction<? super Coordinate> mapperReturningDoubleValueForAverageCalculation) {
+    private double getAverage(List<CrsCoordinate> resultCoordinates, ToDoubleFunction<? super CrsCoordinate> mapperReturningDoubleValueForAverageCalculation) {
         return resultCoordinates.stream().mapToDouble(mapperReturningDoubleValueForAverageCalculation).average().getAsDouble();
     }
 
-    private Coordinate calculateAverageCoordinate(List<Coordinate> resultCoordinates) {
+    private CrsCoordinate calculateAverageCoordinate(List<CrsCoordinate> resultCoordinates) {
         double averageLat = getAverage(resultCoordinates, c -> c.getYLatitude());
         double averageLon = getAverage(resultCoordinates, c -> c.getXLongitude());
         Set<CrsIdentifier> set = resultCoordinates.stream().map(c -> c.getCrsIdentifier()).collect(Collectors.toSet());
         assertEquals(1, set.size(), "all coordinates should have the same CRS, since thet should all be the result of a transform to the same CRS");
-        return CoordinateFactory.createFromYLatitudeXLongitude(averageLat, averageLon, resultCoordinates.get(0).getCrsIdentifier());
+        return CrsCoordinateFactory.createFromYLatitudeXLongitude(averageLat, averageLon, resultCoordinates.get(0).getCrsIdentifier());
     }
 }

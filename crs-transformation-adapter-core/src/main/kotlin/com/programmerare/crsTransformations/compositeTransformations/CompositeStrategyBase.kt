@@ -1,7 +1,7 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 
 internal abstract class CompositeStrategyBase
     (private val crsTransformationAdapters: List<CrsTransformationAdapter>)
@@ -17,35 +17,35 @@ internal abstract class CompositeStrategyBase
      * function parameter of the method
      */
     protected fun calculateAggregatedResultBase(
-            allResults: List<TransformResult>,
-            inputCoordinate: Coordinate,
+            allResults: List<CrsTransformationResult>,
+            inputCoordinate: CrsCoordinate,
             crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter,
-            resultsStatistic: ResultsStatistic,
-            medianOrAverage: () -> Coordinate
-    ): TransformResult {
-        if(resultsStatistic.isStatisticsAvailable()) {
-            //  val coordRes = resultsStatistic.getCoordinateMedian() // THE ONLY DIFFERENCE in the above mentioned two classes
-            //  val coordRes = resultsStatistic.getCoordinateAverage()  // THE ONLY DIFFERENCE in the above mentioned two classes
-            val coordRes: Coordinate = medianOrAverage() // this line replaced the above two lines in different subclasses when doing refactoring
-            return TransformResultImplementation(
+            crsTransformationResultStatistic: CrsTransformationResultStatistic,
+            medianOrAverage: () -> CrsCoordinate
+    ): CrsTransformationResult {
+        if(crsTransformationResultStatistic.isStatisticsAvailable()) {
+            //  val coordRes = crsTransformationResultStatistic.getCoordinateMedian() // THE ONLY DIFFERENCE in the above mentioned two classes
+            //  val coordRes = crsTransformationResultStatistic.getCoordinateAverage()  // THE ONLY DIFFERENCE in the above mentioned two classes
+            val coordRes: CrsCoordinate = medianOrAverage() // this line replaced the above two lines in different subclasses when doing refactoring
+            return CrsTransformationResultImplementation(
                 inputCoordinate,
                 outputCoordinate = coordRes,
                 exception = null,
                 isSuccess = true,
-                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
-                subResults = allResults,
-                _nullableResultsStatistic = resultsStatistic
+                crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
+                transformationResultChildren = allResults,
+                _nullableCrsTransformationResultStatistic = crsTransformationResultStatistic
             )
         }
         else {
-            return TransformResultImplementation(
+            return CrsTransformationResultImplementation(
                 inputCoordinate,
                 outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
-                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
-                subResults = allResults,
-                _nullableResultsStatistic = resultsStatistic
+                crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
+                transformationResultChildren = allResults,
+                _nullableCrsTransformationResultStatistic = crsTransformationResultStatistic
             )
         }
     }

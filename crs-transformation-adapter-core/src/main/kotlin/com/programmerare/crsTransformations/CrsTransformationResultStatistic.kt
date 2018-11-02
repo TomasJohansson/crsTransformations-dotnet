@@ -1,13 +1,13 @@
 package com.programmerare.crsTransformations
 
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.coordinate.createFromXLongitudeYLatitude
 import com.programmerare.crsTransformations.utils.MedianValueUtility
 import java.lang.RuntimeException
 
-class ResultsStatistic(private val results: List<TransformResult>) {
+class CrsTransformationResultStatistic(private val results: List<CrsTransformationResult>) {
 
-    private val _sucessfulCoordinates: List<Coordinate> by lazy {
+    private val _sucessfulCoordinates: List<CrsCoordinate> by lazy {
         results.filter { it.isSuccess }.map { it.outputCoordinate }
     }
 
@@ -51,13 +51,13 @@ class ResultsStatistic(private val results: List<TransformResult>) {
         return _maxDiffLongitudes
     }
 
-    private val _coordinateMedian: Coordinate by lazy {
+    private val _coordinateMedian: CrsCoordinate by lazy {
         val lon = MedianValueUtility.getMedianValue(_longitudes)
         val lat = MedianValueUtility.getMedianValue(_latitudes)
         val coord = createFromXLongitudeYLatitude(lon, lat, _sucessfulCoordinates.get(0).crsIdentifier)
         coord
     }
-    private val _coordinateAverage: Coordinate by lazy {
+    private val _coordinateAverage: CrsCoordinate by lazy {
         createFromXLongitudeYLatitude(_longitudes.average(), _latitudes.average(), _sucessfulCoordinates.get(0).crsIdentifier)
     }
 
@@ -74,7 +74,7 @@ class ResultsStatistic(private val results: List<TransformResult>) {
     /**
      * Precondition: isStatisticsAvailable must return true
      */
-    fun getCoordinateMedian(): Coordinate {
+    fun getCoordinateMedian(): CrsCoordinate {
         throwExceptionIfPreconditionViolated()
         return _coordinateMedian
     }
@@ -82,7 +82,7 @@ class ResultsStatistic(private val results: List<TransformResult>) {
     /**
      * Precondition: isStatisticsAvailable must return true
      */
-    fun getCoordinateAverage(): Coordinate {
+    fun getCoordinateAverage(): CrsCoordinate {
         throwExceptionIfPreconditionViolated()
         return _coordinateAverage
     }
