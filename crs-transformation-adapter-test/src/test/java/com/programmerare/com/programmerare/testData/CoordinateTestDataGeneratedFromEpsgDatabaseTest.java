@@ -7,7 +7,7 @@ import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapt
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
-import com.programmerare.crsTransformations.coordinate.Coordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
 import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
@@ -370,7 +370,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
         long startTime = System.nanoTime();
         for (EpsgCrsAndAreaCodeWithCoordinates item : coordinatesFromGeneratedCsvFile) {
-            final Coordinate inputCoordinateWGS84 = CrsCoordinateFactory.createFromXLongitudeYLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
+            final CrsCoordinate inputCoordinateWGS84 = CrsCoordinateFactory.createFromXLongitudeYLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
             final CrsTransformationResult resultOfTransformationFromWGS84 = crsTransformationAdapter.transform(inputCoordinateWGS84, item.epsgCrsCode);
             CrsTransformationResult resultOfTransformationBackToWGS84 = null;
             if (resultOfTransformationFromWGS84.isSuccess()) {
@@ -419,9 +419,9 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             if (isSuccess) {
                 isSuccess  = testResultItem.isSuccessfulTransformationBackToWGS84();
                 if (isSuccess) {
-                    Coordinate inputCoordinateWGS84 = testResultItem.getInputCoordinateWGS84();
+                    CrsCoordinate inputCoordinateWGS84 = testResultItem.getInputCoordinateWGS84();
                     //Coordinate wgs84Again = resultOfTransformationBackToWGS84.getOutputCoordinate();
-                    Coordinate wgs84Again = testResultItem.getCoordinateOutputTransformationBackToWGS84();
+                    CrsCoordinate wgs84Again = testResultItem.getCoordinateOutputTransformationBackToWGS84();
                     final double deltaLong = Math.abs(inputCoordinateWGS84.getXLongitude() - wgs84Again.getXLongitude());
                     final double deltaLat = Math.abs(inputCoordinateWGS84.getYLatitude() - wgs84Again.getYLatitude());
                     isSuccess = deltaLong < deltaLimitForSuccess && deltaLat < deltaLimitForSuccess;

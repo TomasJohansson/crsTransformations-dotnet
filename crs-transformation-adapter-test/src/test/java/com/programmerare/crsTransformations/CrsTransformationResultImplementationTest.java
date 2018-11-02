@@ -4,7 +4,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
-import com.programmerare.crsTransformations.coordinate.Coordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -19,8 +19,8 @@ import static org.mockito.Mockito.mock;
 public class CrsTransformationResultImplementationTest {
 
     private CrsTransformationResult transformResult;
-    private Coordinate inputCoordinate;
-    private Coordinate outputCoordinate;
+    private CrsCoordinate inputCoordinate;
+    private CrsCoordinate outputCoordinate;
 
     private CrsTransformationAdapter crsTransformationAdapter;
 
@@ -96,13 +96,13 @@ public class CrsTransformationResultImplementationTest {
         double lonMean = (lon2 + lon3 ) / 2;
         double lonAverage = (lon1 + lon2 + lon3 + lon4) / 4;
         double expectedLonDiffMax = lon4-lon1;
-        Coordinate c1, c2, c3, c4, c;
+        CrsCoordinate c1, c2, c3, c4, c;
         c1 = CrsCoordinateFactory.latLon(lat1, lon1);
         c2 = CrsCoordinateFactory.latLon(lat2, lon2);
         c3 = CrsCoordinateFactory.latLon(lat3, lon3);
         c4 = CrsCoordinateFactory.latLon(lat4, lon4);
-        Coordinate expectedCoordinateMean = CrsCoordinateFactory.latLon(latMean, lonMean);
-        Coordinate expectedCoordinateAverage = CrsCoordinateFactory.latLon(latAverage, lonAverage);
+        CrsCoordinate expectedCoordinateMean = CrsCoordinateFactory.latLon(latMean, lonMean);
+        CrsCoordinate expectedCoordinateAverage = CrsCoordinateFactory.latLon(latAverage, lonAverage);
 
 
         c = CrsCoordinateFactory.latLon(0, 0); // input, not used here in this test
@@ -126,8 +126,8 @@ public class CrsTransformationResultImplementationTest {
         assertEquals(expectedLatDiffMax, crsTransformationResultStatistic.getMaxDiffYLatitude());
         assertEquals(expectedLonDiffMax, crsTransformationResultStatistic.getMaxDiffXLongitude());
 
-        final Coordinate coordinateAverage = crsTransformationResultStatistic.getCoordinateAverage();
-        final Coordinate coordinateMean = crsTransformationResultStatistic.getCoordinateMedian();
+        final CrsCoordinate coordinateAverage = crsTransformationResultStatistic.getCoordinateAverage();
+        final CrsCoordinate coordinateMean = crsTransformationResultStatistic.getCoordinateMedian();
         assertNotNull(coordinateAverage);
         assertNotNull(coordinateMean);
         assertEquals(expectedCoordinateMean, coordinateMean);

@@ -6,7 +6,7 @@ import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapt
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
-import com.programmerare.crsTransformations.coordinate.Coordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.BeforeAll;
@@ -34,7 +34,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
     // Note : The sum of the weights do NOT have to be 100 (e.g. above it is 105)
     // but the percentage of the weight will become calculated by the implementation
 
-    private static Coordinate coordinateWithExpectedWeightedValues;
+    private static CrsCoordinate coordinateWithExpectedWeightedValues;
 
     @BeforeAll
     static void before() {
@@ -83,7 +83,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         assertTrue(weightedAverageResult.isSuccess());
         assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), weightedAverageResult.getTransformationResultChildren().size());
 
-        Coordinate weightedAverageCoordinate = weightedAverageResult.getOutputCoordinate();
+        CrsCoordinate weightedAverageCoordinate = weightedAverageResult.getOutputCoordinate();
 
         assertEquals(coordinateWithExpectedWeightedValues.getYLatitude(), weightedAverageCoordinate.getYLatitude(), SMALL_DELTA_VALUE);
         assertEquals(coordinateWithExpectedWeightedValues.getXLongitude(), weightedAverageCoordinate.getXLongitude(), SMALL_DELTA_VALUE);
@@ -116,8 +116,8 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
     }
 
     private void assertDiffsAreGreaterThanSmallDelta(
-        final Coordinate resultCoordinateIndividualImplementation,
-        final Coordinate coordinateWithExpectedWeightedValues
+        final CrsCoordinate resultCoordinateIndividualImplementation,
+        final CrsCoordinate coordinateWithExpectedWeightedValues
     ) {
         final double diffLatIndividualImplementation = Math.abs(
             coordinateWithExpectedWeightedValues.getYLatitude() - resultCoordinateIndividualImplementation.getYLatitude()
@@ -129,7 +129,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         assertThat(diffLonIndividualImplementation, greaterThan(SMALL_DELTA_VALUE));
     }
 
-    private static Coordinate createWeightedValue() {
+    private static CrsCoordinate createWeightedValue() {
         final double latitudeWeightedSum =
                 weightForGeoTools * resultCoordinateGeoTools.getYLatitude() +
                 weightForGoober * resultCoordinateGooberCTL.getYLatitude() +

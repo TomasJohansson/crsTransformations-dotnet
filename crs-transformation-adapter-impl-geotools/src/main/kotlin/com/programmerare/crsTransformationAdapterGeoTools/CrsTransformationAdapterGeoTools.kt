@@ -4,7 +4,7 @@ package com.programmerare.crsTransformationAdapterGeoTools
 import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.CrsTransformationAdapter
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import org.locationtech.jts.geom.GeometryFactory // jts-core-...jar
 import org.geotools.geometry.jts.JTSFactoryFinder // gt-main-...jar
@@ -25,9 +25,9 @@ class CrsTransformationAdapterGeoTools : CrsTransformationAdapterBaseLeaf(), Crs
     }
 
     override protected fun transformHook(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier
-    ): Coordinate {
+    ): CrsCoordinate {
         val sourceCRS: CoordinateReferenceSystem = CRS.decode(inputCoordinate.crsIdentifier.crsCode, true)
         val targetCRS: CoordinateReferenceSystem = CRS.decode(crsIdentifierForOutputCoordinateSystem.crsCode, true)
         val mathTransform: MathTransform = CRS.findMathTransform(sourceCRS, targetCRS)

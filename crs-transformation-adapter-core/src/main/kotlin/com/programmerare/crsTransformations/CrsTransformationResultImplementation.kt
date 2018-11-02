@@ -1,12 +1,12 @@
 package com.programmerare.crsTransformations
 
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import java.lang.IllegalStateException
 import java.lang.RuntimeException
 
 class CrsTransformationResultImplementation(
-        override val inputCoordinate: Coordinate,
-        outputCoordinate: Coordinate?,
+        override val inputCoordinate: CrsCoordinate,
+        outputCoordinate: CrsCoordinate?,
         override val exception: Throwable?,
         override val isSuccess: Boolean,
         override val crsTransformationAdapterResultSource: CrsTransformationAdapter,
@@ -14,7 +14,7 @@ class CrsTransformationResultImplementation(
         _nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic? = null
 ): CrsTransformationResult {
 
-    private val _outputCoordinate: Coordinate? = outputCoordinate
+    private val _outputCoordinate: CrsCoordinate? = outputCoordinate
 
     init {
         if(isSuccess && outputCoordinate == null) {
@@ -28,7 +28,7 @@ class CrsTransformationResultImplementation(
     /**
      * Precondition: The success property must return true
      */
-    override val outputCoordinate: Coordinate
+    override val outputCoordinate: CrsCoordinate
         get() {
             if(!isSuccess) throw RuntimeException("Pre-condition violated. Coordinate retrieval only allowed if result was success")
             // if the code executes further than above then

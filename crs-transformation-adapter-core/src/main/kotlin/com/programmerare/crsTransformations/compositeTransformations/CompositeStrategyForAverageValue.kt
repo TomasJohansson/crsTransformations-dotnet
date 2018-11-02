@@ -1,7 +1,7 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 
 internal class CompositeStrategyForAverageValue(
@@ -14,7 +14,7 @@ internal class CompositeStrategyForAverageValue(
 
     override fun calculateAggregatedResult(
             allResults: List<CrsTransformationResult>,
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
             crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): CrsTransformationResult {

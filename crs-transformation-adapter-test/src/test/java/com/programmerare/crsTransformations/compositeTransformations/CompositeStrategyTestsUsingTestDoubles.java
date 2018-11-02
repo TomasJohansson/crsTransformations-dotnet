@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations.compositeTransformations;
 
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.*;
-import com.programmerare.crsTransformations.coordinate.Coordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
@@ -22,9 +22,9 @@ import static org.mockito.Mockito.when;
 public class CompositeStrategyTestsUsingTestDoubles {
 
     private static double medianLatitude, averageLatitude, medianLongitude, averageLongitude;
-    private static Coordinate inputCoordinateSweref99;
-    private static Coordinate outputCoordinateWgs84ForImplementation_1, outputCoordinateWgs84ForImplementation_2, outputCoordinateWgs84ForImplementation_3, outputCoordinateWgs84ForImplementation_4, outputCoordinateWgs84ForImplementation_5;
-    private static List<Coordinate> outputCoordinates;
+    private static CrsCoordinate inputCoordinateSweref99;
+    private static CrsCoordinate outputCoordinateWgs84ForImplementation_1, outputCoordinateWgs84ForImplementation_2, outputCoordinateWgs84ForImplementation_3, outputCoordinateWgs84ForImplementation_4, outputCoordinateWgs84ForImplementation_5;
+    private static List<CrsCoordinate> outputCoordinates;
     private static CrsTransformationAdapter leafAdapterImplementation_1, leafAdapterImplementation_2, leafAdapterImplementation_3, leafAdapterImplementation_4, leafAdapterImplementation_5;
     private static List<CrsTransformationAdapter> allLeafAdapters;
 
@@ -134,7 +134,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     @Test
     void averageAdapterTest() {
         CrsTransformationAdapterComposite averageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(allLeafAdapters);
-        Coordinate resultCoordinate = averageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        CrsCoordinate resultCoordinate = averageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(resultCoordinate);
 
         // Coordinate expectedAverageCoordinate = CoordinateFactory.createFromLatitudeLongitude(averageLatitude, averageLongitude);
@@ -151,7 +151,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     @Test
     void medianAdapterTest() {
         CrsTransformationAdapterComposite medianCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(allLeafAdapters);
-        Coordinate resultCoordinate = medianCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        CrsCoordinate resultCoordinate = medianCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(resultCoordinate);
 
         assertEquals(medianLatitude,  resultCoordinate.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
@@ -166,7 +166,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     @Test
     void ChainOfResponsibilityAdapterTest() {
         CrsTransformationAdapterComposite chainOfResponsibilityCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility(allLeafAdapters);
-        Coordinate resultCoordinate = chainOfResponsibilityCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        CrsCoordinate resultCoordinate = chainOfResponsibilityCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(resultCoordinate);
 
         // The assumption below (according to the setup code in the "before" method in this JUnit class)
@@ -195,13 +195,13 @@ public class CompositeStrategyTestsUsingTestDoubles {
         for (int i = 0; i <weights.length ; i++) {
             final double weight = weights[i];
             totWeights += weight;
-            final Coordinate coordinate = outputCoordinates.get(i);
+            final CrsCoordinate coordinate = outputCoordinates.get(i);
             totLats += weight * coordinate.getYLatitude();
             totLons += weight * coordinate.getXLongitude();
         }
         final double weightedLat = totLats / totWeights;
         final double weightedLon = totLons / totWeights;
-        final Coordinate expectedWeightedAverage = CrsCoordinateFactory.createFromLatitudeLongitude(weightedLat, weightedLon);
+        final CrsCoordinate expectedWeightedAverage = CrsCoordinateFactory.createFromLatitudeLongitude(weightedLat, weightedLon);
 
         List<CrsTransformationAdapterWeight> weightedAdapters = Arrays.asList(
             CrsTransformationAdapterWeight.createFromInstance(leafAdapterImplementation_1, weights[0]),
@@ -212,7 +212,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         );
 
         final CrsTransformationAdapterComposite weightedAverageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(weightedAdapters);
-        final Coordinate result = weightedAverageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        final CrsCoordinate result = weightedAverageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(result);
 
         assertEquals(expectedWeightedAverage.getYLatitude(),  result.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
@@ -247,8 +247,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
     }
 
     private void assertEqualCoordinate(
-        Coordinate c1,
-        Coordinate c2
+            CrsCoordinate c1,
+            CrsCoordinate c2
     ) {
         assertEquals(c1.getYLatitude(), c2.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
         assertEquals(c1.getXLongitude(), c2.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);

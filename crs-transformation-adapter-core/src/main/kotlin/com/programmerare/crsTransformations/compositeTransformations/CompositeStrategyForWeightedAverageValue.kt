@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationResult
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import com.programmerare.crsTransformations.CrsTransformationResultImplementation
 import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
@@ -18,7 +18,7 @@ internal class CompositeStrategyForWeightedAverageValue(
 
     override fun calculateAggregatedResult(
             allResults: List<CrsTransformationResult>,
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
             crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): CrsTransformationResult {

@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations
 
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import com.programmerare.crsTransformations.crsIdentifier.createFromCrsCode
 import com.programmerare.crsTransformations.crsIdentifier.createFromEpsgNumber
@@ -8,9 +8,9 @@ import com.programmerare.crsTransformations.crsIdentifier.createFromEpsgNumber
 abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
 
     override final fun transformToCoordinate(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsCodeForOutputCoordinateSystem: String
-    ): Coordinate {
+    ): CrsCoordinate {
         // this Template Method is invoking the below overloaded hook method in subclasses
         return transformHook(
             inputCoordinate,
@@ -19,9 +19,9 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
     }
 
     override final fun transformToCoordinate(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             epsgNumberForOutputCoordinateSystem: Int
-    ): Coordinate {
+    ): CrsCoordinate {
         return transformHook(
             inputCoordinate,
                 createFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
@@ -29,9 +29,9 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
     }
 
     override final fun transformToCoordinate(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier
-    ): Coordinate {
+    ): CrsCoordinate {
         return transformHook(
             inputCoordinate,
             crsIdentifierForOutputCoordinateSystem
@@ -39,13 +39,13 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
     }
 
     abstract protected fun transformHook(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier
-    ): Coordinate
+    ): CrsCoordinate
 
 
     override final fun transform(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             epsgNumberForOutputCoordinateSystem: Int
     ): CrsTransformationResult {
         return transform(
@@ -55,7 +55,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
     }
 
     override final fun transform(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsCodeForOutputCoordinateSystem: String
     ): CrsTransformationResult {
         return transform(

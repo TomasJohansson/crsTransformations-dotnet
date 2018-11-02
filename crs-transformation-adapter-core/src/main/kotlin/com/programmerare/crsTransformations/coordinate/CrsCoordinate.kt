@@ -15,7 +15,7 @@ import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
  * These three methods are alternatives, doing exatly the same with the same parameters:
  *  createFromYLatitudeXLongitude , yx , latLon
  */
-class Coordinate internal constructor(
+class CrsCoordinate internal constructor(
     val xLongitude: Double,
     val yLatitude: Double,
     val crsIdentifier: CrsIdentifier
@@ -29,7 +29,7 @@ class Coordinate internal constructor(
         if (this === other) return true
         if (javaClass != other?.javaClass) return false
 
-        other as Coordinate
+        other as CrsCoordinate
 
         if (xLongitude != other.xLongitude) return false
         if (yLatitude != other.yLatitude) return false

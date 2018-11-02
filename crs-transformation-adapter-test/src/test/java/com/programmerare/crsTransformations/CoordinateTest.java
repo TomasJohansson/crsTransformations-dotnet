@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations;
 
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgCode;
-import com.programmerare.crsTransformations.coordinate.Coordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
@@ -19,7 +19,7 @@ class CoordinateTest {
 
     @Test
     void trivialCreateCoordinateTest() {
-        Coordinate coordinate = CrsCoordinateFactory.createFromXLongitudeYLatitude(xLongitude, yLatitude, epsgNumber);
+        CrsCoordinate coordinate = CrsCoordinateFactory.createFromXLongitudeYLatitude(xLongitude, yLatitude, epsgNumber);
         assertEquals(xLongitude, coordinate.getXLongitude(), deltaTolerance);
         assertEquals(yLatitude, coordinate.getYLatitude(), deltaTolerance);
         assertEquals(epsgNumber, coordinate.getCrsIdentifier().getEpsgNumber());
@@ -27,8 +27,8 @@ class CoordinateTest {
 
     @Test
     void createCoordinatesWithEpsgNumberButWithDifferentOrderOfLatLongParameters() {
-        Coordinate coordinate1 = CrsCoordinateFactory.createFromXLongitudeYLatitude(xLongitude, yLatitude, epsgNumber);
-        Coordinate coordinate2 = CrsCoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, epsgNumber);
+        CrsCoordinate coordinate1 = CrsCoordinateFactory.createFromXLongitudeYLatitude(xLongitude, yLatitude, epsgNumber);
+        CrsCoordinate coordinate2 = CrsCoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, epsgNumber);
         assertEqualCoordinates(coordinate1, coordinate2);
 
         //CoordinateFactory.kallemetoden()
@@ -37,16 +37,16 @@ class CoordinateTest {
     @Test
     void createCoordinatesWithCrsCodeButWithDifferentOrderOfLatLongParameters() {
         String crsCode = "EPSG:3006";
-        Coordinate coordinate1 = CrsCoordinateFactory.createFromXLongitudeYLatitude(xLongitude, yLatitude, crsCode);
-        Coordinate coordinate2 = CrsCoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, crsCode);
+        CrsCoordinate coordinate1 = CrsCoordinateFactory.createFromXLongitudeYLatitude(xLongitude, yLatitude, crsCode);
+        CrsCoordinate coordinate2 = CrsCoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, crsCode);
         assertEqualCoordinates(coordinate1, coordinate2);
     }
 
     @Test
     void createCoordinatesWithCrsIdentifierButWithDifferentOrderOfLatLongParameters() {
         CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(3006);
-        Coordinate coordinate1 = CrsCoordinateFactory.createFromXLongitudeYLatitude(xLongitude, yLatitude, crsIdentifier);
-        Coordinate coordinate2 = CrsCoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, crsIdentifier);
+        CrsCoordinate coordinate1 = CrsCoordinateFactory.createFromXLongitudeYLatitude(xLongitude, yLatitude, crsIdentifier);
+        CrsCoordinate coordinate2 = CrsCoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, crsIdentifier);
         assertEqualCoordinates(coordinate1, coordinate2);
     }
 
@@ -55,20 +55,20 @@ class CoordinateTest {
         double wgs84Lat = 59.330231;
         double wgs84Lon = 18.059196;
 
-        Coordinate wgs84_1 = CrsCoordinateFactory.createFromLongitudeLatitude(wgs84Lon, wgs84Lat);
+        CrsCoordinate wgs84_1 = CrsCoordinateFactory.createFromLongitudeLatitude(wgs84Lon, wgs84Lat);
         assertEquals(EpsgNumber._4326__WGS_84__WORLD, wgs84_1.getCrsIdentifier().getEpsgNumber());
         assertEquals(  EpsgCode._4326__WGS_84__WORLD, wgs84_1.getCrsIdentifier().getCrsCode());
 
-        Coordinate wgs84_2 = CrsCoordinateFactory.createFromLatitudeLongitude(wgs84Lat, wgs84Lon);
+        CrsCoordinate wgs84_2 = CrsCoordinateFactory.createFromLatitudeLongitude(wgs84Lat, wgs84Lon);
         assertEquals(EpsgNumber._4326__WGS_84__WORLD, wgs84_2.getCrsIdentifier().getEpsgNumber());
         assertEquals(  EpsgCode._4326__WGS_84__WORLD, wgs84_2.getCrsIdentifier().getCrsCode());
 
-        Coordinate wgs84_3 = CrsCoordinateFactory.createFromYLatitudeXLongitude(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
+        CrsCoordinate wgs84_3 = CrsCoordinateFactory.createFromYLatitudeXLongitude(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
         assertEqualCoordinates(wgs84_3, wgs84_1);
         assertEqualCoordinates(wgs84_3, wgs84_2);
     }
 
-    private void assertEqualCoordinates(Coordinate coordinate1, Coordinate coordinate2) {
+    private void assertEqualCoordinates(CrsCoordinate coordinate1, CrsCoordinate coordinate2) {
         assertEquals(coordinate1.getXLongitude(), coordinate2.getXLongitude(), deltaTolerance);
         assertEquals(coordinate1.getYLatitude(), coordinate2.getYLatitude(), deltaTolerance);
         assertEquals(coordinate1.getCrsIdentifier(), coordinate2.getCrsIdentifier()); // data class
@@ -93,8 +93,8 @@ class CoordinateTest {
     // the methods equals and hashCode but the class is a "data class" (with an implicit/automatic implementation )
     @Test
     void assertEqualsAndHashCodeWhenSixDecimalsAreUsed() {
-        Coordinate c1 = CrsCoordinateFactory.createFromLatitudeLongitude(59.123456, 18.123456000);
-        Coordinate c2 = CrsCoordinateFactory.createFromLatitudeLongitude(59.123456000, 18.123456);
+        CrsCoordinate c1 = CrsCoordinateFactory.createFromLatitudeLongitude(59.123456, 18.123456000);
+        CrsCoordinate c2 = CrsCoordinateFactory.createFromLatitudeLongitude(59.123456000, 18.123456);
         assertEquals(
             c1, c2
         );
@@ -105,8 +105,8 @@ class CoordinateTest {
 
     @Test
     void assertEqualsAndHashCodeWhenNineDecimalsAreUsed() {
-        Coordinate c1 = CrsCoordinateFactory.createFromLatitudeLongitude(59.123456789, 18.123456789000);
-        Coordinate c2 = CrsCoordinateFactory.createFromLatitudeLongitude(59.123456789000, 18.123456789);
+        CrsCoordinate c1 = CrsCoordinateFactory.createFromLatitudeLongitude(59.123456789, 18.123456789000);
+        CrsCoordinate c2 = CrsCoordinateFactory.createFromLatitudeLongitude(59.123456789000, 18.123456789);
         assertEquals(
             c1, c2
         );
@@ -133,7 +133,7 @@ class CoordinateTest {
 
     @Test
     void assertEqualsWhenUsingEquivalentXYmethods() {
-        Coordinate c1, c2, c3, c4, c5, c6, c7, c8, c9;
+        CrsCoordinate c1, c2, c3, c4, c5, c6, c7, c8, c9;
 
         // the last parameter is an integer for these three:
         c1 = CrsCoordinateFactory.createFromXLongitudeYLatitude(xLongitude, yLatitude, epsgNumber);
@@ -162,7 +162,7 @@ class CoordinateTest {
 
     @Test
     void assertEqualsWhenUsingEquivalentYXmethods() {
-        Coordinate c1, c2, c3, c4, c5, c6, c7, c8, c9;
+        CrsCoordinate c1, c2, c3, c4, c5, c6, c7, c8, c9;
 
         // the last parameter is an integer for these three:
         c1 = CrsCoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, epsgNumber);

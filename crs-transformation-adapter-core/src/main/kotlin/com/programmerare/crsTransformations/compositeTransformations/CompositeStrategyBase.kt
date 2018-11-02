@@ -1,7 +1,7 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 
 internal abstract class CompositeStrategyBase
     (private val crsTransformationAdapters: List<CrsTransformationAdapter>)
@@ -18,15 +18,15 @@ internal abstract class CompositeStrategyBase
      */
     protected fun calculateAggregatedResultBase(
             allResults: List<CrsTransformationResult>,
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter,
             crsTransformationResultStatistic: CrsTransformationResultStatistic,
-            medianOrAverage: () -> Coordinate
+            medianOrAverage: () -> CrsCoordinate
     ): CrsTransformationResult {
         if(crsTransformationResultStatistic.isStatisticsAvailable()) {
             //  val coordRes = crsTransformationResultStatistic.getCoordinateMedian() // THE ONLY DIFFERENCE in the above mentioned two classes
             //  val coordRes = crsTransformationResultStatistic.getCoordinateAverage()  // THE ONLY DIFFERENCE in the above mentioned two classes
-            val coordRes: Coordinate = medianOrAverage() // this line replaced the above two lines in different subclasses when doing refactoring
+            val coordRes: CrsCoordinate = medianOrAverage() // this line replaced the above two lines in different subclasses when doing refactoring
             return CrsTransformationResultImplementation(
                 inputCoordinate,
                 outputCoordinate = coordRes,

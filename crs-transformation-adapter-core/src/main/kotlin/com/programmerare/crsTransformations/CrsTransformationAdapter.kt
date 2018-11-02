@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations
 
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 
 /**
@@ -12,33 +12,33 @@ import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 interface CrsTransformationAdapter {
 
     fun transformToCoordinate(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             epsgNumberForOutputCoordinateSystem: Int
-    ): Coordinate
+    ): CrsCoordinate
 
     fun transformToCoordinate(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsCodeForOutputCoordinateSystem: String
-    ): Coordinate
+    ): CrsCoordinate
 
     fun transformToCoordinate(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier
-    ): Coordinate
+    ): CrsCoordinate
 
 
     fun transform(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             epsgNumberForOutputCoordinateSystem: Int
     ): CrsTransformationResult
 
     fun transform(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsCodeForOutputCoordinateSystem: String
     ): CrsTransformationResult
 
     fun transform(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): CrsTransformationResult
 

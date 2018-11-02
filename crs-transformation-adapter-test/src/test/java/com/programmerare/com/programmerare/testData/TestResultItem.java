@@ -1,6 +1,6 @@
 package com.programmerare.com.programmerare.testData;
 
-import com.programmerare.crsTransformations.coordinate.Coordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 
@@ -37,7 +37,7 @@ public class TestResultItem {
 
     TestResultItem(
             EpsgCrsAndAreaCodeWithCoordinates item,
-            Coordinate inputCoordinateWGS84,
+            CrsCoordinate inputCoordinateWGS84,
             CrsTransformationResult resultOfTransformationFromWGS84,
             CrsTransformationResult resultOfTransformationBackToWGS84
     ) {
@@ -45,18 +45,18 @@ public class TestResultItem {
         wgs84sourceY = "" + item.centroidY;
         epsgCrsCode = "" + item.epsgCrsCode;
         if (resultOfTransformationFromWGS84 != null && resultOfTransformationFromWGS84.isSuccess()) {
-            final Coordinate outputCoordinate = resultOfTransformationFromWGS84.getOutputCoordinate();
+            final CrsCoordinate outputCoordinate = resultOfTransformationFromWGS84.getOutputCoordinate();
             epsgTargetSourceX = "" + outputCoordinate.getXLongitude();
             epsgTargetSourceY = "" + outputCoordinate.getYLatitude();
         }
         if (resultOfTransformationBackToWGS84 != null && resultOfTransformationBackToWGS84.isSuccess()) {
-            final Coordinate outputCoordinate = resultOfTransformationBackToWGS84.getOutputCoordinate();
+            final CrsCoordinate outputCoordinate = resultOfTransformationBackToWGS84.getOutputCoordinate();
             wgs84targetX = "" + outputCoordinate.getXLongitude();
             wgs84targetY = "" + outputCoordinate.getYLatitude();
         }
     }
 
-    public Coordinate getInputCoordinateWGS84() {
+    public CrsCoordinate getInputCoordinateWGS84() {
         double lat = Double.parseDouble(wgs84sourceY);
         double lon = Double.parseDouble(wgs84sourceX);
         return CrsCoordinateFactory.latLon(lat, lon);
@@ -76,7 +76,7 @@ public class TestResultItem {
         return true;
     }
 
-    public Coordinate getCoordinateOutputTransformationBackToWGS84() {
+    public CrsCoordinate getCoordinateOutputTransformationBackToWGS84() {
         if(!isSuccessfulTransformationBackToWGS84()) {
             return null;
         }

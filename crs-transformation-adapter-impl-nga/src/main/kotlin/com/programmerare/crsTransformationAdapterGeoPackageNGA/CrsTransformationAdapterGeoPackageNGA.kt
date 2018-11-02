@@ -2,7 +2,7 @@ package com.programmerare.crsTransformationAdapterGeoPackageNGA
 
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import com.programmerare.crsTransformations.coordinate.createFromXLongitudeYLatitude
 import mil.nga.sf.Point
@@ -15,9 +15,9 @@ import mil.nga.sf.proj.ProjectionFactory
 class CrsTransformationAdapterGeoPackageNGA : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     override protected fun transformHook(
-            inputCoordinate: Coordinate,
+            inputCoordinate: CrsCoordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier
-    ): Coordinate {
+    ): CrsCoordinate {
         val inputEPSGnumber = inputCoordinate.crsIdentifier.epsgNumber.toLong()
         val outputEPSGnumber = crsIdentifierForOutputCoordinateSystem.epsgNumber.toLong()
         val projection = ProjectionFactory.getProjection(inputEPSGnumber) // "EPSG:4326" wgs84

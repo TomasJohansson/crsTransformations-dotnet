@@ -1,7 +1,7 @@
 package com.programmerare.crsTransformationAdapterOrbisgisCTS;
 
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.coordinate.Coordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.CrsTransformationResultStatistic;
 import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
@@ -23,7 +23,7 @@ public class CrsTransformationAdapterOrbisgisCtsTest {
         //crsTransformationAdapterOrbisgis.transform()
         // 2163|1245|USA|-127.23566196580043|47.32837112124157
         // EPSG 2163 xLong -127.23566196580043  yLat  47.32837112124157
-        final Coordinate input = CrsCoordinateFactory.lonLat(-127.23566196580043 , 47.32837112124157);
+        final CrsCoordinate input = CrsCoordinateFactory.lonLat(-127.23566196580043 , 47.32837112124157);
         final CrsTransformationResult transformResult = crsTransformationAdapterOrbisgis.transform(input, EpsgNumber._2163__US_NATIONAL_ATLAS_EQUAL_AREA__USA);
         assertNotNull(transformResult);
         assertFalse(transformResult.isSuccess());
@@ -41,7 +41,7 @@ public class CrsTransformationAdapterOrbisgisCtsTest {
         // and the "differences" in lat/long for the "different" implementations
         // i.e. the "difference" should always be zero since there is only one implementation
         final CrsTransformationAdapterOrbisgisCTS crsTransformationAdapterOrbisgis = new CrsTransformationAdapterOrbisgisCTS();
-        final Coordinate wgs84coordinateInSweden = CrsCoordinateFactory.latLon(59.29,18.03);
+        final CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.latLon(59.29,18.03);
         final CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationAdapterOrbisgis.transform(wgs84coordinateInSweden, com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         assertNotNull(resultWhenTransformingToSwedishCRS);
         assertTrue(resultWhenTransformingToSwedishCRS.isSuccess());

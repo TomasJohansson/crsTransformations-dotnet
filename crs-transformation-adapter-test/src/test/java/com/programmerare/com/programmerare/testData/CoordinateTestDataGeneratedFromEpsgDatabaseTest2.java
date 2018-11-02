@@ -4,7 +4,7 @@ import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumbe
 import com.programmerare.crsTransformations.*;
 import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterComposite;
 import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory;
-import com.programmerare.crsTransformations.coordinate.Coordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
@@ -78,7 +78,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
             System.setErr(nullStream);
 
             final EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = coordinatesFromGeneratedCsvFile.get(i);
-            final Coordinate coordinateInputWgs84 = CrsCoordinateFactory.createFromYLatitudeXLongitude(epsgCrsAndAreaCodeWithCoordinates.centroidY, epsgCrsAndAreaCodeWithCoordinates.centroidX, wgs84);
+            final CrsCoordinate coordinateInputWgs84 = CrsCoordinateFactory.createFromYLatitudeXLongitude(epsgCrsAndAreaCodeWithCoordinates.centroidY, epsgCrsAndAreaCodeWithCoordinates.centroidX, wgs84);
 
             final CrsTransformationResult resultOutputFromWgs4 = crsTransformationComposite.transform(coordinateInputWgs84, epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode);
             if(!resultOutputFromWgs4.isSuccess()) continue;
@@ -121,7 +121,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
     private void verifyFiveImplementations(
         final CrsTransformationAdapterComposite crsTransformationAdapterComposite
     ) {
-        final Coordinate input = CrsCoordinateFactory.latLon(59, 18);
+        final CrsCoordinate input = CrsCoordinateFactory.latLon(59, 18);
         final CrsTransformationResult result = crsTransformationAdapterComposite.transform(input, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         assertNotNull(result);
         assertTrue(result.isSuccess());

@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBase
@@ -9,7 +9,7 @@ import java.lang.RuntimeException
 
 final class CrsTransformationAdapterComposite internal constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationAdapterBase(), CrsTransformationAdapter {
 
-    override final protected fun transformHook(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): Coordinate {
+    override final protected fun transformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsCoordinate {
         val transformResult = transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
         if(transformResult.isSuccess) {
             return transformResult.outputCoordinate
@@ -19,7 +19,7 @@ final class CrsTransformationAdapterComposite internal constructor(protected val
         }
     }
 
-    override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult {
+    override final fun transform(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult {
         val allCrsTransformationAdapters = compositeStrategy.getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
         val list = mutableListOf<CrsTransformationResult>()
         var lastResultOrNullIfNoPrevious: CrsTransformationResult? = null

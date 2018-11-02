@@ -1,10 +1,10 @@
 package com.programmerare.crsTransformations
 
-import com.programmerare.crsTransformations.coordinate.Coordinate
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 
 interface CrsTransformationResult {
-    val inputCoordinate: Coordinate
-    val outputCoordinate: Coordinate
+    val inputCoordinate: CrsCoordinate
+    val outputCoordinate: CrsCoordinate
     val exception: Throwable?
     val isSuccess: Boolean
 
