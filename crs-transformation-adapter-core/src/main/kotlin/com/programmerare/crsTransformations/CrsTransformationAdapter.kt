@@ -43,11 +43,18 @@ interface CrsTransformationAdapter {
     ): TransformResult
 
     /**
-     * Should normally simply return the class name,
+     * Should normally simply return the full class name (including the package name),
      * but when implementing test doubles (e.g. Mockito stub)
      * it should be implemented by defining different names
      * to simulate that different classes (implementations)
      * should have different weights.
      */
-    fun getNameOfImplementation(): String
+    fun getLongNameOfImplementation(): String
+
+    /**
+     * Should return the unique suffix part of the class name
+     * i.e. the class name without the prefix which is common
+     * for all implementations.
+     */
+    fun getShortNameOfImplementation(): String
 }
