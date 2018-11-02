@@ -22,7 +22,7 @@ public class CompositeStrategyForChainOfResponsibilityTest extends CompositeStra
         TransformResult chainOfResponsibilityResult = chainOfResponsibilityCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertNotNull(chainOfResponsibilityResult);
         assertTrue(chainOfResponsibilityResult.isSuccess());
-        assertEquals(1, chainOfResponsibilityResult.getSubResults().size());
+        assertEquals(1, chainOfResponsibilityResult.getTransformResultChildren().size());
 
         Coordinate coordinateReturnedByCompositeAdapterChainOfResponsibility = chainOfResponsibilityResult.getOutputCoordinate();
         // The above result of the composite should be equal to the result of GeoTools since it

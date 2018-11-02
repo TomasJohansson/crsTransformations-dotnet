@@ -232,9 +232,9 @@ public class CompositeStrategyTestsUsingTestDoubles {
         assertNotNull(compositeTransformResult);
         assertTrue(compositeTransformResult.isSuccess());
         //assertEquals(expectedNumberOfLeafResults, allLeafAdapters.size()); // five "leafs" were used to calculate the composite
-        assertEquals(expectedNumberOfLeafResults, compositeTransformResult.getSubResults().size());
+        assertEquals(expectedNumberOfLeafResults, compositeTransformResult.getTransformResultChildren().size());
 
-        List<TransformResult> subResults = compositeTransformResult.getSubResults();
+        List<TransformResult> subResults = compositeTransformResult.getTransformResultChildren();
         for (int i = 0; i < subResults.size(); i++) {
             TransformResult transformResult = subResults.get(i);
             CrsTransformationAdapter leafAdapter = allLeafAdapters.get(i);
@@ -242,7 +242,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             assertNotNull(transformResultForLeaf);
             assertTrue(transformResultForLeaf.isSuccess());
             assertEqualCoordinate(transformResult.getOutputCoordinate(), transformResultForLeaf.getOutputCoordinate());
-            assertEquals(0, transformResultForLeaf.getSubResults().size()); // no subresults for a leaf
+            assertEquals(0, transformResultForLeaf.getTransformResultChildren().size()); // no subresults for a leaf
         }
     }
 

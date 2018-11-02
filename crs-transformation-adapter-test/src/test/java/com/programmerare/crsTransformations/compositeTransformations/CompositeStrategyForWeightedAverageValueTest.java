@@ -81,7 +81,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         TransformResult weightedAverageResult = weightedAverageCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertNotNull(weightedAverageResult);
         assertTrue(weightedAverageResult.isSuccess());
-        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), weightedAverageResult.getSubResults().size());
+        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), weightedAverageResult.getTransformResultChildren().size());
 
         Coordinate weightedAverageCoordinate = weightedAverageResult.getOutputCoordinate();
 

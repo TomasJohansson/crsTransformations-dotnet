@@ -47,7 +47,7 @@ internal class CompositeStrategyForWeightedAverageValue(
                 exception = null,
                 isSuccess = true,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
-                subResults = allResults
+                transformResultChildren = allResults
             )
         }
         else {
@@ -57,7 +57,7 @@ internal class CompositeStrategyForWeightedAverageValue(
                 exception = null,
                 isSuccess = false,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
-                subResults = allResults
+                transformResultChildren = allResults
             )
         }
     }

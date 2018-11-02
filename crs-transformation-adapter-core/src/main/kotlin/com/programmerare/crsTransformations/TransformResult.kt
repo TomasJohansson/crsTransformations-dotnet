@@ -20,7 +20,7 @@ interface TransformResult {
      * implementation, but if it is a composite/aggregating implementation
      * then all the individual "leaf" results are returned in this list.
      */
-    val subResults: List<TransformResult>
+    val transformResultChildren: List<TransformResult>
 
     val resultsStatistic: ResultsStatistic
 

@@ -30,7 +30,7 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
         TransformResult averageResult = averageCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertNotNull(averageResult);
         assertTrue(averageResult.isSuccess());
-        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), averageResult.getSubResults().size());
+        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), averageResult.getTransformResultChildren().size());
 
         Coordinate coordinateReturnedByCompositeAdapter = averageResult.getOutputCoordinate();
 

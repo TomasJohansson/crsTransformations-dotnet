@@ -108,7 +108,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
             System.out.println("epsg " + transformResult.getInputCoordinate().getCrsIdentifier().getCrsCode());
             System.out.println("MaxDiffYLatitude : " + transformResult.getResultsStatistic().getMaxDiffYLatitude());
             System.out.println("MaxDiffYLongitude: " + transformResult.getResultsStatistic().getMaxDiffXLongitude());
-            final List<TransformResult> subResults = transformResult.getSubResults();
+            final List<TransformResult> subResults = transformResult.getTransformResultChildren();
             for (int j = 0; j <subResults.size() ; j++) {
                 final TransformResult subTransformResult = subResults.get(j);
                 if(subTransformResult.isSuccess()) {
@@ -125,7 +125,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
         final TransformResult result = crsTransformationAdapterComposite.transform(input, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals(5, result.getSubResults().size());
+        assertEquals(5, result.getTransformResultChildren().size());
         final ResultsStatistic resultsStatistic = result.getResultsStatistic();
         assertNotNull(resultsStatistic);
         assertTrue(resultsStatistic.isStatisticsAvailable());

@@ -33,7 +33,7 @@ internal abstract class CompositeStrategyBase
                 exception = null,
                 isSuccess = true,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
-                subResults = allResults,
+                transformResultChildren = allResults,
                 _nullableResultsStatistic = resultsStatistic
             )
         }
@@ -44,7 +44,7 @@ internal abstract class CompositeStrategyBase
                 exception = null,
                 isSuccess = false,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
-                subResults = allResults,
+                transformResultChildren = allResults,
                 _nullableResultsStatistic = resultsStatistic
             )
         }

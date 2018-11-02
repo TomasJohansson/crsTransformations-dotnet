@@ -27,7 +27,7 @@ internal class CompositeStrategyForChainOfResponsibility(
                 exception = null,
                 isSuccess = true,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
-                subResults = allResults
+                transformResultChildren = allResults
             )
         }
         else {
@@ -37,7 +37,7 @@ internal class CompositeStrategyForChainOfResponsibility(
                 exception = null,
                 isSuccess = false,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
-                subResults = allResults
+                transformResultChildren = allResults
             )
         }
     }

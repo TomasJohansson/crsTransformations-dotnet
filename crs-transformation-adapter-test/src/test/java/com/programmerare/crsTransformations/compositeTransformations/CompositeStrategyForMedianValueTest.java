@@ -28,7 +28,7 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
         TransformResult medianResult = medianCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertNotNull(medianResult);
         assertTrue(medianResult.isSuccess());
-        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), medianResult.getSubResults().size());
+        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), medianResult.getTransformResultChildren().size());
 
         Coordinate coordinateReturnedByMedianAdapter = medianResult.getOutputCoordinate();
 

@@ -10,7 +10,7 @@ class TransformResultImplementation(
         override val exception: Throwable?,
         override val isSuccess: Boolean,
         override val crsTransformationAdapterResultSource: CrsTransformationAdapter,
-        override val subResults: List<TransformResult> = listOf<TransformResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
+        override val transformResultChildren: List<TransformResult> = listOf<TransformResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
         _nullableResultsStatistic: ResultsStatistic? = null
 ): TransformResult {
 
@@ -41,11 +41,11 @@ class TransformResultImplementation(
         if(_nullableResultsStatistic != null) {
             _nullableResultsStatistic
         }
-        else if(this.subResults.size == 0) {
+        else if(this.transformResultChildren.size == 0) {
             ResultsStatistic(listOf<TransformResult>(this))
         }
         else {
-            ResultsStatistic(subResults)
+            ResultsStatistic(transformResultChildren)
         }
     }
 
