@@ -6,6 +6,8 @@ import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdap
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
+import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterComposite;
+import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory;
 import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
@@ -328,6 +330,49 @@ final class CrsTransformationAdapterTest {
         assertEquals(
             "com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools",
             (new CrsTransformationAdapterGeoTools()).getLongNameOfImplementation()
+        );
+    }
+
+    @Test
+    void getShortNameOfImplementationTest() {
+        // Of course fragile, but the class/package name will not change
+        // often and if/when it does the test will fail but will be trivial to fix.
+        // The purpose of this test is not so much to "test" but rather to
+        // illustrate what the method returns
+        assertEquals(
+            "GeoTools",
+            (new CrsTransformationAdapterGeoTools()).getShortNameOfImplementation()
+        );
+
+        assertEquals(
+            "GooberCTL",
+            (new CrsTransformationAdapterGooberCTL()).getShortNameOfImplementation()
+        );
+
+        assertEquals(
+            "Proj4J",
+            (new CrsTransformationAdapterProj4J()).getShortNameOfImplementation()
+        );
+
+        assertEquals(
+            "OrbisgisCTS",
+            (new CrsTransformationAdapterOrbisgisCTS()).getShortNameOfImplementation()
+        );
+
+        assertEquals(
+            "GeoPackageNGA",
+            (new CrsTransformationAdapterGeoPackageNGA()).getShortNameOfImplementation()
+        );
+
+        // The above tests are for the "Leaf" implementations.
+        // Below is a "Composite" created
+        CrsTransformationAdapterComposite compositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+        // The class name for the above adapter is "CrsTransformationAdapterComposite"
+        // and the prefix part "CrsTransformationAdapter" is removed from the name
+        // to get the short implementation i.e. just "Composite"
+        assertEquals(
+            "Composite",
+            compositeAdapter.getShortNameOfImplementation()
         );
     }
 }

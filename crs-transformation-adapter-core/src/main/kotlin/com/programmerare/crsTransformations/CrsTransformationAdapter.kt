@@ -50,4 +50,11 @@ interface CrsTransformationAdapter {
      * should have different weights.
      */
     fun getLongNameOfImplementation(): String
+
+    /**
+     * Should return the unique suffix part of the class name
+     * i.e. the class name without the prefix which is common
+     * for all implementations.
+     */
+    fun getShortNameOfImplementation(): String
 }

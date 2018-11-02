@@ -76,4 +76,17 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
         return this.javaClass.name
     }
 
+    private val classNamePrefix = "CrsTransformationAdapter"
+    // if the above string would change because of class renamings
+    // then it will be detected by a failing test
+
+    override final fun getShortNameOfImplementation(): String {
+        val className = this.javaClass.simpleName
+        if(className.startsWith(classNamePrefix) && !className.equals(classNamePrefix)) {
+            return className.substring(classNamePrefix.length)
+        }
+        else {
+            return className
+        }
+    }
 }
