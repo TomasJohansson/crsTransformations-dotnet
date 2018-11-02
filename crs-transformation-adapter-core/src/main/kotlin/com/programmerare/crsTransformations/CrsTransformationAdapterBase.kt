@@ -47,7 +47,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
     override final fun transform(
             inputCoordinate: Coordinate,
             epsgNumberForOutputCoordinateSystem: Int
-    ): TransformResult {
+    ): CrsTransformationResult {
         return transform(
             inputCoordinate,
                 createFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
@@ -57,20 +57,12 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
     override final fun transform(
             inputCoordinate: Coordinate,
             crsCodeForOutputCoordinateSystem: String
-    ): TransformResult {
+    ): CrsTransformationResult {
         return transform(
             inputCoordinate,
                 createFromCrsCode(crsCodeForOutputCoordinateSystem)
         )
     }
-
-//    override final fun transform(
-//        inputCoordinate: Coordinate,
-//        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
-//    ): TransformResult {
-//        return transformHook(inputCoordinate, CrsIdentifierFactory.createFromCrsCode(crsCodeForOutputCoordinateSystem))
-//    }
-
 
     override final fun getLongNameOfImplementation(): String {
         return this.javaClass.name

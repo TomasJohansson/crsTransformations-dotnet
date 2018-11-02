@@ -8,36 +8,36 @@ internal class CompositeStrategyForChainOfResponsibility(
     private val crsTransformationAdapters: List<CrsTransformationAdapter>
 ) : CompositeStrategyBase(crsTransformationAdapters), CompositeStrategy {
 
-    override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
+    override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: CrsTransformationResult?): Boolean {
         return lastResultOrNullIfNoPrevious == null || !lastResultOrNullIfNoPrevious.isSuccess
     }
 
     override fun calculateAggregatedResult(
-            allResults: List<TransformResult>,
+            allResults: List<CrsTransformationResult>,
             inputCoordinate: Coordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
             crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
-    ): TransformResult {
+    ): CrsTransformationResult {
         if(allResults.size == 1 && allResults.get(0).isSuccess) {
             // there should never be more than one result with the ChainOfResponsibility implementation
             // since the calculation is interrupted at the first succeful result
-            return TransformResultImplementation(
+            return CrsTransformationResultImplementation(
                 inputCoordinate,
                 outputCoordinate = allResults.get(0).outputCoordinate,
                 exception = null,
                 isSuccess = true,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
-                transformResultChildren = allResults
+                transformationResultChildren = allResults
             )
         }
         else {
-            return TransformResultImplementation(
+            return CrsTransformationResultImplementation(
                 inputCoordinate,
                 outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
-                transformResultChildren = allResults
+                transformationResultChildren = allResults
             )
         }
     }

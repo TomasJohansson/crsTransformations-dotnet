@@ -7,7 +7,7 @@ import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdap
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
 import com.programmerare.crsTransformations.coordinate.Coordinate;
-import com.programmerare.crsTransformations.TransformResult;
+import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -78,10 +78,10 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
     private void createCompositeStrategyForWeightedAverageValueHelper(
             CrsTransformationAdapterComposite weightedAverageCompositeAdapter
     ) {
-        TransformResult weightedAverageResult = weightedAverageCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        CrsTransformationResult weightedAverageResult = weightedAverageCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertNotNull(weightedAverageResult);
         assertTrue(weightedAverageResult.isSuccess());
-        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), weightedAverageResult.getTransformResultChildren().size());
+        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), weightedAverageResult.getTransformationResultChildren().size());
 
         Coordinate weightedAverageCoordinate = weightedAverageResult.getOutputCoordinate();
 

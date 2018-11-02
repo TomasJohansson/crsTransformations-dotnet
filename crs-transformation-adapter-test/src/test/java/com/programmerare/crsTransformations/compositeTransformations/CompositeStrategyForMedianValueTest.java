@@ -3,7 +3,7 @@ package com.programmerare.crsTransformations.compositeTransformations;
 import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.TransformResult;
+import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
 import com.programmerare.crsTransformations.utils.MedianValueUtility;
 import org.junit.jupiter.api.Test;
@@ -25,10 +25,10 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
         CrsTransformationAdapter medianCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(
             allAdapters
         );
-        TransformResult medianResult = medianCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        CrsTransformationResult medianResult = medianCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertNotNull(medianResult);
         assertTrue(medianResult.isSuccess());
-        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), medianResult.getTransformResultChildren().size());
+        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), medianResult.getTransformationResultChildren().size());
 
         Coordinate coordinateReturnedByMedianAdapter = medianResult.getOutputCoordinate();
 

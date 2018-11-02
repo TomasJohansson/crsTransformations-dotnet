@@ -4,15 +4,15 @@ import com.programmerare.crsTransformations.coordinate.Coordinate
 import java.lang.IllegalStateException
 import java.lang.RuntimeException
 
-class TransformResultImplementation(
+class CrsTransformationResultImplementation(
         override val inputCoordinate: Coordinate,
         outputCoordinate: Coordinate?,
         override val exception: Throwable?,
         override val isSuccess: Boolean,
         override val crsTransformationAdapterResultSource: CrsTransformationAdapter,
-        override val transformResultChildren: List<TransformResult> = listOf<TransformResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
+        override val transformationResultChildren: List<CrsTransformationResult> = listOf<CrsTransformationResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
         _nullableResultsStatistic: ResultsStatistic? = null
-): TransformResult {
+): CrsTransformationResult {
 
     private val _outputCoordinate: Coordinate? = outputCoordinate
 
@@ -41,11 +41,11 @@ class TransformResultImplementation(
         if(_nullableResultsStatistic != null) {
             _nullableResultsStatistic
         }
-        else if(this.transformResultChildren.size == 0) {
-            ResultsStatistic(listOf<TransformResult>(this))
+        else if(this.transformationResultChildren.size == 0) {
+            ResultsStatistic(listOf<CrsTransformationResult>(this))
         }
         else {
-            ResultsStatistic(transformResultChildren)
+            ResultsStatistic(transformationResultChildren)
         }
     }
 

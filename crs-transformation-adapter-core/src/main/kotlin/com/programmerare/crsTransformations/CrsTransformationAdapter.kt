@@ -6,7 +6,7 @@ import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 /**
  * The methods 'transformToCoordinate' can throw exception when transformation fails.
  * The methods 'transform' should always return an object,
- * but then you should check failures with 'TransformResult.isSuccess'.
+ * but then you should check failures with 'TransformationResult.isSuccess'.
  *
  */
 interface CrsTransformationAdapter {
@@ -30,17 +30,17 @@ interface CrsTransformationAdapter {
     fun transform(
             inputCoordinate: Coordinate,
             epsgNumberForOutputCoordinateSystem: Int
-    ): TransformResult
+    ): CrsTransformationResult
 
     fun transform(
             inputCoordinate: Coordinate,
             crsCodeForOutputCoordinateSystem: String
-    ): TransformResult
+    ): CrsTransformationResult
 
     fun transform(
             inputCoordinate: Coordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier
-    ): TransformResult
+    ): CrsTransformationResult
 
     /**
      * Should normally simply return the full class name (including the package name),

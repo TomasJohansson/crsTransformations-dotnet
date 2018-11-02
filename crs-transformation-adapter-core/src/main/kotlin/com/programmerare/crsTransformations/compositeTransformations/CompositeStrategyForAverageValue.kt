@@ -8,16 +8,16 @@ internal class CompositeStrategyForAverageValue(
     private val crsTransformationAdapters: List<CrsTransformationAdapter>
 ) : CompositeStrategyBase(crsTransformationAdapters), CompositeStrategy {
 
-    override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: TransformResult?): Boolean {
+    override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: CrsTransformationResult?): Boolean {
         return true
     }
 
     override fun calculateAggregatedResult(
-            allResults: List<TransformResult>,
+            allResults: List<CrsTransformationResult>,
             inputCoordinate: Coordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
             crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
-    ): TransformResult {
+    ): CrsTransformationResult {
         val resultsStatistic = ResultsStatistic(allResults)
         return this.calculateAggregatedResultBase(
             allResults,

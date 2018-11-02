@@ -9,7 +9,7 @@ import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAd
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
 import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
-import com.programmerare.crsTransformations.TransformResult;
+import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
 import org.junit.jupiter.api.*;
 
@@ -371,8 +371,8 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         long startTime = System.nanoTime();
         for (EpsgCrsAndAreaCodeWithCoordinates item : coordinatesFromGeneratedCsvFile) {
             final Coordinate inputCoordinateWGS84 = CoordinateFactory.createFromXLongitudeYLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
-            final TransformResult resultOfTransformationFromWGS84 = crsTransformationAdapter.transform(inputCoordinateWGS84, item.epsgCrsCode);
-            TransformResult resultOfTransformationBackToWGS84 = null;
+            final CrsTransformationResult resultOfTransformationFromWGS84 = crsTransformationAdapter.transform(inputCoordinateWGS84, item.epsgCrsCode);
+            CrsTransformationResult resultOfTransformationBackToWGS84 = null;
             if (resultOfTransformationFromWGS84.isSuccess()) {
                 resultOfTransformationBackToWGS84 = crsTransformationAdapter.transform(resultOfTransformationFromWGS84.getOutputCoordinate(), EpsgCode.WORLD__WGS_84__4326);
             }

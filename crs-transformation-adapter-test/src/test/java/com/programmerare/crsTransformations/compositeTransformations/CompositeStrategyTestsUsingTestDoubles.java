@@ -67,49 +67,49 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
         inputCoordinateSweref99 = CoordinateFactory.createFromYLatitudeXLongitude(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
 
-        TransformResult leafResult1 = new TransformResultImplementation(
+        CrsTransformationResult leafResult1 = new CrsTransformationResultImplementation(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_1,
             null,
             true,
             leafAdapterImplementation_1,
-            new ArrayList<TransformResult>(),
+            new ArrayList<CrsTransformationResult>(),
             null
         );
-        TransformResult leafResult2 = new TransformResultImplementation(
+        CrsTransformationResult leafResult2 = new CrsTransformationResultImplementation(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_2,
             null,
             true,
             leafAdapterImplementation_2,
-            new ArrayList<TransformResult>(),
+            new ArrayList<CrsTransformationResult>(),
             null
         );
-        TransformResult leafResult3 = new TransformResultImplementation(
+        CrsTransformationResult leafResult3 = new CrsTransformationResultImplementation(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_3,
             null,
             true,
             leafAdapterImplementation_3,
-            new ArrayList<TransformResult>(),
+            new ArrayList<CrsTransformationResult>(),
             null
         );
-        TransformResult leafResult4 = new TransformResultImplementation(
+        CrsTransformationResult leafResult4 = new CrsTransformationResultImplementation(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_4,
             null,
             true,
             leafAdapterImplementation_4,
-            new ArrayList<TransformResult>(),
+            new ArrayList<CrsTransformationResult>(),
             null
         );
-        TransformResult r5 = new TransformResultImplementation(
+        CrsTransformationResult r5 = new CrsTransformationResultImplementation(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_5,
             null,
             true,
             leafAdapterImplementation_5,
-            new ArrayList<TransformResult>(),
+            new ArrayList<CrsTransformationResult>(),
             null
         );
         crsIdentifierWGS84 = CrsIdentifierFactory.createFromEpsgNumber(EpsgNumber._4326__WGS_84__WORLD);
@@ -228,21 +228,21 @@ public class CompositeStrategyTestsUsingTestDoubles {
             CrsTransformationAdapterComposite compositeAdapter,
             int expectedNumberOfLeafResults
     ) {
-        TransformResult compositeTransformResult = compositeAdapter.transform(inputCoordinateSweref99, crsIdentifierWGS84);
+        CrsTransformationResult compositeTransformResult = compositeAdapter.transform(inputCoordinateSweref99, crsIdentifierWGS84);
         assertNotNull(compositeTransformResult);
         assertTrue(compositeTransformResult.isSuccess());
         //assertEquals(expectedNumberOfLeafResults, allLeafAdapters.size()); // five "leafs" were used to calculate the composite
-        assertEquals(expectedNumberOfLeafResults, compositeTransformResult.getTransformResultChildren().size());
+        assertEquals(expectedNumberOfLeafResults, compositeTransformResult.getTransformationResultChildren().size());
 
-        List<TransformResult> subResults = compositeTransformResult.getTransformResultChildren();
+        List<CrsTransformationResult> subResults = compositeTransformResult.getTransformationResultChildren();
         for (int i = 0; i < subResults.size(); i++) {
-            TransformResult transformResult = subResults.get(i);
+            CrsTransformationResult transformResult = subResults.get(i);
             CrsTransformationAdapter leafAdapter = allLeafAdapters.get(i);
-            TransformResult transformResultForLeaf = leafAdapter.transform(inputCoordinateSweref99, crsIdentifierWGS84);
+            CrsTransformationResult transformResultForLeaf = leafAdapter.transform(inputCoordinateSweref99, crsIdentifierWGS84);
             assertNotNull(transformResultForLeaf);
             assertTrue(transformResultForLeaf.isSuccess());
             assertEqualCoordinate(transformResult.getOutputCoordinate(), transformResultForLeaf.getOutputCoordinate());
-            assertEquals(0, transformResultForLeaf.getTransformResultChildren().size()); // no subresults for a leaf
+            assertEquals(0, transformResultForLeaf.getTransformationResultChildren().size()); // no subresults for a leaf
         }
     }
 

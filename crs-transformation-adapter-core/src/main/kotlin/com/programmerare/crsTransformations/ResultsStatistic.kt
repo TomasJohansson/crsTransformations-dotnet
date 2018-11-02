@@ -5,7 +5,7 @@ import com.programmerare.crsTransformations.coordinate.createFromXLongitudeYLati
 import com.programmerare.crsTransformations.utils.MedianValueUtility
 import java.lang.RuntimeException
 
-class ResultsStatistic(private val results: List<TransformResult>) {
+class ResultsStatistic(private val results: List<CrsTransformationResult>) {
 
     private val _sucessfulCoordinates: List<Coordinate> by lazy {
         results.filter { it.isSuccess }.map { it.outputCoordinate }

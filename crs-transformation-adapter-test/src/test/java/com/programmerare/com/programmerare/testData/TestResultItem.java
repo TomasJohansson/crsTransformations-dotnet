@@ -1,7 +1,7 @@
 package com.programmerare.com.programmerare.testData;
 
 import com.programmerare.crsTransformations.coordinate.Coordinate;
-import com.programmerare.crsTransformations.TransformResult;
+import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
 
 public class TestResultItem {
@@ -36,10 +36,10 @@ public class TestResultItem {
     }
 
     TestResultItem(
-        EpsgCrsAndAreaCodeWithCoordinates item,
-        Coordinate inputCoordinateWGS84,
-        TransformResult resultOfTransformationFromWGS84,
-        TransformResult resultOfTransformationBackToWGS84
+            EpsgCrsAndAreaCodeWithCoordinates item,
+            Coordinate inputCoordinateWGS84,
+            CrsTransformationResult resultOfTransformationFromWGS84,
+            CrsTransformationResult resultOfTransformationBackToWGS84
     ) {
         wgs84sourceX = "" + item.centroidX;
         wgs84sourceY = "" + item.centroidY;

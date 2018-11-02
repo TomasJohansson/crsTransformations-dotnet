@@ -5,7 +5,7 @@ import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 
 abstract class CrsTransformationAdapterBaseLeaf : CrsTransformationAdapterBase(), CrsTransformationAdapter {
 
-    override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
+    override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult {
         try {
             val outputCoordinate = transformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
             if(
@@ -13,14 +13,14 @@ abstract class CrsTransformationAdapterBaseLeaf : CrsTransformationAdapterBase()
                 ||
                 java.lang.Double.isNaN(outputCoordinate.xLongitude)
             ) {
-                return TransformResultImplementation(inputCoordinate, null, exception = null, isSuccess = false, crsTransformationAdapterResultSource = this)
+                return CrsTransformationResultImplementation(inputCoordinate, null, exception = null, isSuccess = false, crsTransformationAdapterResultSource = this)
             }
             else {
-                return TransformResultImplementation(inputCoordinate, outputCoordinate, exception = null, isSuccess = outputCoordinate != null, crsTransformationAdapterResultSource = this)
+                return CrsTransformationResultImplementation(inputCoordinate, outputCoordinate, exception = null, isSuccess = outputCoordinate != null, crsTransformationAdapterResultSource = this)
             }
         }
         catch (e: Throwable) {
-            return TransformResultImplementation(inputCoordinate, null, exception = e, isSuccess = false, crsTransformationAdapterResultSource = this)
+            return CrsTransformationResultImplementation(inputCoordinate, null, exception = e, isSuccess = false, crsTransformationAdapterResultSource = this)
         }
     }
 

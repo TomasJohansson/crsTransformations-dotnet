@@ -4,7 +4,7 @@ import com.programmerare.crsTransformations.coordinate.Coordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBase
-import com.programmerare.crsTransformations.TransformResult
+import com.programmerare.crsTransformations.CrsTransformationResult
 import java.lang.RuntimeException
 
 final class CrsTransformationAdapterComposite internal constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationAdapterBase(), CrsTransformationAdapter {
@@ -19,10 +19,10 @@ final class CrsTransformationAdapterComposite internal constructor(protected val
         }
     }
 
-    override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): TransformResult {
+    override final fun transform(inputCoordinate: Coordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult {
         val allCrsTransformationAdapters = compositeStrategy.getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
-        val list = mutableListOf<TransformResult>()
-        var lastResultOrNullIfNoPrevious: TransformResult? = null
+        val list = mutableListOf<CrsTransformationResult>()
+        var lastResultOrNullIfNoPrevious: CrsTransformationResult? = null
         for (crsTransformationAdapter: CrsTransformationAdapter in allCrsTransformationAdapters) {
             if(!compositeStrategy.shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious)) {
                 break

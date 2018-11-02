@@ -44,7 +44,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
         final CrsTransformationAdapterComposite crsTransformationComposite = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian();
         verifyFiveImplementations(crsTransformationComposite); // to make sure that the above factory really creates an object which will use five implementations
 
-        final List<TransformResult> transformResultsWithLargeDifferences = new ArrayList<TransformResult>();
+        final List<CrsTransformationResult> transformResultsWithLargeDifferences = new ArrayList<CrsTransformationResult>();
 
         final CrsIdentifier wgs84 = CrsIdentifierFactory.createFromEpsgNumber(EpsgNumber.WORLD__WGS_84__4326);
 
@@ -80,10 +80,10 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
             final EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = coordinatesFromGeneratedCsvFile.get(i);
             final Coordinate coordinateInputWgs84 = CoordinateFactory.createFromYLatitudeXLongitude(epsgCrsAndAreaCodeWithCoordinates.centroidY, epsgCrsAndAreaCodeWithCoordinates.centroidX, wgs84);
 
-            final TransformResult resultOutputFromWgs4 = crsTransformationComposite.transform(coordinateInputWgs84, epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode);
+            final CrsTransformationResult resultOutputFromWgs4 = crsTransformationComposite.transform(coordinateInputWgs84, epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode);
             if(!resultOutputFromWgs4.isSuccess()) continue;
 
-            final TransformResult resultWhenTransformedBackToWgs84 = crsTransformationComposite.transform(resultOutputFromWgs4.getOutputCoordinate(), wgs84);
+            final CrsTransformationResult resultWhenTransformedBackToWgs84 = crsTransformationComposite.transform(resultOutputFromWgs4.getOutputCoordinate(), wgs84);
             if(!resultWhenTransformedBackToWgs84.isSuccess()) continue;
 
             final ResultsStatistic resultsStatistic = resultWhenTransformedBackToWgs84.getResultsStatistic();
@@ -103,14 +103,14 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
 
         System.out.println("Number of results with 'large' differences: " + transformResultsWithLargeDifferences.size());
         for (int i = 0; i <transformResultsWithLargeDifferences.size() ; i++) {
-            final TransformResult transformResult = transformResultsWithLargeDifferences.get(i);
+            final CrsTransformationResult transformResult = transformResultsWithLargeDifferences.get(i);
             System.out.println("----------------------------------------");
             System.out.println("epsg " + transformResult.getInputCoordinate().getCrsIdentifier().getCrsCode());
             System.out.println("MaxDiffYLatitude : " + transformResult.getResultsStatistic().getMaxDiffYLatitude());
             System.out.println("MaxDiffYLongitude: " + transformResult.getResultsStatistic().getMaxDiffXLongitude());
-            final List<TransformResult> subResults = transformResult.getTransformResultChildren();
+            final List<CrsTransformationResult> subResults = transformResult.getTransformationResultChildren();
             for (int j = 0; j <subResults.size() ; j++) {
-                final TransformResult subTransformResult = subResults.get(j);
+                final CrsTransformationResult subTransformResult = subResults.get(j);
                 if(subTransformResult.isSuccess()) {
                     System.out.println( subTransformResult.getOutputCoordinate() + " , " + subTransformResult.getCrsTransformationAdapterResultSource().getLongNameOfImplementation());
                 }
@@ -122,10 +122,10 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
         final CrsTransformationAdapterComposite crsTransformationAdapterComposite
     ) {
         final Coordinate input = CoordinateFactory.latLon(59, 18);
-        final TransformResult result = crsTransformationAdapterComposite.transform(input, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        final CrsTransformationResult result = crsTransformationAdapterComposite.transform(input, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         assertNotNull(result);
         assertTrue(result.isSuccess());
-        assertEquals(5, result.getTransformResultChildren().size());
+        assertEquals(5, result.getTransformationResultChildren().size());
         final ResultsStatistic resultsStatistic = result.getResultsStatistic();
         assertNotNull(resultsStatistic);
         assertTrue(resultsStatistic.isStatisticsAvailable());

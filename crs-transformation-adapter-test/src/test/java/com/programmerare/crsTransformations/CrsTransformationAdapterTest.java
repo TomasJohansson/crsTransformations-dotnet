@@ -272,12 +272,12 @@ final class CrsTransformationAdapterTest {
         }
     }
 
-    @DisplayName("Testing TransformResult with expected failure")
+    @DisplayName("Testing CrsTransformationResult with expected failure")
     @Test
     void transformToResultObjectWithUnvalidInputCoordinate() {
         Coordinate unvalidInputCoordinate = CoordinateFactory.createFromXLongitudeYLatitude(-999999.0, -999999.0, -9999);
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
-            TransformResult transformResult = crsTransformationAdapter.transform(unvalidInputCoordinate, -888888);
+            CrsTransformationResult transformResult = crsTransformationAdapter.transform(unvalidInputCoordinate, -888888);
             assertNotNull(transformResult);
             assertFalse(transformResult.isSuccess());
             assertNotNull(transformResult.getException());
@@ -285,7 +285,7 @@ final class CrsTransformationAdapterTest {
         }
     }
 
-    @DisplayName("Testing TransformResult with expected successe")
+    @DisplayName("Testing CrsTransformationResult with expected successe")
     @Test
     void transformToResultObjectWithValidInputCoordinate() {
         double wgs84Lat = 59.330231;
@@ -293,7 +293,7 @@ final class CrsTransformationAdapterTest {
         Coordinate wgs84InputCoordinate = CoordinateFactory.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
 
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
-            TransformResult transformResult = crsTransformationAdapter.transform(wgs84InputCoordinate, epsgNumberForSweref99TM);
+            CrsTransformationResult transformResult = crsTransformationAdapter.transform(wgs84InputCoordinate, epsgNumberForSweref99TM);
             assertNotNull(transformResult);
             assertTrue(transformResult.isSuccess());
             assertNull(transformResult.getException());
@@ -304,7 +304,7 @@ final class CrsTransformationAdapterTest {
         }
     }
 
-    private void assertResultStatisticsForLeafImplementation(TransformResult transformResult) {
+    private void assertResultStatisticsForLeafImplementation(CrsTransformationResult transformResult) {
         final ResultsStatistic resultsStatistic = transformResult.getResultsStatistic();
         assertNotNull(resultsStatistic);
         assertTrue(resultsStatistic.isStatisticsAvailable());

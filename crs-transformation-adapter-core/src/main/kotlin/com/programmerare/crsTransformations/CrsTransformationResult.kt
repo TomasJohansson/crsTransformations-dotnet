@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations
 
 import com.programmerare.crsTransformations.coordinate.Coordinate
 
-interface TransformResult {
+interface CrsTransformationResult {
     val inputCoordinate: Coordinate
     val outputCoordinate: Coordinate
     val exception: Throwable?
@@ -20,7 +20,7 @@ interface TransformResult {
      * implementation, but if it is a composite/aggregating implementation
      * then all the individual "leaf" results are returned in this list.
      */
-    val transformResultChildren: List<TransformResult>
+    val transformationResultChildren: List<CrsTransformationResult>
 
     val resultsStatistic: ResultsStatistic
 

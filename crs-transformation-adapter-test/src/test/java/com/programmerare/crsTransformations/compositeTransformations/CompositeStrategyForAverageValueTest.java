@@ -5,7 +5,7 @@ import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.TransformResult;
+import com.programmerare.crsTransformations.CrsTransformationResult;
 import org.junit.jupiter.api.Test;
 
 import java.util.List;
@@ -27,10 +27,10 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
         CrsTransformationAdapter averageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(
             allAdapters
         );
-        TransformResult averageResult = averageCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        CrsTransformationResult averageResult = averageCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         assertNotNull(averageResult);
         assertTrue(averageResult.isSuccess());
-        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), averageResult.getTransformResultChildren().size());
+        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), averageResult.getTransformationResultChildren().size());
 
         Coordinate coordinateReturnedByCompositeAdapter = averageResult.getOutputCoordinate();
 
