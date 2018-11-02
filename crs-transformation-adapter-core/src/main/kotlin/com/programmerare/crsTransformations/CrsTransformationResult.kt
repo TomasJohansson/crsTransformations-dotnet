@@ -22,13 +22,13 @@ interface CrsTransformationResult {
      */
     val transformationResultChildren: List<CrsTransformationResult>
 
-    val resultsStatistic: ResultsStatistic
+    val crsTransformationResultStatistic: CrsTransformationResultStatistic
 
     /**
      * Convenience method intended for "Composite" implementations
      * to easy check that more than one implementation (the specified min number)
      * resulted in the same coordinate (within the specified delta value).
-     * If false is returned then you can retrieve the ResultsStatistic object
+     * If false is returned then you can retrieve the CrsTransformationResultStatistic object
      * to find the details regarding the differences.
      * The method is actually relevant to use only for aggregated transformations i.e. the "Composite" implementations.
      * However, there is also a reasonable behaviour for the "Leaf" implementations regarding the number of results (always 1)

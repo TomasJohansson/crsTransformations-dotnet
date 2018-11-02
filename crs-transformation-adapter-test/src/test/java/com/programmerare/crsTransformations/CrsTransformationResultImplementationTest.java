@@ -118,16 +118,16 @@ public class CrsTransformationResultImplementationTest {
         );
         final CrsTransformationResult transformResult = new CrsTransformationResultImplementation(c, c, null, true, f, results, null);
 
-        final ResultsStatistic resultsStatistic = transformResult.getResultsStatistic();
-        assertNotNull(resultsStatistic);
-        assertTrue(resultsStatistic.isStatisticsAvailable());
+        final CrsTransformationResultStatistic crsTransformationResultStatistic = transformResult.getCrsTransformationResultStatistic();
+        assertNotNull(crsTransformationResultStatistic);
+        assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
 
-        assertEquals(4, resultsStatistic.getNumberOfResults());
-        assertEquals(expectedLatDiffMax, resultsStatistic.getMaxDiffYLatitude());
-        assertEquals(expectedLonDiffMax, resultsStatistic.getMaxDiffXLongitude());
+        assertEquals(4, crsTransformationResultStatistic.getNumberOfResults());
+        assertEquals(expectedLatDiffMax, crsTransformationResultStatistic.getMaxDiffYLatitude());
+        assertEquals(expectedLonDiffMax, crsTransformationResultStatistic.getMaxDiffXLongitude());
 
-        final Coordinate coordinateAverage = resultsStatistic.getCoordinateAverage();
-        final Coordinate coordinateMean = resultsStatistic.getCoordinateMedian();
+        final Coordinate coordinateAverage = crsTransformationResultStatistic.getCoordinateAverage();
+        final Coordinate coordinateMean = crsTransformationResultStatistic.getCoordinateMedian();
         assertNotNull(coordinateAverage);
         assertNotNull(coordinateMean);
         assertEquals(expectedCoordinateMean, coordinateMean);

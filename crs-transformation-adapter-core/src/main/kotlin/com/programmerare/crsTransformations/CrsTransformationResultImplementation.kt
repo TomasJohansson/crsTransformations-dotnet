@@ -11,7 +11,7 @@ class CrsTransformationResultImplementation(
         override val isSuccess: Boolean,
         override val crsTransformationAdapterResultSource: CrsTransformationAdapter,
         override val transformationResultChildren: List<CrsTransformationResult> = listOf<CrsTransformationResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
-        _nullableResultsStatistic: ResultsStatistic? = null
+        _nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic? = null
 ): CrsTransformationResult {
 
     private val _outputCoordinate: Coordinate? = outputCoordinate
@@ -37,30 +37,30 @@ class CrsTransformationResultImplementation(
             return _outputCoordinate!!
         }
 
-    private val _resultsStatistic: ResultsStatistic by lazy {
-        if(_nullableResultsStatistic != null) {
-            _nullableResultsStatistic
+    private val _crsTransformationResultStatistic: CrsTransformationResultStatistic by lazy {
+        if(_nullableCrsTransformationResultStatistic != null) {
+            _nullableCrsTransformationResultStatistic
         }
         else if(this.transformationResultChildren.size == 0) {
-            ResultsStatistic(listOf<CrsTransformationResult>(this))
+            CrsTransformationResultStatistic(listOf<CrsTransformationResult>(this))
         }
         else {
-            ResultsStatistic(transformationResultChildren)
+            CrsTransformationResultStatistic(transformationResultChildren)
         }
     }
 
-    override val resultsStatistic: ResultsStatistic
+    override val crsTransformationResultStatistic: CrsTransformationResultStatistic
         get() {
-            return _resultsStatistic
+            return _crsTransformationResultStatistic
         }
 
     override fun isReliable(
         minimumNumberOfSuccesfulResults: Int,
         maxDeltaValueForXLongitudeAndYLatitude: Double
     ): Boolean {
-        val numberOfResults = this.resultsStatistic.getNumberOfResults()
-        val maxX = this.resultsStatistic.getMaxDiffXLongitude()
-        val maxY = this.resultsStatistic.getMaxDiffYLatitude()
+        val numberOfResults = this.crsTransformationResultStatistic.getNumberOfResults()
+        val maxX = this.crsTransformationResultStatistic.getMaxDiffXLongitude()
+        val maxY = this.crsTransformationResultStatistic.getMaxDiffYLatitude()
         val okNumber = numberOfResults >= minimumNumberOfSuccesfulResults
         val okX = maxX <= maxDeltaValueForXLongitudeAndYLatitude
         val okY = maxY <= maxDeltaValueForXLongitudeAndYLatitude

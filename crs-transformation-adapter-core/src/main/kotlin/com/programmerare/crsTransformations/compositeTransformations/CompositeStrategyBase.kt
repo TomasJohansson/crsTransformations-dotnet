@@ -20,12 +20,12 @@ internal abstract class CompositeStrategyBase
             allResults: List<CrsTransformationResult>,
             inputCoordinate: Coordinate,
             crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter,
-            resultsStatistic: ResultsStatistic,
+            crsTransformationResultStatistic: CrsTransformationResultStatistic,
             medianOrAverage: () -> Coordinate
     ): CrsTransformationResult {
-        if(resultsStatistic.isStatisticsAvailable()) {
-            //  val coordRes = resultsStatistic.getCoordinateMedian() // THE ONLY DIFFERENCE in the above mentioned two classes
-            //  val coordRes = resultsStatistic.getCoordinateAverage()  // THE ONLY DIFFERENCE in the above mentioned two classes
+        if(crsTransformationResultStatistic.isStatisticsAvailable()) {
+            //  val coordRes = crsTransformationResultStatistic.getCoordinateMedian() // THE ONLY DIFFERENCE in the above mentioned two classes
+            //  val coordRes = crsTransformationResultStatistic.getCoordinateAverage()  // THE ONLY DIFFERENCE in the above mentioned two classes
             val coordRes: Coordinate = medianOrAverage() // this line replaced the above two lines in different subclasses when doing refactoring
             return CrsTransformationResultImplementation(
                 inputCoordinate,
@@ -34,7 +34,7 @@ internal abstract class CompositeStrategyBase
                 isSuccess = true,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
                 transformationResultChildren = allResults,
-                _nullableResultsStatistic = resultsStatistic
+                _nullableCrsTransformationResultStatistic = crsTransformationResultStatistic
             )
         }
         else {
@@ -45,7 +45,7 @@ internal abstract class CompositeStrategyBase
                 isSuccess = false,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
                 transformationResultChildren = allResults,
-                _nullableResultsStatistic = resultsStatistic
+                _nullableCrsTransformationResultStatistic = crsTransformationResultStatistic
             )
         }
     }

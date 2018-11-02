@@ -86,13 +86,13 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
             final CrsTransformationResult resultWhenTransformedBackToWgs84 = crsTransformationComposite.transform(resultOutputFromWgs4.getOutputCoordinate(), wgs84);
             if(!resultWhenTransformedBackToWgs84.isSuccess()) continue;
 
-            final ResultsStatistic resultsStatistic = resultWhenTransformedBackToWgs84.getResultsStatistic();
-            assertNotNull(resultsStatistic);
-            assertTrue(resultsStatistic.isStatisticsAvailable());
+            final CrsTransformationResultStatistic crsTransformationResultStatistic = resultWhenTransformedBackToWgs84.getCrsTransformationResultStatistic();
+            assertNotNull(crsTransformationResultStatistic);
+            assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
             if(
-                resultsStatistic.getMaxDiffXLongitude() > deltaDiff
+                crsTransformationResultStatistic.getMaxDiffXLongitude() > deltaDiff
                 ||
-                resultsStatistic.getMaxDiffYLatitude() > deltaDiff
+                crsTransformationResultStatistic.getMaxDiffYLatitude() > deltaDiff
             ) {
                 transformResultsWithLargeDifferences.add(resultWhenTransformedBackToWgs84);
             }
@@ -106,8 +106,8 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
             final CrsTransformationResult transformResult = transformResultsWithLargeDifferences.get(i);
             System.out.println("----------------------------------------");
             System.out.println("epsg " + transformResult.getInputCoordinate().getCrsIdentifier().getCrsCode());
-            System.out.println("MaxDiffYLatitude : " + transformResult.getResultsStatistic().getMaxDiffYLatitude());
-            System.out.println("MaxDiffYLongitude: " + transformResult.getResultsStatistic().getMaxDiffXLongitude());
+            System.out.println("MaxDiffYLatitude : " + transformResult.getCrsTransformationResultStatistic().getMaxDiffYLatitude());
+            System.out.println("MaxDiffYLongitude: " + transformResult.getCrsTransformationResultStatistic().getMaxDiffXLongitude());
             final List<CrsTransformationResult> subResults = transformResult.getTransformationResultChildren();
             for (int j = 0; j <subResults.size() ; j++) {
                 final CrsTransformationResult subTransformResult = subResults.get(j);
@@ -126,11 +126,11 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
         assertNotNull(result);
         assertTrue(result.isSuccess());
         assertEquals(5, result.getTransformationResultChildren().size());
-        final ResultsStatistic resultsStatistic = result.getResultsStatistic();
-        assertNotNull(resultsStatistic);
-        assertTrue(resultsStatistic.isStatisticsAvailable());
-        assertEquals(5, resultsStatistic.getNumberOfResults());
-        assertEquals(1.4857726637274027E-4, resultsStatistic.getMaxDiffXLongitude());
+        final CrsTransformationResultStatistic crsTransformationResultStatistic = result.getCrsTransformationResultStatistic();
+        assertNotNull(crsTransformationResultStatistic);
+        assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
+        assertEquals(5, crsTransformationResultStatistic.getNumberOfResults());
+        assertEquals(1.4857726637274027E-4, crsTransformationResultStatistic.getMaxDiffXLongitude());
     }
 
     private PrintStream getNullStreamToAvoidOutputFromSystemOutAndSystemErr() {

@@ -2,7 +2,7 @@ package com.programmerare.crsTransformationAdapterOrbisgisCTS;
 
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.coordinate.Coordinate;
-import com.programmerare.crsTransformations.ResultsStatistic;
+import com.programmerare.crsTransformations.CrsTransformationResultStatistic;
 import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
 import org.junit.jupiter.api.Test;
@@ -45,14 +45,14 @@ public class CrsTransformationAdapterOrbisgisCtsTest {
         final CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationAdapterOrbisgis.transform(wgs84coordinateInSweden, com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         assertNotNull(resultWhenTransformingToSwedishCRS);
         assertTrue(resultWhenTransformingToSwedishCRS.isSuccess());
-        final ResultsStatistic resultsStatistic = resultWhenTransformingToSwedishCRS.getResultsStatistic();
-        assertNotNull(resultsStatistic);
-        assertTrue(resultsStatistic.isStatisticsAvailable());
+        final CrsTransformationResultStatistic crsTransformationResultStatistic = resultWhenTransformingToSwedishCRS.getCrsTransformationResultStatistic();
+        assertNotNull(crsTransformationResultStatistic);
+        assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
 
-        final int actualNumberOfResults = resultsStatistic.getNumberOfResults();
+        final int actualNumberOfResults = crsTransformationResultStatistic.getNumberOfResults();
         assertEquals(1, actualNumberOfResults);
-        final double actualMaxDiffXLongitude = resultsStatistic.getMaxDiffXLongitude();
-        final double actualMaxDiffYLatitude = resultsStatistic.getMaxDiffYLatitude();
+        final double actualMaxDiffXLongitude = crsTransformationResultStatistic.getMaxDiffXLongitude();
+        final double actualMaxDiffYLatitude = crsTransformationResultStatistic.getMaxDiffYLatitude();
         final double actualMaxDiffXorY = Math.max(actualMaxDiffXLongitude, actualMaxDiffYLatitude);
         assertEquals(0, actualMaxDiffXorY); // zero differences since there should be only one result !
 

@@ -305,14 +305,14 @@ final class CrsTransformationAdapterTest {
     }
 
     private void assertResultStatisticsForLeafImplementation(CrsTransformationResult transformResult) {
-        final ResultsStatistic resultsStatistic = transformResult.getResultsStatistic();
-        assertNotNull(resultsStatistic);
-        assertTrue(resultsStatistic.isStatisticsAvailable());
-        assertEquals(1, resultsStatistic.getNumberOfResults());
-        assertEquals(0, resultsStatistic.getMaxDiffYLatitude());
-        assertEquals(0, resultsStatistic.getMaxDiffXLongitude());
-        assertEquals(transformResult.getOutputCoordinate(), resultsStatistic.getCoordinateAverage());
-        assertEquals(transformResult.getOutputCoordinate(), resultsStatistic.getCoordinateMedian());
+        final CrsTransformationResultStatistic crsTransformationResultStatistic = transformResult.getCrsTransformationResultStatistic();
+        assertNotNull(crsTransformationResultStatistic);
+        assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
+        assertEquals(1, crsTransformationResultStatistic.getNumberOfResults());
+        assertEquals(0, crsTransformationResultStatistic.getMaxDiffYLatitude());
+        assertEquals(0, crsTransformationResultStatistic.getMaxDiffXLongitude());
+        assertEquals(transformResult.getOutputCoordinate(), crsTransformationResultStatistic.getCoordinateAverage());
+        assertEquals(transformResult.getOutputCoordinate(), crsTransformationResultStatistic.getCoordinateMedian());
     }
 
     enum CoordinateReferenceSystemUnit {
