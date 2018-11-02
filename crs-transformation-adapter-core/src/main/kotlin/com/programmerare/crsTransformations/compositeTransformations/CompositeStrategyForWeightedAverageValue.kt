@@ -28,7 +28,7 @@ internal class CompositeStrategyForWeightedAverageValue(
         var weightSum = 0.0
         for (res: TransformResult in allResults) {
             if(res.isSuccess) {
-                val weight: Double = weights[res.crsTransformationAdapterThatCreatedTheResult.getNameOfImplementation()]!!
+                val weight: Double = weights[res.crsTransformationAdapterThatCreatedTheResult.getLongNameOfImplementation()]!!
                 // TODO: ugly !! above
                 successCount++
                 val coord = res.outputCoordinate
@@ -75,7 +75,7 @@ internal class CompositeStrategyForWeightedAverageValue(
             val adapters: List<CrsTransformationAdapter> = weightedAdapters.map { it -> it.crsTransformationAdapter }
             val map = HashMap<String, Double>()
             for (fw: AdapterWeight in weightedAdapters) {
-                map[fw.crsTransformationAdapter.getNameOfImplementation()] = fw.weight
+                map[fw.crsTransformationAdapter.getLongNameOfImplementation()] = fw.weight
             }
             return CompositeStrategyForWeightedAverageValue(adapters, map)
         }

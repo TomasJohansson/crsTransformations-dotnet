@@ -72,7 +72,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
 //    }
 
 
-    override final fun getNameOfImplementation(): String {
+    override final fun getLongNameOfImplementation(): String {
         return this.javaClass.name
     }
 

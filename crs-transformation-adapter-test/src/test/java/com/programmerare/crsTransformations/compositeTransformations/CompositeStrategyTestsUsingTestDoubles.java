@@ -182,11 +182,11 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     @Test
     void weightedAverageAdapterTest() {
-        when(leafAdapterImplementation_1.getNameOfImplementation()).thenReturn("1");
-        when(leafAdapterImplementation_2.getNameOfImplementation()).thenReturn("2");
-        when(leafAdapterImplementation_3.getNameOfImplementation()).thenReturn("3");
-        when(leafAdapterImplementation_4.getNameOfImplementation()).thenReturn("4");
-        when(leafAdapterImplementation_5.getNameOfImplementation()).thenReturn("5");
+        when(leafAdapterImplementation_1.getLongNameOfImplementation()).thenReturn("1");
+        when(leafAdapterImplementation_2.getLongNameOfImplementation()).thenReturn("2");
+        when(leafAdapterImplementation_3.getLongNameOfImplementation()).thenReturn("3");
+        when(leafAdapterImplementation_4.getLongNameOfImplementation()).thenReturn("4");
+        when(leafAdapterImplementation_5.getLongNameOfImplementation()).thenReturn("5");
 
         final double[] weights = {1,2,4,5,9};
         double totWeights = 0;

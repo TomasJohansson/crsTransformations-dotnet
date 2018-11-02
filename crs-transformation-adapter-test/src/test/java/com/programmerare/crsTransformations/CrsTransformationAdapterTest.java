@@ -318,4 +318,16 @@ final class CrsTransformationAdapterTest {
         METERS,
         UNKNOWN
     }
+
+    @Test
+    void getLongNameOfImplementationTest() {
+        // Of course fragile, but the class/package name will not change
+        // often and if/when it does the test will fail but will be trivial to fix.
+        // The purpose of this test is not so much to "test" but rather to
+        // illustrate what the method returns
+        assertEquals(
+            "com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools",
+            (new CrsTransformationAdapterGeoTools()).getLongNameOfImplementation()
+        );
+    }
 }
