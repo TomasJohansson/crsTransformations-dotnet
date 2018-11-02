@@ -32,7 +32,7 @@ internal abstract class CompositeStrategyBase
                 outputCoordinate = coordRes,
                 exception = null,
                 isSuccess = true,
-                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
+                crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
                 subResults = allResults,
                 _nullableResultsStatistic = resultsStatistic
             )
@@ -43,7 +43,7 @@ internal abstract class CompositeStrategyBase
                 outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
-                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
+                crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
                 subResults = allResults,
                 _nullableResultsStatistic = resultsStatistic
             )

@@ -26,7 +26,7 @@ internal class CompositeStrategyForChainOfResponsibility(
                 outputCoordinate = allResults.get(0).outputCoordinate,
                 exception = null,
                 isSuccess = true,
-                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
+                crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
                 subResults = allResults
             )
         }
@@ -36,7 +36,7 @@ internal class CompositeStrategyForChainOfResponsibility(
                 outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
-                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
+                crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
                 subResults = allResults
             )
         }

@@ -28,7 +28,7 @@ internal class CompositeStrategyForWeightedAverageValue(
         var weightSum = 0.0
         for (res: TransformResult in allResults) {
             if(res.isSuccess) {
-                val weight: Double = weights[res.crsTransformationAdapterThatCreatedTheResult.getLongNameOfImplementation()]!!
+                val weight: Double = weights[res.crsTransformationAdapterResultSource.getLongNameOfImplementation()]!!
                 // TODO: ugly !! above
                 successCount++
                 val coord = res.outputCoordinate
@@ -46,7 +46,7 @@ internal class CompositeStrategyForWeightedAverageValue(
                 outputCoordinate = coordRes,
                 exception = null,
                 isSuccess = true,
-                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
+                crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
                 subResults = allResults
             )
         }
@@ -56,7 +56,7 @@ internal class CompositeStrategyForWeightedAverageValue(
                 outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
-                crsTransformationAdapterThatCreatedTheResult = crsTransformationAdapterThatCreatedTheResult,
+                crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
                 subResults = allResults
             )
         }

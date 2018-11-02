@@ -7,7 +7,13 @@ interface TransformResult {
     val outputCoordinate: Coordinate
     val exception: Throwable?
     val isSuccess: Boolean
-    val crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
+
+    /**
+     * @return CrsTransformationAdapter the adapter which created the result.
+     *  It may be useful when a composite adapter is returning a result aggregating many results
+     *  and you want to figure out which result originated from which leaf adapter implementation.
+     */
+    val crsTransformationAdapterResultSource: CrsTransformationAdapter
 
     /**
      * Empty list if the transform implementation is a concrete "Leaf"

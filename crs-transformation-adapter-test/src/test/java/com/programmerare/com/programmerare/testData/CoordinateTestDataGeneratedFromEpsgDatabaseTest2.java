@@ -112,7 +112,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
             for (int j = 0; j <subResults.size() ; j++) {
                 final TransformResult subTransformResult = subResults.get(j);
                 if(subTransformResult.isSuccess()) {
-                    System.out.println( subTransformResult.getOutputCoordinate() + " , " + subTransformResult.getCrsTransformationAdapterThatCreatedTheResult().getLongNameOfImplementation());
+                    System.out.println( subTransformResult.getOutputCoordinate() + " , " + subTransformResult.getCrsTransformationAdapterResultSource().getLongNameOfImplementation());
                 }
             }
         }

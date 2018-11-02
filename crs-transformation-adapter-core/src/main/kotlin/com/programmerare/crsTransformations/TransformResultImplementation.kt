@@ -9,7 +9,7 @@ class TransformResultImplementation(
         outputCoordinate: Coordinate?,
         override val exception: Throwable?,
         override val isSuccess: Boolean,
-        override val crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter,
+        override val crsTransformationAdapterResultSource: CrsTransformationAdapter,
         override val subResults: List<TransformResult> = listOf<TransformResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
         _nullableResultsStatistic: ResultsStatistic? = null
 ): TransformResult {
