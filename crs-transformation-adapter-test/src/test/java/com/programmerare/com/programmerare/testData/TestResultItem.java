@@ -2,7 +2,7 @@ package com.programmerare.com.programmerare.testData;
 
 import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.CrsTransformationResult;
-import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 
 public class TestResultItem {
     private String wgs84sourceX , wgs84sourceY , epsgCrsCode;
@@ -59,7 +59,7 @@ public class TestResultItem {
     public Coordinate getInputCoordinateWGS84() {
         double lat = Double.parseDouble(wgs84sourceY);
         double lon = Double.parseDouble(wgs84sourceX);
-        return CoordinateFactory.latLon(lat, lon);
+        return CrsCoordinateFactory.latLon(lat, lon);
     }
 
     public boolean isSuccessfulTransformationFromWGS84() {
@@ -84,7 +84,7 @@ public class TestResultItem {
         // i.e. exception might be thrown below
         double lat = Double.parseDouble(wgs84targetY);
         double lon = Double.parseDouble(wgs84targetX);
-        return CoordinateFactory.latLon(lat, lon);
+        return CrsCoordinateFactory.latLon(lat, lon);
     }
 
     /**

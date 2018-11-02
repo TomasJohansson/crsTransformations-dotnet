@@ -5,7 +5,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
 import com.programmerare.crsTransformations.coordinate.Coordinate;
-import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,7 +26,7 @@ public class CrsTransformationResultImplementationTest {
 
     @BeforeEach
     void beforeEach() {
-        inputCoordinate = CoordinateFactory.createFromXLongitudeYLatitude(0.0, 0.0, 1234);
+        inputCoordinate = CrsCoordinateFactory.createFromXLongitudeYLatitude(0.0, 0.0, 1234);
         outputCoordinate = inputCoordinate;
 
         // the mock below is currently not used any more than as a convenient way
@@ -97,15 +97,15 @@ public class CrsTransformationResultImplementationTest {
         double lonAverage = (lon1 + lon2 + lon3 + lon4) / 4;
         double expectedLonDiffMax = lon4-lon1;
         Coordinate c1, c2, c3, c4, c;
-        c1 = CoordinateFactory.latLon(lat1, lon1);
-        c2 = CoordinateFactory.latLon(lat2, lon2);
-        c3 = CoordinateFactory.latLon(lat3, lon3);
-        c4 = CoordinateFactory.latLon(lat4, lon4);
-        Coordinate expectedCoordinateMean = CoordinateFactory.latLon(latMean, lonMean);
-        Coordinate expectedCoordinateAverage = CoordinateFactory.latLon(latAverage, lonAverage);
+        c1 = CrsCoordinateFactory.latLon(lat1, lon1);
+        c2 = CrsCoordinateFactory.latLon(lat2, lon2);
+        c3 = CrsCoordinateFactory.latLon(lat3, lon3);
+        c4 = CrsCoordinateFactory.latLon(lat4, lon4);
+        Coordinate expectedCoordinateMean = CrsCoordinateFactory.latLon(latMean, lonMean);
+        Coordinate expectedCoordinateAverage = CrsCoordinateFactory.latLon(latAverage, lonAverage);
 
 
-        c = CoordinateFactory.latLon(0, 0); // input, not used here in this test
+        c = CrsCoordinateFactory.latLon(0, 0); // input, not used here in this test
         CrsTransformationAdapter f = new CrsTransformationAdapterGooberCTL(); // not used, might use a mock instead
         List<CrsTransformationResult>  l = Arrays.asList();
 

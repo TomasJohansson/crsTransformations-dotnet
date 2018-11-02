@@ -9,7 +9,7 @@ import com.programmerare.crsTransformations.CrsTransformationAdapter;
 import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 
-import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.BeforeAll;
 
 import java.util.Arrays;
@@ -56,7 +56,7 @@ abstract class CompositeStrategyTestBase {
             adapterGeoPackageNGA
         );
 
-        wgs84coordinate = CoordinateFactory.createFromYLatitudeXLongitude(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
+        wgs84coordinate = CrsCoordinateFactory.createFromYLatitudeXLongitude(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
 
         resultCoordinateGeoTools = adapterGeoTools.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
         resultCoordinateGooberCTL = adapterGooberCTL.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);

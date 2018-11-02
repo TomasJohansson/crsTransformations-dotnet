@@ -4,7 +4,7 @@ import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.CrsTransformationResult;
-import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import com.programmerare.crsTransformations.utils.MedianValueUtility;
 import org.junit.jupiter.api.Test;
 import java.util.List;
@@ -42,7 +42,7 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
         List<Double> latitudesSorted = coordinateResultsForTheDifferentImplementations.stream().map(x -> x.getYLatitude()).collect(Collectors.toList());
         double medianLongitude = MedianValueUtility.getMedianValue(longitudesSorted);
         double medianLatitude = MedianValueUtility.getMedianValue(latitudesSorted);
-        return CoordinateFactory.createFromXLongitudeYLatitude(medianLongitude, medianLatitude, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        return CrsCoordinateFactory.createFromXLongitudeYLatitude(medianLongitude, medianLatitude, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
     }
 
 }

@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations.compositeTransformations;
 
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
 import com.programmerare.crsTransformations.coordinate.Coordinate;
-import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.CrsTransformationResult;
@@ -50,6 +50,6 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
         double averageLon = getAverage(resultCoordinates, c -> c.getXLongitude());
         Set<CrsIdentifier> set = resultCoordinates.stream().map(c -> c.getCrsIdentifier()).collect(Collectors.toSet());
         assertEquals(1, set.size(), "all coordinates should have the same CRS, since thet should all be the result of a transform to the same CRS");
-        return CoordinateFactory.createFromYLatitudeXLongitude(averageLat, averageLon, resultCoordinates.get(0).getCrsIdentifier());
+        return CrsCoordinateFactory.createFromYLatitudeXLongitude(averageLat, averageLon, resultCoordinates.get(0).getCrsIdentifier());
     }
 }

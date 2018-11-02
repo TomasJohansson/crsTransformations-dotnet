@@ -4,7 +4,7 @@ import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumbe
 import com.programmerare.crsTransformations.coordinate.Coordinate;
 import com.programmerare.crsTransformations.CrsTransformationResultStatistic;
 import com.programmerare.crsTransformations.CrsTransformationResult;
-import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -15,7 +15,7 @@ public class CrsTransformationAdapterCompositeTest {
     void isReliableTest() {
         final CrsTransformationAdapterComposite crsTransformationComposite = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian();
 
-        final Coordinate wgs84coordinateInSweden = CoordinateFactory.latLon(59.31,18.04);
+        final Coordinate wgs84coordinateInSweden = CrsCoordinateFactory.latLon(59.31,18.04);
         final CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationComposite.transform(wgs84coordinateInSweden, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         assertNotNull(resultWhenTransformingToSwedishCRS);
         assertTrue(resultWhenTransformingToSwedishCRS.isSuccess());

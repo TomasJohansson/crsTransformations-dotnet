@@ -15,7 +15,7 @@
  *      CoordinateFactory.createFromXLongitudeYLatitude ...
  *  but with package level function the Java clients will not even see such an "INSTANCE".
  */
-@file:JvmName("CoordinateFactory")
+@file:JvmName("CrsCoordinateFactory")
 package com.programmerare.crsTransformations.coordinate
 // The reason for having Coordinate and this CoordinateFactory
 // in a package of its own is to avoid "polluting" the base

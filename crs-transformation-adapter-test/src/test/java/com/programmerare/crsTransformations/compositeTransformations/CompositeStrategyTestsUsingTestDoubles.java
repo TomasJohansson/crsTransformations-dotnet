@@ -3,7 +3,7 @@ package com.programmerare.crsTransformations.compositeTransformations;
 import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.*;
 import com.programmerare.crsTransformations.coordinate.Coordinate;
-import com.programmerare.crsTransformations.coordinate.CoordinateFactory;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
 import org.junit.jupiter.api.BeforeAll;
@@ -52,11 +52,11 @@ public class CompositeStrategyTestsUsingTestDoubles {
         medianLongitude = 18.4;
         averageLongitude = 18.52;
 
-        outputCoordinateWgs84ForImplementation_1 = CoordinateFactory.createFromLatitudeLongitude(outputLatitudes[0],outputLongitudes[3]);
-        outputCoordinateWgs84ForImplementation_2 = CoordinateFactory.createFromLatitudeLongitude(outputLatitudes[2],outputLongitudes[1]);
-        outputCoordinateWgs84ForImplementation_3 = CoordinateFactory.createFromLatitudeLongitude(outputLatitudes[4],outputLongitudes[4]);
-        outputCoordinateWgs84ForImplementation_4 = CoordinateFactory.createFromLatitudeLongitude(outputLatitudes[1],outputLongitudes[0]);
-        outputCoordinateWgs84ForImplementation_5 = CoordinateFactory.createFromLatitudeLongitude(outputLatitudes[3],outputLongitudes[2]);
+        outputCoordinateWgs84ForImplementation_1 = CrsCoordinateFactory.createFromLatitudeLongitude(outputLatitudes[0],outputLongitudes[3]);
+        outputCoordinateWgs84ForImplementation_2 = CrsCoordinateFactory.createFromLatitudeLongitude(outputLatitudes[2],outputLongitudes[1]);
+        outputCoordinateWgs84ForImplementation_3 = CrsCoordinateFactory.createFromLatitudeLongitude(outputLatitudes[4],outputLongitudes[4]);
+        outputCoordinateWgs84ForImplementation_4 = CrsCoordinateFactory.createFromLatitudeLongitude(outputLatitudes[1],outputLongitudes[0]);
+        outputCoordinateWgs84ForImplementation_5 = CrsCoordinateFactory.createFromLatitudeLongitude(outputLatitudes[3],outputLongitudes[2]);
         outputCoordinates = Arrays.asList(outputCoordinateWgs84ForImplementation_1, outputCoordinateWgs84ForImplementation_2, outputCoordinateWgs84ForImplementation_3, outputCoordinateWgs84ForImplementation_4, outputCoordinateWgs84ForImplementation_5);
 
         leafAdapterImplementation_1 = mock(CrsTransformationAdapter.class);
@@ -65,7 +65,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         leafAdapterImplementation_4 = mock(CrsTransformationAdapter.class);
         leafAdapterImplementation_5 = mock(CrsTransformationAdapter.class);
 
-        inputCoordinateSweref99 = CoordinateFactory.createFromYLatitudeXLongitude(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        inputCoordinateSweref99 = CrsCoordinateFactory.createFromYLatitudeXLongitude(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
 
         CrsTransformationResult leafResult1 = new CrsTransformationResultImplementation(
             inputCoordinateSweref99,
@@ -201,7 +201,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         }
         final double weightedLat = totLats / totWeights;
         final double weightedLon = totLons / totWeights;
-        final Coordinate expectedWeightedAverage = CoordinateFactory.createFromLatitudeLongitude(weightedLat, weightedLon);
+        final Coordinate expectedWeightedAverage = CrsCoordinateFactory.createFromLatitudeLongitude(weightedLat, weightedLon);
 
         List<CrsTransformationAdapterWeight> weightedAdapters = Arrays.asList(
             CrsTransformationAdapterWeight.createFromInstance(leafAdapterImplementation_1, weights[0]),
