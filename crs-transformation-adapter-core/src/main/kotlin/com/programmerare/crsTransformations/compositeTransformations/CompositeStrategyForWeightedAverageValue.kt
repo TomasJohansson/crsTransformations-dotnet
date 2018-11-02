@@ -70,11 +70,11 @@ internal class CompositeStrategyForWeightedAverageValue(
     companion object {
         @JvmStatic
         fun createCompositeStrategyForWeightedAverageValue(
-                weightedAdapters: List<AdapterWeight>
+                weightedCrsTransformationAdapters: List<CrsTransformationAdapterWeight>
         ): CompositeStrategyForWeightedAverageValue {
-            val adapters: List<CrsTransformationAdapter> = weightedAdapters.map { it -> it.crsTransformationAdapter }
+            val adapters: List<CrsTransformationAdapter> = weightedCrsTransformationAdapters.map { it -> it.crsTransformationAdapter }
             val map = HashMap<String, Double>()
-            for (fw: AdapterWeight in weightedAdapters) {
+            for (fw: CrsTransformationAdapterWeight in weightedCrsTransformationAdapters) {
                 map[fw.crsTransformationAdapter.getLongNameOfImplementation()] = fw.weight
             }
             return CompositeStrategyForWeightedAverageValue(adapters, map)

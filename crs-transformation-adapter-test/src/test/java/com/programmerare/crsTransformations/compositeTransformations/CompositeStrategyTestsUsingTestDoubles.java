@@ -203,12 +203,12 @@ public class CompositeStrategyTestsUsingTestDoubles {
         final double weightedLon = totLons / totWeights;
         final Coordinate expectedWeightedAverage = CoordinateFactory.createFromLatitudeLongitude(weightedLat, weightedLon);
 
-        List<AdapterWeight> weightedAdapters = Arrays.asList(
-            AdapterWeight.createFromInstance(leafAdapterImplementation_1, weights[0]),
-            AdapterWeight.createFromInstance(leafAdapterImplementation_2, weights[1]),
-            AdapterWeight.createFromInstance(leafAdapterImplementation_3, weights[2]),
-            AdapterWeight.createFromInstance(leafAdapterImplementation_4, weights[3]),
-            AdapterWeight.createFromInstance(leafAdapterImplementation_5, weights[4])
+        List<CrsTransformationAdapterWeight> weightedAdapters = Arrays.asList(
+            CrsTransformationAdapterWeight.createFromInstance(leafAdapterImplementation_1, weights[0]),
+            CrsTransformationAdapterWeight.createFromInstance(leafAdapterImplementation_2, weights[1]),
+            CrsTransformationAdapterWeight.createFromInstance(leafAdapterImplementation_3, weights[2]),
+            CrsTransformationAdapterWeight.createFromInstance(leafAdapterImplementation_4, weights[3]),
+            CrsTransformationAdapterWeight.createFromInstance(leafAdapterImplementation_5, weights[4])
         );
 
         final CrsTransformationAdapterComposite weightedAverageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(weightedAdapters);

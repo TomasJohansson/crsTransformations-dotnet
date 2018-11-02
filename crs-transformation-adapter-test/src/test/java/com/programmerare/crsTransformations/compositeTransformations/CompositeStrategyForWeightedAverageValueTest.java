@@ -44,12 +44,12 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
     @Test
     void createCompositeStrategyForWeightedAverageValue() {
 
-        final List<AdapterWeight> weights = Arrays.asList(
-            AdapterWeight.createFromInstance(new CrsTransformationAdapterGeoTools(), weightForGeoTools),
-            AdapterWeight.createFromInstance(new CrsTransformationAdapterGooberCTL(), weightForGoober),
-            AdapterWeight.createFromInstance(new CrsTransformationAdapterOrbisgisCTS(), weightForOrbis),
-            AdapterWeight.createFromInstance(new CrsTransformationAdapterProj4J(), weightForProj4J),
-            AdapterWeight.createFromInstance(new CrsTransformationAdapterGeoPackageNGA(), weightForGeoPackageNGA)
+        final List<CrsTransformationAdapterWeight> weights = Arrays.asList(
+            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoTools(), weightForGeoTools),
+            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGooberCTL(), weightForGoober),
+            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterOrbisgisCTS(), weightForOrbis),
+            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterProj4J(), weightForProj4J),
+            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoPackageNGA(), weightForGeoPackageNGA)
         );
         final CrsTransformationAdapterComposite adapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(weights);
         createCompositeStrategyForWeightedAverageValueHelper(adapter);
@@ -63,12 +63,12 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         final String classNameProj4J = CrsTransformationAdapterProj4J.class.getName() ;
         final String classNameGeoPackageNGA = CrsTransformationAdapterGeoPackageNGA.class.getName() ;
 
-        final List<AdapterWeight> weights = Arrays.asList(
-            AdapterWeight.createFromStringWithFullClassNameForImplementation(classNameGeoTools, weightForGeoTools),
-            AdapterWeight.createFromStringWithFullClassNameForImplementation(classNameGoober, weightForGoober),
-            AdapterWeight.createFromStringWithFullClassNameForImplementation(classNameOrbis, weightForOrbis),
-            AdapterWeight.createFromStringWithFullClassNameForImplementation(classNameProj4J, weightForProj4J),
-            AdapterWeight.createFromStringWithFullClassNameForImplementation(classNameGeoPackageNGA, weightForGeoPackageNGA)
+        final List<CrsTransformationAdapterWeight> weights = Arrays.asList(
+            CrsTransformationAdapterWeight.createFromStringWithFullClassNameForImplementation(classNameGeoTools, weightForGeoTools),
+            CrsTransformationAdapterWeight.createFromStringWithFullClassNameForImplementation(classNameGoober, weightForGoober),
+            CrsTransformationAdapterWeight.createFromStringWithFullClassNameForImplementation(classNameOrbis, weightForOrbis),
+            CrsTransformationAdapterWeight.createFromStringWithFullClassNameForImplementation(classNameProj4J, weightForProj4J),
+            CrsTransformationAdapterWeight.createFromStringWithFullClassNameForImplementation(classNameGeoPackageNGA, weightForGeoPackageNGA)
         );
 
         final CrsTransformationAdapterComposite weightedAverageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(weights);

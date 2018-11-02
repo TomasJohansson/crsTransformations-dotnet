@@ -72,9 +72,9 @@ object CrsTransformationAdapterCompositeFactory {
 
 
     @JvmStatic
-    fun createCrsTransformationWeightedAverage(weightedAdapters: List<AdapterWeight>): CrsTransformationAdapterComposite {
+    fun createCrsTransformationWeightedAverage(weightedCrsTransformationAdapters: List<CrsTransformationAdapterWeight>): CrsTransformationAdapterComposite {
         return CrsTransformationAdapterComposite(
-            CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(weightedAdapters)
+            CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters)
         )
     }
 
