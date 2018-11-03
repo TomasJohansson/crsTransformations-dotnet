@@ -27,7 +27,7 @@ class CrsTransformationAdapterOrbisgisCTS : CrsTransformationAdapterBaseLeaf(), 
         val outputCRSgeodetic = outputCRS as GeodeticCRS
         val coordinateOperations = CoordinateOperationFactory.createCoordinateOperations(inputCRSgeodetic, outputCRSgeodetic)
         val coordinateOperation = CoordinateOperationFactory.getMostPrecise(coordinateOperations);
-        val inputCoordinateArray = doubleArrayOf(inputCoordinate.xLongitude, inputCoordinate.yLatitude)
+        val inputCoordinateArray = doubleArrayOf(inputCoordinate.xEastingLongitude, inputCoordinate.yNorthingLatitude)
         val outputCoordinateArray = coordinateOperation.transform(inputCoordinateArray)
         return createFromYLatitudeXLongitude(yLatitude = outputCoordinateArray[1], xLongitude = outputCoordinateArray[0], crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }

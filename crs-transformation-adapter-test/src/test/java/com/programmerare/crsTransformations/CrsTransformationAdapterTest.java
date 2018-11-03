@@ -92,8 +92,8 @@ final class CrsTransformationAdapterTest {
         CrsCoordinate outputCoordinateForTransformTargetCRS = crsTransformationAdapter.transformToCoordinate(inputCoordinateOriginalCRS, epsgNumberForTransformTargetCRS);
         CrsCoordinate outputCoordinateOriginalCRS = crsTransformationAdapter.transformToCoordinate(outputCoordinateForTransformTargetCRS, inputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber());
 
-        assertEquals(inputCoordinateOriginalCRS.getXLongitude(), outputCoordinateOriginalCRS.getXLongitude(), delta);
-        assertEquals(inputCoordinateOriginalCRS.getYLatitude(), outputCoordinateOriginalCRS.getYLatitude(), delta);
+        assertEquals(inputCoordinateOriginalCRS.getXEastingLongitude(), outputCoordinateOriginalCRS.getXEastingLongitude(), delta);
+        assertEquals(inputCoordinateOriginalCRS.getYNorthingLatitude(), outputCoordinateOriginalCRS.getYNorthingLatitude(), delta);
         assertEquals(inputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber(), outputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber());
     }
 
@@ -113,8 +113,8 @@ final class CrsTransformationAdapterTest {
 
         CrsCoordinate inputCoordinate = CrsCoordinateFactory.createFromXLongitudeYLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
         CrsCoordinate outputCoordinate = crsTransformationAdapter.transformToCoordinate(inputCoordinate, epsgNumberForSweref99TM);
-        assertEquals(sweref99_Y_expected, outputCoordinate.getYLatitude(), 0.5);
-        assertEquals(sweref99_X_expected, outputCoordinate.getXLongitude(), 0.5);
+        assertEquals(sweref99_Y_expected, outputCoordinate.getYNorthingLatitude(), 0.5);
+        assertEquals(sweref99_X_expected, outputCoordinate.getXEastingLongitude(), 0.5);
     }
 
     private void testTransformationFromRT90ToWgs84(CrsTransformationAdapter crsTransformationAdapter) {
@@ -127,8 +127,8 @@ final class CrsTransformationAdapterTest {
         CrsCoordinate inputCoordinate = CrsCoordinateFactory.createFromXLongitudeYLatitude(rt90_X, rt90_Y, epsgNumberForRT90);
 
         CrsCoordinate outputCoordinate = crsTransformationAdapter.transformToCoordinate(inputCoordinate, epsgNumberForWgs84);
-        assertEquals(wgs84Lat_expected, outputCoordinate.getYLatitude(), 0.1);
-        assertEquals(wgs84Lon_expected, outputCoordinate.getXLongitude(), 0.1);
+        assertEquals(wgs84Lat_expected, outputCoordinate.getYNorthingLatitude(), 0.1);
+        assertEquals(wgs84Lon_expected, outputCoordinate.getXEastingLongitude(), 0.1);
     }
 
     @ParameterizedTest
@@ -168,12 +168,12 @@ final class CrsTransformationAdapterTest {
         final CrsCoordinate outputForCoordinate2 = crsTransformationAdapter.transformToCoordinate(coordinate2, epsgNumber1);
 
         double delta = getDeltaValueForComparisons(epsgNumber2);
-        assertEquals(coordinate2.getXLongitude(), outputForCoordinate1.getXLongitude(), delta, description);
-        assertEquals(coordinate2.getYLatitude(), outputForCoordinate1.getYLatitude(), delta, description);
+        assertEquals(coordinate2.getXEastingLongitude(), outputForCoordinate1.getXEastingLongitude(), delta, description);
+        assertEquals(coordinate2.getYNorthingLatitude(), outputForCoordinate1.getYNorthingLatitude(), delta, description);
 
         delta = getDeltaValueForComparisons(epsgNumber1);
-        assertEquals(coordinate1.getXLongitude(), outputForCoordinate2.getXLongitude(), delta, description);
-        assertEquals(coordinate1.getYLatitude(), outputForCoordinate2.getYLatitude(), delta, description);
+        assertEquals(coordinate1.getXEastingLongitude(), outputForCoordinate2.getXEastingLongitude(), delta, description);
+        assertEquals(coordinate1.getYNorthingLatitude(), outputForCoordinate2.getYNorthingLatitude(), delta, description);
     }
 
     private double getDeltaValueForComparisons(CrsIdentifier crsIdentifier) {
@@ -243,10 +243,10 @@ final class CrsTransformationAdapterTest {
         CrsCoordinate outputCoordinate1 = crsTransformationAdapter1.transformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinate);
         CrsCoordinate outputCoordinate2 = crsTransformationAdapter2.transformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinate);
 
-        Supplier<String> errorMessageLongitude = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getXLongitude() - outputCoordinate2.getXLongitude());
-        Supplier<String> errorMessageLatitude = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getYLatitude() - outputCoordinate2.getYLatitude());
-        assertEquals(outputCoordinate1.getXLongitude(), outputCoordinate2.getXLongitude(), delta, errorMessageLongitude);
-        assertEquals(outputCoordinate1.getYLatitude(), outputCoordinate2.getYLatitude(), delta, errorMessageLatitude);
+        Supplier<String> errorMessageLongitude = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getXEastingLongitude() - outputCoordinate2.getXEastingLongitude());
+        Supplier<String> errorMessageLatitude = () -> "delta used: " + delta + " and the diff was " + Math.abs(outputCoordinate1.getYNorthingLatitude() - outputCoordinate2.getYNorthingLatitude());
+        assertEquals(outputCoordinate1.getXEastingLongitude(), outputCoordinate2.getXEastingLongitude(), delta, errorMessageLongitude);
+        assertEquals(outputCoordinate1.getYNorthingLatitude(), outputCoordinate2.getYNorthingLatitude(), delta, errorMessageLatitude);
         assertEquals(outputCoordinate1.getCrsIdentifier().getEpsgNumber(), outputCoordinate2.getCrsIdentifier().getEpsgNumber());
     }
 

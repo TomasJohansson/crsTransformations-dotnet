@@ -9,9 +9,9 @@ abstract class CrsTransformationAdapterBaseLeaf : CrsTransformationAdapterBase()
         try {
             val outputCoordinate = transformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
             if(
-                java.lang.Double.isNaN(outputCoordinate.yLatitude)
+                java.lang.Double.isNaN(outputCoordinate.yNorthingLatitude)
                 ||
-                java.lang.Double.isNaN(outputCoordinate.xLongitude)
+                java.lang.Double.isNaN(outputCoordinate.xEastingLongitude)
             ) {
                 return CrsTransformationResultImplementation(inputCoordinate, null, exception = null, isSuccess = false, crsTransformationAdapterResultSource = this)
             }

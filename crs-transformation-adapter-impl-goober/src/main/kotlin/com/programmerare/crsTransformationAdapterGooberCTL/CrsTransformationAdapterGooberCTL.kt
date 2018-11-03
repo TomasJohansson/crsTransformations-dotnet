@@ -37,19 +37,19 @@ class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), Cr
         // and below in the if statements they are used with extension functions
         // for semantic reasons i.e. readability.
         if(input.isRT90() && output.isWgs84()) { // procedural alternative: "if(isRT90(input) && isWgs84(output))"
-            val rt90Position = RT90Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude, rt90Projections[input])
+            val rt90Position = RT90Position(inputCoordinate.yNorthingLatitude, inputCoordinate.xEastingLongitude, rt90Projections[input])
             positionToReturn = rt90Position.toWGS84()
 
         } else if(input.isWgs84() && output.isRT90()) {
-            val wgs84Position = WGS84Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude)
+            val wgs84Position = WGS84Position(inputCoordinate.yNorthingLatitude, inputCoordinate.xEastingLongitude)
             positionToReturn = RT90Position(wgs84Position, rt90Projections[output])
 
         } else if(input.isSweref99() && output.isWgs84()) {
-            val sweREF99Position = SWEREF99Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude, sweREFProjections[input])
+            val sweREF99Position = SWEREF99Position(inputCoordinate.yNorthingLatitude, inputCoordinate.xEastingLongitude, sweREFProjections[input])
             positionToReturn = sweREF99Position.toWGS84()
 
         } else if(input.isWgs84() && output.isSweref99()) {
-            val wgs84Position = WGS84Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude)
+            val wgs84Position = WGS84Position(inputCoordinate.yNorthingLatitude, inputCoordinate.xEastingLongitude)
             positionToReturn = SWEREF99Position(wgs84Position, sweREFProjections[output])
 
         }

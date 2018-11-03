@@ -23,7 +23,7 @@ class CrsTransformationAdapterProj4J : CrsTransformationAdapterBaseLeaf(), CrsTr
         val sourceCrs = crsFactory.createFromName(inputCoordinate.crsIdentifier.crsCode)
         val targetCrs = crsFactory.createFromName(crsIdentifierForOutputCoordinateSystem.crsCode)
         val coordinateTransform = coordinateTransformFactory.createTransform(sourceCrs, targetCrs)
-        val projCoordinateInput = ProjCoordinate(inputCoordinate.xLongitude, inputCoordinate.yLatitude)
+        val projCoordinateInput = ProjCoordinate(inputCoordinate.xEastingLongitude, inputCoordinate.yNorthingLatitude)
         val projCoordinateOutput = ProjCoordinate()
         coordinateTransform.transform(projCoordinateInput, projCoordinateOutput)
         return createFromXLongitudeYLatitude(projCoordinateOutput.x, projCoordinateOutput.y, crsIdentifierForOutputCoordinateSystem)

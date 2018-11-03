@@ -85,15 +85,15 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
 
         CrsCoordinate weightedAverageCoordinate = weightedAverageResult.getOutputCoordinate();
 
-        assertEquals(coordinateWithExpectedWeightedValues.getYLatitude(), weightedAverageCoordinate.getYLatitude(), SMALL_DELTA_VALUE);
-        assertEquals(coordinateWithExpectedWeightedValues.getXLongitude(), weightedAverageCoordinate.getXLongitude(), SMALL_DELTA_VALUE);
+        assertEquals(coordinateWithExpectedWeightedValues.getYNorthingLatitude(), weightedAverageCoordinate.getYNorthingLatitude(), SMALL_DELTA_VALUE);
+        assertEquals(coordinateWithExpectedWeightedValues.getXEastingLongitude(), weightedAverageCoordinate.getXEastingLongitude(), SMALL_DELTA_VALUE);
 
         // The logic for the tests below:
         // The tested result should of course be very close to the expected result,
         // i.e. the differences (longitude and latitude differences)
         // // should be less than a very small SMALL_DELTA_VALUE value
-        final double diffLatTestedAdapter = Math.abs(coordinateWithExpectedWeightedValues.getYLatitude() - weightedAverageCoordinate.getYLatitude());
-        final double diffLonTestedAdapter = Math.abs(coordinateWithExpectedWeightedValues.getXLongitude() - weightedAverageCoordinate.getXLongitude());
+        final double diffLatTestedAdapter = Math.abs(coordinateWithExpectedWeightedValues.getYNorthingLatitude() - weightedAverageCoordinate.getYNorthingLatitude());
+        final double diffLonTestedAdapter = Math.abs(coordinateWithExpectedWeightedValues.getXEastingLongitude() - weightedAverageCoordinate.getXEastingLongitude());
         assertThat(diffLatTestedAdapter, lessThan(SMALL_DELTA_VALUE));// assertTrue(diffLatTestedAdapter < SMALL_DELTA_VALUE);
         assertThat(diffLonTestedAdapter, lessThan(SMALL_DELTA_VALUE));
 
@@ -120,10 +120,10 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         final CrsCoordinate coordinateWithExpectedWeightedValues
     ) {
         final double diffLatIndividualImplementation = Math.abs(
-            coordinateWithExpectedWeightedValues.getYLatitude() - resultCoordinateIndividualImplementation.getYLatitude()
+            coordinateWithExpectedWeightedValues.getYNorthingLatitude() - resultCoordinateIndividualImplementation.getYNorthingLatitude()
         );
         final double diffLonIndividualImplementation = Math.abs(
-            coordinateWithExpectedWeightedValues.getXLongitude() - resultCoordinateIndividualImplementation.getXLongitude()
+            coordinateWithExpectedWeightedValues.getXEastingLongitude() - resultCoordinateIndividualImplementation.getXEastingLongitude()
         );
         assertThat(diffLatIndividualImplementation, greaterThan(SMALL_DELTA_VALUE));
         assertThat(diffLonIndividualImplementation, greaterThan(SMALL_DELTA_VALUE));
@@ -131,18 +131,18 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
 
     private static CrsCoordinate createWeightedValue() {
         final double latitudeWeightedSum =
-                weightForGeoTools * resultCoordinateGeoTools.getYLatitude() +
-                weightForGoober * resultCoordinateGooberCTL.getYLatitude() +
-                weightForOrbis * resultCoordinateOrbisgisCTS.getYLatitude() +
-                weightForProj4J * resultCoordinateProj4J.getYLatitude() +
-                weightForGeoPackageNGA * resultCoordinateProj4J.getYLatitude();
+                weightForGeoTools * resultCoordinateGeoTools.getYNorthingLatitude() +
+                weightForGoober * resultCoordinateGooberCTL.getYNorthingLatitude() +
+                weightForOrbis * resultCoordinateOrbisgisCTS.getYNorthingLatitude() +
+                weightForProj4J * resultCoordinateProj4J.getYNorthingLatitude() +
+                weightForGeoPackageNGA * resultCoordinateProj4J.getYNorthingLatitude();
 
         final double longitutdeWeightedSum =
-                weightForGeoTools * resultCoordinateGeoTools.getXLongitude() +
-                weightForGoober * resultCoordinateGooberCTL.getXLongitude() +
-                weightForOrbis * resultCoordinateOrbisgisCTS.getXLongitude() +
-                weightForProj4J * resultCoordinateProj4J.getXLongitude() +
-                weightForGeoPackageNGA * resultCoordinateProj4J.getXLongitude();
+                weightForGeoTools * resultCoordinateGeoTools.getXEastingLongitude() +
+                weightForGoober * resultCoordinateGooberCTL.getXEastingLongitude() +
+                weightForOrbis * resultCoordinateOrbisgisCTS.getXEastingLongitude() +
+                weightForProj4J * resultCoordinateProj4J.getXEastingLongitude() +
+                weightForGeoPackageNGA * resultCoordinateProj4J.getXEastingLongitude();
 
         final double totWeights = weightForGeoTools + weightForGoober + weightForOrbis + weightForProj4J + weightForGeoPackageNGA;
         return CrsCoordinateFactory.createFromYLatitudeXLongitude( latitudeWeightedSum/totWeights, longitutdeWeightedSum/totWeights, EpsgNumber._3006__SWEREF99_TM__SWEDEN);

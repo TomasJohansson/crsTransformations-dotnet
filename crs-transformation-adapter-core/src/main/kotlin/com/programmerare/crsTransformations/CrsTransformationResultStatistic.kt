@@ -18,10 +18,10 @@ class CrsTransformationResultStatistic(private val results: List<CrsTransformati
     }
 
     private val _longitudes: List<Double> by lazy {
-        _sucessfulCoordinates.map { it.xLongitude }
+        _sucessfulCoordinates.map { it.xEastingLongitude }
     }
     private val _latitudes: List<Double> by lazy {
-        _sucessfulCoordinates.map { it.yLatitude }
+        _sucessfulCoordinates.map { it.yNorthingLatitude }
     }
 
     private fun getMaxDiff(values: List<Double>): Double {

@@ -32,8 +32,8 @@ internal class CompositeStrategyForWeightedAverageValue(
                 // TODO: ugly !! above
                 successCount++
                 val coord = res.outputCoordinate
-                sumLat += weight * coord.yLatitude
-                sumLon += weight * coord.xLongitude
+                sumLat += weight * coord.yNorthingLatitude
+                sumLon += weight * coord.xEastingLongitude
                 weightSum += weight
             }
         }

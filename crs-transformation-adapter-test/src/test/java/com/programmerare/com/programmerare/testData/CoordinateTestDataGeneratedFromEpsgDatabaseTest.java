@@ -422,8 +422,8 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
                     CrsCoordinate inputCoordinateWGS84 = testResultItem.getInputCoordinateWGS84();
                     //Coordinate wgs84Again = resultOfTransformationBackToWGS84.getOutputCoordinate();
                     CrsCoordinate wgs84Again = testResultItem.getCoordinateOutputTransformationBackToWGS84();
-                    final double deltaLong = Math.abs(inputCoordinateWGS84.getXLongitude() - wgs84Again.getXLongitude());
-                    final double deltaLat = Math.abs(inputCoordinateWGS84.getYLatitude() - wgs84Again.getYLatitude());
+                    final double deltaLong = Math.abs(inputCoordinateWGS84.getXEastingLongitude() - wgs84Again.getXEastingLongitude());
+                    final double deltaLat = Math.abs(inputCoordinateWGS84.getYNorthingLatitude() - wgs84Again.getYNorthingLatitude());
                     isSuccess = deltaLong < deltaLimitForSuccess && deltaLat < deltaLimitForSuccess;
                 }
             }

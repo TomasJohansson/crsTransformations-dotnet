@@ -22,7 +22,7 @@ class CrsTransformationAdapterGeoPackageNGA : CrsTransformationAdapterBaseLeaf()
         val outputEPSGnumber = crsIdentifierForOutputCoordinateSystem.epsgNumber.toLong()
         val projection = ProjectionFactory.getProjection(inputEPSGnumber) // "EPSG:4326" wgs84
         val projectionTransform = projection.getTransformation(outputEPSGnumber)  // sweref 99
-        val inputPoint = Point(inputCoordinate.xLongitude, inputCoordinate.yLatitude)
+        val inputPoint = Point(inputCoordinate.xEastingLongitude, inputCoordinate.yNorthingLatitude)
         val outputPoint = projectionTransform.transform(inputPoint)
         val outputCoordinate = createFromXLongitudeYLatitude(outputPoint.getX(), outputPoint.getY(), crsIdentifierForOutputCoordinateSystem)
         return outputCoordinate

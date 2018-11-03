@@ -20,8 +20,8 @@ class CoordinateTest {
     @Test
     void trivialCreateCoordinateTest() {
         CrsCoordinate coordinate = CrsCoordinateFactory.createFromXLongitudeYLatitude(xLongitude, yLatitude, epsgNumber);
-        assertEquals(xLongitude, coordinate.getXLongitude(), deltaTolerance);
-        assertEquals(yLatitude, coordinate.getYLatitude(), deltaTolerance);
+        assertEquals(xLongitude, coordinate.getXEastingLongitude(), deltaTolerance);
+        assertEquals(yLatitude, coordinate.getYNorthingLatitude(), deltaTolerance);
         assertEquals(epsgNumber, coordinate.getCrsIdentifier().getEpsgNumber());
     }
 
@@ -69,8 +69,8 @@ class CoordinateTest {
     }
 
     private void assertEqualCoordinates(CrsCoordinate coordinate1, CrsCoordinate coordinate2) {
-        assertEquals(coordinate1.getXLongitude(), coordinate2.getXLongitude(), deltaTolerance);
-        assertEquals(coordinate1.getYLatitude(), coordinate2.getYLatitude(), deltaTolerance);
+        assertEquals(coordinate1.getXEastingLongitude(), coordinate2.getXEastingLongitude(), deltaTolerance);
+        assertEquals(coordinate1.getYNorthingLatitude(), coordinate2.getYNorthingLatitude(), deltaTolerance);
         assertEquals(coordinate1.getCrsIdentifier(), coordinate2.getCrsIdentifier()); // data class
         assertEquals(coordinate1.getCrsIdentifier().getEpsgNumber(), coordinate2.getCrsIdentifier().getEpsgNumber());
 
@@ -84,8 +84,8 @@ class CoordinateTest {
         // Note that the above assertion is not reliable since double fields are used.
         // Example below from an assertion failure in class CrsTransformationAdapterAverageTest:
         // assertEquals(coordinateWithAverageLatitudeAndLongitude, coordinateReturnedByCompositeAdapter);
-        // Expected :Coordinate(xLongitude=674032.3572074446, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
-        // Actual   :Coordinate(xLongitude=674032.3572074447, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
+        // Expected :Coordinate(xEastingLongitude=674032.3572074446, yNorthingLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
+        // Actual   :Coordinate(xEastingLongitude=674032.3572074447, yNorthingLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
     }
 
 
@@ -206,16 +206,16 @@ class CoordinateTest {
     @Test
     void assertXequalsEastingEqualsLongitude() {
         CrsCoordinate c = CrsCoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, epsgCode);
-        assertEquals(c.getXLongitude(), c.getX());
-        assertEquals(c.getXLongitude(), c.getEasting());
-        assertEquals(c.getXLongitude(), c.getLongitude());
+        assertEquals(c.getXEastingLongitude(), c.getX());
+        assertEquals(c.getXEastingLongitude(), c.getEasting());
+        assertEquals(c.getXEastingLongitude(), c.getLongitude());
     }
 
     @Test
     void assertYequalsNorthingEqualsLatitude() {
         CrsCoordinate c = CrsCoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, epsgCode);
-        assertEquals(c.getYLatitude(), c.getY());
-        assertEquals(c.getYLatitude(), c.getNorting());
-        assertEquals(c.getYLatitude(), c.getLatitude());
+        assertEquals(c.getYNorthingLatitude(), c.getY());
+        assertEquals(c.getYNorthingLatitude(), c.getNorting());
+        assertEquals(c.getYNorthingLatitude(), c.getLatitude());
     }
 }
