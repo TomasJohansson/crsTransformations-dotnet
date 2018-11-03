@@ -54,6 +54,18 @@ fun xy(
     )
 }
 
+fun eastingNorthing(
+    easting: Double,
+    northing: Double,
+    epsgNumber: Int
+): CrsCoordinate {
+    return createFromXLongitudeYLatitude(
+        easting,
+        northing,
+        epsgNumber
+    )
+}
+
 fun lonLat(
         xLongitude: Double,
         yLatitude: Double,
@@ -95,6 +107,17 @@ fun yx(
     )
 }
 
+fun northingEasting(
+    northing: Double,
+    easting: Double,
+    epsgNumber: Int
+): CrsCoordinate {
+    return createFromXLongitudeYLatitude(
+        easting,
+        northing,
+        epsgNumber
+    )
+}
 
 fun latLon(
         yLatitude: Double,
@@ -133,6 +156,18 @@ fun xy(
             xLongitude,
             yLatitude,
             crsCode
+    )
+}
+
+fun eastingNorthing(
+    easting: Double,
+    northing: Double,
+    crsCode: String
+): CrsCoordinate {
+    return createFromXLongitudeYLatitude(
+        easting,
+        northing,
+        crsCode
     )
 }
 
@@ -176,6 +211,19 @@ fun yx(
     )
 }
 
+fun northingEasting(
+    northing: Double,
+    easting: Double,
+    crsCode: String
+): CrsCoordinate {
+    return createFromXLongitudeYLatitude(
+        easting,
+        northing,
+        crsCode
+    )
+}
+
+
 fun latLon(
         yLatitude: Double,
         xLongitude: Double,
@@ -215,6 +263,18 @@ fun yx(
     )
 }
 
+fun northingEasting(
+    northing: Double,
+    easting: Double,
+    crsIdentifier: CrsIdentifier
+): CrsCoordinate {
+    return createFromYLatitudeXLongitude(
+        northing,
+        easting,
+        crsIdentifier
+    )
+}
+
 fun latLon(
         yLatitude: Double,
         xLongitude: Double,
@@ -251,6 +311,18 @@ fun xy(
             xLongitude,
             yLatitude,
             crsIdentifier
+    )
+}
+
+fun eastingNorthing(
+    easting: Double,
+    northing: Double,
+    crsIdentifier: CrsIdentifier
+): CrsCoordinate {
+    return createFromYLatitudeXLongitude(
+        northing,
+        easting,
+        crsIdentifier
     )
 }
 
