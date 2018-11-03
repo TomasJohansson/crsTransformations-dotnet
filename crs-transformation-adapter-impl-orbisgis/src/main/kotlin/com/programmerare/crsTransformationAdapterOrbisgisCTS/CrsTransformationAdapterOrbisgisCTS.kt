@@ -29,6 +29,6 @@ class CrsTransformationAdapterOrbisgisCTS : CrsTransformationAdapterBaseLeaf(), 
         val coordinateOperation = CoordinateOperationFactory.getMostPrecise(coordinateOperations);
         val inputCoordinateArray = doubleArrayOf(inputCoordinate.xEastingLongitude, inputCoordinate.yNorthingLatitude)
         val outputCoordinateArray = coordinateOperation.transform(inputCoordinateArray)
-        return createFromYNorthingLatitudeAndXEastingLongitude(yLatitude = outputCoordinateArray[1], xLongitude = outputCoordinateArray[0], crsIdentifier = crsIdentifierForOutputCoordinateSystem)
+        return createFromYNorthingLatitudeAndXEastingLongitude(yNorthingLatitude = outputCoordinateArray[1], xEastingLongitude = outputCoordinateArray[0], crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }
 }

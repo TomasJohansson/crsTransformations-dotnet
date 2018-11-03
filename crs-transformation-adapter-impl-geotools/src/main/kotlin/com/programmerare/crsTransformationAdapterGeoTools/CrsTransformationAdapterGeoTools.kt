@@ -47,6 +47,6 @@ class CrsTransformationAdapterGeoTools : CrsTransformationAdapterBaseLeaf(), Crs
         val lon = outputCoordinate.x
         val lat = outputCoordinate.y
 
-        return createFromYNorthingLatitudeAndXEastingLongitude(yLatitude = lat, xLongitude = lon, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
+        return createFromYNorthingLatitudeAndXEastingLongitude(yNorthingLatitude = lat, xEastingLongitude = lon, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }
 }
