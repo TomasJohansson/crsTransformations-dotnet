@@ -202,4 +202,20 @@ class CoordinateTest {
         assertEquals(c1, c6_);
         assertEquals(c1, c9_);
     }
+
+    @Test
+    void assertXequalsEastingEqualsLongitude() {
+        CrsCoordinate c = CrsCoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, epsgCode);
+        assertEquals(c.getXLongitude(), c.getX());
+        assertEquals(c.getXLongitude(), c.getEasting());
+        assertEquals(c.getXLongitude(), c.getLongitude());
+    }
+
+    @Test
+    void assertYequalsNorthingEqualsLatitude() {
+        CrsCoordinate c = CrsCoordinateFactory.createFromYLatitudeXLongitude(yLatitude, xLongitude, epsgCode);
+        assertEquals(c.getYLatitude(), c.getY());
+        assertEquals(c.getYLatitude(), c.getNorting());
+        assertEquals(c.getYLatitude(), c.getLatitude());
+    }
 }
