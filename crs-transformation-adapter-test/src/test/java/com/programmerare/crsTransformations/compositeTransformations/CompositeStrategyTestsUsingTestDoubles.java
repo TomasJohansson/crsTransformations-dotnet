@@ -65,7 +65,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         leafAdapterImplementation_4 = mock(CrsTransformationAdapter.class);
         leafAdapterImplementation_5 = mock(CrsTransformationAdapter.class);
 
-        inputCoordinateSweref99 = CrsCoordinateFactory.createFromYLatitudeXLongitude(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        inputCoordinateSweref99 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
 
         CrsTransformationResult leafResult1 = new CrsTransformationResultImplementation(
             inputCoordinateSweref99,

@@ -42,7 +42,7 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
         List<Double> latitudesSorted = coordinateResultsForTheDifferentImplementations.stream().map(x -> x.getYNorthingLatitude()).collect(Collectors.toList());
         double medianLongitude = MedianValueUtility.getMedianValue(longitudesSorted);
         double medianLatitude = MedianValueUtility.getMedianValue(latitudesSorted);
-        return CrsCoordinateFactory.createFromXLongitudeYLatitude(medianLongitude, medianLatitude, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        return CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(medianLongitude, medianLatitude, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
     }
 
 }

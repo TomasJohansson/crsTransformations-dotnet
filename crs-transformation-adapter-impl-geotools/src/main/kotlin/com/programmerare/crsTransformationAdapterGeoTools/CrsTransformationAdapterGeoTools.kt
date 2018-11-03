@@ -1,7 +1,7 @@
 package com.programmerare.crsTransformationAdapterGeoTools
 
 // build.gradle: implementation("org.geotools:gt-main:20.0")
-import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
+import com.programmerare.crsTransformations.coordinate.createFromYNorthingLatitudeAndXEastingLongitude
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
@@ -47,6 +47,6 @@ class CrsTransformationAdapterGeoTools : CrsTransformationAdapterBaseLeaf(), Crs
         val lon = outputCoordinate.x
         val lat = outputCoordinate.y
 
-        return createFromYLatitudeXLongitude(yLatitude = lat, xLongitude = lon, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
+        return createFromYNorthingLatitudeAndXEastingLongitude(yLatitude = lat, xLongitude = lon, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }
 }

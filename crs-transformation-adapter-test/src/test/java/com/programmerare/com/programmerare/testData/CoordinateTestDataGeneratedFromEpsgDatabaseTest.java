@@ -370,7 +370,7 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
         long startTime = System.nanoTime();
         for (EpsgCrsAndAreaCodeWithCoordinates item : coordinatesFromGeneratedCsvFile) {
-            final CrsCoordinate inputCoordinateWGS84 = CrsCoordinateFactory.createFromXLongitudeYLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
+            final CrsCoordinate inputCoordinateWGS84 = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
             final CrsTransformationResult resultOfTransformationFromWGS84 = crsTransformationAdapter.transform(inputCoordinateWGS84, item.epsgCrsCode);
             CrsTransformationResult resultOfTransformationBackToWGS84 = null;
             if (resultOfTransformationFromWGS84.isSuccess()) {

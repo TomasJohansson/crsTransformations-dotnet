@@ -50,6 +50,6 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
         double averageLon = getAverage(resultCoordinates, c -> c.getXEastingLongitude());
         Set<CrsIdentifier> set = resultCoordinates.stream().map(c -> c.getCrsIdentifier()).collect(Collectors.toSet());
         assertEquals(1, set.size(), "all coordinates should have the same CRS, since thet should all be the result of a transform to the same CRS");
-        return CrsCoordinateFactory.createFromYLatitudeXLongitude(averageLat, averageLon, resultCoordinates.get(0).getCrsIdentifier());
+        return CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(averageLat, averageLon, resultCoordinates.get(0).getCrsIdentifier());
     }
 }

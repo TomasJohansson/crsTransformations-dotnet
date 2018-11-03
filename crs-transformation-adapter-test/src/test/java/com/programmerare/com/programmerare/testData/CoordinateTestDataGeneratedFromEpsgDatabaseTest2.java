@@ -78,7 +78,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
             System.setErr(nullStream);
 
             final EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = coordinatesFromGeneratedCsvFile.get(i);
-            final CrsCoordinate coordinateInputWgs84 = CrsCoordinateFactory.createFromYLatitudeXLongitude(epsgCrsAndAreaCodeWithCoordinates.centroidY, epsgCrsAndAreaCodeWithCoordinates.centroidX, wgs84);
+            final CrsCoordinate coordinateInputWgs84 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(epsgCrsAndAreaCodeWithCoordinates.centroidY, epsgCrsAndAreaCodeWithCoordinates.centroidX, wgs84);
 
             final CrsTransformationResult resultOutputFromWgs4 = crsTransformationComposite.transform(coordinateInputWgs84, epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode);
             if(!resultOutputFromWgs4.isSuccess()) continue;

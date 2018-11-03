@@ -4,7 +4,7 @@ import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
-import com.programmerare.crsTransformations.coordinate.createFromXLongitudeYLatitude
+import com.programmerare.crsTransformations.coordinate.createFromXEastingLongitudeAndYNorthingLatitude
 import mil.nga.sf.Point
 import mil.nga.sf.proj.ProjectionFactory
 
@@ -24,7 +24,7 @@ class CrsTransformationAdapterGeoPackageNGA : CrsTransformationAdapterBaseLeaf()
         val projectionTransform = projection.getTransformation(outputEPSGnumber)  // sweref 99
         val inputPoint = Point(inputCoordinate.xEastingLongitude, inputCoordinate.yNorthingLatitude)
         val outputPoint = projectionTransform.transform(inputPoint)
-        val outputCoordinate = createFromXLongitudeYLatitude(outputPoint.getX(), outputPoint.getY(), crsIdentifierForOutputCoordinateSystem)
+        val outputCoordinate = createFromXEastingLongitudeAndYNorthingLatitude(outputPoint.getX(), outputPoint.getY(), crsIdentifierForOutputCoordinateSystem)
         return outputCoordinate
     }
 }

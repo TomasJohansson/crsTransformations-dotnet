@@ -11,9 +11,9 @@ import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
  * The factory methods have different names depending on which order you want to specify
  * the two coordinates, and also depending on how long names you want and if you prefer x/y or lon/lat.
  * These three methods are alternatives, doing exatly the same with the same parameters:
- *  createFromXLongitudeYLatitude , xy , lonLat
+ *  createFromXEastingLongitudeAndYNorthingLatitude , xy , lonLat
  * These three methods are alternatives, doing exatly the same with the same parameters:
- *  createFromYLatitudeXLongitude , yx , latLon
+ *  createFromYNorthingLatitudeAndXEastingLongitude , yx , latLon
  */
 class CrsCoordinate internal constructor(
     val xEastingLongitude: Double,
