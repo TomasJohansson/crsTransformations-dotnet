@@ -65,7 +65,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         leafAdapterImplementation_4 = mock(CrsTransformationAdapter.class);
         leafAdapterImplementation_5 = mock(CrsTransformationAdapter.class);
 
-        inputCoordinateSweref99 = CrsCoordinateFactory.createFromYLatitudeXLongitude(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        inputCoordinateSweref99 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
 
         CrsTransformationResult leafResult1 = new CrsTransformationResultImplementation(
             inputCoordinateSweref99,
@@ -139,8 +139,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
         // Coordinate expectedAverageCoordinate = CoordinateFactory.createFromLatitudeLongitude(averageLatitude, averageLongitude);
         // assertEquals(expectedAverageCoordinate, result); // this failed because latitude was 59.31999999999999 instead of 59.32
-        assertEquals(averageLatitude,  resultCoordinate.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(averageLongitude, resultCoordinate.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(averageLatitude,  resultCoordinate.getYNorthingLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(averageLongitude, resultCoordinate.getXEastingLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
 
         assertCompositeResultHasLeafSubResults(
             averageCompositeAdapter,
@@ -154,8 +154,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
         CrsCoordinate resultCoordinate = medianCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(resultCoordinate);
 
-        assertEquals(medianLatitude,  resultCoordinate.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(medianLongitude, resultCoordinate.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(medianLatitude,  resultCoordinate.getYNorthingLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(medianLongitude, resultCoordinate.getXEastingLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
 
         assertCompositeResultHasLeafSubResults(
             medianCompositeAdapter,
@@ -171,8 +171,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
         // The assumption below (according to the setup code in the "before" method in this JUnit class)
         // is that the first adapter in the above list allLeafAdapters will return the result outputCoordinateWgs84ForImplementation_1
-        assertEquals(outputCoordinateWgs84ForImplementation_1.getYLatitude(),  resultCoordinate.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(outputCoordinateWgs84ForImplementation_1.getXLongitude(), resultCoordinate.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(outputCoordinateWgs84ForImplementation_1.getYNorthingLatitude(),  resultCoordinate.getYNorthingLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(outputCoordinateWgs84ForImplementation_1.getXEastingLongitude(), resultCoordinate.getXEastingLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
 
         assertCompositeResultHasLeafSubResults(
             chainOfResponsibilityCompositeAdapter,
@@ -196,8 +196,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
             final double weight = weights[i];
             totWeights += weight;
             final CrsCoordinate coordinate = outputCoordinates.get(i);
-            totLats += weight * coordinate.getYLatitude();
-            totLons += weight * coordinate.getXLongitude();
+            totLats += weight * coordinate.getYNorthingLatitude();
+            totLons += weight * coordinate.getXEastingLongitude();
         }
         final double weightedLat = totLats / totWeights;
         final double weightedLon = totLons / totWeights;
@@ -215,8 +215,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
         final CrsCoordinate result = weightedAverageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
         assertNotNull(result);
 
-        assertEquals(expectedWeightedAverage.getYLatitude(),  result.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(expectedWeightedAverage.getXLongitude(), result.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(expectedWeightedAverage.getYNorthingLatitude(),  result.getYNorthingLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(expectedWeightedAverage.getXEastingLongitude(), result.getXEastingLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
 
         assertCompositeResultHasLeafSubResults(
             weightedAverageCompositeAdapter,
@@ -250,8 +250,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
             CrsCoordinate c1,
             CrsCoordinate c2
     ) {
-        assertEquals(c1.getYLatitude(), c2.getYLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(c1.getXLongitude(), c2.getXLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(c1.getYNorthingLatitude(), c2.getYNorthingLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        assertEquals(c1.getXEastingLongitude(), c2.getXEastingLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
     }
 
     // --------------------------------------------------------------

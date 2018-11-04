@@ -1,5 +1,6 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
+import com.programmerare.crsTransformations.CrsTransformationAdapteeType
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import com.programmerare.crsTransformations.CrsTransformationAdapter
@@ -40,5 +41,9 @@ final class CrsTransformationAdapterComposite internal constructor(protected val
 
     override final fun isComposite(): Boolean {
         return true
+    }
+
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return compositeStrategy.getAdapteeType()
     }
 }

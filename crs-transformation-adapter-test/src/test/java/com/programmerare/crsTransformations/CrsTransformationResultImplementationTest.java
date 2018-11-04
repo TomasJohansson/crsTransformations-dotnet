@@ -26,7 +26,7 @@ public class CrsTransformationResultImplementationTest {
 
     @BeforeEach
     void beforeEach() {
-        inputCoordinate = CrsCoordinateFactory.createFromXLongitudeYLatitude(0.0, 0.0, 1234);
+        inputCoordinate = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(0.0, 0.0, 1234);
         outputCoordinate = inputCoordinate;
 
         // the mock below is currently not used any more than as a convenient way

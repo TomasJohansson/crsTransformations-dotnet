@@ -4,15 +4,15 @@
  * The Java class name: com.programmerare.crsTransformations.CoordinateFactory
  * From Kotlin code the methods are package level functions
  * and each function can be imported as if it would be a class, for example:
- *  import com.programmerare.crsTransformations.coordinate.createFromXLongitudeYLatitude
+ *  import com.programmerare.crsTransformations.coordinate.createFromXEastingLongitudeAndYNorthingLatitude
  *
  *  One advantage with using package level function instead of Kotlin object
  *  is that with a Kotlin object you can get the same kind of static
  *  method from Java code by using the Kotlin annotation '@JvmStatic'
  *  but then you would also see an "INSTANCES" like this:
- *      CoordinateFactory.INSTANCE.createFromXLongitudeYLatitude ...
+ *      CoordinateFactory.INSTANCE.createFromXEastingLongitudeAndYNorthingLatitude ...
  *  even though you can ignore it and just use:
- *      CoordinateFactory.createFromXLongitudeYLatitude ...
+ *      CoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude ...
  *  but with package level function the Java clients will not even see such an "INSTANCE".
  */
 @file:JvmName("CrsCoordinateFactory")
@@ -30,39 +30,51 @@ import com.programmerare.crsTransformations.crsIdentifier.createFromEpsgNumber
 
 // -------------------------------------------------------------------------
 
-fun createFromXLongitudeYLatitude(
-        xLongitude: Double,
-        yLatitude: Double,
-        epsgNumber: Int
+fun createFromXEastingLongitudeAndYNorthingLatitude(
+    xEastingLongitude: Double,
+    yNorthingLatitude: Double,
+    epsgNumber: Int
 ): CrsCoordinate {
-    return createFromXLongitudeYLatitude(
-            xLongitude,
-            yLatitude,
-            createFromEpsgNumber(epsgNumber)
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        xEastingLongitude,
+        yNorthingLatitude,
+        createFromEpsgNumber(epsgNumber)
     )
 }
 
 fun xy(
-        xLongitude: Double,
-        yLatitude: Double,
-        epsgNumber: Int
+    x: Double,
+    y: Double,
+    epsgNumber: Int
 ): CrsCoordinate {
-    return createFromXLongitudeYLatitude(
-            xLongitude,
-            yLatitude,
-            epsgNumber
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        x,
+        y,
+        epsgNumber
+    )
+}
+
+fun eastingNorthing(
+    easting: Double,
+    northing: Double,
+    epsgNumber: Int
+): CrsCoordinate {
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        easting,
+        northing,
+        epsgNumber
     )
 }
 
 fun lonLat(
-        xLongitude: Double,
-        yLatitude: Double,
-        epsgNumber: Int
+    longitude: Double,
+    latitude: Double,
+    epsgNumber: Int
 ): CrsCoordinate {
-    return createFromXLongitudeYLatitude(
-            xLongitude,
-            yLatitude,
-            epsgNumber
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        longitude,
+        latitude,
+        epsgNumber
     )
 }
 // -------------------------------------------------------------------------
@@ -70,81 +82,104 @@ fun lonLat(
 
 // -------------------------------------------------------------------------
 
-fun createFromYLatitudeXLongitude(
-        yLatitude: Double,
-        xLongitude: Double,
-        epsgNumber: Int
+fun createFromYNorthingLatitudeAndXEastingLongitude(
+    yNorthingLatitude: Double,
+    xEastingLongitude: Double,
+    epsgNumber: Int
 ): CrsCoordinate {
-    return createFromXLongitudeYLatitude(
-            xLongitude,
-            yLatitude,
-            createFromEpsgNumber(epsgNumber)
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        xEastingLongitude,
+        yNorthingLatitude,
+        createFromEpsgNumber(epsgNumber)
     )
 }
 
 
 fun yx(
-        yLatitude: Double,
-        xLongitude: Double,
-        epsgNumber: Int
+    y: Double,
+    x: Double,
+    epsgNumber: Int
 ): CrsCoordinate {
-    return createFromYLatitudeXLongitude(
-            yLatitude,
-            xLongitude,
-            epsgNumber
+    return createFromYNorthingLatitudeAndXEastingLongitude(
+        y,
+        x,
+        epsgNumber
     )
 }
 
+fun northingEasting(
+    northing: Double,
+    easting: Double,
+    epsgNumber: Int
+): CrsCoordinate {
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        easting,
+        northing,
+        epsgNumber
+    )
+}
 
 fun latLon(
-        yLatitude: Double,
-        xLongitude: Double,
-        epsgNumber: Int
+    latitude: Double,
+    longitude: Double,
+    epsgNumber: Int
 ): CrsCoordinate {
-    return createFromYLatitudeXLongitude(
-            yLatitude,
-            xLongitude,
-            epsgNumber
+    return createFromYNorthingLatitudeAndXEastingLongitude(
+        latitude,
+        longitude,
+        epsgNumber
     )
 }
 // -------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------
 
-fun createFromXLongitudeYLatitude(
-        xLongitude: Double,
-        yLatitude: Double,
-        crsCode: String
+fun createFromXEastingLongitudeAndYNorthingLatitude(
+    xEastingLongitude: Double,
+    yNorthingLatitude: Double,
+    crsCode: String
 ): CrsCoordinate {
-    return createFromXLongitudeYLatitude(
-            xLongitude,
-            yLatitude,
-            createFromCrsCode(crsCode)
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        xEastingLongitude,
+        yNorthingLatitude,
+        createFromCrsCode(crsCode)
     )
 }
 
 
 fun xy(
-        xLongitude: Double,
-        yLatitude: Double,
-        crsCode: String
+    x: Double,
+    y: Double,
+    crsCode: String
 ): CrsCoordinate {
-    return createFromXLongitudeYLatitude(
-            xLongitude,
-            yLatitude,
-            crsCode
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        x,
+        y,
+        crsCode
+    )
+}
+
+fun eastingNorthing(
+    easting: Double,
+    northing: Double,
+    crsCode: String
+): CrsCoordinate {
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        easting,
+        northing,
+        crsCode
     )
 }
 
 fun lonLat(
-        xLongitude: Double,
-        yLatitude: Double,
-        crsCode: String
+    longitude: Double,
+    latitude: Double,
+    crsCode: String
 ): CrsCoordinate {
-    return createFromXLongitudeYLatitude(
-            xLongitude,
-            yLatitude,
-            crsCode
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        longitude,
+        latitude,
+        crsCode
     )
 }
 // -------------------------------------------------------------------------
@@ -152,117 +187,154 @@ fun lonLat(
 
 // -------------------------------------------------------------------------
 
-fun createFromYLatitudeXLongitude(
-        yLatitude: Double,
-        xLongitude: Double,
-        crsCode: String
+fun createFromYNorthingLatitudeAndXEastingLongitude(
+    yNorthingLatitude: Double,
+    xEastingLongitude: Double,
+    crsCode: String
 ): CrsCoordinate {
-    return createFromXLongitudeYLatitude(
-            xLongitude,
-            yLatitude,
-            createFromCrsCode(crsCode)
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        xEastingLongitude,
+        yNorthingLatitude,
+        createFromCrsCode(crsCode)
     )
 }
 
 fun yx(
-        yLatitude: Double,
-        xLongitude: Double,
-        crsCode: String
+    y: Double,
+    x: Double,
+    crsCode: String
 ): CrsCoordinate {
-    return createFromYLatitudeXLongitude(
-            yLatitude,
-            xLongitude,
-            crsCode
+    return createFromYNorthingLatitudeAndXEastingLongitude(
+        y,
+        x,
+        crsCode
     )
 }
+
+fun northingEasting(
+    northing: Double,
+    easting: Double,
+    crsCode: String
+): CrsCoordinate {
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        easting,
+        northing,
+        crsCode
+    )
+}
+
 
 fun latLon(
-        yLatitude: Double,
-        xLongitude: Double,
-        crsCode: String
+    latitude: Double,
+    longitude: Double,
+    crsCode: String
 ): CrsCoordinate {
-    return createFromYLatitudeXLongitude(
-            yLatitude,
-            xLongitude,
-            crsCode
+    return createFromYNorthingLatitudeAndXEastingLongitude(
+        latitude,
+        longitude,
+        crsCode
     )
 }
 // -------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------
 
-fun createFromYLatitudeXLongitude(
-        yLatitude: Double,
-        xLongitude: Double,
-        crsIdentifier: CrsIdentifier
+fun createFromYNorthingLatitudeAndXEastingLongitude(
+    yNorthingLatitude: Double,
+    xEastingLongitude: Double,
+    crsIdentifier: CrsIdentifier
 ): CrsCoordinate {
-    return createFromXLongitudeYLatitude(
-            xLongitude,
-            yLatitude,
-            crsIdentifier
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        xEastingLongitude,
+        yNorthingLatitude,
+        crsIdentifier
     )
 }
 
 fun yx(
-        yLatitude: Double,
-        xLongitude: Double,
-        crsIdentifier: CrsIdentifier
+    y: Double,
+    x: Double,
+    crsIdentifier: CrsIdentifier
 ): CrsCoordinate {
-    return createFromYLatitudeXLongitude(
-            yLatitude,
-            xLongitude,
-            crsIdentifier
+    return createFromYNorthingLatitudeAndXEastingLongitude(
+        y,
+        x,
+        crsIdentifier
+    )
+}
+
+fun northingEasting(
+    northing: Double,
+    easting: Double,
+    crsIdentifier: CrsIdentifier
+): CrsCoordinate {
+    return createFromYNorthingLatitudeAndXEastingLongitude(
+        northing,
+        easting,
+        crsIdentifier
     )
 }
 
 fun latLon(
-        yLatitude: Double,
-        xLongitude: Double,
-        crsIdentifier: CrsIdentifier
+    latitude: Double,
+    longitude: Double,
+    crsIdentifier: CrsIdentifier
 ): CrsCoordinate {
-    return createFromYLatitudeXLongitude(
-            yLatitude,
-            xLongitude,
-            crsIdentifier
+    return createFromYNorthingLatitudeAndXEastingLongitude(
+        latitude,
+        longitude,
+        crsIdentifier
     )
 }
 // -------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------
 
-fun createFromXLongitudeYLatitude(
-        xLongitude: Double,
-        yLatitude: Double,
-        crsIdentifier: CrsIdentifier
+fun createFromXEastingLongitudeAndYNorthingLatitude(
+    xEastingLongitude: Double,
+    yNorthingLatitude: Double,
+    crsIdentifier: CrsIdentifier
 ): CrsCoordinate {
     return CrsCoordinate(
-            xLongitude,
-            yLatitude,
-            crsIdentifier
+        xEastingLongitude,
+        yNorthingLatitude,
+        crsIdentifier
     )
 }
 
 fun xy(
-        xLongitude: Double,
-        yLatitude: Double,
-        crsIdentifier: CrsIdentifier
+    x: Double,
+    y: Double,
+    crsIdentifier: CrsIdentifier
 ): CrsCoordinate {
-    return createFromXLongitudeYLatitude(
-            xLongitude,
-            yLatitude,
-            crsIdentifier
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        x,
+        y,
+        crsIdentifier
+    )
+}
+
+fun eastingNorthing(
+    easting: Double,
+    northing: Double,
+    crsIdentifier: CrsIdentifier
+): CrsCoordinate {
+    return createFromYNorthingLatitudeAndXEastingLongitude(
+        northing,
+        easting,
+        crsIdentifier
     )
 }
 
 fun lonLat(
-        xLongitude: Double,
-        yLatitude: Double,
-        crsIdentifier: CrsIdentifier
+    longitude: Double,
+    latitude: Double,
+    crsIdentifier: CrsIdentifier
 ): CrsCoordinate {
-    return createFromXLongitudeYLatitude(
-            xLongitude,
-            yLatitude,
-            crsIdentifier
+    return createFromXEastingLongitudeAndYNorthingLatitude(
+        longitude,
+        latitude,
+        crsIdentifier
     )
 }
 // -------------------------------------------------------------------------
@@ -281,23 +353,23 @@ private val COORDINATE_REFERENCE_SYSTEM_WGS84 = createFromEpsgNumber(4326)
  */
 
 fun createFromLongitudeLatitude(
-        longitude: Double,
-        latitude: Double
+    longitude: Double,
+    latitude: Double
 ): CrsCoordinate {
     return CrsCoordinate(
-            longitude,
-            latitude,
-            COORDINATE_REFERENCE_SYSTEM_WGS84
+        longitude,
+        latitude,
+        COORDINATE_REFERENCE_SYSTEM_WGS84
     )
 }
 
 fun lonLat(
-        longitude: Double,
-        latitude: Double
+    longitude: Double,
+    latitude: Double
 ): CrsCoordinate {
     return createFromLongitudeLatitude(
-            longitude,
-            latitude
+        longitude,
+        latitude
     )
 }
 // -------------------------------------------------------------------------
@@ -307,23 +379,23 @@ fun lonLat(
  * The "GPS coordinate system" WGS84 is assumed when using this factory method.
  */
 fun createFromLatitudeLongitude(
-        latitude: Double,
-        longitude: Double
+    latitude: Double,
+    longitude: Double
 ): CrsCoordinate {
     return CrsCoordinate(
-            longitude,
-            latitude,
-            COORDINATE_REFERENCE_SYSTEM_WGS84
+        longitude,
+        latitude,
+        COORDINATE_REFERENCE_SYSTEM_WGS84
     )
 }
 
 fun latLon(
-        latitude: Double,
-        longitude: Double
+    latitude: Double,
+    longitude: Double
 ): CrsCoordinate {
     return createFromLatitudeLongitude(
-            latitude,
-            longitude
+        latitude,
+        longitude
     )
 }
 // -------------------------------------------------------------------------

@@ -1,7 +1,7 @@
 package com.programmerare.crsTransformations
 
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
-import com.programmerare.crsTransformations.coordinate.createFromXLongitudeYLatitude
+import com.programmerare.crsTransformations.coordinate.createFromXEastingLongitudeAndYNorthingLatitude
 import com.programmerare.crsTransformations.utils.MedianValueUtility
 import java.lang.RuntimeException
 
@@ -18,10 +18,10 @@ class CrsTransformationResultStatistic(private val results: List<CrsTransformati
     }
 
     private val _longitudes: List<Double> by lazy {
-        _sucessfulCoordinates.map { it.xLongitude }
+        _sucessfulCoordinates.map { it.xEastingLongitude }
     }
     private val _latitudes: List<Double> by lazy {
-        _sucessfulCoordinates.map { it.yLatitude }
+        _sucessfulCoordinates.map { it.yNorthingLatitude }
     }
 
     private fun getMaxDiff(values: List<Double>): Double {
@@ -54,11 +54,11 @@ class CrsTransformationResultStatistic(private val results: List<CrsTransformati
     private val _coordinateMedian: CrsCoordinate by lazy {
         val lon = MedianValueUtility.getMedianValue(_longitudes)
         val lat = MedianValueUtility.getMedianValue(_latitudes)
-        val coord = createFromXLongitudeYLatitude(lon, lat, _sucessfulCoordinates.get(0).crsIdentifier)
+        val coord = createFromXEastingLongitudeAndYNorthingLatitude(lon, lat, _sucessfulCoordinates.get(0).crsIdentifier)
         coord
     }
     private val _coordinateAverage: CrsCoordinate by lazy {
-        createFromXLongitudeYLatitude(_longitudes.average(), _latitudes.average(), _sucessfulCoordinates.get(0).crsIdentifier)
+        createFromXEastingLongitudeAndYNorthingLatitude(_longitudes.average(), _latitudes.average(), _sucessfulCoordinates.get(0).crsIdentifier)
     }
 
 

@@ -1,11 +1,12 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
+import com.programmerare.crsTransformations.CrsTransformationAdapteeType
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationResult
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import com.programmerare.crsTransformations.CrsTransformationResultImplementation
-import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
+import com.programmerare.crsTransformations.coordinate.createFromYNorthingLatitudeAndXEastingLongitude
 
 internal class CompositeStrategyForWeightedAverageValue(
         private val crsTransformationAdapters: List<CrsTransformationAdapter>,
@@ -32,15 +33,15 @@ internal class CompositeStrategyForWeightedAverageValue(
                 // TODO: ugly !! above
                 successCount++
                 val coord = res.outputCoordinate
-                sumLat += weight * coord.yLatitude
-                sumLon += weight * coord.xLongitude
+                sumLat += weight * coord.yNorthingLatitude
+                sumLon += weight * coord.xEastingLongitude
                 weightSum += weight
             }
         }
         if(successCount > 0) {
             var avgLat = sumLat / weightSum
             var avgLon = sumLon / weightSum
-            val coordRes = createFromYLatitudeXLongitude(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
+            val coordRes = createFromYNorthingLatitudeAndXEastingLongitude(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
             return CrsTransformationResultImplementation(
                 inputCoordinate,
                 outputCoordinate = coordRes,
@@ -79,5 +80,9 @@ internal class CompositeStrategyForWeightedAverageValue(
             }
             return CompositeStrategyForWeightedAverageValue(adapters, map)
         }
+    }
+
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return CrsTransformationAdapteeType.COMPOSITE_WEIGHTED_AVERAGE
     }
 }

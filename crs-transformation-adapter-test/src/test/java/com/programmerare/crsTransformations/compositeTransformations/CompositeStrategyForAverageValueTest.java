@@ -34,11 +34,11 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
 
         CrsCoordinate coordinateReturnedByCompositeAdapter = averageResult.getOutputCoordinate();
 
-        assertEquals(coordinateWithAverageLatitudeAndLongitude.getXLongitude(), coordinateReturnedByCompositeAdapter.getXLongitude(), delta);
-        assertEquals(coordinateWithAverageLatitudeAndLongitude.getYLatitude(), coordinateReturnedByCompositeAdapter.getYLatitude(), delta);
+        assertEquals(coordinateWithAverageLatitudeAndLongitude.getXEastingLongitude(), coordinateReturnedByCompositeAdapter.getXEastingLongitude(), delta);
+        assertEquals(coordinateWithAverageLatitudeAndLongitude.getYNorthingLatitude(), coordinateReturnedByCompositeAdapter.getYNorthingLatitude(), delta);
         // assertEquals(coordinateWithAverageLatitudeAndLongitude, coordinateReturnedByCompositeAdapter);
-        // Expected :Coordinate(xLongitude=674032.3572074446, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
-        // Actual   :Coordinate(xLongitude=674032.3572074447, yLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
+        // Expected :Coordinate(xEastingLongitude=674032.3572074446, yNorthingLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
+        // Actual   :Coordinate(xEastingLongitude=674032.3572074447, yNorthingLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
     }
 
     private double getAverage(List<CrsCoordinate> resultCoordinates, ToDoubleFunction<? super CrsCoordinate> mapperReturningDoubleValueForAverageCalculation) {
@@ -46,10 +46,10 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
     }
 
     private CrsCoordinate calculateAverageCoordinate(List<CrsCoordinate> resultCoordinates) {
-        double averageLat = getAverage(resultCoordinates, c -> c.getYLatitude());
-        double averageLon = getAverage(resultCoordinates, c -> c.getXLongitude());
+        double averageLat = getAverage(resultCoordinates, c -> c.getYNorthingLatitude());
+        double averageLon = getAverage(resultCoordinates, c -> c.getXEastingLongitude());
         Set<CrsIdentifier> set = resultCoordinates.stream().map(c -> c.getCrsIdentifier()).collect(Collectors.toSet());
         assertEquals(1, set.size(), "all coordinates should have the same CRS, since thet should all be the result of a transform to the same CRS");
-        return CrsCoordinateFactory.createFromYLatitudeXLongitude(averageLat, averageLon, resultCoordinates.get(0).getCrsIdentifier());
+        return CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(averageLat, averageLon, resultCoordinates.get(0).getCrsIdentifier());
     }
 }

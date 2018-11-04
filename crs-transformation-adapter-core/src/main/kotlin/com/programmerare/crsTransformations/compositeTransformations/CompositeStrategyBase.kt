@@ -50,4 +50,7 @@ internal abstract class CompositeStrategyBase
         }
     }
 
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return CrsTransformationAdapteeType.UNSPECIFIED_COMPOSITE
+    }
 }

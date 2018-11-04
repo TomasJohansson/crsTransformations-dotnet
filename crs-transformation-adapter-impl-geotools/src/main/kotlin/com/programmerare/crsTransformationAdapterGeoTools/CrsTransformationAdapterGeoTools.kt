@@ -1,7 +1,8 @@
 package com.programmerare.crsTransformationAdapterGeoTools
 
 // build.gradle: implementation("org.geotools:gt-main:20.0")
-import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
+import com.programmerare.crsTransformations.CrsTransformationAdapteeType
+import com.programmerare.crsTransformations.coordinate.createFromYNorthingLatitudeAndXEastingLongitude
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
@@ -33,20 +34,32 @@ class CrsTransformationAdapterGeoTools : CrsTransformationAdapterBaseLeaf(), Crs
         val mathTransform: MathTransform = CRS.findMathTransform(sourceCRS, targetCRS)
 
         /*
-        val sourceArray = doubleArrayOf(inputCoordinate.xLongitude, inputCoordinate.yLatitude)
+        val sourceArray = doubleArrayOf(inputCoordinate.xEastingLongitude, inputCoordinate.yNorthingLatitude)
         val destinationArray = doubleArrayOf(0.0, 0.0)
         JTS.xform(transform, sourceArray, destinationArray)
         val lon = destinationArray[0]
         val lat = destinationArray[1]
         */
         // the above implementation is an alternative to the below implementation
-        val inputPoint = geometryFactory.createPoint(org.locationtech.jts.geom.Coordinate(inputCoordinate.xLongitude, inputCoordinate.yLatitude))
+        val inputPoint = geometryFactory.createPoint(org.locationtech.jts.geom.Coordinate(inputCoordinate.xEastingLongitude, inputCoordinate.yNorthingLatitude))
         val sourceGeometry = inputPoint
         val outputGeometry = JTS.transform(sourceGeometry, mathTransform)
         val outputCoordinate = outputGeometry.coordinate
         val lon = outputCoordinate.x
         val lat = outputCoordinate.y
 
-        return createFromYLatitudeXLongitude(yLatitude = lat, xLongitude = lon, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
+        return createFromYNorthingLatitudeAndXEastingLongitude(yNorthingLatitude = lat, xEastingLongitude = lon, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }
+
+    // ----------------------------------------------------------
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return CrsTransformationAdapteeType.LEAF_GEOTOOLS_20_0
+    }
+    // The purpose of the method below is to use it in test code
+    // for detecting upgrades to a new version (and then update the above method returned enum value)
+    // Future failure will be a reminder to update the above enum value
+    protected override fun getNameOfJarFileOrEmptyString(): String {
+        return super.getNameOfJarFileFromProtectionDomain(JTS::class.java.protectionDomain)
+    }
+    // ----------------------------------------------------------
 }

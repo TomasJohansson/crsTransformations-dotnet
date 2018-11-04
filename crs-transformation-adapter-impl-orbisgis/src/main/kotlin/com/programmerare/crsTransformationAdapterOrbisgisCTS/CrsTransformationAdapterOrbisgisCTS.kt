@@ -1,10 +1,11 @@
 package com.programmerare.crsTransformationAdapterOrbisgisCTS
 
+import com.programmerare.crsTransformations.CrsTransformationAdapteeType
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
-import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
+import com.programmerare.crsTransformations.coordinate.createFromYNorthingLatitudeAndXEastingLongitude
 import org.cts.CRSFactory;
 import org.cts.crs.GeodeticCRS;
 import org.cts.op.CoordinateOperationFactory;
@@ -27,8 +28,20 @@ class CrsTransformationAdapterOrbisgisCTS : CrsTransformationAdapterBaseLeaf(), 
         val outputCRSgeodetic = outputCRS as GeodeticCRS
         val coordinateOperations = CoordinateOperationFactory.createCoordinateOperations(inputCRSgeodetic, outputCRSgeodetic)
         val coordinateOperation = CoordinateOperationFactory.getMostPrecise(coordinateOperations);
-        val inputCoordinateArray = doubleArrayOf(inputCoordinate.xLongitude, inputCoordinate.yLatitude)
+        val inputCoordinateArray = doubleArrayOf(inputCoordinate.xEastingLongitude, inputCoordinate.yNorthingLatitude)
         val outputCoordinateArray = coordinateOperation.transform(inputCoordinateArray)
-        return createFromYLatitudeXLongitude(yLatitude = outputCoordinateArray[1], xLongitude = outputCoordinateArray[0], crsIdentifier = crsIdentifierForOutputCoordinateSystem)
+        return createFromYNorthingLatitudeAndXEastingLongitude(yNorthingLatitude = outputCoordinateArray[1], xEastingLongitude = outputCoordinateArray[0], crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }
+
+    // ----------------------------------------------------------
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return CrsTransformationAdapteeType.LEAF_ORBISGIS_1_5_1
+    }
+    // The purpose of the method below is to use it in test code
+    // for detecting upgrades to a new version (and then update the above method returned enum value)
+    // Future failure will be a reminder to update the above enum value
+    protected override fun getNameOfJarFileOrEmptyString(): String {
+        return super.getNameOfJarFileFromProtectionDomain(GeodeticCRS::class.java.protectionDomain)
+    }
+    // ----------------------------------------------------------
 }

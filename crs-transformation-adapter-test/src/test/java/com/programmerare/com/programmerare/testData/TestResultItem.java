@@ -46,13 +46,13 @@ public class TestResultItem {
         epsgCrsCode = "" + item.epsgCrsCode;
         if (resultOfTransformationFromWGS84 != null && resultOfTransformationFromWGS84.isSuccess()) {
             final CrsCoordinate outputCoordinate = resultOfTransformationFromWGS84.getOutputCoordinate();
-            epsgTargetSourceX = "" + outputCoordinate.getXLongitude();
-            epsgTargetSourceY = "" + outputCoordinate.getYLatitude();
+            epsgTargetSourceX = "" + outputCoordinate.getXEastingLongitude();
+            epsgTargetSourceY = "" + outputCoordinate.getYNorthingLatitude();
         }
         if (resultOfTransformationBackToWGS84 != null && resultOfTransformationBackToWGS84.isSuccess()) {
             final CrsCoordinate outputCoordinate = resultOfTransformationBackToWGS84.getOutputCoordinate();
-            wgs84targetX = "" + outputCoordinate.getXLongitude();
-            wgs84targetY = "" + outputCoordinate.getYLatitude();
+            wgs84targetX = "" + outputCoordinate.getXEastingLongitude();
+            wgs84targetY = "" + outputCoordinate.getYNorthingLatitude();
         }
     }
 

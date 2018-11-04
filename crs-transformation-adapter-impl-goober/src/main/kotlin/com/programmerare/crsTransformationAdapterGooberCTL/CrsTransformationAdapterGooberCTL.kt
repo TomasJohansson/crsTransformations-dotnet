@@ -6,11 +6,12 @@ import com.github.goober.coordinatetransformation.positions.RT90Position
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position
 import com.github.goober.coordinatetransformation.positions.SWEREF99Position.SWEREFProjection
 import com.github.goober.coordinatetransformation.positions.WGS84Position
+import com.programmerare.crsTransformations.CrsTransformationAdapteeType
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
-import com.programmerare.crsTransformations.coordinate.createFromYLatitudeXLongitude
+import com.programmerare.crsTransformations.coordinate.createFromYNorthingLatitudeAndXEastingLongitude
 import java.util.*
 
 // " goober/coordinate-transformation-library "
@@ -37,25 +38,25 @@ class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), Cr
         // and below in the if statements they are used with extension functions
         // for semantic reasons i.e. readability.
         if(input.isRT90() && output.isWgs84()) { // procedural alternative: "if(isRT90(input) && isWgs84(output))"
-            val rt90Position = RT90Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude, rt90Projections[input])
+            val rt90Position = RT90Position(inputCoordinate.yNorthingLatitude, inputCoordinate.xEastingLongitude, rt90Projections[input])
             positionToReturn = rt90Position.toWGS84()
 
         } else if(input.isWgs84() && output.isRT90()) {
-            val wgs84Position = WGS84Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude)
+            val wgs84Position = WGS84Position(inputCoordinate.yNorthingLatitude, inputCoordinate.xEastingLongitude)
             positionToReturn = RT90Position(wgs84Position, rt90Projections[output])
 
         } else if(input.isSweref99() && output.isWgs84()) {
-            val sweREF99Position = SWEREF99Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude, sweREFProjections[input])
+            val sweREF99Position = SWEREF99Position(inputCoordinate.yNorthingLatitude, inputCoordinate.xEastingLongitude, sweREFProjections[input])
             positionToReturn = sweREF99Position.toWGS84()
 
         } else if(input.isWgs84() && output.isSweref99()) {
-            val wgs84Position = WGS84Position(inputCoordinate.yLatitude, inputCoordinate.xLongitude)
+            val wgs84Position = WGS84Position(inputCoordinate.yNorthingLatitude, inputCoordinate.xEastingLongitude)
             positionToReturn = SWEREF99Position(wgs84Position, sweREFProjections[output])
 
         }
 
         if (positionToReturn != null) {
-            return createFromYLatitudeXLongitude(yLatitude = positionToReturn.latitude, xLongitude = positionToReturn.longitude, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
+            return createFromYNorthingLatitudeAndXEastingLongitude(yNorthingLatitude = positionToReturn.latitude, xEastingLongitude = positionToReturn.longitude, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
         } else if (
             // not direct support for transforming directly between SWEREF99 and RT90
             // but can do it by first transforming to WGS84 and then to the other
@@ -126,4 +127,17 @@ class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), Cr
             sweREFProjections.put(3018, SWEREFProjection.sweref_99_23_15)    // EPSG:3018: SWEREF99 23 15	https://epsg.io/3018
         }
     }
+
+
+    // ----------------------------------------------------------
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return CrsTransformationAdapteeType.LEAF_GOOBER_1_1
+    }
+    // The purpose of the method below is to use it in test code
+    // for detecting upgrades to a new version (and then update the above method returned enum value)
+    // Future failure will be a reminder to update the above enum value
+    protected override fun getNameOfJarFileOrEmptyString(): String {
+        return super.getNameOfJarFileFromProtectionDomain(WGS84Position::class.java.protectionDomain)
+    }
+    // ----------------------------------------------------------
 }
