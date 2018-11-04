@@ -25,8 +25,8 @@ public class CrsTransformationAdapterCompositeTest {
 
         final int actualNumberOfResults = crsTransformationResultStatistic.getNumberOfResults();
         assertEquals(5, actualNumberOfResults); // fragile but will be very easy to detect and fix if/when a new implementation is added to the factory
-        final double actualMaxDiffXLongitude = crsTransformationResultStatistic.getMaxDiffXLongitude();
-        final double actualMaxDiffYLatitude = crsTransformationResultStatistic.getMaxDiffYLatitude();
+        final double actualMaxDiffXLongitude = crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude();
+        final double actualMaxDiffYLatitude = crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude();
         final double actualMaxDiffXorY = Math.max(actualMaxDiffXLongitude, actualMaxDiffYLatitude);
 
         assertTrue(resultWhenTransformingToSwedishCRS.isReliable(actualNumberOfResults, actualMaxDiffXorY));

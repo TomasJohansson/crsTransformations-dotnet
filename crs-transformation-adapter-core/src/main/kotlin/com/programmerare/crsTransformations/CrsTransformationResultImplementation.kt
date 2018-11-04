@@ -59,8 +59,8 @@ class CrsTransformationResultImplementation(
         maxDeltaValueForXLongitudeAndYLatitude: Double
     ): Boolean {
         val numberOfResults = this.crsTransformationResultStatistic.getNumberOfResults()
-        val maxX = this.crsTransformationResultStatistic.getMaxDiffXLongitude()
-        val maxY = this.crsTransformationResultStatistic.getMaxDiffYLatitude()
+        val maxX = this.crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude()
+        val maxY = this.crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude()
         val okNumber = numberOfResults >= minimumNumberOfSuccesfulResults
         val okX = maxX <= maxDeltaValueForXLongitudeAndYLatitude
         val okY = maxY <= maxDeltaValueForXLongitudeAndYLatitude

@@ -123,8 +123,8 @@ public class CrsTransformationResultImplementationTest {
         assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
 
         assertEquals(4, crsTransformationResultStatistic.getNumberOfResults());
-        assertEquals(expectedLatDiffMax, crsTransformationResultStatistic.getMaxDiffYLatitude());
-        assertEquals(expectedLonDiffMax, crsTransformationResultStatistic.getMaxDiffXLongitude());
+        assertEquals(expectedLatDiffMax, crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude());
+        assertEquals(expectedLonDiffMax, crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude());
 
         final CrsCoordinate coordinateAverage = crsTransformationResultStatistic.getCoordinateAverage();
         final CrsCoordinate coordinateMean = crsTransformationResultStatistic.getCoordinateMedian();

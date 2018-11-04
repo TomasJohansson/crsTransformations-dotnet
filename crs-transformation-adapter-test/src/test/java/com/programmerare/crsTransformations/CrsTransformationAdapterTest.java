@@ -309,8 +309,8 @@ final class CrsTransformationAdapterTest {
         assertNotNull(crsTransformationResultStatistic);
         assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
         assertEquals(1, crsTransformationResultStatistic.getNumberOfResults());
-        assertEquals(0, crsTransformationResultStatistic.getMaxDiffYLatitude());
-        assertEquals(0, crsTransformationResultStatistic.getMaxDiffXLongitude());
+        assertEquals(0, crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude());
+        assertEquals(0, crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude());
         assertEquals(transformResult.getOutputCoordinate(), crsTransformationResultStatistic.getCoordinateAverage());
         assertEquals(transformResult.getOutputCoordinate(), crsTransformationResultStatistic.getCoordinateMedian());
     }
