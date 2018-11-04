@@ -15,11 +15,10 @@ Java version 1.8 is used as the build target.
 * https://github.com/ngageoint/geopackage-java
 * https://github.com/goober/coordinate-transformation-library
 
-
 # Release information
 This code project is work in progress.
 Currently no artifact has been distributed to the "Central Repository" ([Sonatype OSSRH](https://central.sonatype.org/pages/ossrh-guide.html) "Open Source Software Repository Hosting Service").
-However, it still possible to use through [jitpack](https://jitpack.io)  (the [build based on git commit 2e48782a9b65ec41ddba0d58165c5c0140071a15](https://jitpack.io/com/github/TomasJohansson/crsTransformations/2e48782a9b65ec41ddba0d58165c5c0140071a15/build.log)).
+However, it still possible to use through [jitpack](https://jitpack.io)  (the [build based on git commit 6b5ba13a544446a1a7b70439fa09672ac1220bd6](https://jitpack.io/com/github/TomasJohansson/crsTransformations/6b5ba13a544446a1a7b70439fa09672ac1220bd6/build.log)).
 In the maven pom.xml you can add jitpack as below:
 ```xml
 	<repositories>
@@ -30,34 +29,34 @@ In the maven pom.xml you can add jitpack as below:
 	</repositories>
 ```
 
-Then you can add the following dependencies to retrieve the jar files based on [git commit 2e48782a9b65ec41ddba0d58165c5c0140071a15](https://github.com/TomasJohansson/crsTransformations/commit/2e48782a9b65ec41ddba0d58165c5c0140071a15).
+Then you can add the following dependencies to retrieve the jar files based on [git commit 6b5ba13a544446a1a7b70439fa09672ac1220bd6](https://github.com/TomasJohansson/crsTransformations/commit/6b5ba13a544446a1a7b70439fa09672ac1220bd6).
 
 ```xml
 	<dependencies>
 		<dependency>
 		    <groupId>com.github.TomasJohansson.crsTransformations</groupId>
 		    <artifactId>crs-transformation-constants</artifactId>
-		    <version>2e48782a9b65ec41ddba0d58165c5c0140071a15</version>
+		    <version>6b5ba13a544446a1a7b70439fa09672ac1220bd6</version>
 		</dependency> 	 
 	  	<dependency>
 			<groupId>com.github.TomasJohansson.crsTransformations</groupId>
 			<artifactId>crs-transformation-adapter-impl-goober</artifactId>
-			<version>2e48782a9b65ec41ddba0d58165c5c0140071a15</version>    	
+			<version>6b5ba13a544446a1a7b70439fa09672ac1220bd6</version>    	
 	  	</dependency>
 	  	<dependency>
 			<groupId>com.github.TomasJohansson.crsTransformations</groupId>
 			<artifactId>crs-transformation-adapter-impl-orbisgis</artifactId>
-			<version>2e48782a9b65ec41ddba0d58165c5c0140071a15</version>
+			<version>6b5ba13a544446a1a7b70439fa09672ac1220bd6</version>
 	  	</dependency>		
 	  	<dependency>
 			<groupId>com.github.TomasJohansson.crsTransformations</groupId>
 			<artifactId>crs-transformation-adapter-impl-proj4j</artifactId>
-			<version>2e48782a9b65ec41ddba0d58165c5c0140071a15</version>
+			<version>6b5ba13a544446a1a7b70439fa09672ac1220bd6</version>
 	  	</dependency>
 	  	<dependency>
 			<groupId>com.github.TomasJohansson.crsTransformations</groupId>
 			<artifactId>crs-transformation-adapter-impl-nga</artifactId>
-			<version>2e48782a9b65ec41ddba0d58165c5c0140071a15</version>
+			<version>6b5ba13a544446a1a7b70439fa09672ac1220bd6</version>
 	  	</dependency>	  	
 	</dependencies>
 ```
@@ -93,8 +92,8 @@ import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
     // This code example is using a "composite" which will use multiple libraries to do the same transformation and then 
     // return a coordinate with the median values (median of the northing values and median of the easting values)  
     crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian();
-    // The above factory will try to use those know objects which implements the interface i.e. the number 
-    // of "leaf" objects will depende on how many you included in for example the maven pom file (four in the above maven example)
+    // The above factory will try to use those known objects which implements the interface i.e. the number 
+    // of "leaf" objects will depend on how many you included in for example the maven pom file (four in the above maven example)
 
     // Transform the WGS84 coordinate to a SWEREF99TM coordinate:
     CrsCoordinate centralStockholmSweRef = crsTransformationAdapter.transformToCoordinate(centralStockholmWgs84, epsgSweRef);
@@ -167,7 +166,7 @@ import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
             // The above "long" names will be for example:
             //      com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS
             //      com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J
-            // The above "long" names will be for example:
+            // The above "short" names will be for example:
             //      OrbisgisCTS
             //      Proj4J
             System.out.println("adaptee: " + resultAdapter.getAdapteeType());
@@ -175,7 +174,7 @@ import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
             //      LEAF_ORBISGIS_1_5_1
             //      LEAF_PROJ4J_0_1_0
             // (note that the version number is included for the adaptees)
-            System.out.println("isComposite: " + resultAdapter.isComposite()); // "false" since we are iteraing "leaf" results
+            System.out.println("isComposite: " + resultAdapter.isComposite()); // "false" since we are iterating "leaf" results
             System.out.println("Coordinate result for " + resultAdapter.getAdapteeType() + " : " + crsTransformationResultLeaf.getOutputCoordinate());
             // The above row will output these rows when doing the iteration:
             //      Coordinate result for LEAF_GOOBER_1_1 : Coordinate(xEastingLongitude=674032.357, yNorthingLatitude=6580821.991, crsIdentifier=CrsIdentifier(crsCode='EPSG:3006', isEpsgCode=true, epsgNumber=3006))
@@ -190,22 +189,21 @@ import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
         }
         // The result object also provides convenience methods for the results (which you of course otherwise might calculate by iterating the above results)
         CrsTransformationResultStatistic crsTransformationResultStatistic = centralStockholmResultSweRef.getCrsTransformationResultStatistic();
-        // Note that the initially created composite was a "median composite" returning the median as the main value, but 
-        // you can also create an average composite but regardless, you can access both the median and the average with the aggregated statistics object:
+        // Note that the initially created composite was a "median composite" returning the median as the main value, 
+        // but you can also create an average composite and regardless you can access both the median and the average with the aggregated statistics object:
         System.out.println("average coordinate: " + crsTransformationResultStatistic.getCoordinateAverage());
         System.out.println("median coordinate: " + crsTransformationResultStatistic.getCoordinateMedian());
         // Console output from the above two rows:
         //  average coordinate: Coordinate(xEastingLongitude=674032.357244767, yNorthingLatitude=6580821.99109206, crsIdentifier=CrsIdentifier(crsCode='EPSG:3006', isEpsgCode=true, epsgNumber=3006))
         //  median coordinate: Coordinate(xEastingLongitude=674032.3573263118, yNorthingLatitude=6580821.991122329, crsIdentifier=CrsIdentifier(crsCode='EPSG:3006', isEpsgCode=true, epsgNumber=3006))
 
-        System.out.println("MaxDiffXLongitude: " + crsTransformationResultStatistic.getMaxDiffXLongitude());
-        System.out.println("MaxDiffYLatitude: " + crsTransformationResultStatistic.getMaxDiffYLatitude());
+        System.out.println("MaxDifferenceForXEastingLongitude: " + crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude());
+        System.out.println("MaxDifferenceForYNorthingLatitude: " + crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude());
         // Output from the above two rows:
-        //      MaxDiffXLongitude: 3.264440456405282E-4
-        //      MaxDiffYLatitude: 1.2357905507087708E-4
+        //      MaxDifferenceForXEastingLongitude: 3.264440456405282E-4
+        //      MaxDifferenceForYNorthingLatitude: 1.2357905507087708E-4
         // As you can see in the above iteration, the min and max x values are 674032.357 and 674032.357326444 (and the difference is 0.000326444).
         // Similarly the min and max y values are 6580821.991 and 6580821.991123579 (and the difference is 0.000123579).
         // The above "maxDiff" methods are used within the implementation of the convenience method 'isReliable' (also illustrated in this example further above)  
     }
-
 ```
