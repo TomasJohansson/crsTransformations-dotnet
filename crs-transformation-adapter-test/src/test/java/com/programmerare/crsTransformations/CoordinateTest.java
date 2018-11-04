@@ -215,7 +215,7 @@ class CoordinateTest {
     void assertYequalsNorthingEqualsLatitude() {
         CrsCoordinate c = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgCode);
         assertEquals(c.getYNorthingLatitude(), c.getY());
-        assertEquals(c.getYNorthingLatitude(), c.getNorting());
+        assertEquals(c.getYNorthingLatitude(), c.getNorthing());
         assertEquals(c.getYNorthingLatitude(), c.getLatitude());
     }
 }

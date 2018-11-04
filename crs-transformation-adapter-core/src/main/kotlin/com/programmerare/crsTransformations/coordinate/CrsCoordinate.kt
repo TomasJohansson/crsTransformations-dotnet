@@ -39,7 +39,7 @@ class CrsCoordinate internal constructor(
     fun getY(): Double {
         return yNorthingLatitude
     }
-    fun getNorting(): Double {
+    fun getNorthing(): Double {
         return yNorthingLatitude
     }
     fun getLatitude(): Double {
