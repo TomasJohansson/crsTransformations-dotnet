@@ -1,5 +1,6 @@
 package com.programmerare.crsTransformationAdapterOrbisgisCTS
 
+import com.programmerare.crsTransformations.CrsTransformationAdapteeType
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
@@ -31,4 +32,16 @@ class CrsTransformationAdapterOrbisgisCTS : CrsTransformationAdapterBaseLeaf(), 
         val outputCoordinateArray = coordinateOperation.transform(inputCoordinateArray)
         return createFromYNorthingLatitudeAndXEastingLongitude(yNorthingLatitude = outputCoordinateArray[1], xEastingLongitude = outputCoordinateArray[0], crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }
+
+    // ----------------------------------------------------------
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return CrsTransformationAdapteeType.LEAF_ORBISGIS_1_5_1
+    }
+    // The purpose of the method below is to use it in test code
+    // for detecting upgrades to a new version (and then update the above method returned enum value)
+    // Future failure will be a reminder to update the above enum value
+    protected override fun getNameOfJarFileOrEmptyString(): String {
+        return super.getNameOfJarFileFromProtectionDomain(GeodeticCRS::class.java.protectionDomain)
+    }
+    // ----------------------------------------------------------
 }

@@ -41,4 +41,8 @@ internal class CompositeStrategyForChainOfResponsibility(
             )
         }
     }
+
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return CrsTransformationAdapteeType.COMPOSITE_CHAIN_OF_RESPONSIBILITY
+    }
 }

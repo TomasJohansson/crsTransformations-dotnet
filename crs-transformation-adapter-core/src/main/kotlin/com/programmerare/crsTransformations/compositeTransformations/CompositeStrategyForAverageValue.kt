@@ -27,4 +27,8 @@ internal class CompositeStrategyForAverageValue(
             { resultsStatistic.getCoordinateAverage() }
         )
    }
+
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return CrsTransformationAdapteeType.COMPOSITE_AVERAGE
+    }
 }

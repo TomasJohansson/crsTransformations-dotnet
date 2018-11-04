@@ -1,5 +1,6 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
+import com.programmerare.crsTransformations.CrsTransformationAdapteeType
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationResult
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
@@ -79,5 +80,9 @@ internal class CompositeStrategyForWeightedAverageValue(
             }
             return CompositeStrategyForWeightedAverageValue(adapters, map)
         }
+    }
+
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return CrsTransformationAdapteeType.COMPOSITE_WEIGHTED_AVERAGE
     }
 }

@@ -1,5 +1,6 @@
 package com.programmerare.crsTransformations.compositeTransformations
 
+import com.programmerare.crsTransformations.CrsTransformationAdapteeType
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import com.programmerare.crsTransformations.CrsTransformationAdapter
@@ -16,4 +17,6 @@ internal interface CompositeStrategy {
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
             crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): CrsTransformationResult
+
+    fun getAdapteeType() : CrsTransformationAdapteeType
 }

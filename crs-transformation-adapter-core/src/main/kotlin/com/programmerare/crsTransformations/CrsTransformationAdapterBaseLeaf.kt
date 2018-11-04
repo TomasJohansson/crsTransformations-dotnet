@@ -31,4 +31,8 @@ abstract class CrsTransformationAdapterBaseLeaf : CrsTransformationAdapterBase()
     override final fun isComposite(): Boolean {
         return false
     }
+
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return CrsTransformationAdapteeType.UNSPECIFIED_LEAF
+    }
 }

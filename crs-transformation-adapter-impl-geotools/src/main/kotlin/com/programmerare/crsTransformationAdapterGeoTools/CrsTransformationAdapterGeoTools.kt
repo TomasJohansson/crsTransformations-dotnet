@@ -1,6 +1,7 @@
 package com.programmerare.crsTransformationAdapterGeoTools
 
 // build.gradle: implementation("org.geotools:gt-main:20.0")
+import com.programmerare.crsTransformations.CrsTransformationAdapteeType
 import com.programmerare.crsTransformations.coordinate.createFromYNorthingLatitudeAndXEastingLongitude
 import com.programmerare.crsTransformations.CrsTransformationAdapterBaseLeaf
 import com.programmerare.crsTransformations.CrsTransformationAdapter
@@ -49,4 +50,16 @@ class CrsTransformationAdapterGeoTools : CrsTransformationAdapterBaseLeaf(), Crs
 
         return createFromYNorthingLatitudeAndXEastingLongitude(yNorthingLatitude = lat, xEastingLongitude = lon, crsIdentifier = crsIdentifierForOutputCoordinateSystem)
     }
+
+    // ----------------------------------------------------------
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return CrsTransformationAdapteeType.LEAF_GEOTOOLS_20_0
+    }
+    // The purpose of the method below is to use it in test code
+    // for detecting upgrades to a new version (and then update the above method returned enum value)
+    // Future failure will be a reminder to update the above enum value
+    protected override fun getNameOfJarFileOrEmptyString(): String {
+        return super.getNameOfJarFileFromProtectionDomain(JTS::class.java.protectionDomain)
+    }
+    // ----------------------------------------------------------
 }

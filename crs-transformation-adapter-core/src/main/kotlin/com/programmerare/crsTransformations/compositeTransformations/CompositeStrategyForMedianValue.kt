@@ -27,4 +27,8 @@ internal class CompositeStrategyForMedianValue(
             { resultsStatistic.getCoordinateMedian() }
         )
     }
+
+    override fun getAdapteeType() : CrsTransformationAdapteeType {
+        return CrsTransformationAdapteeType.COMPOSITE_MEDIAN
+    }
 }

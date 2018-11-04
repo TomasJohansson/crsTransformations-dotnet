@@ -108,6 +108,7 @@ project(':crs-transformation-adapter-impl-geotools') {
         // https://mvnrepository.com/artifact/org.geotools/gt-main?repo=boundless
         implementation("org.geotools:gt-main:20.0") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
         implementation("org.geotools:gt-epsg-hsql:20.0") // runtime exception if this is not included: org.opengis.referencing.NoSuchAuthorityCodeException: No code "EPSG:4326" from authority "EPSG" found for object of type "EngineeringCRS".
+        // test code will detect upgrades with the purpose to update an enum if the file name changes from "gt-api-20.0.jar"
 
         // temporary disabling the below dependency becaause of jitpack problem not finding the jar file 
         // implementation("javax.media:jai_core:1.1.3") // otherwise geotools causes this: Could not find jai_core.jar (javax.media:jai_core:1.1.3)
@@ -142,6 +143,7 @@ project(':crs-transformation-adapter-impl-goober') {
 
         // https://mvnrepository.com/artifact/com.github.goober/coordinate-transformation-library
         implementation("com.github.goober:coordinate-transformation-library:1.1") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
+        // test code will detect upgrades with the purpose to update an enum if the file name changes from "coordinate-transformation-library-1.1.jar"
     }
     publishing {
         publications {
@@ -163,6 +165,7 @@ project(':crs-transformation-adapter-impl-orbisgis') {
 
         // https://mvnrepository.com/artifact/org.orbisgis/cts
         implementation("org.orbisgis:cts:1.5.1") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
+        // test code will detect upgrades with the purpose to update an enum if the file name changes from "cts-1.5.1.jar"
     }
     publishing {
         publications {
@@ -184,6 +187,7 @@ project(':crs-transformation-adapter-impl-proj4j') {
 
         // https://mvnrepository.com/artifact/org.osgeo/proj4j
         implementation("org.osgeo:proj4j:0.1.0") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
+        // test code will detect upgrades with the purpose to update an enum if the file name changes from "proj4j-0.1.0.jar"
     }
     publishing {
         publications {
@@ -207,6 +211,7 @@ project(':crs-transformation-adapter-impl-nga') {
         // https://github.com/ngageoint/GeoPackage
         implementation group: 'mil.nga.geopackage', name: 'geopackage', version: '3.1.0' // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
         implementation group: 'mil.nga.geopackage', name: 'geopackage-core', version: '3.1.0'
+        // test code will detect upgrades with the purpose to update an enum if the file name changes from "geopackage-core-3.1.0.jar"
     }
     publishing {
         publications {
