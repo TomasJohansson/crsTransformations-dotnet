@@ -39,7 +39,7 @@ class CrsTransformationResultStatistic(private val results: List<CrsTransformati
         getMaxDiff(_latitudes)
     }
 
-    fun getMaxDiffYLatitude(): Double {
+    fun getMaxDifferenceForYNorthingLatitude(): Double {
         return _maxDiffLatitudes
     }
 
@@ -47,7 +47,7 @@ class CrsTransformationResultStatistic(private val results: List<CrsTransformati
         getMaxDiff(_longitudes)
     }
 
-    fun getMaxDiffXLongitude(): Double {
+    fun getMaxDifferenceForXEastingLongitude(): Double {
         return _maxDiffLongitudes
     }
 

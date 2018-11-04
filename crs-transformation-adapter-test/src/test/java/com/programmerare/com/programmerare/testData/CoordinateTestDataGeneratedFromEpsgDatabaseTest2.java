@@ -90,9 +90,9 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
             assertNotNull(crsTransformationResultStatistic);
             assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
             if(
-                crsTransformationResultStatistic.getMaxDiffXLongitude() > deltaDiff
+                crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude() > deltaDiff
                 ||
-                crsTransformationResultStatistic.getMaxDiffYLatitude() > deltaDiff
+                crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude() > deltaDiff
             ) {
                 transformResultsWithLargeDifferences.add(resultWhenTransformedBackToWgs84);
             }
@@ -106,8 +106,8 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
             final CrsTransformationResult transformResult = transformResultsWithLargeDifferences.get(i);
             System.out.println("----------------------------------------");
             System.out.println("epsg " + transformResult.getInputCoordinate().getCrsIdentifier().getCrsCode());
-            System.out.println("MaxDiffYLatitude : " + transformResult.getCrsTransformationResultStatistic().getMaxDiffYLatitude());
-            System.out.println("MaxDiffYLongitude: " + transformResult.getCrsTransformationResultStatistic().getMaxDiffXLongitude());
+            System.out.println("MaxDiffYLatitude : " + transformResult.getCrsTransformationResultStatistic().getMaxDifferenceForYNorthingLatitude());
+            System.out.println("MaxDiffYLongitude: " + transformResult.getCrsTransformationResultStatistic().getMaxDifferenceForXEastingLongitude());
             final List<CrsTransformationResult> subResults = transformResult.getTransformationResultChildren();
             for (int j = 0; j <subResults.size() ; j++) {
                 final CrsTransformationResult subTransformResult = subResults.get(j);
@@ -130,7 +130,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
         assertNotNull(crsTransformationResultStatistic);
         assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
         assertEquals(5, crsTransformationResultStatistic.getNumberOfResults());
-        assertEquals(1.4857726637274027E-4, crsTransformationResultStatistic.getMaxDiffXLongitude());
+        assertEquals(1.4857726637274027E-4, crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude());
     }
 
     private PrintStream getNullStreamToAvoidOutputFromSystemOutAndSystemErr() {

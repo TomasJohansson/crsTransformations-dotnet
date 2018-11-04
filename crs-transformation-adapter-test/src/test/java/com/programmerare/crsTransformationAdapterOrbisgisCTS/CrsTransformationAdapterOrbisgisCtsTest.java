@@ -51,8 +51,8 @@ public class CrsTransformationAdapterOrbisgisCtsTest {
 
         final int actualNumberOfResults = crsTransformationResultStatistic.getNumberOfResults();
         assertEquals(1, actualNumberOfResults);
-        final double actualMaxDiffXLongitude = crsTransformationResultStatistic.getMaxDiffXLongitude();
-        final double actualMaxDiffYLatitude = crsTransformationResultStatistic.getMaxDiffYLatitude();
+        final double actualMaxDiffXLongitude = crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude();
+        final double actualMaxDiffYLatitude = crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude();
         final double actualMaxDiffXorY = Math.max(actualMaxDiffXLongitude, actualMaxDiffYLatitude);
         assertEquals(0, actualMaxDiffXorY); // zero differences since there should be only one result !
 
