@@ -40,6 +40,8 @@ allprojects {
         jcenter()
         google()
     }
+	
+
 }
 		
 subprojects {
@@ -99,7 +101,6 @@ subprojects {
 // (with the new version number in the file suffix) and compared with previous result
 // (e.g. comparing the files manually with WinMerge until more automation has been implemented)
 // ---------------------------------------------------------------------------
-/*
 project(':crs-transformation-adapter-impl-geotools') {
     dependencies {
         implementation project(':crs-transformation-adapter-core')
@@ -109,8 +110,7 @@ project(':crs-transformation-adapter-impl-geotools') {
         implementation("org.geotools:gt-epsg-hsql:20.0") // runtime exception if this is not included: org.opengis.referencing.NoSuchAuthorityCodeException: No code "EPSG:4326" from authority "EPSG" found for object of type "EngineeringCRS".
         // test code will detect upgrades with the purpose to update an enum if the file name changes from "gt-api-20.0.jar"
 
-        // temporary disabling the below dependency becaause of jitpack problem not finding the jar file 
-        // implementation("javax.media:jai_core:1.1.3") // otherwise geotools causes this: Could not find jai_core.jar (javax.media:jai_core:1.1.3)
+        implementation("javax.media:jai_core:1.1.3") // otherwise geotools causes this: Could not find jai_core.jar (javax.media:jai_core:1.1.3)
 
         // https://mvnrepository.com/artifact/org.geotools/gt-data?repo=boundless
         // https://mvnrepository.com/artifact/org.geotools/gt-shapefile?repo=boundless
@@ -135,7 +135,7 @@ project(':crs-transformation-adapter-impl-geotools') {
         }
     }
 }
-*/
+
 project(':crs-transformation-adapter-impl-goober') {
     dependencies {
         implementation project(':crs-transformation-adapter-core')
@@ -228,9 +228,7 @@ project(':crs-transformation-adapter-impl-nga') {
 
 project(':crs-transformation-adapter-test') {
     dependencies {
-        // implementation project(':crs-transformation-adapter-core'), project(':crs-transformation-adapter-impl-orbisgis'), project(':crs-transformation-adapter-impl-goober'), project(':crs-transformation-adapter-impl-geotools'), project(':crs-transformation-adapter-impl-proj4j'), project(':crs-transformation-adapter-impl-nga'), project(':crs-transformation-constants')
-		// the above row includes geotools which is temporary disabled because of jitpack problems , https://github.com/TomasJohansson/crsTransformations/commit/6b570bf811b9ea7d51c620d451e5526f886c24d3
-		implementation project(':crs-transformation-adapter-core'), project(':crs-transformation-adapter-impl-orbisgis'), project(':crs-transformation-adapter-impl-goober'), project(':crs-transformation-adapter-impl-proj4j'), project(':crs-transformation-adapter-impl-nga'), project(':crs-transformation-constants')
+        implementation project(':crs-transformation-adapter-core'), project(':crs-transformation-adapter-impl-orbisgis'), project(':crs-transformation-adapter-impl-goober'), project(':crs-transformation-adapter-impl-geotools'), project(':crs-transformation-adapter-impl-proj4j'), project(':crs-transformation-adapter-impl-nga'), project(':crs-transformation-constants')
         // https://mvnrepository.com/artifact/org.geotools/gt-shapefile
 //        implementation("group:org.geotools:gt-shapefile:19.1")
 //        implementation("group:org.geotools:gt-data:19.1")
@@ -253,7 +251,6 @@ project(':crs-transformation-adapter-test') {
     }
 }
 
-/*
 project(':crs-transformation-code-generation') {
     // command line execution  examples:
     // gradle generateClassesWithEpsgConstants --args="v9_5_4 epsg_version_9_5_4 dbUserName dbUserPassword java"
@@ -292,11 +289,7 @@ project(':crs-transformation-code-generation') {
         // https://mvnrepository.com/artifact/org.geotools/gt-main?repo=boundless
 //        implementation("org.geotools:gt-main:20.0") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
 //        implementation("org.geotools:gt-epsg-hsql:20.0") // runtime exception if this is not included: org.opengis.referencing.NoSuchAuthorityCodeException: No code "EPSG:4326" from authority "EPSG" found for object of type "EngineeringCRS".
-
-//        implementation("javax.media:jai_core:1.1.3") // otherwise geotools causes this: Could not find jai_core.jar  (javax.media:jai_core:1.1.3)
-            //https://issues.sonatype.org/browse/MVNCENTRAL-341
-            // https://issues.gradle.org/browse/GRADLE-2395
-
+//        implementation("javax.media:jai_core:1.1.3") // otherwise geotools causes this: Could not find jai_core.jar (javax.media:jai_core:1.1.3)
         // https://mvnrepository.com/artifact/org.geotools/gt-data?repo=boundless
         // https://mvnrepository.com/artifact/org.geotools/gt-shapefile?repo=boundless
         // https://mvnrepository.com/artifact/org.geotools/gt-main?repo=boundless
@@ -308,7 +301,6 @@ project(':crs-transformation-code-generation') {
         implementation group: 'org.geotools', name: 'gt-shapefile', version: '20.0'        
     }
 }
-*/
 
 project(':crs-transformation-adapter-core') {
     publishing {
