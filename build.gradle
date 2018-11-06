@@ -21,7 +21,7 @@ plugins {
 }
 
 ext.crsTransformationGroupId = 'com.programmerare.crs-transformation'
-ext.crsTransformationVersion = '0.47-SNAPSHOT'
+ext.crsTransformationVersion = '0.51-SNAPSHOT'
 group = rootProject.crsTransformationGroupId
 version = rootProject.crsTransformationVersion
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
@@ -74,6 +74,17 @@ subprojects { p->
         classifier = 'javadoc'
         from javadoc.destinationDir
     }
+	
+    // TODO rename the above "javadocJar" to "dokkadocJar" and the below to javadoc ....
+	
+    task javadoc2(type: Javadoc) {
+        source = sourceSets.main.allJava
+    }
+    task javadocJar2(type: Jar, dependsOn: javadoc2) {
+        classifier = 'javadoc'
+        from javadoc.destinationDir
+    }
+	
 
     task sourcesJar(type: Jar, dependsOn: classes) {
         classifier = 'sources'
@@ -379,7 +390,8 @@ project(':crs-transformation-constants') {
                 artifactId = 'crs-transformation-constants'
                 from components.java
                 artifact sourcesJar
-                // artifact javadocJar // should be enabled but currently disabled since it takes a very long time
+                // artifact javadocJar // the task currently named javadocJar is actually dokka but takes avery long time (I gave up after i hour 45 minutes ...)
+				artifact javadocJar2 // about 2 minutes ... 
             }
         }
     }
