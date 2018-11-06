@@ -21,12 +21,15 @@ plugins {
 }
 
 ext.crsTransformationGroupId = 'com.programmerare.crs-transformation'
-ext.crsTransformationVersion = '0.36-SNAPSHOT'
+ext.crsTransformationVersion = '0.47-SNAPSHOT'
 group = rootProject.crsTransformationGroupId
 version = rootProject.crsTransformationVersion
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 allprojects {
+    group = rootProject.crsTransformationGroupId
+    version = rootProject.crsTransformationVersion
+
     repositories {
         maven {
             url "https://download.osgeo.org/webdav/geotools/"
@@ -82,7 +85,7 @@ subprojects { p->
             // implementation("org.jetbrains.kotlin:kotlin-runtime:$kotlin_version")
             // "Kotlin Runtime (deprecated, use kotlin-stdlib artifact instead)"
             // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-runtime
-            
+
             implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
             // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8/
         }
