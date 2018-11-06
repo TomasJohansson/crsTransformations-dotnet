@@ -21,7 +21,7 @@ plugins {
 }
 
 ext.crsTransformationGroupId = 'com.programmerare.crs-transformation'
-ext.crsTransformationVersion = '0.51-SNAPSHOT'
+ext.crsTransformationVersion = '0.52-SNAPSHOT'
 group = rootProject.crsTransformationGroupId
 version = rootProject.crsTransformationVersion
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
@@ -70,17 +70,15 @@ subprojects { p->
         outputDirectory = javadoc.destinationDir
     }
 
-    task javadocJar(type: Jar, dependsOn: dokkaJavadoc) {
+    task dokkadocJar(type: Jar, dependsOn: dokkaJavadoc) {
         classifier = 'javadoc'
         from javadoc.destinationDir
     }
 	
-    // TODO rename the above "javadocJar" to "dokkadocJar" and the below to javadoc ....
-	
-    task javadoc2(type: Javadoc) {
+    task javadocTask(type: Javadoc) {
         source = sourceSets.main.allJava
     }
-    task javadocJar2(type: Jar, dependsOn: javadoc2) {
+    task javadocJar(type: Jar, dependsOn: javadocTask) {
         classifier = 'javadoc'
         from javadoc.destinationDir
     }
@@ -153,7 +151,7 @@ project(':crs-transformation-adapter-impl-geotools') {
                 artifactId = 'crs-transformation-adapter-impl-geotools'
                 from components.java
                 artifact sourcesJar
-                artifact javadocJar
+                artifact dokkadocJar
             }
         }
     }
@@ -173,7 +171,7 @@ project(':crs-transformation-adapter-impl-goober') {
                 artifactId = 'crs-transformation-adapter-impl-goober'
                 from components.java
                 artifact sourcesJar
-                artifact javadocJar
+                artifact dokkadocJar
             }
         }
     }
@@ -193,7 +191,7 @@ project(':crs-transformation-adapter-impl-orbisgis') {
                 artifactId = 'crs-transformation-adapter-impl-orbisgis'
                 from components.java
                 artifact sourcesJar
-                artifact javadocJar
+                artifact dokkadocJar
             }
         }
     }
@@ -213,7 +211,7 @@ project(':crs-transformation-adapter-impl-proj4j') {
                 artifactId = 'crs-transformation-adapter-impl-proj4j'
                 from components.java
                 artifact sourcesJar
-                artifact javadocJar
+                artifact dokkadocJar
             }
         }
     }    
@@ -235,7 +233,7 @@ project(':crs-transformation-adapter-impl-nga') {
                 artifactId = 'crs-transformation-adapter-impl-nga'
                 from components.java
                 artifact sourcesJar
-                artifact javadocJar
+                artifact dokkadocJar
             }
         }
     }
@@ -329,7 +327,7 @@ project(':crs-transformation-adapter-core') {
                 artifactId = 'crs-transformation-adapter-core'
                 from components.java
                 artifact sourcesJar
-                artifact javadocJar
+                artifact dokkadocJar
 
                 pom {
                     // https://central.sonatype.org/pages/requirements.html
@@ -390,8 +388,7 @@ project(':crs-transformation-constants') {
                 artifactId = 'crs-transformation-constants'
                 from components.java
                 artifact sourcesJar
-                // artifact javadocJar // the task currently named javadocJar is actually dokka but takes avery long time (I gave up after i hour 45 minutes ...)
-				artifact javadocJar2 // about 2 minutes ... 
+                artifact javadocJar // Only Java code in this project. No Kotlin. Therfore not using dokkadoc here
             }
         }
     }
