@@ -24,6 +24,7 @@ ext.crsTransformationGroupId = 'com.programmerare.crs-transformation'
 ext.crsTransformationVersion = '0.36-SNAPSHOT'
 group = rootProject.crsTransformationGroupId
 version = rootProject.crsTransformationVersion
+ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
 
 allprojects {
     repositories {
@@ -379,7 +380,12 @@ project(':crs-transformation-constants') {
     }
 }
 
+tasks.withType(Sign) {
+    onlyIf { isReleaseVersion }
+}
+// https://docs.gradle.org/current/userguide/signing_plugin.html
 signing {
+    // required { isReleaseVersion }
     sign publishing.publications.crstransformationscore
 }
 
