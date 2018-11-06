@@ -1,5 +1,5 @@
 buildscript {
-    ext.kotlin_version = '1.2.71'
+    ext.kotlin_version = '1.3.0'
 
     repositories {
         mavenCentral()
@@ -7,7 +7,6 @@ buildscript {
 
     dependencies {
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
-
         // https://mvnrepository.com/artifact/org.jetbrains.dokka/dokka-gradle-plugin
         // https://github.com/JetBrains/kotlin-examples/blob/master/gradle/dokka-gradle-example/build.gradle
         classpath "org.jetbrains.dokka:dokka-gradle-plugin:0.9.16"
@@ -20,7 +19,7 @@ plugins {
     // which you can verify by running "gradlew tasks" (i.e. run the command with and without the above 'maven-publish')
 }
 
-ext.crsTransformationVersion = '0.9'
+ext.crsTransformationVersion = '0.30'
 
 allprojects {
     repositories {
@@ -77,8 +76,12 @@ subprojects {
     }
 
     dependencies {
-        implementation("org.jetbrains.kotlin:kotlin-runtime:$kotlin_version")
+        // implementation("org.jetbrains.kotlin:kotlin-runtime:$kotlin_version")
+        // "Kotlin Runtime (deprecated, use kotlin-stdlib artifact instead)"
+        // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-runtime
+
         implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8:$kotlin_version")
+        // https://mvnrepository.com/artifact/org.jetbrains.kotlin/kotlin-stdlib-jdk8/
     }
     test {
         // Enable JUnit 5 (Gradle 4.6+).
