@@ -19,7 +19,9 @@ plugins {
     // which you can verify by running "gradlew tasks" (i.e. run the command with and without the above 'maven-publish')
 }
 
-ext.crsTransformationVersion = '0.30'
+// ext.crsTransformationVersion = '0.30'
+group = 'com.programmerare.crs-transformation'
+version = '0.30' // rootProject.crsTransformationVersion
 
 allprojects {
     repositories {
@@ -47,9 +49,6 @@ subprojects {
     apply plugin: 'java'
     apply plugin: 'kotlin'
     apply plugin: 'org.jetbrains.dokka'
-
-    group = 'com.programmerare.crs-transformation'
-    version = rootProject.crsTransformationVersion
 
     sourceCompatibility = 1.8
     compileKotlin {
@@ -133,9 +132,7 @@ project(':crs-transformation-adapter-impl-geotools') {
     publishing {
         publications {
             crstransformationsgeotools(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-adapter-impl-geotools'
-                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -155,9 +152,7 @@ project(':crs-transformation-adapter-impl-goober') {
     publishing {
         publications {
             crstransformationsgoober(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-adapter-impl-goober'
-                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -177,9 +172,7 @@ project(':crs-transformation-adapter-impl-orbisgis') {
     publishing {
         publications {
             crstransformationsorbisgis(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-adapter-impl-orbisgis'
-                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -199,9 +192,7 @@ project(':crs-transformation-adapter-impl-proj4j') {
     publishing {
         publications {
             crstransformationsproj4j(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-adapter-impl-proj4j'
-                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -223,9 +214,7 @@ project(':crs-transformation-adapter-impl-nga') {
     publishing {
         publications {
             crstransformationsnga(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-adapter-impl-nga'
-                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -319,9 +308,7 @@ project(':crs-transformation-adapter-core') {
     publishing {
         publications {
             crstransformationscore(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-adapter-core'
-                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
@@ -340,9 +327,7 @@ project(':crs-transformation-constants') {
     publishing {
         publications {
             crstransformationsconstants(MavenPublication) {
-                groupId = 'com.programmerare.crs-transformation'
                 artifactId = 'crs-transformation-constants'
-                version = rootProject.crsTransformationVersion
                 from components.java
                 artifact sourcesJar
                 // artifact javadocJar // should be enabled but currently disabled since it takes a very long time
