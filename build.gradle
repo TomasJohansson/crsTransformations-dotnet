@@ -386,9 +386,48 @@ project(':crs-transformation-constants') {
         publications {
             crstransformationsconstants(MavenPublication) {
                 artifactId = 'crs-transformation-constants'
+                version = '9.5.4'
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar // Only Java code in this project. No Kotlin. Therfore not using dokkadoc here
+                pom {
+                    // https://central.sonatype.org/pages/requirements.html
+                    // A common and acceptable practice for name is to assemble it from the coordinates using Maven properties:
+                    // gradlew publishCrstransformationsconstantsPublicationToMavenRepository
+                    name = rootProject.crsTransformationGroupId + ":" + artifactId
+                    description = 'Constants with EPSG codes for Coordinate Reference Systems. The version number is the same as the EPSG database at http://www.epsg.org or http://www.epsg-registry.org'
+                    url = 'https://github.com/TomasJohansson/crsTransformations'
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'https://github.com/TomasJohansson/crsTransformations'
+                            comments = 'MIT license for this library with Java constants for EPSG codes. '
+                        }
+                        license {
+                            name = 'The EPSG database is published by IOGP at no charge. Distribution for profit is forbidden. See the URL for detailed information.'
+                            url = 'http://www.epsg.org/TermsOfUse.aspx'
+                        }
+                    }
+                    developers {
+                        developer {
+                            name = 'Tomas Johansson'
+                            organizationUrl = 'https://github.com/TomasJohansson'
+                        }
+                        developer {
+                            name = 'IOGP'
+                            organizationUrl = 'http://www.epsg.org'
+                        }
+                        developer {
+                            name = 'IOGP'
+                            organizationUrl = 'https://www.epsg-registry.org'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com/TomasJohansson/crsTransformations.git'
+                        developerConnection = 'scm:git:ssh://github.com/TomasJohansson/crsTransformations.git'
+                        url = 'https://github.com/TomasJohansson/crsTransformations'
+                    }
+                }
             }
         }
     }
