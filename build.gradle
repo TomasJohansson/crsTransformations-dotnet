@@ -106,11 +106,16 @@ project(':crs-transformation-adapter-impl-geotools') {
         implementation project(':crs-transformation-adapter-core')
 
         // https://mvnrepository.com/artifact/org.geotools/gt-main?repo=boundless
-        implementation("org.geotools:gt-main:20.0") // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
-        implementation("org.geotools:gt-epsg-hsql:20.0") // runtime exception if this is not included: org.opengis.referencing.NoSuchAuthorityCodeException: No code "EPSG:4326" from authority "EPSG" found for object of type "EngineeringCRS".
+        // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
         // test code will detect upgrades with the purpose to update an enum if the file name changes from "gt-api-20.0.jar"
-
-        implementation("javax.media:jai_core:1.1.3") // otherwise geotools causes this: Could not find jai_core.jar (javax.media:jai_core:1.1.3)
+        implementation("org.geotools:gt-main:20.0"){
+            exclude group: 'javax.media', module: 'jai_core'
+            // https://docs.gradle.org/current/userguide/managing_transitive_dependencies.html
+        }
+        implementation("org.geotools:gt-epsg-hsql:20.0") { // runtime exception if this is not included: org.opengis.referencing.NoSuchAuthorityCodeException: No code "EPSG:4326" from authority "EPSG" found for object of type "EngineeringCRS".
+            exclude group: 'javax.media', module: 'jai_core'
+        }
+        // implementation("javax.media:jai_core:1.1.3") // otherwise geotools causes this: Could not find jai_core.jar (javax.media:jai_core:1.1.3)
 
         // https://mvnrepository.com/artifact/org.geotools/gt-data?repo=boundless
         // https://mvnrepository.com/artifact/org.geotools/gt-shapefile?repo=boundless
@@ -297,8 +302,13 @@ project(':crs-transformation-code-generation') {
         // http://geotools.org/
         // https://sourceforge.net/projects/geotools/
         // Used for shapefile parsing in the code generation module:
-        implementation group: 'org.geotools', name: 'gt-data', version: '20.0' // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
-        implementation group: 'org.geotools', name: 'gt-shapefile', version: '20.0'        
+        // NOTE that if you upgrade then use file CoordinateTestDataGeneratedFromEpsgDatabaseTest
+        implementation("org.geotools:gt-data:20.0"){
+            exclude group: 'javax.media', module: 'jai_core'
+        }
+        implementation("org.geotools:gt-shapefile:20.0") {
+            exclude group: 'javax.media', module: 'jai_core'
+        }		
     }
 }
 
