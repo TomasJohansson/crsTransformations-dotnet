@@ -17,11 +17,13 @@ plugins {
     id 'maven-publish' // https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven
     // the above configuration enables the tasks "publish" and "publishToMavenLocal"
     // which you can verify by running "gradlew tasks" (i.e. run the command with and without the above 'maven-publish')
+    id 'signing'
 }
 
-// ext.crsTransformationVersion = '0.30'
-group = 'com.programmerare.crs-transformation'
-version = '0.30' // rootProject.crsTransformationVersion
+ext.crsTransformationGroupId = 'com.programmerare.crs-transformation'
+ext.crsTransformationVersion = '0.36-SNAPSHOT'
+group = rootProject.crsTransformationGroupId
+version = rootProject.crsTransformationVersion
 
 allprojects {
     repositories {
@@ -93,7 +95,6 @@ subprojects {
             events "passed", "skipped", "failed" // , "standardOut", "standardError"
         }
     }
-
 }
 
 // ---------------------------------------------------------------------------
@@ -312,6 +313,48 @@ project(':crs-transformation-adapter-core') {
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar
+
+                pom {
+                    // https://central.sonatype.org/pages/requirements.html
+                    // A common and acceptable practice for name is to assemble it from the coordinates using Maven properties:
+                    // <name>${project.groupId}:${project.artifactId}</name>
+                    name = rootProject.crsTransformationGroupId + ":" + artifactId
+
+                    description = 'Coordinate Reference System Transformations'
+                    url = 'https://github.com/TomasJohansson/crsTransformations'
+                    licenses {
+                        license {
+                            name = 'MIT License'
+                            url = 'https://github.com/TomasJohansson/crsTransformations'
+                            comments = 'MIT license for the core library. The adapter libraries have the same license as the adaptee libraries.'
+                        }
+                    }
+                    developers {
+                        developer {
+                            name = 'Tomas Johansson'
+                            organizationUrl = 'https://github.com/TomasJohansson'
+                        }
+                    }
+                    scm {
+                        connection = 'scm:git:git://github.com/TomasJohansson/crsTransformations.git'
+                        developerConnection = 'scm:git:ssh://github.com/TomasJohansson/crsTransformations.git'
+                        url = 'https://github.com/TomasJohansson/crsTransformations'
+                    }
+                }
+            }
+        }
+        repositories {
+            maven {
+                // gradlew tasks
+                // gradlew publishCrstransformationscorePublicationToMavenRepository
+                // https://oss.sonatype.org/content/repositories/snapshots/com/programmerare/crs-transformation/
+                def releasesRepoUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+                def snapshotsRepoUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+                url = rootProject.crsTransformationVersion.endsWith('SNAPSHOT') ? snapshotsRepoUrl : releasesRepoUrl
+                credentials {
+                    username mavenUser
+                    password mavenPassword
+                }
             }
         }
     }
@@ -336,8 +379,10 @@ project(':crs-transformation-constants') {
     }
 }
 
+signing {
+    sign publishing.publications.crstransformationscore
+}
 
-		
 // https://stackoverflow.com/questions/35143514/publishing-of-a-modular-library-to-maven-using-gradle
 //subprojects{
 //    publishing {
