@@ -1,11 +1,11 @@
 # License Notice
-Notice that the "core" library with the API and general code is released with MIT License.<br>
+Notice that the "core" library with the API and general code is released with MIT License.  
 However, the libraries which are implementing adapters/facades are licensed in the same way as the adapted libraries which is specified in separate "LICENSE_NOTICE" files for each such implementation.
 
 # Information
-This Kotlin/Java/JVM project is intended for transforming coordinates between different coordinate reference systems.<br>
-The code has been implemented with Kotlin but the tests (and generated constants too) are implemented with Java.<br>
-The third-part libraries (the adaptee's below) are Java libraries.<br>
+This Kotlin/Java/JVM project is intended for transforming coordinates between different coordinate reference systems.  
+The code has been implemented with Kotlin but the tests (and generated constants too) are implemented with Java.  
+The third-part libraries (the adaptee's below) are Java libraries.  
 Java version 1.8 is used as the build target.
 
 # Adaptee libraries intended to be used for the first release
@@ -16,9 +16,9 @@ Java version 1.8 is used as the build target.
 * https://github.com/goober/coordinate-transformation-library
 
 # Release information
-This code project is work in progress.
-Currently no artifact has been distributed to the "Central Repository" ([Sonatype OSSRH](https://central.sonatype.org/pages/ossrh-guide.html) "Open Source Software Repository Hosting Service").
-However, it still possible to use through [jitpack](https://jitpack.io)  (the [build based on git commit fcbc1e03f1fef921169a1836bfef42e56f02e6c6](https://jitpack.io/com/github/TomasJohansson/crsTransformations/fcbc1e03f1fef921169a1836bfef42e56f02e6c6/build.log)).
+This code project is work in progress.  
+Currently no artifact has been distributed to the "Central Repository" ([Sonatype OSSRH](https://central.sonatype.org/pages/ossrh-guide.html) "Open Source Software Repository Hosting Service").  
+However, it still possible to use through [jitpack](https://jitpack.io)  (the [build based on git commit fcbc1e03f1fef921169a1836bfef42e56f02e6c6](https://jitpack.io/com/github/TomasJohansson/crsTransformations/fcbc1e03f1fef921169a1836bfef42e56f02e6c6/build.log)).  
 In the maven pom.xml you can add jitpack as below:
 ```xml
     <!--  jitpack repository is currently needed until the code is released to maven central  -->
