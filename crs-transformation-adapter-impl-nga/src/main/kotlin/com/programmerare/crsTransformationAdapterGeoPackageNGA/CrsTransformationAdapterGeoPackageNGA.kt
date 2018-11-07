@@ -14,11 +14,17 @@ import mil.nga.sf.proj.ProjectionFactory
 // https://github.com/ngageoint/geopackage-java
 // https://github.com/ngageoint/geopackage-core-java
 // http://ngageoint.github.io/geopackage-java/
+
+/**
+ * Implementation of the interface CrsTransformationAdapter.
+ * See the documentation of the interface.
+ * @see com.programmerare.crsTransformations.CrsTransformationAdapter
+ */
 class CrsTransformationAdapterGeoPackageNGA : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     override protected fun transformHook(
-            inputCoordinate: CrsCoordinate,
-            crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+        inputCoordinate: CrsCoordinate,
+        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): CrsCoordinate {
         val inputEPSGnumber = inputCoordinate.crsIdentifier.epsgNumber.toLong()
         val outputEPSGnumber = crsIdentifierForOutputCoordinateSystem.epsgNumber.toLong()

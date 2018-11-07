@@ -1,9 +1,10 @@
 /**
  * From Java code this will look like a class 'CrsIdentifierFactory'
  * with public static factory methods.
- * The Java class name: com.programmerare.crsTransformations.CrsIdentifierFactory
- * From Kotlin code the methods are package level functions
- * and each function can be imported as if it would be a class, for example:
+ * The Java class name: com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory  
+ * 
+ * From Kotlin code the methods are available as package level functions
+ * and each function can be imported as if it would be a class, for example like this:  
  *  import com.programmerare.crsTransformations.crsIdentifier.createFromEpsgNumber
  */
 @file:JvmName("CrsIdentifierFactory")
@@ -20,6 +21,13 @@ private const val LENGTH_OF_EPSG_PREFIX = EPSG_PREFIX_UPPERCASED.length
 
 // The crsCode string will become trimmed, and if it is
 // "epsg" (or e.g. something like "ePsG") then it will be uppercased i.e. "EPSG"
+
+/**
+ * @param crsCode a string which should begin with "EPSG:4326" 
+ *  (although it is case insensitive and it is also acceptable 
+ *   with leading white spaces and e.g. " ePsG:4326" but 
+ *   it will then be internally canonicalized to "EPSG:4326")  
+ */
 fun createFromCrsCode(crsCode: String): CrsIdentifier {
     // these two default values will be used, unless the crsCode parameter is an EPSG string
     var epsgNumber = 0
@@ -42,10 +50,14 @@ fun createFromCrsCode(crsCode: String): CrsIdentifier {
     return CrsIdentifier(crsIdentifierCode, isEpsgCode, epsgNumber)
 }
 
+/**
+ * @param epsgNumber an EPSG number, 
+ *      for example 4326 for the frequently used coordinate reference system WGS84. 
+ */
 fun createFromEpsgNumber(epsgNumber: Int): CrsIdentifier {
     return CrsIdentifier(
-            crsCode = EPSG_PREFIX_UPPERCASED + epsgNumber,
-            isEpsgCode = true,
-            epsgNumber = epsgNumber
+        crsCode = EPSG_PREFIX_UPPERCASED + epsgNumber,
+        isEpsgCode = true,
+        epsgNumber = epsgNumber
     )
 }

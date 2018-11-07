@@ -13,6 +13,12 @@ import org.cts.registry.EPSGRegistry;
 
 // " orbisgis/cts "
 // https://github.com/orbisgis/cts
+
+/**
+ * Implementation of the interface CrsTransformationAdapter.
+ * See the documentation of the interface.
+ * @see com.programmerare.crsTransformations.CrsTransformationAdapter
+ */
 class CrsTransformationAdapterOrbisgisCTS : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     override protected fun transformHook(

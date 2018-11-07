@@ -3,9 +3,21 @@ package com.programmerare.crsTransformations.compositeTransformations
 import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationAdapterLeafFactory
 
+/**
+ * An instance of this class defines how much relative weight
+ * a certain adapter implementation should have.
+ * 
+ * A list of these instances should be passed to the factory 
+ * method for a composite object used for returning a weighted average 
+ * of the longitude and latitude values originating from different leaf 
+ * adapter implementations doing coordinate transformations.
+ * @see CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage
+ * @param crsTransformationAdapter an object implementing the interface CrsTransformationAdapter
+ * @param weight the relative weight value to assign for the adapter specified by the adapter parameter
+ */
 class CrsTransformationAdapterWeight private constructor(
-        val crsTransformationAdapter: CrsTransformationAdapter,
-        val weight: Double
+    val crsTransformationAdapter: CrsTransformationAdapter,
+    val weight: Double
 ) {
 
     /**
@@ -18,6 +30,7 @@ class CrsTransformationAdapterWeight private constructor(
         /**
          * @param crsTransformationAdapterClassName the full class name (i.e. including the package name)
          *  of a class which must implement the interface CrsTransformationAdapter
+         * @param weight the relative weight value to assign for the adapter specified by the string parameter 
          */
         @JvmStatic
         fun createFromStringWithFullClassNameForImplementation(
@@ -28,10 +41,14 @@ class CrsTransformationAdapterWeight private constructor(
             return CrsTransformationAdapterWeight(crsTransformationAdapter, weight)
         }
 
+        /**
+         * @param crsTransformationAdapter an object implementing the interface CrsTransformationAdapter
+         * @param weight the relative weight value to assign for the adapter specified by the adapter parameter 
+         */        
         @JvmStatic
         fun createFromInstance(
-                crsTransformationAdapter: CrsTransformationAdapter,
-                weight: Double
+            crsTransformationAdapter: CrsTransformationAdapter,
+            weight: Double
         ): CrsTransformationAdapterWeight{
             return CrsTransformationAdapterWeight(crsTransformationAdapter, weight)
         }

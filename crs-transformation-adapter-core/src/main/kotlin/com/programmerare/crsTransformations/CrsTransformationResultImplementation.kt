@@ -4,14 +4,17 @@ import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import java.lang.IllegalStateException
 import java.lang.RuntimeException
 
+/**
+ * @see CrsTransformationResult
+ */
 class CrsTransformationResultImplementation(
-        override val inputCoordinate: CrsCoordinate,
-        outputCoordinate: CrsCoordinate?,
-        override val exception: Throwable?,
-        override val isSuccess: Boolean,
-        override val crsTransformationAdapterResultSource: CrsTransformationAdapter,
-        override val transformationResultChildren: List<CrsTransformationResult> = listOf<CrsTransformationResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
-        _nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic? = null
+    override val inputCoordinate: CrsCoordinate,
+    outputCoordinate: CrsCoordinate?,
+    override val exception: Throwable?,
+    override val isSuccess: Boolean,
+    override val crsTransformationAdapterResultSource: CrsTransformationAdapter,
+    override val transformationResultChildren: List<CrsTransformationResult> = listOf<CrsTransformationResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
+    _nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic? = null
 ): CrsTransformationResult {
 
     private val _outputCoordinate: CrsCoordinate? = outputCoordinate

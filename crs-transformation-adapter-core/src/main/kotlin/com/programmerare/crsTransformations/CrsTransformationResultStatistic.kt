@@ -5,7 +5,12 @@ import com.programmerare.crsTransformations.coordinate.createFromXEastingLongitu
 import com.programmerare.crsTransformations.utils.MedianValueUtility
 import java.lang.RuntimeException
 
-class CrsTransformationResultStatistic(private val results: List<CrsTransformationResult>) {
+/**
+ * Class providing conveniently available aggregated information from multiple results. 
+ */
+class CrsTransformationResultStatistic(
+    private val results: List<CrsTransformationResult>
+) {
 
     private val _sucessfulCoordinates: List<CrsCoordinate> by lazy {
         results.filter { it.isSuccess }.map { it.outputCoordinate }
@@ -39,6 +44,10 @@ class CrsTransformationResultStatistic(private val results: List<CrsTransformati
         getMaxDiff(_latitudes)
     }
 
+    /**
+     * @return the maximal difference in Y/Latitude values 
+     *      between the coordinate with the smallest and the largest Y/Latitude values.   
+     */
     fun getMaxDifferenceForYNorthingLatitude(): Double {
         return _maxDiffLatitudes
     }
@@ -47,6 +56,10 @@ class CrsTransformationResultStatistic(private val results: List<CrsTransformati
         getMaxDiff(_longitudes)
     }
 
+    /**
+     * @return the maximal difference in X/Longitude values
+     *      between the coordinate with the smallest and the largest X/Longitude values.
+     */    
     fun getMaxDifferenceForXEastingLongitude(): Double {
         return _maxDiffLongitudes
     }
@@ -61,11 +74,16 @@ class CrsTransformationResultStatistic(private val results: List<CrsTransformati
         createFromXEastingLongitudeAndYNorthingLatitude(_longitudes.average(), _latitudes.average(), _sucessfulCoordinates.get(0).crsIdentifier)
     }
 
-
+    /**
+     * @return true if there is at least one succesful result but otherwise false.
+     */
     fun isStatisticsAvailable(): Boolean {
         return getNumberOfResults() > 0
     }
 
+    /**
+     * @return the number of succesful results
+     */    
     fun getNumberOfResults(): Int {
         return _sucessfulCoordinates.size
     }
@@ -73,6 +91,7 @@ class CrsTransformationResultStatistic(private val results: List<CrsTransformati
 
     /**
      * Precondition: isStatisticsAvailable must return true
+     * @return a coordinate with the median X/Longitude and the median Y/Latitude 
      */
     fun getCoordinateMedian(): CrsCoordinate {
         throwExceptionIfPreconditionViolated()
@@ -81,6 +100,7 @@ class CrsTransformationResultStatistic(private val results: List<CrsTransformati
 
     /**
      * Precondition: isStatisticsAvailable must return true
+     * @return a coordinate with the average X/Longitude and the average Y/Latitude
      */
     fun getCoordinateAverage(): CrsCoordinate {
         throwExceptionIfPreconditionViolated()

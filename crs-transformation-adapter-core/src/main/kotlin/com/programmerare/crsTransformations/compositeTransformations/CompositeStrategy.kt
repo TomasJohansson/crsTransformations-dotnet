@@ -12,10 +12,10 @@ internal interface CompositeStrategy {
     fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: CrsTransformationResult?) : Boolean
 
     fun calculateAggregatedResult(
-            allResults: List<CrsTransformationResult>,
-            inputCoordinate: CrsCoordinate,
-            crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
-            crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
+        allResults: List<CrsTransformationResult>,
+        inputCoordinate: CrsCoordinate,
+        crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
+        crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): CrsTransformationResult
 
     fun getAdapteeType() : CrsTransformationAdapteeType

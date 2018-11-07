@@ -3,6 +3,11 @@ package com.programmerare.crsTransformations
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 
+/**
+ * Base class for the 'leaf' adapters.
+ * @see CrsTransformationAdapterBase
+ * @see CrsTransformationAdapter
+ */
 abstract class CrsTransformationAdapterBaseLeaf : CrsTransformationAdapterBase(), CrsTransformationAdapter {
 
     override final fun transform(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult {

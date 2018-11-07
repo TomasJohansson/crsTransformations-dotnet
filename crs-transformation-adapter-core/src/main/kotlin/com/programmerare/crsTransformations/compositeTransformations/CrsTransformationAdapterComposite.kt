@@ -8,7 +8,20 @@ import com.programmerare.crsTransformations.CrsTransformationAdapterBase
 import com.programmerare.crsTransformations.CrsTransformationResult
 import java.lang.RuntimeException
 
-final class CrsTransformationAdapterComposite internal constructor(protected val compositeStrategy: CompositeStrategy) : CrsTransformationAdapterBase(), CrsTransformationAdapter {
+/**
+ * Base class for the 'composite' adapters.
+ * @see CrsTransformationAdapterBase
+ * @see CompositeStrategy
+ */
+final class CrsTransformationAdapterComposite internal constructor(
+
+        /**
+         * Interface for calculating the resulting coordinate in different ways, 
+         * e.g. one stratefy implementation calculates the median and another the average.
+         */        
+        protected val compositeStrategy: CompositeStrategy
+
+) : CrsTransformationAdapterBase(), CrsTransformationAdapter {
 
     override final protected fun transformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsCoordinate {
         val transformResult = transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)

@@ -12,6 +12,12 @@ import com.programmerare.crsTransformations.coordinate.createFromXEastingLongitu
 
 // " Proj4J/proj4j "
 // https://github.com/Proj4J/proj4j
+
+/**
+ * Implementation of the interface CrsTransformationAdapter.
+ * See the documentation of the interface.
+ * @see com.programmerare.crsTransformations.CrsTransformationAdapter
+ */
 class CrsTransformationAdapterProj4J : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     private var coordinateTransformFactory: CoordinateTransformFactory = CoordinateTransformFactory()

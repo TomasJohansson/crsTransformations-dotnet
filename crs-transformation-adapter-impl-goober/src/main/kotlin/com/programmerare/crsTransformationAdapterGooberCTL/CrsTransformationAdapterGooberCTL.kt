@@ -16,6 +16,12 @@ import java.util.*
 
 // " goober/coordinate-transformation-library "
 // https://github.com/goober/coordinate-transformation-library
+
+/**
+ * Implementation of the interface CrsTransformationAdapter.
+ * See the documentation of the interface.
+ * @see com.programmerare.crsTransformations.CrsTransformationAdapter
+ */
 class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     override protected fun transformHook(

@@ -17,6 +17,12 @@ import org.geotools.geometry.jts.JTS
 
 // http://docs.geotools.org/
 // https://github.com/geotools/geotools/blob/master/pom.xml
+
+/**
+ * Implementation of the interface CrsTransformationAdapter.
+ * See the documentation of the interface. 
+ * @see com.programmerare.crsTransformations.CrsTransformationAdapter
+ */
 class CrsTransformationAdapterGeoTools : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     private val geometryFactory: GeometryFactory
@@ -26,8 +32,8 @@ class CrsTransformationAdapterGeoTools : CrsTransformationAdapterBaseLeaf(), Crs
     }
 
     override protected fun transformHook(
-            inputCoordinate: CrsCoordinate,
-            crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+        inputCoordinate: CrsCoordinate,
+        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): CrsCoordinate {
         val sourceCRS: CoordinateReferenceSystem = CRS.decode(inputCoordinate.crsIdentifier.crsCode, true)
         val targetCRS: CoordinateReferenceSystem = CRS.decode(crsIdentifierForOutputCoordinateSystem.crsCode, true)
@@ -52,6 +58,7 @@ class CrsTransformationAdapterGeoTools : CrsTransformationAdapterBaseLeaf(), Crs
     }
 
     // ----------------------------------------------------------
+
     override fun getAdapteeType() : CrsTransformationAdapteeType {
         return CrsTransformationAdapteeType.LEAF_GEOTOOLS_20_0
     }
