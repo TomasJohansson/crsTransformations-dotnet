@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations.compositeTransformations;
 
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
-import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
+import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import com.programmerare.crsTransformations.utils.MedianValueUtility;
@@ -25,7 +25,7 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
         CrsTransformationAdapter medianCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(
             allAdapters
         );
-        CrsTransformationResult medianResult = medianCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        CrsTransformationResult medianResult = medianCompositeAdapter.transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         assertNotNull(medianResult);
         assertTrue(medianResult.isSuccess());
         assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), medianResult.getTransformationResultChildren().size());
@@ -42,7 +42,7 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
         List<Double> latitudesSorted = coordinateResultsForTheDifferentImplementations.stream().map(x -> x.getYNorthingLatitude()).collect(Collectors.toList());
         double medianLongitude = MedianValueUtility.getMedianValue(longitudesSorted);
         double medianLatitude = MedianValueUtility.getMedianValue(latitudesSorted);
-        return CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(medianLongitude, medianLatitude, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        return CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(medianLongitude, medianLatitude, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
     }
 
 }

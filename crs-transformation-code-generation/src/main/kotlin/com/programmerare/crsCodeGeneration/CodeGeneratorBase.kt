@@ -131,10 +131,10 @@ abstract class CodeGeneratorBase {
     companion object {
 
         @JvmField
-        val NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION = "crsCodeGeneration"
+        val NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION = "crs-transformation-code-generation"
 
         @JvmField
-        val NAME_OF_MODULE_DIRECTORY_FOR_CONSTANTS = "crsConstants"
+        val NAME_OF_MODULE_DIRECTORY_FOR_CONSTANTS = "crs-transformation-constants"
 
         @JvmField
         val NAME_OF_MODULE_DIRECTORY_FOR_TESTS = "crsTransformationTest"

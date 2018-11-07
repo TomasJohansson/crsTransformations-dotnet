@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
-import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
+import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformationAdapterGeoPackageNGA.CrsTransformationAdapterGeoPackageNGA;
 import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools;
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
@@ -78,7 +78,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
     private void createCompositeStrategyForWeightedAverageValueHelper(
             CrsTransformationAdapterComposite weightedAverageCompositeAdapter
     ) {
-        CrsTransformationResult weightedAverageResult = weightedAverageCompositeAdapter.transform(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        CrsTransformationResult weightedAverageResult = weightedAverageCompositeAdapter.transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         assertNotNull(weightedAverageResult);
         assertTrue(weightedAverageResult.isSuccess());
         assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), weightedAverageResult.getTransformationResultChildren().size());
@@ -145,6 +145,6 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
                 weightForGeoPackageNGA * resultCoordinateProj4J.getXEastingLongitude();
 
         final double totWeights = weightForGeoTools + weightForGoober + weightForOrbis + weightForProj4J + weightForGeoPackageNGA;
-        return CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude( latitudeWeightedSum/totWeights, longitutdeWeightedSum/totWeights, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        return CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude( latitudeWeightedSum/totWeights, longitutdeWeightedSum/totWeights, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
     }
 }

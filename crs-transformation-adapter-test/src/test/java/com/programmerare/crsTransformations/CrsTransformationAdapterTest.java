@@ -5,7 +5,7 @@ import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapt
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
-import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
+import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterComposite;
 import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
@@ -24,15 +24,15 @@ import static java.util.stream.Collectors.toList;
 import static org.junit.jupiter.api.Assertions.*;
 
 final class CrsTransformationAdapterTest {
+    
+    private final static int epsgNumberForWgs84         = EpsgNumber.WORLD__WGS_84__4326;
+    private final static int epsgNumberForSweref99TM    = EpsgNumber.SWEDEN__SWEREF99_TM__3006;
+    private final static int epsgNumberForRT90          = EpsgNumber.SWEDEN__2_5_GON_W__RT90_2_5_GON_V__3021;
+    private final static int epsgNumberForSweref991200  = EpsgNumber.SWEDEN__12_00__SWEREF99_12_00__3007;
+    private final static int epsgNumberForSweref991500  = EpsgNumber.SWEDEN__15_00__SWEREF99_15_00__3009;
 
-    private final static int epsgNumberForWgs84         = EpsgNumber._4326__WGS_84__WORLD;
-    private final static int epsgNumberForSweref99TM    = EpsgNumber._3006__SWEREF99_TM__SWEDEN;
-    private final static int epsgNumberForRT90          = EpsgNumber._3021__RT90_2_5_GON_V__SWEDEN__2_5_GON_W;
-    private final static int epsgNumberForSweref991200  = EpsgNumber._3007__SWEREF99_12_00__SWEDEN__12_00;
-    private final static int epsgNumberForSweref991500  = EpsgNumber._3009__SWEREF99_15_00__SWEDEN__15_00;
-
-    private final static int lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = EpsgNumber._3006__SWEREF99_TM__SWEDEN; // 3006;
-    private final static int upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = EpsgNumber._3024__RT90_5_GON_O__SWEDEN__5_GON_E; // 3024;
+    private final static int lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = EpsgNumber.SWEDEN__SWEREF99_TM__3006; // 3006;
+    private final static int upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = EpsgNumber.SWEDEN__5_GON_E__RT90_5_GON_O__3024; // 3024;
 
     private static List<Integer> epsgNumbersForSwedishProjectionsUsingMeterAsUnit;
 

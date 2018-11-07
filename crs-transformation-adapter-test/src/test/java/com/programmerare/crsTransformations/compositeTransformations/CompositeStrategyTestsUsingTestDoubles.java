@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformations.compositeTransformations;
 
-import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
+import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.*;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
@@ -65,7 +65,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         leafAdapterImplementation_4 = mock(CrsTransformationAdapter.class);
         leafAdapterImplementation_5 = mock(CrsTransformationAdapter.class);
 
-        inputCoordinateSweref99 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(6580822, 674032, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        inputCoordinateSweref99 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(6580822, 674032, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
 
         CrsTransformationResult leafResult1 = new CrsTransformationResultImplementation(
             inputCoordinateSweref99,
@@ -112,7 +112,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             new ArrayList<CrsTransformationResult>(),
             null
         );
-        crsIdentifierWGS84 = CrsIdentifierFactory.createFromEpsgNumber(EpsgNumber._4326__WGS_84__WORLD);
+        crsIdentifierWGS84 = CrsIdentifierFactory.createFromEpsgNumber(EpsgNumber.WORLD__WGS_84__4326);
 
         when(leafAdapterImplementation_1.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(leafResult1);
         when(leafAdapterImplementation_2.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(leafResult2);
@@ -134,7 +134,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     @Test
     void averageAdapterTest() {
         CrsTransformationAdapterComposite averageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(allLeafAdapters);
-        CrsCoordinate resultCoordinate = averageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        CrsCoordinate resultCoordinate = averageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         assertNotNull(resultCoordinate);
 
         // Coordinate expectedAverageCoordinate = CoordinateFactory.createFromLatitudeLongitude(averageLatitude, averageLongitude);
@@ -151,7 +151,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     @Test
     void medianAdapterTest() {
         CrsTransformationAdapterComposite medianCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(allLeafAdapters);
-        CrsCoordinate resultCoordinate = medianCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        CrsCoordinate resultCoordinate = medianCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         assertNotNull(resultCoordinate);
 
         assertEquals(medianLatitude,  resultCoordinate.getYNorthingLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
@@ -166,7 +166,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     @Test
     void ChainOfResponsibilityAdapterTest() {
         CrsTransformationAdapterComposite chainOfResponsibilityCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility(allLeafAdapters);
-        CrsCoordinate resultCoordinate = chainOfResponsibilityCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        CrsCoordinate resultCoordinate = chainOfResponsibilityCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         assertNotNull(resultCoordinate);
 
         // The assumption below (according to the setup code in the "before" method in this JUnit class)
@@ -212,7 +212,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         );
 
         final CrsTransformationAdapterComposite weightedAverageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(weightedAdapters);
-        final CrsCoordinate result = weightedAverageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber._4326__WGS_84__WORLD);
+        final CrsCoordinate result = weightedAverageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         assertNotNull(result);
 
         assertEquals(expectedWeightedAverage.getYNorthingLatitude(),  result.getYNorthingLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);

@@ -4,8 +4,7 @@ import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
-import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgCode;
+import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
 import org.junit.jupiter.api.Assertions;
@@ -25,9 +24,10 @@ public class CrsIdentifierTest {
     void createFromEpsgNumber() {
         // SWEREF99TM = 3006
         CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(3006);
-        Assertions.assertEquals(EpsgCode._3006__SWEREF99_TM__SWEDEN, crsIdentifier.getCrsCode());
+        //Assertions.assertEquals(EpsgCode.SWEDEN__SWEREF99_TM__3006, crsIdentifier.getCrsCode());
+        Assertions.assertEquals("EPSG:3006", crsIdentifier.getCrsCode());
         assertEquals(true, crsIdentifier.isEpsgCode());
-        Assertions.assertEquals(EpsgNumber._3006__SWEREF99_TM__SWEDEN, crsIdentifier.getEpsgNumber());
+        Assertions.assertEquals(EpsgNumber.SWEDEN__SWEREF99_TM__3006, crsIdentifier.getEpsgNumber());
     }
 
     @Test

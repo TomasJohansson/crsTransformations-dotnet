@@ -1,7 +1,6 @@
 package com.programmerare.crsTransformations;
 
-import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
-import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgCode;
+import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
@@ -11,11 +10,13 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 class CoordinateTest {
+    private final static String EpsgPrefix = "EPSG:";
+    
     private final double deltaTolerance = 0.00001;
     private final double xLongitude = 12.34;
     private final double yLatitude = 56.67;
-    private final int epsgNumber = EpsgNumber._3006__SWEREF99_TM__SWEDEN;
-    private final String epsgCode = EpsgCode._3006__SWEREF99_TM__SWEDEN;
+    private final int epsgNumber = EpsgNumber.SWEDEN__SWEREF99_TM__3006;
+    private final String epsgCode = EpsgPrefix + epsgNumber;// EpsgCode._3006__SWEREF99_TM__SWEDEN;
 
     @Test
     void trivialCreateCoordinateTest() {
@@ -55,15 +56,19 @@ class CoordinateTest {
         double wgs84Lat = 59.330231;
         double wgs84Lon = 18.059196;
 
+        
+        
         CrsCoordinate wgs84_1 = CrsCoordinateFactory.createFromLongitudeLatitude(wgs84Lon, wgs84Lat);
-        assertEquals(EpsgNumber._4326__WGS_84__WORLD, wgs84_1.getCrsIdentifier().getEpsgNumber());
-        assertEquals(  EpsgCode._4326__WGS_84__WORLD, wgs84_1.getCrsIdentifier().getCrsCode());
+        assertEquals(EpsgNumber.WORLD__WGS_84__4326, wgs84_1.getCrsIdentifier().getEpsgNumber());
+//        assertEquals(  EpsgCode._4326__WGS_84__WORLD, wgs84_1.getCrsIdentifier().getCrsCode());
+        assertEquals( EpsgPrefix + EpsgNumber.WORLD__WGS_84__4326, wgs84_1.getCrsIdentifier().getCrsCode());
 
         CrsCoordinate wgs84_2 = CrsCoordinateFactory.createFromLatitudeLongitude(wgs84Lat, wgs84Lon);
-        assertEquals(EpsgNumber._4326__WGS_84__WORLD, wgs84_2.getCrsIdentifier().getEpsgNumber());
-        assertEquals(  EpsgCode._4326__WGS_84__WORLD, wgs84_2.getCrsIdentifier().getCrsCode());
+        assertEquals(EpsgNumber.WORLD__WGS_84__4326, wgs84_2.getCrsIdentifier().getEpsgNumber());
+        //assertEquals(  EpsgCode._4326__WGS_84__WORLD, wgs84_2.getCrsIdentifier().getCrsCode());
+        assertEquals(  EpsgPrefix +  EpsgNumber.WORLD__WGS_84__4326, wgs84_2.getCrsIdentifier().getCrsCode());
 
-        CrsCoordinate wgs84_3 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
+        CrsCoordinate wgs84_3 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(wgs84Lat, wgs84Lon, EpsgNumber.WORLD__WGS_84__4326);
         assertEqualCoordinates(wgs84_3, wgs84_1);
         assertEqualCoordinates(wgs84_3, wgs84_2);
     }

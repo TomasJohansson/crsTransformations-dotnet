@@ -269,7 +269,7 @@ project(':crs-transformation-code-generation') {
     // gradle generateClassesWithEpsgConstants --args="v9_5_4 epsg_version_9_5_4 dbUserName dbUserPassword java"
     // gradle generateClassesWithEpsgConstants --args="v9_5_4 epsg_version_9_5_4 dbUserName dbUserPassword csv"
     task generateClassesWithEpsgConstants(type:JavaExec) {
-        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crs-transformation-adapter-impl-code-generation.constantsGenerator.ConstantClassGenerator"
+        main = project.hasProperty("mainClass") ? project.getProperty("mainClass") : "com.programmerare.crsCodeGeneration.constantsGenerator.ConstantClassGenerator"
         classpath = sourceSets.main.runtimeClasspath
     }
 

@@ -7,7 +7,7 @@ import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAd
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
-import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
+import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
 
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.BeforeAll;
@@ -56,13 +56,13 @@ abstract class CompositeStrategyTestBase {
             adapterGeoPackageNGA
         );
 
-        wgs84coordinate = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(wgs84Lat, wgs84Lon, EpsgNumber._4326__WGS_84__WORLD);
+        wgs84coordinate = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(wgs84Lat, wgs84Lon, EpsgNumber.WORLD__WGS_84__4326);
 
-        resultCoordinateGeoTools = adapterGeoTools.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
-        resultCoordinateGooberCTL = adapterGooberCTL.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
-        resultCoordinateOrbisgisCTS = adapterOrbisgisCTS.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
-        resultCoordinateProj4J = adapterProj4J.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
-        resultCoordinateGeoPackageNGA = adapterGeoPackageNGA.transformToCoordinate(wgs84coordinate, EpsgNumber._3006__SWEREF99_TM__SWEDEN);
+        resultCoordinateGeoTools = adapterGeoTools.transformToCoordinate(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        resultCoordinateGooberCTL = adapterGooberCTL.transformToCoordinate(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        resultCoordinateOrbisgisCTS = adapterOrbisgisCTS.transformToCoordinate(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        resultCoordinateProj4J = adapterProj4J.transformToCoordinate(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        resultCoordinateGeoPackageNGA = adapterGeoPackageNGA.transformToCoordinate(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         allCoordinateResultsForTheDifferentImplementations = Arrays.asList(
             resultCoordinateGeoTools,
             resultCoordinateGooberCTL,

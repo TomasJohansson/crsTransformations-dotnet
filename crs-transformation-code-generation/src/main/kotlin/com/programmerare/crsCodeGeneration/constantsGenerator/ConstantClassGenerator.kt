@@ -285,23 +285,25 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         populateListWithNameOfConstants()
 
         // Generate Totally 12 classes below in 6 packages with 2 classes per package:
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger())
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString())
+//        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger())
+//        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString())
+//
+//        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger())
+//        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNameNumberArea(), RenderStrategyNameNumberAreaString())
+//
+//        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger())
+//        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForAreaNumberName(), RenderStrategyAreaNumberNameString())
 
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger())
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNameNumberArea(), RenderStrategyNameNumberAreaString())
-
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger())
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForAreaNumberName(), RenderStrategyAreaNumberNameString())
-
+        // Currently the other 11 classes is not generated but only the below constants class.
+        // If generating all 12 classes then the javadoc files (required for deployment at Maven central) become very large. 
         generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForAreaNameNumber(), RenderStrategyAreaNameNumberInteger())
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString())
+//        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString())
 
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), sortByNumber = true)
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(), sortByNumber = true)
+//        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), sortByNumber = true)
+//        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(), sortByNumber = true)
 
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), sortByNumber = true)
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
+//        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), sortByNumber = true)
+//        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
     }
 
 

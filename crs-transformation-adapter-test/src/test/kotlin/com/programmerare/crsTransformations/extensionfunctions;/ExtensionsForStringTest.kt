@@ -3,7 +3,7 @@ package com.programmerare.crsTransformations.extensionfunctions
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL
 import com.programmerare.crsTransformations.coordinate.createFromYNorthingLatitudeAndXEastingLongitude
 import com.programmerare.crsTransformations.CrsTransformationAdapter
-import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber
+import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
@@ -19,8 +19,8 @@ class ExtensionsForStringTest {
         assertEquals(className, crsTransformationAdapter.javaClass.name)
 
         // below trying to use the above created object to really make sure it works
-        val coordinateWgs84 = createFromYNorthingLatitudeAndXEastingLongitude(59.330231, 18.059196, EpsgNumber._4326__WGS_84__WORLD)
-        val resultSweref99 = crsTransformationAdapter.transform(coordinateWgs84, EpsgNumber._3006__SWEREF99_TM__SWEDEN)
+        val coordinateWgs84 = createFromYNorthingLatitudeAndXEastingLongitude(59.330231, 18.059196, EpsgNumber.WORLD__WGS_84__4326)
+        val resultSweref99 = crsTransformationAdapter.transform(coordinateWgs84, EpsgNumber.SWEDEN__SWEREF99_TM__3006)
         assertTrue(resultSweref99.isSuccess)
     }
 

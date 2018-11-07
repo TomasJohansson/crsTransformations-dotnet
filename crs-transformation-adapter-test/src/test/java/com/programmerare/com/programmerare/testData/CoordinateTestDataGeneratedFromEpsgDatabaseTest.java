@@ -1,7 +1,7 @@
 package com.programmerare.com.programmerare.testData;
 
-import com.google.common.io.Resources;
-import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgCode;
+import com.google.common.io.Resources; 
+import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformationAdapterGeoPackageNGA.CrsTransformationAdapterGeoPackageNGA;
 import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools;
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
@@ -370,11 +370,11 @@ class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
         long startTime = System.nanoTime();
         for (EpsgCrsAndAreaCodeWithCoordinates item : coordinatesFromGeneratedCsvFile) {
-            final CrsCoordinate inputCoordinateWGS84 = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(item.centroidX, item.centroidY, EpsgCode.WORLD__WGS_84__4326);
+            final CrsCoordinate inputCoordinateWGS84 = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(item.centroidX, item.centroidY, EpsgNumber.WORLD__WGS_84__4326);
             final CrsTransformationResult resultOfTransformationFromWGS84 = crsTransformationAdapter.transform(inputCoordinateWGS84, item.epsgCrsCode);
             CrsTransformationResult resultOfTransformationBackToWGS84 = null;
             if (resultOfTransformationFromWGS84.isSuccess()) {
-                resultOfTransformationBackToWGS84 = crsTransformationAdapter.transform(resultOfTransformationFromWGS84.getOutputCoordinate(), EpsgCode.WORLD__WGS_84__4326);
+                resultOfTransformationBackToWGS84 = crsTransformationAdapter.transform(resultOfTransformationFromWGS84.getOutputCoordinate(), EpsgNumber.WORLD__WGS_84__4326);
             }
             testResultItems.add(new TestResultItem(item, inputCoordinateWGS84, resultOfTransformationFromWGS84, resultOfTransformationBackToWGS84));
             if (counter++ % 500 == 0) // just to show some progress

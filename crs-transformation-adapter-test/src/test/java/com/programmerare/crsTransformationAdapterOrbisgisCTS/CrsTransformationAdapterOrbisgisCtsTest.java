@@ -1,6 +1,6 @@
 package com.programmerare.crsTransformationAdapterOrbisgisCTS;
 
-import com.programmerare.crsConstants.constantsByNumberNameArea.v9_5_4.EpsgNumber;
+import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.CrsTransformationResultStatistic;
 import com.programmerare.crsTransformations.CrsTransformationResult;
@@ -24,7 +24,7 @@ public class CrsTransformationAdapterOrbisgisCtsTest {
         // 2163|1245|USA|-127.23566196580043|47.32837112124157
         // EPSG 2163 xLong -127.23566196580043  yLat  47.32837112124157
         final CrsCoordinate input = CrsCoordinateFactory.lonLat(-127.23566196580043 , 47.32837112124157);
-        final CrsTransformationResult transformResult = crsTransformationAdapterOrbisgis.transform(input, EpsgNumber._2163__US_NATIONAL_ATLAS_EQUAL_AREA__USA);
+        final CrsTransformationResult transformResult = crsTransformationAdapterOrbisgis.transform(input, EpsgNumber.USA__US_NATIONAL_ATLAS_EQUAL_AREA__2163);
         assertNotNull(transformResult);
         assertFalse(transformResult.isSuccess());
         // System.out.println("transformResult : " + transformResult.getOutputCoordinate());
