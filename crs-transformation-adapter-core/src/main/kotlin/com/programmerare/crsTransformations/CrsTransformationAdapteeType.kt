@@ -11,6 +11,13 @@ package com.programmerare.crsTransformations
  */
 enum class CrsTransformationAdapteeType {
 
+    // After an upgrade, test code should help to remind about updating the enum values.
+    // For exampl, there is test code that retrives the name of the jar file for 
+    // a class within geotools library, and the testcode verifies for example 
+    // the file name "gt-api-20.0.jar" but if the file name would instead be  
+    // for example "gt-api-20.1.jar" then the test would fail to help reminding 
+    // that a new enum should be added
+    
     /**
      * Maven version for the adaptee library:  
      * "org.geotools:gt-main:20.0"
@@ -41,12 +48,11 @@ enum class CrsTransformationAdapteeType {
      */
     LEAF_PROJ4J_0_1_0,
 
-
     // The above "leafs" are the real "adaptees"
     // and the below composite "adapters" are not true adapters
 
-    // TODO MAYBE: use a version number for this crs-transformation library
-    // to be used as suffix for the below enum values ...
+    // Maybe a version number for this crs-transformation library (e.g. suffix _1_0_0)
+    // should be used as suffix for the below enum values ...
     // though questionable if that would be meaningful, while it can be more useful
     // for troubleshooting to make it easier to figure out exactly which
     // version of a leaf adaptee is causing a certain transformation

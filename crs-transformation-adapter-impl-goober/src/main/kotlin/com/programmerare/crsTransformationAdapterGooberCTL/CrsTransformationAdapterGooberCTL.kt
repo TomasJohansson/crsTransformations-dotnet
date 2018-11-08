@@ -25,8 +25,8 @@ import java.util.*
 class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 
     override protected fun transformHook(
-            inputCoordinate: CrsCoordinate,
-            crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+        inputCoordinate: CrsCoordinate,
+        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): CrsCoordinate {
         if(!inputCoordinate.crsIdentifier.isEpsgCode) {
             throwIllegalArgumentException(inputCoordinate.crsIdentifier)
@@ -106,9 +106,14 @@ class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), Cr
         private val sweREFProjections = HashMap<Int, SWEREFProjection>()
 
         init {
-
-            // TODO: maybe use the constants in an object such as ConstantEpsgNumber
-            // instead of hardcoding the EPSG numbers as below
+            // Below some EPSG numbers are hardcoded.
+            // If those numbers would be used in more than one place in this file or the module,
+            // then constants would definitely have been preferred,
+            // but adding 20 constants for only one usage is not very motivated.
+            // Another option would have been to reuse the already existing constants in the module "crs-transformation-constants" i.e. constants like this:
+            // com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber.SWEDEN__SWEREF99_TM__3006
+            // However, that would introduce a dependency to a module with LOTS OF constants just to use this few values below.
+            
             // http://spatialreference.org/ref/?search=rt90
             rt90Projections.put(3019, RT90Projection.rt90_7_5_gon_v)    // EPSG:3019: RT90 7.5 gon V		https://epsg.io/3019
             rt90Projections.put(3020, RT90Projection.rt90_5_0_gon_v)    // EPSG:3020: RT90 5 gon V			https://epsg.io/3020
