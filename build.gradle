@@ -315,11 +315,11 @@ project(':crs-transformation-code-generation') {
 
         // https://mvnrepository.com/artifact/org.mariadb.jdbc/mariadb-java-client
         implementation group: 'org.mariadb.jdbc', name: 'mariadb-java-client', version: '2.3.0'
-
+        
         // https://mvnrepository.com/artifact/org.springframework/spring-jdbc
         // https://github.com/spring-projects/spring-framework/releases
-        implementation("org.springframework:spring-jdbc:5.1.1.RELEASE")
-
+        implementation("org.springframework:spring-jdbc:5.1.2.RELEASE")
+        
         // https://mvnrepository.com/artifact/org.junit.jupiter
         // https://github.com/junit-team/junit5/releases
         testImplementation("org.junit.jupiter:junit-jupiter-engine:5.3.1")
