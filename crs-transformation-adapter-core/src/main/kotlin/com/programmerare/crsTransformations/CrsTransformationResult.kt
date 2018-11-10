@@ -2,6 +2,8 @@ package com.programmerare.crsTransformations
 
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 
+// TODO: remove this interface
+
 /**
  * Interface used as result type from the transform method of the adapter interface.  
  * @see CrsTransformationAdapter
