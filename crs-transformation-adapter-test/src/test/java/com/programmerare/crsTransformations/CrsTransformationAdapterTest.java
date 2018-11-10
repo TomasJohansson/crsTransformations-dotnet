@@ -275,9 +275,9 @@ final class CrsTransformationAdapterTest {
     @DisplayName("Testing CrsTransformationResult with expected failure")
     @Test
     void transformToResultObjectWithUnvalidInputCoordinate() {
-        CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(-999999.0, -999999.0, -9999);
+        CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(-999999.0, -999999.0, 1);
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
-            CrsTransformationResult transformResult = crsTransformationAdapter.transform(unvalidInputCoordinate, -888888);
+            CrsTransformationResult transformResult = crsTransformationAdapter.transform(unvalidInputCoordinate, 2);
             assertNotNull(transformResult);
             assertFalse(transformResult.isSuccess());
             assertNotNull(transformResult.getException());

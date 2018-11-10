@@ -25,7 +25,7 @@ public class CrsIdentifierTest {
     void crsIdentifier_shouldReturnEpsgNumberAndEpsgPrefixedCrsCodeAndBeConsideredAsEpsg_whenCreatedFromEpsgNumber() {
         final int inputEpsgNumber = 3006;
         // No validation that the number is actually an existing EPSG but any positive integer
-        // is assumed to be a EPSG number.   TODO: validate positive number !
+        // is assumed to be a EPSG number
         final CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(inputEpsgNumber);
         assertEquals(
             inputEpsgNumber, // expected
@@ -69,6 +69,27 @@ public class CrsIdentifierTest {
         assertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-empty");
     }
 
+    @Test
+    void crsIdentifierFactory_shouldThrowException_whenCrsCodeIsEpsgWithNegativeNumber() {
+        IllegalArgumentException exception = assertThrows(
+                IllegalArgumentException.class,
+                () -> CrsIdentifierFactory.createFromCrsCode(getCrsCodeIncludingUppercasedEpsgPrefix(-123)), // should fail
+                "EPSG must not be negative"
+        );
+        assertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-positive");
+    }
+
+
+    @Test
+    void crsIdentifierFactory_shouldThrowException_epsgNumberIsNegative() {
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> CrsIdentifierFactory.createFromEpsgNumber(-1), // should fail
+            "EPSG must not be negative"
+        );
+        assertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-positive");
+    }
+    
     @Test
     void crsIdentifiers_shouldBeEqual_whenCreatedFromEpsgNumberAndCorrespondingCrsCode() {
         CrsIdentifier fromEpsgNumber    = CrsIdentifierFactory.createFromEpsgNumber(3006);

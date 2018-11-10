@@ -26,7 +26,9 @@ private const val LENGTH_OF_EPSG_PREFIX = EPSG_PREFIX_UPPERCASED.length
  * @param crsCode a string which should begin with "EPSG:4326" 
  *  (although it is case insensitive and it is also acceptable 
  *   with leading white spaces and e.g. " ePsG:4326" but 
- *   it will then be internally canonicalized to "EPSG:4326")  
+ *   it will then be internally canonicalized to "EPSG:4326")
+ *   An exception is thrown if an EPSG number is zero or negative,
+ *   or if the input string is null or only whitespace.
  */
 fun createFromCrsCode(crsCode: String): CrsIdentifier {
     // these two default values will be used, unless the crsCode parameter is an EPSG string
@@ -43,6 +45,7 @@ fun createFromCrsCode(crsCode: String): CrsIdentifier {
         val epsgNumberOrNull = nonEpsgPartOfString.toIntOrNull()
         if(epsgNumberOrNull != null) {
             epsgNumber = epsgNumberOrNull
+            throwIllegalArgumentExceptionMessageIfEpsgNumberIsNonPositive(epsgNumber)
             isEpsgCode = true
             crsIdentifierCode = crsIdentifierCode.toUpperCase()
         }
@@ -51,13 +54,21 @@ fun createFromCrsCode(crsCode: String): CrsIdentifier {
 }
 
 /**
+ * Creates a CrsIdentifier from a positive integer.
+ * The only validation constraint is that the integer must be positive.
+ * An exception is thrown if the input number is zero or negative. 
  * @param epsgNumber an EPSG number, 
  *      for example 4326 for the frequently used coordinate reference system WGS84. 
  */
 fun createFromEpsgNumber(epsgNumber: Int): CrsIdentifier {
+    throwIllegalArgumentExceptionMessageIfEpsgNumberIsNonPositive(epsgNumber)
     return CrsIdentifier._internalCrsFactory(
         crsCode = EPSG_PREFIX_UPPERCASED + epsgNumber,
         isEpsgCode = true,
         epsgNumber = epsgNumber
     )
+}
+
+private fun throwIllegalArgumentExceptionMessageIfEpsgNumberIsNonPositive(epsgNumber: Int) {
+    if(epsgNumber <= 0) throw IllegalArgumentException("EPSG number must not be non-positive but was: " + epsgNumber)
 }
