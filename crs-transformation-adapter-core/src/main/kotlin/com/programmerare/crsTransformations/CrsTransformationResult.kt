@@ -9,27 +9,25 @@ import java.lang.RuntimeException
  */
 class CrsTransformationResult(
     val inputCoordinate: CrsCoordinate,
-    outputCoordinate: CrsCoordinate?,
+    private val _outputCoordinate: CrsCoordinate?,
     val exception: Throwable?,
     val isSuccess: Boolean,
     val crsTransformationAdapterResultSource: CrsTransformationAdapter,
     val transformationResultChildren: List<CrsTransformationResult> = listOf<CrsTransformationResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
-    _nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic? = null
+    private val _nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic? = null
 ) {
-
-    private val _outputCoordinate: CrsCoordinate? = outputCoordinate
-
     init {
-        if(isSuccess && outputCoordinate == null) {
+        if(isSuccess && _outputCoordinate == null) {
             throw IllegalStateException("Unvalid object construction. If success then output coordinate should NOT be null")
         }
-        if(!isSuccess && outputCoordinate != null) {
+        if(!isSuccess && _outputCoordinate != null) {
             throw IllegalStateException("Unvalid object construction. If NOT success then output coordinate should be null")
         }
     }
 
     /**
-     * Precondition: The success property must return true
+     * Precondition: Verify that the success property return true before using this accessor.
+     *  If it returns false, then an exception will be thrown. 
      */
     val outputCoordinate: CrsCoordinate
         get() {
@@ -40,7 +38,7 @@ class CrsTransformationResult(
             return _outputCoordinate!!
         }
 
-    private val _crsTransformationResultStatistic: CrsTransformationResultStatistic by lazy {
+    private val _crsTransformationResultStatisticLazyLoaded: CrsTransformationResultStatistic by lazy {
         if(_nullableCrsTransformationResultStatistic != null) {
             _nullableCrsTransformationResultStatistic
         }
@@ -54,7 +52,7 @@ class CrsTransformationResult(
 
     val crsTransformationResultStatistic: CrsTransformationResultStatistic
         get() {
-            return _crsTransformationResultStatistic
+            return _crsTransformationResultStatisticLazyLoaded
         }
 
     fun isReliable(

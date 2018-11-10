@@ -29,7 +29,7 @@ internal abstract class CompositeStrategyBase
             val coordRes: CrsCoordinate = medianOrAverage() // this line replaced the above two lines in different subclasses when doing refactoring
             return CrsTransformationResult(
                 inputCoordinate,
-                outputCoordinate = coordRes,
+                _outputCoordinate = coordRes,
                 exception = null,
                 isSuccess = true,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
@@ -40,7 +40,7 @@ internal abstract class CompositeStrategyBase
         else {
             return CrsTransformationResult(
                 inputCoordinate,
-                outputCoordinate = null,
+                _outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
