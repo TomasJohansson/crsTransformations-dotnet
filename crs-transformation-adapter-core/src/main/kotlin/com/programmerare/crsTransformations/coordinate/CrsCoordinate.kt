@@ -15,7 +15,7 @@ import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
  *      - easting/northing for a cartographic or projected system  
  *      - xEastingLongitude/yNorthingLatitude for general code handling different types of system  
  */
-class CrsCoordinate internal constructor(
+class CrsCoordinate private constructor(
     /**
      * One of the four accessors for the part of the coordinate that represents the east-west/X/Longitude direction. 
      */
@@ -123,4 +123,25 @@ class CrsCoordinate internal constructor(
         return "Coordinate(xEastingLongitude=$xEastingLongitude, yNorthingLatitude=$yNorthingLatitude, crsIdentifier=$crsIdentifier)"
     }
     //------------------------------------------------------------------
+
+    internal companion object {
+        /**
+         * Kotlin factory method with access level "internal".
+         * NOT indended for public use.
+         * Please instead use the Java factory class CrsCoordinateFactory 
+         * or the package level factory methods in the coordinate package. 
+         */
+        @JvmStatic        
+        internal fun _internalXYfactory(
+            xEastingLongitude: Double,
+            yNorthingLatitude: Double,
+            crsIdentifier: CrsIdentifier
+        ): CrsCoordinate {
+            return CrsCoordinate( // private constructor
+                xEastingLongitude,
+                yNorthingLatitude,
+                crsIdentifier
+            )
+        }    
+    }
 }

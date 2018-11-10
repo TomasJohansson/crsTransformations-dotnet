@@ -407,7 +407,7 @@ fun createFromXEastingLongitudeAndYNorthingLatitude(
     yNorthingLatitude: Double,
     crsIdentifier: CrsIdentifier
 ): CrsCoordinate {
-    return CrsCoordinate(
+    return CrsCoordinate._internalXYfactory(
         xEastingLongitude,
         yNorthingLatitude,
         crsIdentifier
@@ -475,7 +475,7 @@ fun createFromLongitudeLatitude(
     longitude: Double,
     latitude: Double
 ): CrsCoordinate {
-    return CrsCoordinate(
+    return createFromXEastingLongitudeAndYNorthingLatitude(
         longitude,
         latitude,
         COORDINATE_REFERENCE_SYSTEM_WGS84
@@ -502,7 +502,7 @@ fun createFromLatitudeLongitude(
     latitude: Double,
     longitude: Double
 ): CrsCoordinate {
-    return CrsCoordinate(
+    return createFromXEastingLongitudeAndYNorthingLatitude(
         longitude,
         latitude,
         COORDINATE_REFERENCE_SYSTEM_WGS84
