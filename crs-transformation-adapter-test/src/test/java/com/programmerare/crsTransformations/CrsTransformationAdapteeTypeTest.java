@@ -16,34 +16,38 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 class CrsTransformationAdapteeTypeTest {
-
+    
     @Test
-    void testOrbisgisCTSVersion() {
-        verifyExpectedVersion(
+    
+    void orbisgisAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+        verifyExpectedEnumAndJarfileVersion(
             new CrsTransformationAdapterOrbisgisCTS(),
             "cts-1.5.1.jar",
             CrsTransformationAdapteeType.LEAF_ORBISGIS_1_5_1
         );
     }
+    
     @Test
-    void testGeoToolsVersion() {
-        verifyExpectedVersion(
+    void geotoolsAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+        verifyExpectedEnumAndJarfileVersion(
             new CrsTransformationAdapterGeoTools(),
             "gt-api-20.0.jar",
             CrsTransformationAdapteeType.LEAF_GEOTOOLS_20_0
         );
     }
+
     @Test
-    void testGeoPackageNGAVersion() {
-        verifyExpectedVersion(
+    void geopackageNgaAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+        verifyExpectedEnumAndJarfileVersion(
             new CrsTransformationAdapterGeoPackageNGA(),
             "geopackage-core-3.1.0.jar",
             CrsTransformationAdapteeType.LEAF_NGA_GEOPACKAGE_3_1_0
         );
     }
+    
     @Test
-    void testProj4JVersion() {
-        verifyExpectedVersion(
+    void proj4jAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+        verifyExpectedEnumAndJarfileVersion(
             new CrsTransformationAdapterProj4J(),
             "proj4j-0.1.0.jar",
             CrsTransformationAdapteeType.LEAF_PROJ4J_0_1_0
@@ -51,42 +55,45 @@ class CrsTransformationAdapteeTypeTest {
     }
 
     @Test
-    void testGooberVersion() {
-        verifyExpectedVersion(
+    void gooberAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+        verifyExpectedEnumAndJarfileVersion(
             new CrsTransformationAdapterGooberCTL(),
             "coordinate-transformation-library-1.1.jar",
             CrsTransformationAdapteeType.LEAF_GOOBER_1_1
         );
     }
 
-    private void verifyExpectedVersion(
+    private void verifyExpectedEnum(
         CrsTransformationAdapterBase crsTransformationAdapter,
         CrsTransformationAdapteeType expectedAdaptee
     ) {
-        verifyExpectedVersion(
+        verifyExpectedEnumAndJarfileVersion(
             crsTransformationAdapter,
             "",
             expectedAdaptee
         );
     }
-    private void verifyExpectedVersion(
+    private void verifyExpectedEnumAndJarfileVersion(
         CrsTransformationAdapterBase crsTransformationAdapter,
-        String expectedFileNameOrEmptyString,
-        CrsTransformationAdapteeType expectedAdaptee
+        String emptyStringOrExpectedNameOfJarFile,
+        CrsTransformationAdapteeType expectedEnumWithMatchingNameInlcudingVersionNumber
     ) {
-        assertEquals(expectedAdaptee, crsTransformationAdapter.getAdapteeType());
+        assertEquals(
+            expectedEnumWithMatchingNameInlcudingVersionNumber, 
+            crsTransformationAdapter.getAdapteeType()
+        );
         String fileNameIncludingPath = crsTransformationAdapter.getNameOfJarFileOrEmptyString();
-        if(!expectedFileNameOrEmptyString.equals("")) {
+        if(!emptyStringOrExpectedNameOfJarFile.equals("")) {
             assertThat(
                 "Likely failure reason: You have upgraded a version. If so, then upgrade both the enum value and the filename",
-                fileNameIncludingPath, endsWith(expectedFileNameOrEmptyString)
+                fileNameIncludingPath, endsWith(emptyStringOrExpectedNameOfJarFile)
             );
         }
     }
 
     @Test
     void testCompositeAverage() {
-        verifyExpectedVersion(
+        verifyExpectedEnum(
             CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(),
             CrsTransformationAdapteeType.COMPOSITE_AVERAGE
         );
@@ -94,7 +101,7 @@ class CrsTransformationAdapteeTypeTest {
 
     @Test
     void testCompositeMedian() {
-        verifyExpectedVersion(
+        verifyExpectedEnum(
             CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(),
             CrsTransformationAdapteeType.COMPOSITE_MEDIAN
         );
@@ -102,7 +109,7 @@ class CrsTransformationAdapteeTypeTest {
 
     @Test
     void testCompositeChainOfResponsibility() {
-        verifyExpectedVersion(
+        verifyExpectedEnum(
             CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility(),
             CrsTransformationAdapteeType.COMPOSITE_CHAIN_OF_RESPONSIBILITY
         );
@@ -110,7 +117,7 @@ class CrsTransformationAdapteeTypeTest {
 
     @Test
     void testCompositeWeightedAverage() {
-        verifyExpectedVersion(
+        verifyExpectedEnum(
             CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(
                 Arrays.asList(CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoPackageNGA(), 1))
             ),
