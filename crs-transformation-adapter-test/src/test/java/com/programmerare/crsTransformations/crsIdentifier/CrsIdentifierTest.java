@@ -1,12 +1,10 @@
-package com.programmerare.crsTransformations;
+package com.programmerare.crsTransformations.crsIdentifier;
 
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
-import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
