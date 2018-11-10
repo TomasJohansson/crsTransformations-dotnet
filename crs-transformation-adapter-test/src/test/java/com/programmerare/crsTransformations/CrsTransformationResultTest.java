@@ -98,6 +98,48 @@ public class CrsTransformationResultTest {
     }
 
     @Test
+    void transformResultConstruction_shouldThrowException_whenParametersExceptionIsNotNullAndOutputCoordinateNotNull() {
+        final RuntimeException someException = new RuntimeException("this is an exception"); 
+        final CrsCoordinate outputCoordinateNotNull = this.outputCoordinate;
+        assertNotNull(outputCoordinateNotNull); // just to assert what the name claims i.e. not null
+        assertThrows(
+            IllegalStateException.class,
+            () -> new CrsTransformationResult(
+                inputCoordinate,
+                outputCoordinateNotNull,
+                // when there is an exception as below then the above coordinate SHOULD BE null !
+                someException,
+                false,
+                crsTransformationAdapter,
+                new ArrayList<CrsTransformationResult>(),
+                null
+            ),
+            "unvalid TransformResult object construction should throw exception when an exception parameter is combined with non-null as output coordinate"
+        );
+    }
+
+    @Test
+    void transformResultConstruction_shouldThrowException_whenParametersExceptionIsNotNullAndSuccessIsTrue() {
+        final RuntimeException someException = new RuntimeException("this is an exception");
+        final CrsCoordinate outputCoordinateNull = null;
+        assertThrows(
+            IllegalStateException.class,
+            () -> new CrsTransformationResult(
+                inputCoordinate,
+                outputCoordinateNull,
+                someException,
+                // when there is an exception as above then the below success SHOULD BE false !
+                true, 
+                crsTransformationAdapter,
+                new ArrayList<CrsTransformationResult>(),
+                null
+            ),
+            "unvalid TransformResult object construction should throw exception when an exception parameter is combined with success true"
+        );
+    }
+
+    
+    @Test
     void transformResult_shouldThrowException_whenTryingToGetCoordinateWhenSuccessIsFalse() {
         outputCoordinate = null;
         transformResultWithSuccessFalse = new CrsTransformationResult(

@@ -64,6 +64,11 @@ class CrsTransformationResult(
         if(!isSuccess && _outputCoordinate != null) {
             throw IllegalStateException("Unvalid object construction. If NOT success then output coordinate should be null")
         }
+        if(exception != null) { // if exception then should NOT be success and not any resulting coordinate !
+            if(isSuccess || _outputCoordinate != null) {
+                throw IllegalStateException("Unvalid object construction. If exception then output coordinate should be null and success should be false")
+            }
+        }        
     }
 
     /**
