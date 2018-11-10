@@ -9,8 +9,8 @@ import com.programmerare.crsTransformations.CrsTransformationResultImplementatio
 import com.programmerare.crsTransformations.coordinate.createFromYNorthingLatitudeAndXEastingLongitude
 
 internal class CompositeStrategyForWeightedAverageValue(
-        private val crsTransformationAdapters: List<CrsTransformationAdapter>,
-        private val weights: Map<String, Double>
+    private val crsTransformationAdapters: List<CrsTransformationAdapter>,
+    private val weights: Map<String, Double>
 ) : CompositeStrategyBase(crsTransformationAdapters), CompositeStrategy {
 
     override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: CrsTransformationResult?): Boolean {
@@ -18,10 +18,10 @@ internal class CompositeStrategyForWeightedAverageValue(
     }
 
     override fun calculateAggregatedResult(
-            allResults: List<CrsTransformationResult>,
-            inputCoordinate: CrsCoordinate,
-            crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
-            crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
+        allResults: List<CrsTransformationResult>,
+        inputCoordinate: CrsCoordinate,
+        crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
+        crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): CrsTransformationResult {
         var successCount = 0
         var sumLat = 0.0
@@ -71,7 +71,7 @@ internal class CompositeStrategyForWeightedAverageValue(
     companion object {
         @JvmStatic
         fun createCompositeStrategyForWeightedAverageValue(
-                weightedCrsTransformationAdapters: List<CrsTransformationAdapterWeight>
+            weightedCrsTransformationAdapters: List<CrsTransformationAdapterWeight>
         ): CompositeStrategyForWeightedAverageValue {
             val adapters: List<CrsTransformationAdapter> = weightedCrsTransformationAdapters.map { it -> it.crsTransformationAdapter }
             val map = HashMap<String, Double>()
