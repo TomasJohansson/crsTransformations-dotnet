@@ -29,8 +29,10 @@ internal class CompositeStrategyForWeightedAverageValue(
         var weightSum = 0.0
         for (res: CrsTransformationResult in allResults) {
             if(res.isSuccess) {
-                val weight: Double = weights[res.crsTransformationAdapterResultSource.getLongNameOfImplementation()]!!
-                // TODO: ugly !! above
+                val weight: Double = this.weights.getOrElse(res.crsTransformationAdapterResultSource.getLongNameOfImplementation(), { -1.0 })
+                if(weight < 0) {
+                    throw RuntimeException("The implementation was not configured with a non-null and non-negative weight value for the implementation "+ res.crsTransformationAdapterResultSource.getLongNameOfImplementation())
+                }
                 successCount++
                 val coord = res.outputCoordinate
                 sumLat += weight * coord.yNorthingLatitude
@@ -67,6 +69,7 @@ internal class CompositeStrategyForWeightedAverageValue(
      * Not intended to be used with ".Companion" from client code.
      * The reason for its existence has to do with the fact that the
      * JVM class has been created with the programming language Kotlin.
+     * Precondition: All weight values in the list must be non-negative.
      */
     companion object {
         @JvmStatic
@@ -76,6 +79,7 @@ internal class CompositeStrategyForWeightedAverageValue(
             val adapters: List<CrsTransformationAdapter> = weightedCrsTransformationAdapters.map { it -> it.crsTransformationAdapter }
             val map = HashMap<String, Double>()
             for (fw: CrsTransformationAdapterWeight in weightedCrsTransformationAdapters) {
+                if(fw.weight < 0) throw java.lang.RuntimeException("The weight was negative: " + fw.weight + " for implementation " + fw.crsTransformationAdapter.getLongNameOfImplementation())
                 map[fw.crsTransformationAdapter.getLongNameOfImplementation()] = fw.weight
             }
             return CompositeStrategyForWeightedAverageValue(adapters, map)

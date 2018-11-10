@@ -6,21 +6,23 @@ import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapt
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
+import com.programmerare.crsTransformations.CrsTransformationAdapter;
+import com.programmerare.crsTransformations.CrsTransformationResultImplementation;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.number.OrderingComparison.greaterThan;
 import static org.hamcrest.number.OrderingComparison.lessThan;
-import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTestBase {
 
@@ -146,5 +148,101 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
 
         final double totWeights = weightForGeoTools + weightForGoober + weightForOrbis + weightForProj4J + weightForGeoPackageNGA;
         return CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude( latitudeWeightedSum/totWeights, longitutdeWeightedSum/totWeights, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+    }
+
+    @Test
+    void createCompositeStrategyForWeightedAverageValue_whenAllWeightsArePositive__shouldNotThrowException() {
+        final List<CrsTransformationAdapterWeight> weightedCrsTransformationAdapters =
+            Arrays.asList(
+                CrsTransformationAdapterWeight.createFromInstance(
+                    new CrsTransformationAdapterGeoPackageNGA(),
+                    1 // null is not possible (compiling error) which is good !
+                )
+            );
+        CompositeStrategyForWeightedAverageValue compositeStrategyForWeightedAverageValue =
+                CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters);
+        // The main test of this test method is that the above create method does not throw an exception
+        assertNotNull(compositeStrategyForWeightedAverageValue);
+    }
+
+    @Test
+    void createCompositeStrategyForWeightedAverageValue_whenWeightIsNegative_shouldThrowException() {
+        final List<CrsTransformationAdapterWeight> weightedCrsTransformationAdapters =
+            Arrays.asList(
+                CrsTransformationAdapterWeight.createFromInstance(
+                    new CrsTransformationAdapterGeoPackageNGA(),
+                    -1 // negative value is unreasonable and should cause exception
+                )
+            );
+        assertThrows(
+            RuntimeException.class,
+            () -> {
+                CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters);
+            },
+            "Negative weight values are not acceptable because they do not make sense"
+        );
+    }
+    
+    @Test    
+    void calculateAggregatedResultTest() {
+        // TODO refactor this too long test method
+        final CrsTransformationAdapter crsTransformationAdapterResultSource = new CrsTransformationAdapterGeoPackageNGA();
+        final List<CrsTransformationAdapterWeight> crsTransformationAdapterWeights = Arrays.asList(
+            CrsTransformationAdapterWeight.createFromInstance(
+                crsTransformationAdapterResultSource,
+                1
+            )
+        );
+
+        final CrsCoordinate coordinate = CrsCoordinateFactory.latLon(59,18);
+        final CrsTransformationResult crsTransformationResult = new CrsTransformationResultImplementation(
+            coordinate, // inputCoordinate irrelevant in this test so okay to use the same as the output
+            coordinate, // outputCoordinate
+            null, // exception
+            true, // isSuccess
+            crsTransformationAdapterResultSource,
+            new ArrayList<CrsTransformationResult>(), // transformationResultChildren
+            null // _nullableCrsTransformationResultStatistic
+        );
+
+        final CompositeStrategy compositeStrategyForWeightedAverageValue = CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(crsTransformationAdapterWeights);
+        // 
+        // the above composite was created with only one leaf in the list 
+        // i.e. the object crsTransformationAdapterResultSource which is also used below    
+                
+        CrsTransformationResult crsTransformationResult1 = compositeStrategyForWeightedAverageValue.calculateAggregatedResult(
+            Arrays.asList(crsTransformationResult), // allResults
+            coordinate,
+            coordinate.getCrsIdentifier(), //  crsIdentifierForOutputCoordinateSystem
+            crsTransformationAdapterResultSource
+        );
+        assertNotNull(crsTransformationResult1);
+        assertTrue(crsTransformationResult1.isSuccess());
+        assertEquals(coordinate, crsTransformationResult1.getOutputCoordinate());
+
+        final CrsTransformationAdapter crsTransformationAdapterNotInTheComposite = new CrsTransformationAdapterGooberCTL();
+        final CrsTransformationResult crsTransformationResultProblem = new CrsTransformationResultImplementation(
+            coordinate, // inputCoordinate irrelevant in this test so okay to use the same as the output
+            coordinate, // outputCoordinate
+            null, // exception
+            true, // isSuccess
+            crsTransformationAdapterNotInTheComposite, // crsTransformationAdapterResultSource,
+            new ArrayList<CrsTransformationResult>(), // transformationResultChildren
+            null // _nullableCrsTransformationResultStatistic
+        );
+        
+        assertThrows(
+            RuntimeException.class,
+            () -> {
+                compositeStrategyForWeightedAverageValue.calculateAggregatedResult(
+                    Arrays.asList(crsTransformationResultProblem), // allResults
+                    coordinate,
+                    coordinate.getCrsIdentifier(), //  crsIdentifierForOutputCoordinateSystem
+                    crsTransformationAdapterNotInTheComposite // SHOULD CAUSE EXCEPTION !
+                );
+            },
+            "The result adapter was not part of the weighted average composite adapter"
+        );        
+
     }
 }
