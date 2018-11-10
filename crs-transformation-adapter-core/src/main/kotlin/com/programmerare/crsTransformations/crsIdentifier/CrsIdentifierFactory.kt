@@ -47,7 +47,7 @@ fun createFromCrsCode(crsCode: String): CrsIdentifier {
             crsIdentifierCode = crsIdentifierCode.toUpperCase()
         }
     }
-    return CrsIdentifier(crsIdentifierCode, isEpsgCode, epsgNumber)
+    return CrsIdentifier._internalCrsFactory(crsIdentifierCode, isEpsgCode, epsgNumber)
 }
 
 /**
@@ -55,7 +55,7 @@ fun createFromCrsCode(crsCode: String): CrsIdentifier {
  *      for example 4326 for the frequently used coordinate reference system WGS84. 
  */
 fun createFromEpsgNumber(epsgNumber: Int): CrsIdentifier {
-    return CrsIdentifier(
+    return CrsIdentifier._internalCrsFactory(
         crsCode = EPSG_PREFIX_UPPERCASED + epsgNumber,
         isEpsgCode = true,
         epsgNumber = epsgNumber

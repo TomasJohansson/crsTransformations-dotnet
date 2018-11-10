@@ -25,7 +25,7 @@ package com.programmerare.crsTransformations.crsIdentifier
  * 
  * http://epsg.io/  
  */
-class CrsIdentifier internal constructor(
+class CrsIdentifier private constructor(
 
     /**
      * a code representing a coordinate reference system, 
@@ -87,4 +87,25 @@ class CrsIdentifier internal constructor(
         return "CrsIdentifier(crsCode='$crsCode', isEpsgCode=$isEpsgCode, epsgNumber=$epsgNumber)"
     }
     //------------------------------------------------------------------
+
+    internal companion object {
+        /**
+         * Kotlin factory method with access level "internal".
+         * NOT indended for public use.
+         * Please instead use the Java factory class CrsIdentifierFactory
+         * or the package level factory methods in the crsIdentifier package.
+         */
+        @JvmStatic
+        internal fun _internalCrsFactory(
+            crsCode: String,
+            isEpsgCode: Boolean,
+            epsgNumber: Int
+        ): CrsIdentifier {
+            return CrsIdentifier( // private constructor
+                crsCode,
+                isEpsgCode,
+                epsgNumber
+            )
+        }
+    }
 }
