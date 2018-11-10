@@ -5,7 +5,6 @@ import com.programmerare.crsTransformations.CrsTransformationAdapter
 import com.programmerare.crsTransformations.CrsTransformationResult
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
-import com.programmerare.crsTransformations.CrsTransformationResultImplementation
 import com.programmerare.crsTransformations.coordinate.createFromYNorthingLatitudeAndXEastingLongitude
 
 internal class CompositeStrategyForWeightedAverageValue(
@@ -44,7 +43,7 @@ internal class CompositeStrategyForWeightedAverageValue(
             var avgLat = sumLat / weightSum
             var avgLon = sumLon / weightSum
             val coordRes = createFromYNorthingLatitudeAndXEastingLongitude(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
-            return CrsTransformationResultImplementation(
+            return CrsTransformationResult(
                 inputCoordinate,
                 outputCoordinate = coordRes,
                 exception = null,
@@ -54,7 +53,7 @@ internal class CompositeStrategyForWeightedAverageValue(
             )
         }
         else {
-            return CrsTransformationResultImplementation(
+            return CrsTransformationResult(
                 inputCoordinate,
                 outputCoordinate = null,
                 exception = null,

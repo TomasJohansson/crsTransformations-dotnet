@@ -16,7 +16,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 
-public class CrsTransformationResultImplementationTest {
+public class CrsTransformationResultTest {
 
     private CrsTransformationResult transformResult;
     private CrsCoordinate inputCoordinate;
@@ -36,13 +36,13 @@ public class CrsTransformationResultImplementationTest {
 
     @Test
     void transformNotSucessTest() {
-        transformResult = new CrsTransformationResultImplementation(inputCoordinate, null, null, false, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null);
+        transformResult = new CrsTransformationResult(inputCoordinate, null, null, false, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null);
         assertFalse(transformResult.isSuccess());
     }
 
     @Test
     void transformSucessTest() {
-        transformResult = new CrsTransformationResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null);
+        transformResult = new CrsTransformationResult(inputCoordinate, outputCoordinate, null, true, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null);
         assertTrue(transformResult.isSuccess());
     }
 
@@ -50,7 +50,7 @@ public class CrsTransformationResultImplementationTest {
     void unvalidTransformResultConstructionWhenSuccessIsFalseButCoordinateProvided() {
         assertThrows(
             IllegalStateException.class,
-            () -> new CrsTransformationResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null),
+            () -> new CrsTransformationResult(inputCoordinate, outputCoordinate, null, false, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null),
             "unvalid TransformResult object construction should throw exception when success false is combined with output coordinate"
         );
     }
@@ -60,7 +60,7 @@ public class CrsTransformationResultImplementationTest {
         outputCoordinate = null;
         assertThrows(
             IllegalStateException.class,
-            () -> new CrsTransformationResultImplementation(inputCoordinate, outputCoordinate, null, true, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null),
+            () -> new CrsTransformationResult(inputCoordinate, outputCoordinate, null, true, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null),
             "unvalid TransformResult object construction should throw exception when success true is combined with null as output coordinate"
         );
     }
@@ -68,7 +68,7 @@ public class CrsTransformationResultImplementationTest {
     @Test
     void preconditionViolationWhenTryingToAccessCoordinateWhenSuccessFalse() {
         outputCoordinate = null;
-        transformResult = new CrsTransformationResultImplementation(inputCoordinate, outputCoordinate, null, false, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null);
+        transformResult = new CrsTransformationResult(inputCoordinate, outputCoordinate, null, false, crsTransformationAdapter, new ArrayList<CrsTransformationResult>(), null);
         Exception e = assertThrows(
             RuntimeException.class,
             () -> transformResult.getOutputCoordinate(),
@@ -111,12 +111,12 @@ public class CrsTransformationResultImplementationTest {
 
 
         final List<CrsTransformationResult> results = Arrays.asList(
-            new CrsTransformationResultImplementation(c, c1, null, true, f, l, null),
-            new CrsTransformationResultImplementation(c, c2, null, true, f, l, null),
-            new CrsTransformationResultImplementation(c, c3, null, true, f, l, null),
-            new CrsTransformationResultImplementation(c, c4, null, true, f, l, null)
+            new CrsTransformationResult(c, c1, null, true, f, l, null),
+            new CrsTransformationResult(c, c2, null, true, f, l, null),
+            new CrsTransformationResult(c, c3, null, true, f, l, null),
+            new CrsTransformationResult(c, c4, null, true, f, l, null)
         );
-        final CrsTransformationResult transformResult = new CrsTransformationResultImplementation(c, c, null, true, f, results, null);
+        final CrsTransformationResult transformResult = new CrsTransformationResult(c, c, null, true, f, results, null);
 
         final CrsTransformationResultStatistic crsTransformationResultStatistic = transformResult.getCrsTransformationResultStatistic();
         assertNotNull(crsTransformationResultStatistic);

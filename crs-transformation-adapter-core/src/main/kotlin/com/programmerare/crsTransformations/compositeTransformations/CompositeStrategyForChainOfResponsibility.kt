@@ -21,7 +21,7 @@ internal class CompositeStrategyForChainOfResponsibility(
         if(allResults.size == 1 && allResults.get(0).isSuccess) {
             // there should never be more than one result with the ChainOfResponsibility implementation
             // since the calculation is interrupted at the first succeful result
-            return CrsTransformationResultImplementation(
+            return CrsTransformationResult(
                 inputCoordinate,
                 outputCoordinate = allResults.get(0).outputCoordinate,
                 exception = null,
@@ -31,7 +31,7 @@ internal class CompositeStrategyForChainOfResponsibility(
             )
         }
         else {
-            return CrsTransformationResultImplementation(
+            return CrsTransformationResult(
                 inputCoordinate,
                 outputCoordinate = null,
                 exception = null,

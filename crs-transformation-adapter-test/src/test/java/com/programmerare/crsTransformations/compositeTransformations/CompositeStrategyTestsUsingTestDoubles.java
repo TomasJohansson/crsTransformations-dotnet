@@ -67,7 +67,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
         inputCoordinateSweref99 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(6580822, 674032, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
 
-        CrsTransformationResult leafResult1 = new CrsTransformationResultImplementation(
+        CrsTransformationResult leafResult1 = new CrsTransformationResult(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_1,
             null,
@@ -76,7 +76,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             new ArrayList<CrsTransformationResult>(),
             null
         );
-        CrsTransformationResult leafResult2 = new CrsTransformationResultImplementation(
+        CrsTransformationResult leafResult2 = new CrsTransformationResult(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_2,
             null,
@@ -85,7 +85,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             new ArrayList<CrsTransformationResult>(),
             null
         );
-        CrsTransformationResult leafResult3 = new CrsTransformationResultImplementation(
+        CrsTransformationResult leafResult3 = new CrsTransformationResult(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_3,
             null,
@@ -94,7 +94,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             new ArrayList<CrsTransformationResult>(),
             null
         );
-        CrsTransformationResult leafResult4 = new CrsTransformationResultImplementation(
+        CrsTransformationResult leafResult4 = new CrsTransformationResult(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_4,
             null,
@@ -103,7 +103,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             new ArrayList<CrsTransformationResult>(),
             null
         );
-        CrsTransformationResult r5 = new CrsTransformationResultImplementation(
+        CrsTransformationResult r5 = new CrsTransformationResult(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_5,
             null,

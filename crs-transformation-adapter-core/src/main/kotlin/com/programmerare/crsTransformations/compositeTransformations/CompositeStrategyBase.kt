@@ -27,7 +27,7 @@ internal abstract class CompositeStrategyBase
             //  val coordRes = crsTransformationResultStatistic.getCoordinateMedian() // THE ONLY DIFFERENCE in the above mentioned two classes
             //  val coordRes = crsTransformationResultStatistic.getCoordinateAverage()  // THE ONLY DIFFERENCE in the above mentioned two classes
             val coordRes: CrsCoordinate = medianOrAverage() // this line replaced the above two lines in different subclasses when doing refactoring
-            return CrsTransformationResultImplementation(
+            return CrsTransformationResult(
                 inputCoordinate,
                 outputCoordinate = coordRes,
                 exception = null,
@@ -38,7 +38,7 @@ internal abstract class CompositeStrategyBase
             )
         }
         else {
-            return CrsTransformationResultImplementation(
+            return CrsTransformationResult(
                 inputCoordinate,
                 outputCoordinate = null,
                 exception = null,

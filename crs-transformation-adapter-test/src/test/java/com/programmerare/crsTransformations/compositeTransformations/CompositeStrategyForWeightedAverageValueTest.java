@@ -7,7 +7,7 @@ import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdap
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
 import com.programmerare.crsTransformations.CrsTransformationAdapter;
-import com.programmerare.crsTransformations.CrsTransformationResultImplementation;
+import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
@@ -195,7 +195,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         );
 
         final CrsCoordinate coordinate = CrsCoordinateFactory.latLon(59,18);
-        final CrsTransformationResult crsTransformationResult = new CrsTransformationResultImplementation(
+        final CrsTransformationResult crsTransformationResult = new CrsTransformationResult(
             coordinate, // inputCoordinate irrelevant in this test so okay to use the same as the output
             coordinate, // outputCoordinate
             null, // exception
@@ -221,7 +221,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         assertEquals(coordinate, crsTransformationResult1.getOutputCoordinate());
 
         final CrsTransformationAdapter crsTransformationAdapterNotInTheComposite = new CrsTransformationAdapterGooberCTL();
-        final CrsTransformationResult crsTransformationResultProblem = new CrsTransformationResultImplementation(
+        final CrsTransformationResult crsTransformationResultProblem = new CrsTransformationResult(
             coordinate, // inputCoordinate irrelevant in this test so okay to use the same as the output
             coordinate, // outputCoordinate
             null, // exception
