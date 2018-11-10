@@ -1,44 +1,56 @@
 package com.programmerare.crsTransformations.crsIdentifier;
 
+import org.junit.jupiter.api.Test;
+
 import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-
-import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
-import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 public class CrsIdentifierTest {
 
+    private String getCrsCodeIncludingUppercasedEpsgPrefix(int epsgNumber) {
+        return "EPSG:" + epsgNumber;
+    }
+    
     @Test
-    void createFromCrsCodeTrimmedButWithoutUppercasingButNotEpsg() {
-        CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromCrsCode("  abc  ");
+    void crsIdentifier_shouldReturnWhitespaceTrimmedCrsCodeAndNotBeConsideredAsEpsg_whenCreatedFromNonEpsgString() {
+        final CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromCrsCode("  abc  ");
         assertEquals("abc", crsIdentifier.getCrsCode());
         assertEquals(false, crsIdentifier.isEpsgCode());
     }
 
     @Test
-    void createFromEpsgNumber() {
-        // SWEREF99TM = 3006
-        CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(3006);
-        //Assertions.assertEquals(EpsgCode.SWEDEN__SWEREF99_TM__3006, crsIdentifier.getCrsCode());
-        Assertions.assertEquals("EPSG:3006", crsIdentifier.getCrsCode());
+    void crsIdentifier_shouldReturnEpsgNumberAndEpsgPrefixedCrsCodeAndBeConsideredAsEpsg_whenCreatedFromEpsgNumber() {
+        final int inputEpsgNumber = 3006;
+        // No validation that the number is actually an existing EPSG but any positive integer
+        // is assumed to be a EPSG number.   TODO: validate positive number !
+        final CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(inputEpsgNumber);
+        assertEquals(
+            inputEpsgNumber, // expected
+            crsIdentifier.getEpsgNumber()
+        );
+        assertEquals(getCrsCodeIncludingUppercasedEpsgPrefix(inputEpsgNumber), crsIdentifier.getCrsCode());
         assertEquals(true, crsIdentifier.isEpsgCode());
-        Assertions.assertEquals(EpsgNumber.SWEDEN__SWEREF99_TM__3006, crsIdentifier.getEpsgNumber());
     }
 
     @Test
-    void createFromCrsCodeWithLowerCasedEpsg() {
-        CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromCrsCode("  epsg:4326  ");
-        // the input should become trimmed and uppercased "EPSG"
-        assertEquals("EPSG:4326", crsIdentifier.getCrsCode());
+    void crsIdentifier_shouldReturnEpsgNumberAndUppercasedEpsgPrefixedWhitespaceTrimmedCrsCodeAndBeConsideredAsEpsg_whenCreatedFromLowecasedEpsgCodeWithSurroundingWhitespace() {
+        final int inputEpsgNumber = 4326;
+        final String inputCrsCode = "  epsg:" + inputEpsgNumber + "  "; 
+        final CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromCrsCode(inputCrsCode);
+        // the input should become trimmed and return string with uppercased "EPSG:" prefix
+        assertEquals(
+            getCrsCodeIncludingUppercasedEpsgPrefix(inputEpsgNumber), 
+            crsIdentifier.getCrsCode()
+        );
         assertEquals(true, crsIdentifier.isEpsgCode());
-        assertEquals(4326, crsIdentifier.getEpsgNumber());
+        assertEquals(inputEpsgNumber, crsIdentifier.getEpsgNumber());
     }
 
     @Test
-    void createFromCrsCodeNullShouldFail() {
+    void crsIdentifierFactory_shouldThrowException_whenCrsCodeInputIsNull() {
         IllegalArgumentException exception = assertThrows(
             IllegalArgumentException.class,
             () -> CrsIdentifierFactory.createFromCrsCode(null), // should fail
@@ -48,7 +60,7 @@ public class CrsIdentifierTest {
     }
 
     @Test
-    void createFromCrsCodeWithOnlyWhiteSpaceShouldFail() {
+    void crsIdentifierFactory_shouldThrowException_whenCrsCodeInputIsOnlyWhitespace() {
         IllegalArgumentException exception = assertThrows(
             IllegalArgumentException.class,
             () -> CrsIdentifierFactory.createFromCrsCode("   "), // should fail
@@ -58,7 +70,7 @@ public class CrsIdentifierTest {
     }
 
     @Test
-    void equalsTestWhenCreatingFromEpsgNumberAndFromCrsCode() {
+    void crsIdentifiers_shouldBeEqual_whenCreatedFromEpsgNumberAndCorrespondingCrsCode() {
         CrsIdentifier fromEpsgNumber    = CrsIdentifierFactory.createFromEpsgNumber(3006);
         CrsIdentifier fromCrsCode       = CrsIdentifierFactory.createFromCrsCode("  epsg:3006   ");
         assertEquals(fromEpsgNumber, fromCrsCode);
@@ -73,6 +85,8 @@ public class CrsIdentifierTest {
         IllegalArgumentException exception,
         String expectedStringToBeContainedInExceptionMessage
     ) {
+        assertNotNull(exception);
+        assertNotNull(exception.getMessage());
         // the exception message is currently something like this: "Parameter specified as non-null is null: method com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier$Companion.createFromCrsCode, parameter crsCode"
         // (potentially fragile to test the message strings but it does not really change often, and in such a rare scenario, then easy to fix)
         assertThat(exception.getMessage(), containsString(expectedStringToBeContainedInExceptionMessage));
