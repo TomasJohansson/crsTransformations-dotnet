@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.List;
 
-import static com.programmerare.crsTransformations.CrsTransformationAdapterLeafFactoryTest.NUMBER_OF_IMPLEMENTATIONS;
+import static com.programmerare.crsTransformations.CrsTransformationAdapterLeafFactoryTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -32,6 +32,6 @@ public class CrsTransformationAdapterCompositeFactoryTest {
     private void assertCompositeNotNullAndAggregatesManyImplementations(CrsTransformationAdapterComposite crsTransformationAdapterComposite) {
         assertNotNull(crsTransformationAdapterComposite);
         List<CrsTransformationAdapter> list = crsTransformationAdapterComposite.getCompositeStrategy().getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked();
-        assertEquals(NUMBER_OF_IMPLEMENTATIONS, list.size());
+        assertEquals(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, list.size());
     }
 }
