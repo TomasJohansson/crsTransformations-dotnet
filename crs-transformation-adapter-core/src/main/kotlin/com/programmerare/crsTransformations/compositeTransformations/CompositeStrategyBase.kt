@@ -2,11 +2,18 @@ package com.programmerare.crsTransformations.compositeTransformations
 
 import com.programmerare.crsTransformations.*
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
+import java.lang.RuntimeException
 
 internal abstract class CompositeStrategyBase
     (private val crsTransformationAdapters: List<CrsTransformationAdapter>)
     : CompositeStrategy {
 
+    init {
+        if(crsTransformationAdapters == null || crsTransformationAdapters.size < 1) {
+            throw RuntimeException("'Composite' adapter can not be created with an empty list of 'leaf' adapters") 
+        }
+    }
+    
     override final fun getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked(): List<CrsTransformationAdapter> {
         return crsTransformationAdapters
     }
