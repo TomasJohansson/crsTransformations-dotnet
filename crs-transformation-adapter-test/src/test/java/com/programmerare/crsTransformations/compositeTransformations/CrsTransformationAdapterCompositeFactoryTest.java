@@ -5,6 +5,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Function;
 
 import static com.programmerare.crsTransformations.CrsTransformationAdapterLeafFactoryTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
 import static org.hamcrest.CoreMatchers.containsString;
@@ -40,12 +41,34 @@ public class CrsTransformationAdapterCompositeFactoryTest {
     }
 
     private final static List<CrsTransformationAdapter> emptyListOfCrsTransformationAdapters = new ArrayList<>();
-    
+
     @Test
     void createCrsTransformationAverage_shouldThrowException_whenInstantiatingWithEmptyList() {
+        helper_shouldThrowException_whenInstantiatingWithEmptyList(
+            list -> CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(list)
+        );
+    }
+
+    @Test
+    void createCrsTransformationMedian_shouldThrowException_whenInstantiatingWithEmptyList() {
+        helper_shouldThrowException_whenInstantiatingWithEmptyList(
+            list -> CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(list)
+        );
+    }
+
+    @Test
+    void createCrsTransformationChainOfResponsibility_shouldThrowException_whenInstantiatingWithEmptyList() {
+        helper_shouldThrowException_whenInstantiatingWithEmptyList(
+            list -> CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility(list)
+        );
+    }    
+    
+    private void helper_shouldThrowException_whenInstantiatingWithEmptyList(
+        final Function<List<CrsTransformationAdapter>, CrsTransformationAdapterComposite> compositeCreator            
+    ) {
         Throwable exception = assertThrows(
             Throwable.class,
-            () -> CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(emptyListOfCrsTransformationAdapters)
+            () -> compositeCreator.apply(emptyListOfCrsTransformationAdapters)
         );
         assertNotNull(exception);
         // the exception message might be something like:
