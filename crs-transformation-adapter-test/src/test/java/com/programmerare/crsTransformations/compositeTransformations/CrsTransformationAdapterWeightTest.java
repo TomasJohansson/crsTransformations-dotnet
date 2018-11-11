@@ -49,4 +49,36 @@ class CrsTransformationAdapterWeightTest {
             )
         );
     }
+
+    @Test
+    void createFromStringWithFullClassNameForImplementation_shouldThrowException_whenTheClassIsNotImplementingTheExpectedInterface() {
+        final String nameOfClassNotImplementingTheInterfaceCrsTransformationAdapter = this.getClass().getName();
+        assertThrows(
+            Exception.class, // not testing exactly what exception type but just some class inheriting from Exception 
+            () -> CrsTransformationAdapterWeight.createFromStringWithFullClassNameForImplementation(
+                nameOfClassNotImplementingTheInterfaceCrsTransformationAdapter,
+                123 // weight
+            )
+        );        
+    }
+
+    @Test
+    void createFromStringWithFullClassNameForImplementation_shouldSucceed_whenTheClassIsImplementingTheExpectedInterface() {
+        final String nameOfClassImplementingTheInterfaceCrsTransformationAdapter = crsTransformationAdapterInstanceNotNull.getClass().getName();
+        final double weightValue = 123;
+        CrsTransformationAdapterWeight crsTransformationAdapterWeight = CrsTransformationAdapterWeight.createFromStringWithFullClassNameForImplementation(
+            nameOfClassImplementingTheInterfaceCrsTransformationAdapter,
+            weightValue
+        );
+        assertNotNull(crsTransformationAdapterWeight);
+        assertEquals(
+            nameOfClassImplementingTheInterfaceCrsTransformationAdapter,  
+            crsTransformationAdapterWeight.getCrsTransformationAdapter().getClass().getName()
+        );
+        assertEquals(
+            weightValue, // expected
+            crsTransformationAdapterWeight.getWeight()
+        );
+    }
+
 }
