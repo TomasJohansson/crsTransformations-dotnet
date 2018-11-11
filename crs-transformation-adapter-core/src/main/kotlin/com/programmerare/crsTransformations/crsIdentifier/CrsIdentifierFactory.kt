@@ -9,6 +9,7 @@
  */
 @file:JvmName("CrsIdentifierFactory")
 package com.programmerare.crsTransformations.crsIdentifier
+
 // The reason for having CrsIdentifier and this CrsIdentifierFactory
 // in a package of its own is to avoid "polluting" the base
 // package from lots of package level function defined in this file
@@ -45,7 +46,7 @@ fun createFromCrsCode(crsCode: String): CrsIdentifier {
         val epsgNumberOrNull = nonEpsgPartOfString.toIntOrNull()
         if(epsgNumberOrNull != null) {
             epsgNumber = epsgNumberOrNull
-            throwIllegalArgumentExceptionMessageIfEpsgNumberIsNonPositive(epsgNumber)
+            getValidEpsgNumberOrThrowIllegalArgumentExceptionMessageIfNotValid(epsgNumber)
             isEpsgCode = true
             crsIdentifierCode = crsIdentifierCode.toUpperCase()
         }
@@ -55,20 +56,30 @@ fun createFromCrsCode(crsCode: String): CrsIdentifier {
 
 /**
  * Creates a CrsIdentifier from a positive integer.
- * The only validation constraint is that the integer must be positive.
- * An exception is thrown if the input number is zero or negative. 
+ * The only validation constraints are that the integer must be positive (and not null).
+ * An exception is thrown if the input number is null or zero or negative.
+ * The reason to allow null in the Kotlin method signature is to provide java clients
+ * with better error messages and "IllegalArgumentException" instead of "NullPointerException" 
  * @param epsgNumber an EPSG number, 
  *      for example 4326 for the frequently used coordinate reference system WGS84. 
  */
-fun createFromEpsgNumber(epsgNumber: Int): CrsIdentifier {
-    throwIllegalArgumentExceptionMessageIfEpsgNumberIsNonPositive(epsgNumber)
+fun createFromEpsgNumber(epsgNumber: Int?): CrsIdentifier {
+    val validatedEpsgNumber = getValidEpsgNumberOrThrowIllegalArgumentExceptionMessageIfNotValid(epsgNumber)
     return CrsIdentifier._internalCrsFactory(
-        crsCode = EPSG_PREFIX_UPPERCASED + epsgNumber,
+        crsCode = EPSG_PREFIX_UPPERCASED + validatedEpsgNumber,
         isEpsgCode = true,
-        epsgNumber = epsgNumber
+        epsgNumber = validatedEpsgNumber
     )
 }
 
-private fun throwIllegalArgumentExceptionMessageIfEpsgNumberIsNonPositive(epsgNumber: Int) {
-    if(epsgNumber <= 0) throw IllegalArgumentException("EPSG number must not be non-positive but was: " + epsgNumber)
+private fun getValidEpsgNumberOrThrowIllegalArgumentExceptionMessageIfNotValid(epsgNumber: Int?): Int {
+    if(epsgNumber == null) {
+        throw IllegalArgumentException("EPSG number must not be null")    
+    }
+    val epsgNumberNotNull: Int = epsgNumber!! // Never NullPointerException here because of above check
+    
+    if(epsgNumberNotNull <= 0) {
+        throw IllegalArgumentException("EPSG number must not be non-positive but was: " + epsgNumberNotNull)
+    }
+    return epsgNumberNotNull
 }

@@ -4,9 +4,10 @@ import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumbe
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotEquals;
-import static org.junit.jupiter.api.Assertions.assertThrows;
+
+import static org.hamcrest.CoreMatchers.containsString;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.junit.jupiter.api.Assertions.*;
 
 class CrsCoordinateTest {
     private final static String EpsgPrefix = "EPSG:";
@@ -242,78 +243,94 @@ class CrsCoordinateTest {
         assertEquals(c.getYNorthingLatitude(), c.getNorthing());
         assertEquals(c.getYNorthingLatitude(), c.getLatitude());
 //        new CrsCoordinate(1.1,2.1,CrsIdentifierFactory.createFromEpsgNumber(123));
-
-        
     }
+
+    // throw IllegalArgumentException("Neither of the two coordinate parameters must be null i.e. neither 'X / Easting / Longitude' nor 'Y / Northing / Latitude'")
+    // fragile hardcoded string below but will not change often and if/when then it will be easy to fix when it fails
+    private final static String EXPECTED_PART_OF_EXCEPTION_MESSAGE_WHEN_COORDINATE_VALUES_IS_NULL = "Neither of the two coordinate parameters must be null";
     
     @Test
     void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenXisNull() {
-        Integer x = null;
-        Throwable exception = assertThrows(
-            Throwable.class,
+        Double x = null;
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
             () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
                 x,
                 20.0,
                 4326
             )
-        );        
+        );
+        assertThat(exception.getMessage(), containsString(EXPECTED_PART_OF_EXCEPTION_MESSAGE_WHEN_COORDINATE_VALUES_IS_NULL));                
     }
 
     @Test
     void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenYisNull() {
-        Integer y = null;
-        Throwable exception = assertThrows(
-            Throwable.class,
+        Double y = null;
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
             () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
                 60.0,
                 y,
                 4326
             )
         );
-        // this is currently creating a "NullPointerException"
-        // and it is preferable with a better message  
+        assertThat(exception.getMessage(), containsString(EXPECTED_PART_OF_EXCEPTION_MESSAGE_WHEN_COORDINATE_VALUES_IS_NULL));
     }
 
     @Test
     void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenCrsIdentifierIsNull() {
         CrsIdentifier crsIdentifier = null;
-        Throwable exception = assertThrows(
-            Throwable.class,
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
             () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
                 60.0,
                 20.0,
                 crsIdentifier
             )
         );
-        // "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method"
+        // "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude, parameter crsIdentifier"
+        assertExceptionMessageForIllegalArgumentException(exception, "crsIdentifier");
     }
 
     @Test
     void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenEpsgNumberIsNull() {
         Integer epsgNumber = null;
-        Throwable exception = assertThrows(
-            Throwable.class,
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
             () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
                 60.0,
                 20.0,
                 epsgNumber
             )
-    );
-        // this is currently creating a "NullPointerException"
-        // and it is preferable with a better message
+        );
+        // fragile hardcoded string below but will not change often and if/when then it will be easy to fix when it fails
+        assertThat(exception.getMessage(), containsString("EPSG number must not be null"));
     }
 
     @Test
     void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenCrsCodeIsNull() {
         String crsCode = null;
-        Throwable exception = assertThrows(
-            Throwable.class,
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
             () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
                 60.0,
                 20.0,
                 crsCode
             )
         );
-        // "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude, parameter crsCode"
+        // "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude, parameter crsCode"        
+        assertExceptionMessageForIllegalArgumentException(exception, "crsCode");
+    }
+
+    private void assertExceptionMessageForIllegalArgumentException(IllegalArgumentException exception, String suffixWithNameOfParameter) {
+        assertNotNull(exception);
+        final String actualEceptionMessage = exception.getMessage();
+        // fragile hardcoded strings below but will not change often and if/when then it will be easy to fix when it fails
+        
+        // actualEceptionMessage for example: "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude, parameter crsCode"        
+        final String expectedEceptionMessagePart1 = "Parameter specified as non-null is null:";
+        final String expectedEceptionMessagePart2 = "parameter " + suffixWithNameOfParameter;
+        assertThat(actualEceptionMessage, containsString(expectedEceptionMessagePart1));
+        assertThat(actualEceptionMessage, containsString(expectedEceptionMessagePart2));
     }
 }

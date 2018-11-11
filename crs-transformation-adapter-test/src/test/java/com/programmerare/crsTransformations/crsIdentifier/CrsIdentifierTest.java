@@ -116,19 +116,24 @@ public class CrsIdentifierTest {
     @Test
     void createFromEpsgNumber_shouldThrowException_whenEpsgNumberIsNull() {
         Integer epsgNumber = null;
-        Throwable exception = assertThrows(
-                Throwable.class,
-                () -> CrsIdentifierFactory.createFromEpsgNumber(epsgNumber)
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
+            () -> CrsIdentifierFactory.createFromEpsgNumber(epsgNumber)
         );
-        // this is currently creating a "NullPointerException"
-        // and it is preferable with a better message
+        // Previously the above method resulted in a "NullPointerException"
+        // (created by Kotlin when trying to invoke)
+        // but now the validation instead creates an IllegalArgumentException 
+        assertNotNull(exception);
+        final String exceptionMessage = exception.getMessage();
+        // fragile hardcoded string below but will not change often and if/when then it will be easy to fix when it fails
+        assertThat(exceptionMessage, containsString("EPSG number must not be null"));        
     }
 
     @Test
     void createFromCrsCode_shouldThrowException_whenCrsCodeIsNull() {
         String crsCode = null;
-        Throwable exception = assertThrows(
-            Throwable.class,
+        IllegalArgumentException exception = assertThrows(
+            IllegalArgumentException.class,
             () -> CrsIdentifierFactory.createFromCrsCode(crsCode)
         );
         // "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory.createFromCrsCode, parameter crsCode"
