@@ -19,6 +19,11 @@ class CrsTransformationAdapterWeight private constructor(
     val crsTransformationAdapter: CrsTransformationAdapter,
     val weight: Double
 ) {
+    init {
+        if(weight <=0) {
+            throw IllegalArgumentException("The weight value must be positive value. It does not make sense to try using negative values, and there would be useless with a zero value. The weight value was: " + weight  + " for the adapter " + crsTransformationAdapter.getShortNameOfImplementation())
+        }
+    }
 
     /**
      * Not intended to be used with ".Companion" from client code.

@@ -165,24 +165,6 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         assertNotNull(compositeStrategyForWeightedAverageValue);
     }
 
-    @Test
-    void createCompositeStrategyForWeightedAverageValue_whenWeightIsNegative_shouldThrowException() {
-        final List<CrsTransformationAdapterWeight> weightedCrsTransformationAdapters =
-            Arrays.asList(
-                CrsTransformationAdapterWeight.createFromInstance(
-                    new CrsTransformationAdapterGeoPackageNGA(),
-                    -1 // negative value is unreasonable and should cause exception
-                )
-            );
-        assertThrows(
-            RuntimeException.class,
-            () -> {
-                CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters);
-            },
-            "Negative weight values are not acceptable because they do not make sense"
-        );
-    }
-    
     @Test    
     void calculateAggregatedResultTest() {
         // TODO refactor this too long test method
