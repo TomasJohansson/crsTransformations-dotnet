@@ -12,7 +12,7 @@ class CrsTransformationResultStatistic(
     private val results: List<CrsTransformationResult>
 ) {
 
-    private val _sucessfulCoordinates: List<CrsCoordinate> by lazy {
+    private val _sucessfulCoordinatesLazyLoaded: List<CrsCoordinate> by lazy {
         results.filter { it.isSuccess }.map { it.outputCoordinate }
     }
 
@@ -22,11 +22,11 @@ class CrsTransformationResultStatistic(
         }
     }
 
-    private val _longitudes: List<Double> by lazy {
-        _sucessfulCoordinates.map { it.xEastingLongitude }
+    private val _longitudesLazyLoaded: List<Double> by lazy {
+        _sucessfulCoordinatesLazyLoaded.map { it.xEastingLongitude }
     }
-    private val _latitudes: List<Double> by lazy {
-        _sucessfulCoordinates.map { it.yNorthingLatitude }
+    private val _latitudesLazyLoaded: List<Double> by lazy {
+        _sucessfulCoordinatesLazyLoaded.map { it.yNorthingLatitude }
     }
 
     private fun getMaxDiff(values: List<Double>): Double {
@@ -40,8 +40,8 @@ class CrsTransformationResultStatistic(
         }
     }
 
-    private val _maxDiffLatitudes: Double by lazy {
-        getMaxDiff(_latitudes)
+    private val _maxDiffLatitudesLazyLoaded: Double by lazy {
+        getMaxDiff(_latitudesLazyLoaded)
     }
 
     /**
@@ -49,11 +49,11 @@ class CrsTransformationResultStatistic(
      *      between the coordinate with the smallest and the largest Y/Latitude values.   
      */
     fun getMaxDifferenceForYNorthingLatitude(): Double {
-        return _maxDiffLatitudes
+        return _maxDiffLatitudesLazyLoaded
     }
 
-    private val _maxDiffLongitudes: Double by lazy {
-        getMaxDiff(_longitudes)
+    private val _maxDiffLongitudesLazyLoaded: Double by lazy {
+        getMaxDiff(_longitudesLazyLoaded)
     }
 
     /**
@@ -61,17 +61,18 @@ class CrsTransformationResultStatistic(
      *      between the coordinate with the smallest and the largest X/Longitude values.
      */    
     fun getMaxDifferenceForXEastingLongitude(): Double {
-        return _maxDiffLongitudes
+        return _maxDiffLongitudesLazyLoaded
     }
 
-    private val _coordinateMedian: CrsCoordinate by lazy {
-        val lon = MedianValueUtility.getMedianValue(_longitudes)
-        val lat = MedianValueUtility.getMedianValue(_latitudes)
-        val coord = createFromXEastingLongitudeAndYNorthingLatitude(lon, lat, _sucessfulCoordinates.get(0).crsIdentifier)
+    private val _coordinateMedianLazyLoaded: CrsCoordinate by lazy {
+        val lon = MedianValueUtility.getMedianValue(_longitudesLazyLoaded)
+        val lat = MedianValueUtility.getMedianValue(_latitudesLazyLoaded)
+        val coord = createFromXEastingLongitudeAndYNorthingLatitude(lon, lat, _sucessfulCoordinatesLazyLoaded.get(0).crsIdentifier)
         coord
     }
-    private val _coordinateAverage: CrsCoordinate by lazy {
-        createFromXEastingLongitudeAndYNorthingLatitude(_longitudes.average(), _latitudes.average(), _sucessfulCoordinates.get(0).crsIdentifier)
+    
+    private val _coordinateAverageLazyLoaded: CrsCoordinate by lazy {
+        createFromXEastingLongitudeAndYNorthingLatitude(_longitudesLazyLoaded.average(), _latitudesLazyLoaded.average(), _sucessfulCoordinatesLazyLoaded.get(0).crsIdentifier)
     }
 
     /**
@@ -85,7 +86,7 @@ class CrsTransformationResultStatistic(
      * @return the number of succesful results
      */    
     fun getNumberOfResults(): Int {
-        return _sucessfulCoordinates.size
+        return _sucessfulCoordinatesLazyLoaded.size
     }
 
 
@@ -95,7 +96,7 @@ class CrsTransformationResultStatistic(
      */
     fun getCoordinateMedian(): CrsCoordinate {
         throwExceptionIfPreconditionViolated()
-        return _coordinateMedian
+        return _coordinateMedianLazyLoaded
     }
 
     /**
@@ -104,6 +105,6 @@ class CrsTransformationResultStatistic(
      */
     fun getCoordinateAverage(): CrsCoordinate {
         throwExceptionIfPreconditionViolated()
-        return _coordinateAverage
+        return _coordinateAverageLazyLoaded
     }
 }
