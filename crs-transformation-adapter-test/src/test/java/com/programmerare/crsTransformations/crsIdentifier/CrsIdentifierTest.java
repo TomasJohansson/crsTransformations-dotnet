@@ -112,4 +112,26 @@ public class CrsIdentifierTest {
         // (potentially fragile to test the message strings but it does not really change often, and in such a rare scenario, then easy to fix)
         assertThat(exception.getMessage(), containsString(expectedStringToBeContainedInExceptionMessage));
     }
+
+    @Test
+    void createFromEpsgNumber_shouldThrowException_whenEpsgNumberIsNull() {
+        Integer epsgNumber = null;
+        Throwable exception = assertThrows(
+                Throwable.class,
+                () -> CrsIdentifierFactory.createFromEpsgNumber(epsgNumber)
+        );
+        // this is currently creating a "NullPointerException"
+        // and it is preferable with a better message
+    }
+
+    @Test
+    void createFromCrsCode_shouldThrowException_whenCrsCodeIsNull() {
+        String crsCode = null;
+        Throwable exception = assertThrows(
+            Throwable.class,
+            () -> CrsIdentifierFactory.createFromCrsCode(crsCode)
+        );
+        // "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory.createFromCrsCode, parameter crsCode"
+    }
+    
 }

@@ -6,6 +6,7 @@ import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 class CrsCoordinateTest {
     private final static String EpsgPrefix = "EPSG:";
@@ -241,5 +242,78 @@ class CrsCoordinateTest {
         assertEquals(c.getYNorthingLatitude(), c.getNorthing());
         assertEquals(c.getYNorthingLatitude(), c.getLatitude());
 //        new CrsCoordinate(1.1,2.1,CrsIdentifierFactory.createFromEpsgNumber(123));
+
+        
+    }
+    
+    @Test
+    void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenXisNull() {
+        Integer x = null;
+        Throwable exception = assertThrows(
+            Throwable.class,
+            () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
+                x,
+                20.0,
+                4326
+            )
+        );        
+    }
+
+    @Test
+    void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenYisNull() {
+        Integer y = null;
+        Throwable exception = assertThrows(
+            Throwable.class,
+            () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
+                60.0,
+                y,
+                4326
+            )
+        );
+        // this is currently creating a "NullPointerException"
+        // and it is preferable with a better message  
+    }
+
+    @Test
+    void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenCrsIdentifierIsNull() {
+        CrsIdentifier crsIdentifier = null;
+        Throwable exception = assertThrows(
+            Throwable.class,
+            () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
+                60.0,
+                20.0,
+                crsIdentifier
+            )
+        );
+        // "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method"
+    }
+
+    @Test
+    void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenEpsgNumberIsNull() {
+        Integer epsgNumber = null;
+        Throwable exception = assertThrows(
+            Throwable.class,
+            () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
+                60.0,
+                20.0,
+                epsgNumber
+            )
+    );
+        // this is currently creating a "NullPointerException"
+        // and it is preferable with a better message
+    }
+
+    @Test
+    void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenCrsCodeIsNull() {
+        String crsCode = null;
+        Throwable exception = assertThrows(
+            Throwable.class,
+            () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
+                60.0,
+                20.0,
+                crsCode
+            )
+        );
+        // "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude, parameter crsCode"
     }
 }
