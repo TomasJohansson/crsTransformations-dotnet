@@ -7,11 +7,27 @@ import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import com.programmerare.crsTransformations.coordinate.createFromYNorthingLatitudeAndXEastingLongitude
 
-internal class CompositeStrategyForWeightedAverageValue(
+internal class CompositeStrategyForWeightedAverageValue private constructor(
     private val crsTransformationAdapters: List<CrsTransformationAdapter>,
     private val weights: Map<String, Double>
 ) : CompositeStrategyBase(crsTransformationAdapters), CompositeStrategy {
 
+    init {
+        // defensive which is currently difficult to create a test for 
+        // (i.e. to verify that these exceptions below are thrown)
+        // since the constructor is currently private and the normal conctruction 
+        // goes through an "internal" (Kotlin access level) method 
+        // which creates the Map. As long as that internal method 
+        // is correct then it is difficult for outside code to create an incorrect Map
+        if(crsTransformationAdapters == null || weights == null) throw java.lang.RuntimeException("Null parameters not allowed for the constructor")
+        if(crsTransformationAdapters.size != weights.size) throw java.lang.RuntimeException("The number of adapters must be the same as the number of weights")
+        for (crsTransformationAdapter: CrsTransformationAdapter in crsTransformationAdapters) {
+            if(!weights.containsKey(crsTransformationAdapter.getLongNameOfImplementation())) {
+                throw java.lang.RuntimeException("No weight for adapter " + crsTransformationAdapter.getLongNameOfImplementation())
+            }
+        }
+    }
+    
     override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: CrsTransformationResult?): Boolean {
         return true
     }
@@ -72,7 +88,7 @@ internal class CompositeStrategyForWeightedAverageValue(
      */
     companion object {
         @JvmStatic
-        fun createCompositeStrategyForWeightedAverageValue(
+        internal fun createCompositeStrategyForWeightedAverageValue(
             weightedCrsTransformationAdapters: List<CrsTransformationAdapterWeight>
         ): CompositeStrategyForWeightedAverageValue {
             val adapters: List<CrsTransformationAdapter> = weightedCrsTransformationAdapters.map { it -> it.crsTransformationAdapter }
