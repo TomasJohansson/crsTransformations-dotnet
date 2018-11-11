@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
-class CoordinateTest {
+class CrsCoordinateTest {
     private final static String EpsgPrefix = "EPSG:";
     
     private final double deltaTolerance = 0.00001;
