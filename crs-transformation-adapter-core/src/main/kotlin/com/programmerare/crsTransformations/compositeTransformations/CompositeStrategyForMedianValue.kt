@@ -24,7 +24,7 @@ internal class CompositeStrategyForMedianValue(
             inputCoordinate,
             crsTransformationAdapterThatCreatedTheResult,
             resultsStatistic,
-            { resultsStatistic.getCoordinateMedian() }
+            { r: CrsTransformationResultStatistic -> r.getCoordinateMedian() }
         )
     }
 

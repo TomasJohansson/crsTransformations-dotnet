@@ -21,12 +21,12 @@ internal abstract class CompositeStrategyBase
             inputCoordinate: CrsCoordinate,
             crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter,
             crsTransformationResultStatistic: CrsTransformationResultStatistic,
-            medianOrAverage: () -> CrsCoordinate
+            medianOrAverage: (CrsTransformationResultStatistic) -> CrsCoordinate
     ): CrsTransformationResult {
         if(crsTransformationResultStatistic.isStatisticsAvailable()) {
             //  val coordRes = crsTransformationResultStatistic.getCoordinateMedian() // THE ONLY DIFFERENCE in the above mentioned two classes
             //  val coordRes = crsTransformationResultStatistic.getCoordinateAverage()  // THE ONLY DIFFERENCE in the above mentioned two classes
-            val coordRes: CrsCoordinate = medianOrAverage() // this line replaced the above two lines in different subclasses when doing refactoring
+            val coordRes: CrsCoordinate = medianOrAverage(crsTransformationResultStatistic) // this line replaced the above two lines in different subclasses when doing refactoring
             return CrsTransformationResult(
                 inputCoordinate,
                 _outputCoordinate = coordRes,
