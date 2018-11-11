@@ -1,7 +1,5 @@
 package com.programmerare.crsTransformations
 
-import com.programmerare.crsTransformations.extensionfunctions.createCrsTransformationAdapterFromFullClassName
-
 /**
  * Factory used by 'composites' for creating 'leaf' implementations available at the classpath.  
  * 
@@ -22,7 +20,7 @@ object CrsTransformationAdapterLeafFactory {
      */
     @JvmStatic
     fun createCrsTransformationAdapter(crsTransformationAdapterClassName: String): CrsTransformationAdapter {
-        val crsTransformationAdapter: CrsTransformationAdapter = crsTransformationAdapterClassName.createCrsTransformationAdapterFromFullClassName()
+        val crsTransformationAdapter = Class.forName(crsTransformationAdapterClassName).getDeclaredConstructor().newInstance() as CrsTransformationAdapter
         return crsTransformationAdapter
     }
 
@@ -76,19 +74,4 @@ object CrsTransformationAdapterLeafFactory {
         classNames.filter { isCrsTransformationAdapter(it) }.map { createCrsTransformationAdapter(it) }
     }
 
-//    @file:JvmName("StringUtils")
-//    package com.programmerare.crsTransformations.extensionfunctions
-//    import com.programmerare.crsTransformations.CrsTransformationAdapter
-    /**
-     * Utility method for creating an adapter instance by using reflection
-     * for a string that should be the full class name for an implementation.
-     * When using Kotlin the method is available as an extension method for strings,
-     * but when using Java the method is available for a class named 'StringUtils'.
-     */
-    @JvmStatic
-    //fun String.createCrsTransformationAdapterFromFullClassName2(): CrsTransformationAdapter {
-    fun createCrsTransformationAdapterFromFullClassName2(className: String): CrsTransformationAdapter {
-        val crsTransformationAdapter = Class.forName(className).getDeclaredConstructor().newInstance() as CrsTransformationAdapter
-        return crsTransformationAdapter
-    }    
 }

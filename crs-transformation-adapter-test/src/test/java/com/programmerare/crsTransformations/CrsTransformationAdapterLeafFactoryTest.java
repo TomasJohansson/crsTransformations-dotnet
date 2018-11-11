@@ -1,10 +1,13 @@
 package com.programmerare.crsTransformations;
 
+import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformationAdapterGeoPackageNGA.CrsTransformationAdapterGeoPackageNGA;
 import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools;
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
+import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
@@ -69,10 +72,19 @@ public class CrsTransformationAdapterLeafFactoryTest {
     void listOfHardcodedClassnames_shouldBeCreateableAsNonNullCrsTransformationAdapters() {
         final List<String> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.getClassNamesForAllKnownImplementations();
         for (String hardcodedClassNameForKnownImplementation : hardcodedClassNamesForAllKnownImplementations) {
-            assertNotNull(CrsTransformationAdapterLeafFactory.createCrsTransformationAdapter(hardcodedClassNameForKnownImplementation));
+            CrsTransformationAdapter crsTransformationAdapter = CrsTransformationAdapterLeafFactory.createCrsTransformationAdapter(hardcodedClassNameForKnownImplementation);
+            verifyThatTheCreatedAdapterIsRealObject(crsTransformationAdapter);
         }
+    }
 
-    }    
+    private void verifyThatTheCreatedAdapterIsRealObject(CrsTransformationAdapter crsTransformationAdapter) {
+        assertNotNull(crsTransformationAdapter);
+        // below trying to use the created object to really make sure it works
+        CrsCoordinate coordinateWgs84 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(59.330231, 18.059196, EpsgNumber.WORLD__WGS_84__4326);
+        CrsTransformationResult resultSweref99 = crsTransformationAdapter.transform(coordinateWgs84, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        assertNotNull(resultSweref99);
+        assertTrue(resultSweref99.isSuccess());
+    }
 
     @Test
     void listOfKnownInstances_shouldOnlyContainNonNullObjectsAndTheNumberOfItemsShouldBeAtLeastFive() {
