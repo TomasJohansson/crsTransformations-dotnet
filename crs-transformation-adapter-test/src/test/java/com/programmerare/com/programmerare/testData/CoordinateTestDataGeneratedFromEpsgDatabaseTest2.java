@@ -121,7 +121,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
     private void verifyFiveImplementations(
         final CrsTransformationAdapterComposite crsTransformationAdapterComposite
     ) {
-        final CrsCoordinate input = CrsCoordinateFactory.latLon(59, 18);
+        final CrsCoordinate input = CrsCoordinateFactory.latLon(59.0, 18.0);
         final CrsTransformationResult result = crsTransformationAdapterComposite.transform(input, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         assertNotNull(result);
         assertTrue(result.isSuccess());

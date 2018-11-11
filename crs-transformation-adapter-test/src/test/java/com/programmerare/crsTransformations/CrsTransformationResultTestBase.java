@@ -47,7 +47,7 @@ abstract class CrsTransformationResultTestBase {
         final CrsCoordinate outputCoordinate4 = CrsCoordinateFactory.latLon(lat4, lon4);
 
         adapterForStatisticsTest = new CrsTransformationAdapterGooberCTL(); // not used, might use a mock instead
-        inputCoordinateNotUsedInStatisticsTest = CrsCoordinateFactory.latLon(0, 0); // input, not used here in this test
+        inputCoordinateNotUsedInStatisticsTest = CrsCoordinateFactory.latLon(0.0, 0.0); // input, not used here in this test
         outputCoordinateNotUsedInStatisticsTest = inputCoordinateNotUsedInStatisticsTest;
 
         listOfSubresultsForStatisticsTest = Arrays.asList(
