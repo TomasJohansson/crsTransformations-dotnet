@@ -75,4 +75,20 @@ object CrsTransformationAdapterLeafFactory {
         val classNames = getClassNamesForAllKnownImplementations()
         classNames.filter { isCrsTransformationAdapter(it) }.map { createCrsTransformationAdapter(it) }
     }
+
+//    @file:JvmName("StringUtils")
+//    package com.programmerare.crsTransformations.extensionfunctions
+//    import com.programmerare.crsTransformations.CrsTransformationAdapter
+    /**
+     * Utility method for creating an adapter instance by using reflection
+     * for a string that should be the full class name for an implementation.
+     * When using Kotlin the method is available as an extension method for strings,
+     * but when using Java the method is available for a class named 'StringUtils'.
+     */
+    @JvmStatic
+    //fun String.createCrsTransformationAdapterFromFullClassName2(): CrsTransformationAdapter {
+    fun createCrsTransformationAdapterFromFullClassName2(className: String): CrsTransformationAdapter {
+        val crsTransformationAdapter = Class.forName(className).getDeclaredConstructor().newInstance() as CrsTransformationAdapter
+        return crsTransformationAdapter
+    }    
 }

@@ -7,6 +7,7 @@ import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumbe
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.Assertions.*
 
+// TODO: move this code somewhere else since it is not really general string code
 class ExtensionsForStringTest {
 
     @Test
