@@ -13,13 +13,13 @@ import java.lang.RuntimeException
  * @see CrsTransformationAdapterBase
  * @see CompositeStrategy
  */
-final class CrsTransformationAdapterComposite internal constructor(
+final class CrsTransformationAdapterComposite private constructor(
 
-        /**
-         * Interface for calculating the resulting coordinate in different ways, 
-         * e.g. one stratefy implementation calculates the median and another the average.
-         */        
-        protected val compositeStrategy: CompositeStrategy
+    /**
+     * Interface for calculating the resulting coordinate in different ways, 
+     * e.g. one stratefy implementation calculates the median and another the average.
+     */        
+    protected val compositeStrategy: CompositeStrategy
 
 ) : CrsTransformationAdapterBase(), CrsTransformationAdapter {
 
@@ -59,4 +59,19 @@ final class CrsTransformationAdapterComposite internal constructor(
     override fun getAdapteeType() : CrsTransformationAdapteeType {
         return compositeStrategy.getAdapteeType()
     }
+
+    internal companion object {
+        /**
+         * This method is not intended for public use,
+         * but instead the factory class should be used.
+         * @see CrsTransformationAdapterCompositeFactory
+         */
+        @JvmStatic
+        internal fun _createCrsTransformationAdapterComposite(
+            compositeStrategy: CompositeStrategy
+        ): CrsTransformationAdapterComposite {
+            return CrsTransformationAdapterComposite(compositeStrategy)
+        }
+    }
+    
 }

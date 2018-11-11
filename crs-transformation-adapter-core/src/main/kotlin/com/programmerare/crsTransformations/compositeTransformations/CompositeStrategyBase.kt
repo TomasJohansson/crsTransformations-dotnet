@@ -4,7 +4,7 @@ import com.programmerare.crsTransformations.*
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import java.lang.RuntimeException
 
-internal abstract class CompositeStrategyBase
+internal abstract class CompositeStrategyBase protected constructor
     (private val crsTransformationAdapters: List<CrsTransformationAdapter>)
     : CompositeStrategy {
 

@@ -4,7 +4,7 @@ import com.programmerare.crsTransformations.*
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 
-internal class CompositeStrategyForMedianValue(
+internal class CompositeStrategyForMedianValue private constructor(
     private val crsTransformationAdapters: List<CrsTransformationAdapter>
 ) : CompositeStrategyBase(crsTransformationAdapters), CompositeStrategy {
 
@@ -31,4 +31,18 @@ internal class CompositeStrategyForMedianValue(
     override fun getAdapteeType() : CrsTransformationAdapteeType {
         return CrsTransformationAdapteeType.COMPOSITE_MEDIAN
     }
+
+    internal companion object {
+        /**
+         * This method is not intended for public use,
+         * but instead the factory class should be used.
+         * @see CrsTransformationAdapterCompositeFactory
+         */
+        @JvmStatic
+        internal fun _createCompositeStrategyForMedianValue (
+            list: List<CrsTransformationAdapter>
+        ): CompositeStrategyForMedianValue {
+            return CompositeStrategyForMedianValue(list)
+        }
+    }    
 }

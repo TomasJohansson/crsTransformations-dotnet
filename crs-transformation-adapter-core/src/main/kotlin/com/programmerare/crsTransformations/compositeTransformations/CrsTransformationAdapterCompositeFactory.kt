@@ -44,8 +44,8 @@ object CrsTransformationAdapterCompositeFactory {
      */    
     @JvmStatic
     fun createCrsTransformationMedian(list: List<CrsTransformationAdapter>): CrsTransformationAdapterComposite {
-        return CrsTransformationAdapterComposite(
-            CompositeStrategyForMedianValue(
+        return CrsTransformationAdapterComposite._createCrsTransformationAdapterComposite(
+            CompositeStrategyForMedianValue._createCompositeStrategyForMedianValue(
                 list
             )
         )
@@ -77,8 +77,8 @@ object CrsTransformationAdapterCompositeFactory {
      */    
     @JvmStatic
     fun createCrsTransformationAverage(list: List<CrsTransformationAdapter>): CrsTransformationAdapterComposite {
-        return CrsTransformationAdapterComposite(
-            CompositeStrategyForAverageValue(
+        return CrsTransformationAdapterComposite._createCrsTransformationAdapterComposite(
+            CompositeStrategyForAverageValue._createCompositeStrategyForAverageValue(
                 list
             )
         )
@@ -110,8 +110,8 @@ object CrsTransformationAdapterCompositeFactory {
      */    
     @JvmStatic
     fun createCrsTransformationChainOfResponsibility(list: List<CrsTransformationAdapter>): CrsTransformationAdapterComposite {
-        return CrsTransformationAdapterComposite(
-            CompositeStrategyForChainOfResponsibility(
+        return CrsTransformationAdapterComposite._createCrsTransformationAdapterComposite(
+            CompositeStrategyForChainOfResponsibility._createCompositeStrategyForChainOfResponsibility(
                 list
             )
         )
@@ -131,8 +131,8 @@ object CrsTransformationAdapterCompositeFactory {
     fun createCrsTransformationWeightedAverage(
         weightedCrsTransformationAdapters: List<CrsTransformationAdapterWeight>
     ): CrsTransformationAdapterComposite {
-        return CrsTransformationAdapterComposite(
-            CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters)
+        return CrsTransformationAdapterComposite._createCrsTransformationAdapterComposite(
+            CompositeStrategyForWeightedAverageValue._createCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters)
         )
     }
 

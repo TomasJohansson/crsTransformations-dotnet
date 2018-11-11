@@ -86,9 +86,9 @@ internal class CompositeStrategyForWeightedAverageValue private constructor(
      * JVM class has been created with the programming language Kotlin.
      * Precondition: All weight values in the list must be non-negative.
      */
-    companion object {
+    internal companion object {
         @JvmStatic
-        internal fun createCompositeStrategyForWeightedAverageValue(
+        internal fun _createCompositeStrategyForWeightedAverageValue(
             weightedCrsTransformationAdapters: List<CrsTransformationAdapterWeight>
         ): CompositeStrategyForWeightedAverageValue {
             val adapters: List<CrsTransformationAdapter> = weightedCrsTransformationAdapters.map { it -> it.crsTransformationAdapter }

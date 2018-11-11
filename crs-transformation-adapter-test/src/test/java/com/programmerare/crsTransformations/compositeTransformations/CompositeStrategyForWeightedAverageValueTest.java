@@ -163,7 +163,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
                 )
             );
         CompositeStrategyForWeightedAverageValue compositeStrategyForWeightedAverageValue =
-                CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters);
+                CompositeStrategyForWeightedAverageValue._createCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters);
         // The main test of this test method is that the above create method does not throw an exception
         assertNotNull(compositeStrategyForWeightedAverageValue);
     }
@@ -190,7 +190,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
             null // _nullableCrsTransformationResultStatistic
         );
 
-        final CompositeStrategy compositeStrategyForWeightedAverageValue = CompositeStrategyForWeightedAverageValue.createCompositeStrategyForWeightedAverageValue(crsTransformationAdapterWeights);
+        final CompositeStrategy compositeStrategyForWeightedAverageValue = CompositeStrategyForWeightedAverageValue._createCompositeStrategyForWeightedAverageValue(crsTransformationAdapterWeights);
         // 
         // the above composite was created with only one leaf in the list 
         // i.e. the object crsTransformationAdapterResultSource which is also used below    
