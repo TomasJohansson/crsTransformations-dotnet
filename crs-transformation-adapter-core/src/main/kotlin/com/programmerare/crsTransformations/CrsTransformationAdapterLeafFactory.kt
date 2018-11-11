@@ -1,5 +1,7 @@
 package com.programmerare.crsTransformations
 
+import java.lang.RuntimeException
+
 /**
  * Factory used by 'composites' for creating 'leaf' implementations available at the classpath.  
  * 
@@ -20,8 +22,16 @@ object CrsTransformationAdapterLeafFactory {
      */
     @JvmStatic
     fun createCrsTransformationAdapter(crsTransformationAdapterClassName: String): CrsTransformationAdapter {
-        val crsTransformationAdapter = Class.forName(crsTransformationAdapterClassName).getDeclaredConstructor().newInstance() as CrsTransformationAdapter
-        return crsTransformationAdapter
+        try {
+            val crsTransformationAdapter = Class.forName(crsTransformationAdapterClassName).getDeclaredConstructor().newInstance() as CrsTransformationAdapter
+            return crsTransformationAdapter
+        }
+        catch (e: Throwable) {
+            val nameOfInterfaceThatShouldBeImplemented = CrsTransformationAdapter::class.java.name
+            val message = "Failed to instantiate a class with the name '" + crsTransformationAdapterClassName + "' . The parameter must be the name of a class which implements the interface '" + nameOfInterfaceThatShouldBeImplemented + "'"
+            throw RuntimeException(message, e)
+                        
+        }        
     }
 
     /**

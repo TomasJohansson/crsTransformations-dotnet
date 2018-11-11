@@ -14,7 +14,9 @@ import org.junit.jupiter.api.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static org.hamcrest.CoreMatchers.containsString;
 import static org.hamcrest.CoreMatchers.hasItem;
+import static org.hamcrest.CoreMatchers.startsWith;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,6 +39,24 @@ public class CrsTransformationAdapterLeafFactoryTest {
         );        
     }
 
+    @Test
+    void createCrsTransformationAdapter_shouldThrowException_whenTheParameterIsNotNameOfClassImplementingTheExpectedInterface() {
+        final String incorrectClassName = "abc";
+        Throwable exception = assertThrows(
+                Throwable.class,
+                () -> CrsTransformationAdapterLeafFactory.createCrsTransformationAdapter(incorrectClassName)
+        );
+        // The default exception message from the instantiation would be something like:
+        // "java.lang.ClassNotFoundException: abc"
+        // However, I have changed it to include for example the full type name (including package)
+        // for the interface assumed to be implemented
+        final String nameOfInterfaceThatShouldBeImplemented = CrsTransformationAdapter.class.getName();
+        assertNotNull(exception);
+        final String exceptionMessage = exception.getMessage();
+        assertThat(exceptionMessage, containsString(nameOfInterfaceThatShouldBeImplemented));
+        assertThat(exceptionMessage, startsWith("Failed to instantiate")); // Fragile but the message string will not change often and if it does change then it will be very easy to modify the string here
+    }
+    
     @Test
     void listOfNonClassNamesForAdapters_shouldNotBeRecognizedAsAdapters() {
         final List<String> stringsNotBeingClassNameForAnyAdapter = Arrays.asList(
