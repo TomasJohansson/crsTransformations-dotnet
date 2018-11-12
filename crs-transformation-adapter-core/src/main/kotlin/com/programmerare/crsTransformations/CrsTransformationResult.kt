@@ -3,6 +3,7 @@ package com.programmerare.crsTransformations
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import java.lang.IllegalStateException
 import java.lang.RuntimeException
+import java.lang.StringBuilder
 
 /**
  * This class is used as result type from the transform method of the adapter interface.
@@ -24,7 +25,7 @@ class CrsTransformationResult(
      * Either null or an exception depending on whether or not
      * the transform resulted in an exception being thrown.
      */    
-    val exception: Throwable?,
+    exception: Throwable?,
 
     /**
      * True if the transform was successful or false if it failed.
@@ -56,6 +57,12 @@ class CrsTransformationResult(
      */    
     private val _nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic? = null
 ) {
+
+    /**
+     * Either null or an exception depending on whether or not
+     * the transform resulted in an exception being thrown.
+     */
+    val exception: Throwable?
     
     init {
         if(isSuccess && _outputCoordinate == null) {
@@ -64,11 +71,32 @@ class CrsTransformationResult(
         if(!isSuccess && _outputCoordinate != null) {
             throw IllegalStateException("Unvalid object construction. If NOT success then output coordinate should be null")
         }
+        
         if(exception != null) { // if exception then should NOT be success and not any resulting coordinate !
             if(isSuccess || _outputCoordinate != null) {
                 throw IllegalStateException("Unvalid object construction. If exception then output coordinate should be null and success should be false")
             }
-        }        
+        }
+        this.exception = getExceptionIfNotNullButOtherwiseTryToGetExceptionsFromChildrenExceptionsIfExisting(exception)
+    }
+    
+    private fun getExceptionIfNotNullButOtherwiseTryToGetExceptionsFromChildrenExceptionsIfExisting(exception: Throwable?): Throwable? {
+        if(exception != null) return exception
+        if(this.transformationResultChildren == null || this.transformationResultChildren.size == 0) return exception
+        val sb = StringBuilder()
+        for (transformationResultChild in this.transformationResultChildren) {
+            if(transformationResultChild.exception != null) {
+                sb.appendln(transformationResultChild.exception.message)
+            }
+        }
+        if(sb.isEmpty()){
+            return null    
+        }
+        else {
+            sb.appendln("If you want more details with stacktrace you can try iterating the children for exceptions.")
+            sb.appendln("This composite exception message only contains the 'getMessage' part for each child exception.")
+            return RuntimeException(sb.toString())
+        }
     }
 
     /**

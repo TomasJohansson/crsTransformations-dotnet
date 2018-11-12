@@ -314,10 +314,7 @@ final class CrsTransformationAdapterTest {
             CrsTransformationResult transformResult = crsTransformationAdapter.transform(unvalidInputCoordinate, 2);
             assertNotNull(transformResult, messageWhenError);
             assertFalse(transformResult.isSuccess(), messageWhenError);
-            
-            // TODO: if leasf in a composite has some exception then populate the composite exception with messages from the leafs
-            // assertNotNull(transformResult.getException(), messageWhenError);
-            
+            assertNotNull(transformResult.getException(), messageWhenError);
             assertEquals(unvalidInputCoordinate, transformResult.getInputCoordinate(), messageWhenError);
         }
     }
