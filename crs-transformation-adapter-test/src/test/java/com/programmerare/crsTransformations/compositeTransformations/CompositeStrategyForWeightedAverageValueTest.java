@@ -195,7 +195,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         // the above composite was created with only one leaf in the list 
         // i.e. the object crsTransformationAdapterResultSource which is also used below    
                 
-        CrsTransformationResult crsTransformationResult1 = compositeStrategyForWeightedAverageValue.calculateAggregatedResult(
+        CrsTransformationResult crsTransformationResult1 = compositeStrategyForWeightedAverageValue._calculateAggregatedResult(
             Arrays.asList(crsTransformationResult), // allResults
             coordinate,
             coordinate.getCrsIdentifier(), //  crsIdentifierForOutputCoordinateSystem
@@ -219,7 +219,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         assertThrows(
             RuntimeException.class,
             () -> {
-                compositeStrategyForWeightedAverageValue.calculateAggregatedResult(
+                compositeStrategyForWeightedAverageValue._calculateAggregatedResult(
                     Arrays.asList(crsTransformationResultProblem), // allResults
                     coordinate,
                     coordinate.getCrsIdentifier(), //  crsIdentifierForOutputCoordinateSystem

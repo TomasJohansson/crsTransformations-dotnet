@@ -36,7 +36,7 @@ public class CrsTransformationAdapterCompositeFactoryTest {
 
     private void assertCompositeNotNullAndAggregatesManyImplementations(CrsTransformationAdapterComposite crsTransformationAdapterComposite) {
         assertNotNull(crsTransformationAdapterComposite);
-        List<CrsTransformationAdapter> list = crsTransformationAdapterComposite.getCompositeStrategy().getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked();
+        List<CrsTransformationAdapter> list = crsTransformationAdapterComposite.getCompositeStrategy()._getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked();
         assertEquals(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, list.size());
     }
 

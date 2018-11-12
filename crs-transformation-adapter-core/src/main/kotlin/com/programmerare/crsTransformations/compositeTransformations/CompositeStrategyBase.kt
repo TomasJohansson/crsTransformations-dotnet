@@ -14,7 +14,7 @@ internal abstract class CompositeStrategyBase protected constructor
         }
     }
     
-    override final fun getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked(): List<CrsTransformationAdapter> {
+    override final fun _getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked(): List<CrsTransformationAdapter> {
         return crsTransformationAdapters
     }
 
@@ -57,7 +57,7 @@ internal abstract class CompositeStrategyBase protected constructor
         }
     }
 
-    override fun getAdapteeType() : CrsTransformationAdapteeType {
+    override fun _getAdapteeType() : CrsTransformationAdapteeType {
         return CrsTransformationAdapteeType.UNSPECIFIED_COMPOSITE
     }
 }

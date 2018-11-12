@@ -34,22 +34,22 @@ final class CrsTransformationAdapterComposite private constructor(
     }
 
     override final fun transform(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult {
-        val allCrsTransformationAdapters = compositeStrategy.getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
+        val allCrsTransformationAdapters = compositeStrategy._getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
         val list = mutableListOf<CrsTransformationResult>()
         var lastResultOrNullIfNoPrevious: CrsTransformationResult? = null
         for (crsTransformationAdapter: CrsTransformationAdapter in allCrsTransformationAdapters) {
-            if(!compositeStrategy.shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious)) {
+            if(!compositeStrategy._shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious)) {
                 break
             }
             val res = crsTransformationAdapter.transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
             list.add(res)
             lastResultOrNullIfNoPrevious = res
         }
-        return compositeStrategy.calculateAggregatedResult(list, inputCoordinate, crsIdentifierForOutputCoordinateSystem, this)
+        return compositeStrategy._calculateAggregatedResult(list, inputCoordinate, crsIdentifierForOutputCoordinateSystem, this)
     }
 
     override final fun getTransformationAdapterChildren(): List<CrsTransformationAdapter> {
-        return compositeStrategy.getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
+        return compositeStrategy._getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
     }
 
     override final fun isComposite(): Boolean {
@@ -57,7 +57,7 @@ final class CrsTransformationAdapterComposite private constructor(
     }
 
     override fun getAdapteeType() : CrsTransformationAdapteeType {
-        return compositeStrategy.getAdapteeType()
+        return compositeStrategy._getAdapteeType()
     }
 
     internal companion object {

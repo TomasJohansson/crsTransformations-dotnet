@@ -28,11 +28,11 @@ internal class CompositeStrategyForWeightedAverageValue private constructor(
         }
     }
     
-    override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: CrsTransformationResult?): Boolean {
+    override fun _shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: CrsTransformationResult?): Boolean {
         return true
     }
 
-    override fun calculateAggregatedResult(
+    override fun _calculateAggregatedResult(
         allResults: List<CrsTransformationResult>,
         inputCoordinate: CrsCoordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
@@ -103,7 +103,7 @@ internal class CompositeStrategyForWeightedAverageValue private constructor(
         }
     }
 
-    override fun getAdapteeType() : CrsTransformationAdapteeType {
+    override fun _getAdapteeType() : CrsTransformationAdapteeType {
         return CrsTransformationAdapteeType.COMPOSITE_WEIGHTED_AVERAGE
     }
 }

@@ -8,11 +8,11 @@ internal class CompositeStrategyForChainOfResponsibility private constructor(
     private val crsTransformationAdapters: List<CrsTransformationAdapter>
 ) : CompositeStrategyBase(crsTransformationAdapters), CompositeStrategy {
 
-    override fun shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: CrsTransformationResult?): Boolean {
+    override fun _shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: CrsTransformationResult?): Boolean {
         return lastResultOrNullIfNoPrevious == null || !lastResultOrNullIfNoPrevious.isSuccess
     }
 
-    override fun calculateAggregatedResult(
+    override fun _calculateAggregatedResult(
             allResults: List<CrsTransformationResult>,
             inputCoordinate: CrsCoordinate,
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
@@ -42,7 +42,7 @@ internal class CompositeStrategyForChainOfResponsibility private constructor(
         }
     }
 
-    override fun getAdapteeType() : CrsTransformationAdapteeType {
+    override fun _getAdapteeType() : CrsTransformationAdapteeType {
         return CrsTransformationAdapteeType.COMPOSITE_CHAIN_OF_RESPONSIBILITY
     }
 
