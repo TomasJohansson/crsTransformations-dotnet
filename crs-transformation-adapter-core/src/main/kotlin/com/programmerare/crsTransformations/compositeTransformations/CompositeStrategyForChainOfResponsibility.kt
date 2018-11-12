@@ -23,7 +23,7 @@ internal class CompositeStrategyForChainOfResponsibility private constructor(
             // since the calculation is interrupted at the first succeful result
             return CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate,
-                _outputCoordinate = allResults.get(0).outputCoordinate,
+                outputCoordinate = allResults.get(0).outputCoordinate,
                 exception = null,
                 isSuccess = true,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
@@ -33,7 +33,7 @@ internal class CompositeStrategyForChainOfResponsibility private constructor(
         else {
             return CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate,
-                _outputCoordinate = null,
+                outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,

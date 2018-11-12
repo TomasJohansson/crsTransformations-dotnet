@@ -61,7 +61,7 @@ internal class CompositeStrategyForWeightedAverageValue private constructor(
             val coordRes = createFromYNorthingLatitudeAndXEastingLongitude(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
             return CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate,
-                _outputCoordinate = coordRes,
+                outputCoordinate = coordRes,
                 exception = null,
                 isSuccess = true,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
@@ -71,7 +71,7 @@ internal class CompositeStrategyForWeightedAverageValue private constructor(
         else {
             return CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate,
-                _outputCoordinate = null,
+                outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,

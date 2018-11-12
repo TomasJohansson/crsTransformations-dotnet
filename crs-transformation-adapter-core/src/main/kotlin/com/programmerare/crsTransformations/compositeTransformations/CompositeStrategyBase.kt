@@ -36,23 +36,23 @@ internal abstract class CompositeStrategyBase protected constructor
             val coordRes: CrsCoordinate = medianOrAverage(crsTransformationResultStatistic) // this line replaced the above two lines in different subclasses when doing refactoring
             return CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate,
-                _outputCoordinate = coordRes,
+                outputCoordinate = coordRes,
                 exception = null,
                 isSuccess = true,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
                 transformationResultChildren = allResults,
-                _nullableCrsTransformationResultStatistic = crsTransformationResultStatistic
+                nullableCrsTransformationResultStatistic = crsTransformationResultStatistic
             )
         }
         else {
             return CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate,
-                _outputCoordinate = null,
+                outputCoordinate = null,
                 exception = null,
                 isSuccess = false,
                 crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
                 transformationResultChildren = allResults,
-                _nullableCrsTransformationResultStatistic = crsTransformationResultStatistic
+                nullableCrsTransformationResultStatistic = crsTransformationResultStatistic
             )
         }
     }

@@ -1,6 +1,5 @@
 package com.programmerare.crsTransformations
 
-import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import java.lang.IllegalStateException
 import java.lang.RuntimeException
@@ -205,21 +204,21 @@ class CrsTransformationResult private constructor(
         @JvmStatic
         fun _createCrsTransformationResult(
             inputCoordinate: CrsCoordinate,
-            _outputCoordinate: CrsCoordinate?,
+            outputCoordinate: CrsCoordinate?,
             exception: Throwable?,
             isSuccess: Boolean,
             crsTransformationAdapterResultSource: CrsTransformationAdapter,
             transformationResultChildren: List<CrsTransformationResult> = listOf<CrsTransformationResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
-            _nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic? = null
+            nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic? = null
         ): CrsTransformationResult {
             return CrsTransformationResult(
                 inputCoordinate,
-                _outputCoordinate,
+                outputCoordinate,
                 exception,
                 isSuccess,
                 crsTransformationAdapterResultSource,
                 transformationResultChildren,
-                _nullableCrsTransformationResultStatistic
+                nullableCrsTransformationResultStatistic
             )
         }
     }    
