@@ -1,5 +1,6 @@
 package com.programmerare.crsTransformations
 
+import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import java.lang.IllegalStateException
 import java.lang.RuntimeException
@@ -9,7 +10,7 @@ import java.lang.StringBuilder
  * This class is used as result type from the transform method of the adapter interface.
  * @see CrsTransformationAdapter
  */
-class CrsTransformationResult(
+class CrsTransformationResult private constructor(
     
     /**
      * The input coordinate used in the transform that return the result object.
@@ -196,4 +197,32 @@ class CrsTransformationResult(
         return okNumber && okX && okY
     }
 
+    internal companion object {
+
+        /**
+         * This method is not intended for public use,
+         * but instead the factory class should be used.
+         * @see CrsTransformationAdapterCompositeFactory
+         */
+        @JvmStatic
+        fun _createCrsTransformationResult(
+            inputCoordinate: CrsCoordinate,
+            _outputCoordinate: CrsCoordinate?,
+            exception: Throwable?,
+            isSuccess: Boolean,
+            crsTransformationAdapterResultSource: CrsTransformationAdapter,
+            transformationResultChildren: List<CrsTransformationResult> = listOf<CrsTransformationResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
+            _nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic? = null
+        ): CrsTransformationResult {
+            return CrsTransformationResult(
+                inputCoordinate,
+                _outputCoordinate,
+                exception,
+                isSuccess,
+                crsTransformationAdapterResultSource,
+                transformationResultChildren,
+                _nullableCrsTransformationResultStatistic
+            )
+        }
+    }    
 }

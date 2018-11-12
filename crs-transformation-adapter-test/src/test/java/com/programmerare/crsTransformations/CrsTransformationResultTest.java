@@ -26,7 +26,7 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
 
     @Test
     void transformResult_shouldNotReturnSuccess_whenSuccessParameterIsFalse() {
-        transformResultWithSuccessFalse = new CrsTransformationResult(
+        transformResultWithSuccessFalse = CrsTransformationResult._createCrsTransformationResult(
             inputCoordinate,
             null,
             null,
@@ -40,7 +40,7 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
 
     @Test
     void transformResult_shouldReturnSuccess_whenSuccessParameterIsTrue() {
-        transformResultWithSuccessFalse = new CrsTransformationResult(
+        transformResultWithSuccessFalse = CrsTransformationResult._createCrsTransformationResult(
             inputCoordinate,
             outputCoordinate,
             null,
@@ -56,7 +56,7 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
     void transformResultConstruction_shouldThrowException_whenParametersSuccessFalseAndOutputCoordinateNotNull() {
         assertThrows(
             IllegalStateException.class,
-            () -> new CrsTransformationResult(
+            () -> CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate, 
                 outputCoordinate, // not null (which it should be when success false as below)
                 null,
@@ -74,7 +74,7 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
         final CrsCoordinate outputCoordinateNull = null;
         assertThrows(
             IllegalStateException.class,
-            () -> new CrsTransformationResult(
+            () -> CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate,
                 outputCoordinateNull, // outputCoordinate = null, then success should be false !
                 null,
@@ -94,7 +94,7 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
         assertNotNull(outputCoordinateNotNull); // just to assert what the name claims i.e. not null
         assertThrows(
             IllegalStateException.class,
-            () -> new CrsTransformationResult(
+            () -> CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate,
                 outputCoordinateNotNull,
                 // when there is an exception as below then the above coordinate SHOULD BE null !
@@ -114,7 +114,7 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
         final CrsCoordinate outputCoordinateNull = null;
         assertThrows(
             IllegalStateException.class,
-            () -> new CrsTransformationResult(
+            () -> CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate,
                 outputCoordinateNull,
                 someException,
@@ -132,7 +132,7 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
     @Test
     void transformResult_shouldThrowException_whenTryingToGetCoordinateWhenSuccessIsFalse() {
         outputCoordinate = null;
-        transformResultWithSuccessFalse = new CrsTransformationResult(
+        transformResultWithSuccessFalse = CrsTransformationResult._createCrsTransformationResult(
             inputCoordinate,
             outputCoordinate,
             null,
@@ -162,7 +162,7 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
 
         final CrsTransformationResultStatistic nullTransformationResultStatistic = null;
         
-        final CrsTransformationResult transformResult = new CrsTransformationResult(
+        final CrsTransformationResult transformResult = CrsTransformationResult._createCrsTransformationResult(
             super.inputCoordinateNotUsedInStatisticsTest,
             super.outputCoordinateNotUsedInStatisticsTest,
             null,

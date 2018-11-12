@@ -59,7 +59,7 @@ internal class CompositeStrategyForWeightedAverageValue private constructor(
             var avgLat = sumLat / weightSum
             var avgLon = sumLon / weightSum
             val coordRes = createFromYNorthingLatitudeAndXEastingLongitude(avgLat, avgLon, crsIdentifierForOutputCoordinateSystem)
-            return CrsTransformationResult(
+            return CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate,
                 _outputCoordinate = coordRes,
                 exception = null,
@@ -69,7 +69,7 @@ internal class CompositeStrategyForWeightedAverageValue private constructor(
             )
         }
         else {
-            return CrsTransformationResult(
+            return CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate,
                 _outputCoordinate = null,
                 exception = null,

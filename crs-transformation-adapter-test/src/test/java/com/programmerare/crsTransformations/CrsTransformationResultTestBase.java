@@ -71,7 +71,7 @@ abstract class CrsTransformationResultTestBase {
         final Exception exceptionNull = null;
         final boolean isSuccessTrue = true;
         final CrsTransformationResultStatistic crsTransformationResultStatisticNull = null;
-        return new CrsTransformationResult(
+        return CrsTransformationResult._createCrsTransformationResult(
             inputCoordinateNotUsedInThisTest,
             outputCoordinate1,
             exceptionNull,
