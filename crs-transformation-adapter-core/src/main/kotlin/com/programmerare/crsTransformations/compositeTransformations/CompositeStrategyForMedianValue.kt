@@ -18,7 +18,7 @@ internal class CompositeStrategyForMedianValue private constructor(
             crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
             crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): CrsTransformationResult {
-        val resultsStatistic = CrsTransformationResultStatistic(allResults)
+        val resultsStatistic = CrsTransformationResultStatistic._createCrsTransformationResultStatistic(allResults)
         return this.calculateAggregatedResultBase(
             allResults,
             inputCoordinate,

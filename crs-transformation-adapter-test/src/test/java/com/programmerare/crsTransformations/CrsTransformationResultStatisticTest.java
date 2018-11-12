@@ -10,7 +10,7 @@ public class CrsTransformationResultStatisticTest extends CrsTransformationResul
         // is placed in a base class because it is reused from another test class
         // The keyword "super" is used below to make that more obvious.
         
-        final CrsTransformationResultStatistic crsTransformationResultStatistic = new CrsTransformationResultStatistic(
+        final CrsTransformationResultStatistic crsTransformationResultStatistic = CrsTransformationResultStatistic._createCrsTransformationResultStatistic(
             super.listOfSubresultsForStatisticsTest
         );
         

@@ -139,10 +139,10 @@ class CrsTransformationResult private constructor(
             _nullableCrsTransformationResultStatistic
         }
         else if(this.transformationResultChildren.size == 0) {
-            CrsTransformationResultStatistic(listOf<CrsTransformationResult>(this))
+            CrsTransformationResultStatistic._createCrsTransformationResultStatistic(listOf<CrsTransformationResult>(this))
         }
         else {
-            CrsTransformationResultStatistic(transformationResultChildren)
+            CrsTransformationResultStatistic._createCrsTransformationResultStatistic(transformationResultChildren)
         }
     }
 

@@ -8,7 +8,7 @@ import java.lang.RuntimeException
 /**
  * Class providing conveniently available aggregated information from multiple results. 
  */
-class CrsTransformationResultStatistic(
+class CrsTransformationResultStatistic private constructor(
     private val results: List<CrsTransformationResult>
 ) {
 
@@ -109,6 +109,18 @@ class CrsTransformationResultStatistic(
 
     private val _coordinateAverageLazyLoaded: CrsCoordinate by lazy {
         createFromXEastingLongitudeAndYNorthingLatitude(_longitudesLazyLoaded.average(), _latitudesLazyLoaded.average(), _sucessfulCoordinatesLazyLoaded.get(0).crsIdentifier)
+    }
+
+    internal companion object {
+        /**
+         * This method is not intended for public use from client code.
+         */
+        @JvmStatic
+        fun _createCrsTransformationResultStatistic(
+            results: List<CrsTransformationResult>
+        ): CrsTransformationResultStatistic {
+            return CrsTransformationResultStatistic(results)
+        }
     }
 
 }
