@@ -25,7 +25,7 @@ class CrsTransformationResult private constructor(
      * Either null or an exception depending on whether or not
      * the transform resulted in an exception being thrown.
      */    
-    exception: Throwable?,
+    _exception: Throwable?,
 
     /**
      * True if the transform was successful or false if it failed.
@@ -72,12 +72,12 @@ class CrsTransformationResult private constructor(
             throw IllegalStateException("Unvalid object construction. If NOT success then output coordinate should be null")
         }
         
-        if(exception != null) { // if exception then should NOT be success and not any resulting coordinate !
+        if(_exception != null) { // if exception then should NOT be success and not any resulting coordinate !
             if(isSuccess || _outputCoordinate != null) {
                 throw IllegalStateException("Unvalid object construction. If exception then output coordinate should be null and success should be false")
             }
         }
-        this.exception = getExceptionIfNotNullButOtherwiseTryToGetExceptionsFromChildrenExceptionsIfExisting(exception)
+        this.exception = getExceptionIfNotNullButOtherwiseTryToGetExceptionsFromChildrenExceptionsIfExisting(_exception)
         
         
         if(transformationResultChildren == null || transformationResultChildren.size <= 0) {
