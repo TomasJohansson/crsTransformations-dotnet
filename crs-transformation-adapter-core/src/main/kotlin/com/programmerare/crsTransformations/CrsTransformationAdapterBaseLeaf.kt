@@ -18,14 +18,32 @@ abstract class CrsTransformationAdapterBaseLeaf : CrsTransformationAdapterBase()
                 ||
                 java.lang.Double.isNaN(outputCoordinate.xEastingLongitude)
             ) {
-                return CrsTransformationResult(inputCoordinate, null, exception = null, isSuccess = false, crsTransformationAdapterResultSource = this)
+                return CrsTransformationResult(
+                    inputCoordinate,
+                    null,
+                    exception = null, 
+                    isSuccess = false,
+                    crsTransformationAdapterResultSource = this
+                )
             }
             else {
-                return CrsTransformationResult(inputCoordinate, outputCoordinate, exception = null, isSuccess = outputCoordinate != null, crsTransformationAdapterResultSource = this)
+                return CrsTransformationResult(
+                    inputCoordinate,
+                    outputCoordinate,
+                    exception = null,
+                    isSuccess = outputCoordinate != null,
+                    crsTransformationAdapterResultSource = this
+                )
             }
         }
         catch (e: Throwable) {
-            return CrsTransformationResult(inputCoordinate, null, exception = e, isSuccess = false, crsTransformationAdapterResultSource = this)
+            return CrsTransformationResult(
+                inputCoordinate,
+                null,
+                exception = e,
+                isSuccess = false,
+                crsTransformationAdapterResultSource = this
+            )
         }
     }
 
