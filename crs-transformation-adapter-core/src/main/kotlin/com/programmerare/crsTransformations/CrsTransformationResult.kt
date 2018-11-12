@@ -200,9 +200,7 @@ class CrsTransformationResult private constructor(
     internal companion object {
 
         /**
-         * This method is not intended for public use,
-         * but instead the factory class should be used.
-         * @see CrsTransformationAdapterCompositeFactory
+         * This method is not intended for public use from client code.
          */
         @JvmStatic
         fun _createCrsTransformationResult(
