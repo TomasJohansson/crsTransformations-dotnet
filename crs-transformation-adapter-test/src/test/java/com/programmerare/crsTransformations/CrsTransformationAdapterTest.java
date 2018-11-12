@@ -8,6 +8,7 @@ import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapter
 import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
 import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterComposite;
 import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory;
+import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterWeight;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
@@ -16,6 +17,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvFileSource;
+
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.function.Supplier;
@@ -36,19 +39,49 @@ final class CrsTransformationAdapterTest {
 
     private static List<Integer> epsgNumbersForSwedishProjectionsUsingMeterAsUnit;
 
-    private final static List<CrsTransformationAdapter> crsTransformationAdapterImplementations = Arrays.asList(
-        new CrsTransformationAdapterGeoTools(),
-        new CrsTransformationAdapterGooberCTL(),
-        new CrsTransformationAdapterProj4J(),
-        new CrsTransformationAdapterOrbisgisCTS(),
-        new CrsTransformationAdapterGeoPackageNGA()
-    );
-
+    private static List<CrsTransformationAdapter> crsTransformationAdapterLeafImplementations;
+    private static List<CrsTransformationAdapter> crsTransformationAdapterCompositeImplementations;
+    private static List<CrsTransformationAdapter> crsTransformationAdapterImplementations;
+    
     @BeforeAll
     static void beforeAll() {
         epsgNumbersForSwedishProjectionsUsingMeterAsUnit = IntStream.rangeClosed(lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit, upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit).boxed().collect(toList());
+
+        crsTransformationAdapterLeafImplementations = Arrays.asList(
+            new CrsTransformationAdapterGeoTools(),
+            new CrsTransformationAdapterGooberCTL(),
+            new CrsTransformationAdapterProj4J(),
+            new CrsTransformationAdapterOrbisgisCTS(),
+            new CrsTransformationAdapterGeoPackageNGA()
+        );        
+
+        crsTransformationAdapterCompositeImplementations = Arrays.asList(
+            CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(),
+            CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(),
+            CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility(),
+            CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(Arrays.asList(
+                CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoTools(), 51.0),
+                CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGooberCTL(), 52.0),
+                CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterProj4J(), 53.0),
+                CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterOrbisgisCTS(), 54.0),
+                CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoPackageNGA(), 55.0)
+            ))
+        );
+        crsTransformationAdapterImplementations = new ArrayList<>();
+        crsTransformationAdapterImplementations.addAll(crsTransformationAdapterLeafImplementations);
+        crsTransformationAdapterImplementations.addAll(crsTransformationAdapterCompositeImplementations);
     }
 
+    @Test
+    void assertThatTheSetupHaveCreatedFiveLeafAndFourCompositeImplementations() {
+        final int expectedNumberOfLeafs = 5; // will not change often and if/when changed then will be easy to fix
+        int expectedNumberOfComposites = 4; // will not change often and if/when changed then will be easy to fix
+        assertEquals(expectedNumberOfLeafs, crsTransformationAdapterLeafImplementations.size());
+        assertEquals(expectedNumberOfComposites, crsTransformationAdapterCompositeImplementations.size());
+        assertEquals(expectedNumberOfLeafs + expectedNumberOfComposites, crsTransformationAdapterImplementations.size());
+        
+    }
+    
     @Test
     void transformationFromWgs84ToSweref99TM() {
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
@@ -277,11 +310,15 @@ final class CrsTransformationAdapterTest {
     void transformToResultObjectWithUnvalidInputCoordinate() {
         CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(-999999.0, -999999.0, 1);
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
+            final String messageWhenError = "Problem with the implementation " + crsTransformationAdapter.getAdapteeType();
             CrsTransformationResult transformResult = crsTransformationAdapter.transform(unvalidInputCoordinate, 2);
-            assertNotNull(transformResult);
-            assertFalse(transformResult.isSuccess());
-            assertNotNull(transformResult.getException());
-            assertEquals(unvalidInputCoordinate, transformResult.getInputCoordinate());
+            assertNotNull(transformResult, messageWhenError);
+            assertFalse(transformResult.isSuccess(), messageWhenError);
+            
+            // TODO: if leasf in a composite has some exception then populate the composite exception with messages from the leafs
+            // assertNotNull(transformResult.getException(), messageWhenError);
+            
+            assertEquals(unvalidInputCoordinate, transformResult.getInputCoordinate(), messageWhenError);
         }
     }
 
@@ -300,7 +337,9 @@ final class CrsTransformationAdapterTest {
             CrsCoordinate outputCoordinate = transformResult.getOutputCoordinate();
             assertNotNull(outputCoordinate);
             assertEquals(outputCoordinate.getCrsIdentifier().getEpsgNumber(), epsgNumberForSweref99TM);
-            assertResultStatisticsForLeafImplementation(transformResult);
+            if(!crsTransformationAdapter.isComposite()) {
+                assertResultStatisticsForLeafImplementation(transformResult);    
+            }
         }
     }
 
