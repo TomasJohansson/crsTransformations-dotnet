@@ -1,10 +1,12 @@
 package com.programmerare.crsTransformations;
 
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
+import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.BeforeEach;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,7 +20,7 @@ abstract class CrsTransformationResultTestBase {
     protected double expectedLatDiffMax, expectedLonDiffMax;
     protected CrsCoordinate expectedCoordinateMean, expectedCoordinateAverage;
     protected CrsCoordinate inputCoordinateNotUsedInStatisticsTest, outputCoordinateNotUsedInStatisticsTest;
-    protected CrsTransformationAdapter adapterForStatisticsTest;
+    protected CrsTransformationAdapter compositeAdapterForResultTest;
     
     @BeforeEach
     void setup() {
@@ -46,15 +48,18 @@ abstract class CrsTransformationResultTestBase {
         final CrsCoordinate outputCoordinate3 = CrsCoordinateFactory.latLon(lat3, lon3);
         final CrsCoordinate outputCoordinate4 = CrsCoordinateFactory.latLon(lat4, lon4);
 
-        adapterForStatisticsTest = new CrsTransformationAdapterGooberCTL(); // not used, might use a mock instead
+        compositeAdapterForResultTest = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian();
         inputCoordinateNotUsedInStatisticsTest = CrsCoordinateFactory.latLon(0.0, 0.0); // input, not used here in this test
         outputCoordinateNotUsedInStatisticsTest = inputCoordinateNotUsedInStatisticsTest;
 
+        final CrsTransformationAdapter leafAdapterForResultTest = new CrsTransformationAdapterGooberCTL();
+        // Can use the same above adapter for all parts below. Not used much except that the object must be some leaf
+        
         listOfSubresultsForStatisticsTest = Arrays.asList(
-            createCrsTransformationResult(outputCoordinate1, adapterForStatisticsTest, inputCoordinateNotUsedInStatisticsTest),
-            createCrsTransformationResult(outputCoordinate2, adapterForStatisticsTest, inputCoordinateNotUsedInStatisticsTest),
-            createCrsTransformationResult(outputCoordinate3, adapterForStatisticsTest, inputCoordinateNotUsedInStatisticsTest),
-            createCrsTransformationResult(outputCoordinate4, adapterForStatisticsTest, inputCoordinateNotUsedInStatisticsTest)
+            createCrsTransformationResult(outputCoordinate1, leafAdapterForResultTest, inputCoordinateNotUsedInStatisticsTest),
+            createCrsTransformationResult(outputCoordinate2, leafAdapterForResultTest, inputCoordinateNotUsedInStatisticsTest),
+            createCrsTransformationResult(outputCoordinate3, leafAdapterForResultTest, inputCoordinateNotUsedInStatisticsTest),
+            createCrsTransformationResult(outputCoordinate4, leafAdapterForResultTest, inputCoordinateNotUsedInStatisticsTest)
         );
     }
 
@@ -63,10 +68,18 @@ abstract class CrsTransformationResultTestBase {
         CrsTransformationAdapter adapter,
         CrsCoordinate inputCoordinateNotUsedInThisTest
     ) {
-        final List<CrsTransformationResult> resultList = Arrays.asList();
         final Exception exceptionNull = null;
         final boolean isSuccessTrue = true;
-        return new CrsTransformationResult(inputCoordinateNotUsedInThisTest, outputCoordinate1, exceptionNull, isSuccessTrue, adapter, resultList, null);
+        final CrsTransformationResultStatistic crsTransformationResultStatisticNull = null;
+        return new CrsTransformationResult(
+            inputCoordinateNotUsedInThisTest,
+            outputCoordinate1,
+            exceptionNull,
+            isSuccessTrue,
+            adapter,
+            new ArrayList<CrsTransformationResult>(), // this.listOfSubresultsForStatisticsTest,
+            crsTransformationResultStatisticNull
+        );
     }
 
     protected void assertCrsTransformationResultStatistic(CrsTransformationResultStatistic crsTransformationResultStatistic) {

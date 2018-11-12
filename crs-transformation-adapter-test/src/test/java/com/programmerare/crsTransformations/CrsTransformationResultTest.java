@@ -8,10 +8,7 @@ import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-
 import static org.junit.jupiter.api.Assertions.*;
-import static org.mockito.Mockito.mock;
 
 public class CrsTransformationResultTest extends CrsTransformationResultTestBase {
 
@@ -19,16 +16,12 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
     private CrsCoordinate inputCoordinate;
     private CrsCoordinate outputCoordinate;
 
-    private CrsTransformationAdapter crsTransformationAdapter;
+//    private CrsTransformationAdapter crsTransformationAdapter;
 
     @BeforeEach
     void beforeEach() {
         inputCoordinate = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(0.0, 0.0, 1234);
         outputCoordinate = inputCoordinate;
-
-        // the mock below is currently not used any more than as a convenient way
-        // of constructing an instance of the interface
-        crsTransformationAdapter = mock(CrsTransformationAdapter.class);
     }
 
     @Test
@@ -38,8 +31,8 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
             null,
             null,
             false, // parameter success = false !
-            crsTransformationAdapter,
-            new ArrayList<CrsTransformationResult>(),
+            super.compositeAdapterForResultTest,
+            super.listOfSubresultsForStatisticsTest,
             null
         );
         assertFalse(transformResultWithSuccessFalse.isSuccess()); // because of success parameter false
@@ -52,8 +45,8 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
             outputCoordinate,
             null,
             true,
-            crsTransformationAdapter,
-            new ArrayList<CrsTransformationResult>(),
+            super.compositeAdapterForResultTest,
+            super.listOfSubresultsForStatisticsTest,
             null
         );
         assertTrue(transformResultWithSuccessFalse.isSuccess());
@@ -68,8 +61,8 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
                 outputCoordinate, // not null (which it should be when success false as below)
                 null,
                 false,
-                crsTransformationAdapter,
-                new ArrayList<CrsTransformationResult>(),
+                super.compositeAdapterForResultTest,
+                super.listOfSubresultsForStatisticsTest,
                 null
             ),
             "unvalid TransformResult object construction should throw exception when success false is combined with output coordinate not being null"
@@ -86,8 +79,8 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
                 outputCoordinateNull, // outputCoordinate = null, then success should be false !
                 null,
                 true,
-                crsTransformationAdapter,
-                new ArrayList<CrsTransformationResult>(),
+                super.compositeAdapterForResultTest,
+                super.listOfSubresultsForStatisticsTest,
                 null
             ),
             "unvalid TransformResult object construction should throw exception when success true is combined with null as output coordinate"
@@ -107,8 +100,8 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
                 // when there is an exception as below then the above coordinate SHOULD BE null !
                 someException,
                 false,
-                crsTransformationAdapter,
-                new ArrayList<CrsTransformationResult>(),
+                super.compositeAdapterForResultTest,
+                super.listOfSubresultsForStatisticsTest,
                 null
             ),
             "unvalid TransformResult object construction should throw exception when an exception parameter is combined with non-null as output coordinate"
@@ -126,9 +119,9 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
                 outputCoordinateNull,
                 someException,
                 // when there is an exception as above then the below success SHOULD BE false !
-                true, 
-                crsTransformationAdapter,
-                new ArrayList<CrsTransformationResult>(),
+                true,
+                super.compositeAdapterForResultTest,
+                super.listOfSubresultsForStatisticsTest,
                 null
             ),
             "unvalid TransformResult object construction should throw exception when an exception parameter is combined with success true"
@@ -144,8 +137,8 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
             outputCoordinate,
             null,
             false,
-            crsTransformationAdapter,
-            new ArrayList<CrsTransformationResult>(),
+            super.compositeAdapterForResultTest,
+            super.listOfSubresultsForStatisticsTest,
             null
         );
         Exception e = assertThrows(
@@ -174,7 +167,7 @@ public class CrsTransformationResultTest extends CrsTransformationResultTestBase
             super.outputCoordinateNotUsedInStatisticsTest,
             null,
             true,
-            super.adapterForStatisticsTest,
+            super.compositeAdapterForResultTest,
             super.listOfSubresultsForStatisticsTest,
             
             nullTransformationResultStatistic

@@ -78,6 +78,20 @@ class CrsTransformationResult(
             }
         }
         this.exception = getExceptionIfNotNullButOtherwiseTryToGetExceptionsFromChildrenExceptionsIfExisting(exception)
+        
+        
+        if(transformationResultChildren == null || transformationResultChildren.size <= 0) {
+            // SHOULD be a leaf since no children, i.e. throw exception if Composite
+            if(crsTransformationAdapterResultSource.isComposite()) {
+                throw IllegalStateException("Inconsistent result: 'Composite' without 'leafs' (should not be possible)")    
+            }
+        }
+        else { // i.e. size > 0
+            // SHOULD be a composite since there are children, i.e. throw exception if Leaf
+            if(!crsTransformationAdapterResultSource.isComposite()) { // Not Composite means it is a Leaf
+                throw IllegalStateException("Inconsistent result: 'Leaf' with 'children' (should not be possible)")
+            }            
+        }
     }
     
     private fun getExceptionIfNotNullButOtherwiseTryToGetExceptionsFromChildrenExceptionsIfExisting(exception: Throwable?): Throwable? {
