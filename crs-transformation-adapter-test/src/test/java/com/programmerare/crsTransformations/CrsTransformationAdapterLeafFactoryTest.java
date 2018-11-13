@@ -117,9 +117,9 @@ public class CrsTransformationAdapterLeafFactoryTest {
 
     @Test
     void listOfHardcodedClassnames_shouldCorrespondToActualClassNames() {
-       final List<String> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.getClassNamesForAllKnownImplementations();
+        final List<String> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.getClassNamesForAllKnownImplementations();
         assertEquals(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, hardcodedClassNamesForAllKnownImplementations.size());
-
+        
         for (String actualClassNameForAnImplementation : actualClassNamesForAllKnownImplementations) {
             assertThat(hardcodedClassNamesForAllKnownImplementations, hasItem(actualClassNameForAnImplementation));
         }
