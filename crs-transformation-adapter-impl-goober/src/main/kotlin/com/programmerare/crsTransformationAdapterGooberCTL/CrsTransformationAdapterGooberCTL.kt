@@ -28,12 +28,7 @@ class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), Cr
         inputCoordinate: CrsCoordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): CrsCoordinate {
-        if(!inputCoordinate.crsIdentifier.isEpsgCode) {
-            throwIllegalArgumentException(inputCoordinate.crsIdentifier)
-        }
-        if(!crsIdentifierForOutputCoordinateSystem.isEpsgCode) {
-            throwIllegalArgumentException(crsIdentifierForOutputCoordinateSystem)
-        }
+        throwIllegalArgumentExceptionIfUnvalidCoordinateOrCrs(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
         val epsgNumberForInputCoordinateSystem = inputCoordinate.crsIdentifier.epsgNumber
         var positionToReturn: Position? = null
 
@@ -151,4 +146,17 @@ class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), Cr
         return super.getNameOfJarFileFromProtectionDomain(WGS84Position::class.java.protectionDomain)
     }
     // ----------------------------------------------------------
+
+    private fun throwIllegalArgumentExceptionIfUnvalidCoordinateOrCrs(
+        inputCoordinate: CrsCoordinate,
+        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
+    ) {
+        if(!inputCoordinate.crsIdentifier.isEpsgCode) {
+            throwIllegalArgumentException(inputCoordinate.crsIdentifier)
+        }
+        if(!crsIdentifierForOutputCoordinateSystem.isEpsgCode) {
+            throwIllegalArgumentException(crsIdentifierForOutputCoordinateSystem)
+        }
+        // TODO: maybe more validation, for example validate coordinates to be reasonable i.e. within Sweden since this is an implementation with only coordinate systems used in Sweden  
+    }    
 }
