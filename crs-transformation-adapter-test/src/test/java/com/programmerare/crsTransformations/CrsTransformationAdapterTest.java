@@ -53,7 +53,7 @@ final class CrsTransformationAdapterTest {
             new CrsTransformationAdapterProj4J(),
             new CrsTransformationAdapterOrbisgisCTS(),
             new CrsTransformationAdapterGeoPackageNGA()
-        );        
+        );
 
         crsTransformationAdapterCompositeImplementations = Arrays.asList(
             CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(),
@@ -438,4 +438,38 @@ final class CrsTransformationAdapterTest {
         assertEquals(0,(new CrsTransformationAdapterOrbisgisCTS()).getTransformationAdapterChildren().size());
         assertEquals(0,(new CrsTransformationAdapterProj4J()).getTransformationAdapterChildren().size());
     }
+
+    @Test
+    void isReliableTest() {
+        // The tested method 'isReliable' is actually relevant only for aggregated
+        // transformations, but nevertheless there is a reaonable behavouor also
+        // for the "Leaf" implementations regarding the number of results (always 1)
+        // and the "differences" in lat/long for the "different" implementations
+        // i.e. the "difference" should always be zero since there is only one implementation
+        for (CrsTransformationAdapter crsTransformationAdapterLeaf : crsTransformationAdapterLeafImplementations) {
+            final CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.latLon(59.29,18.03);
+            final CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationAdapterLeaf.transform(wgs84coordinateInSweden, com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+            assertNotNull(resultWhenTransformingToSwedishCRS);
+            assertTrue(resultWhenTransformingToSwedishCRS.isSuccess());
+            final CrsTransformationResultStatistic crsTransformationResultStatistic = resultWhenTransformingToSwedishCRS.getCrsTransformationResultStatistic();
+            assertNotNull(crsTransformationResultStatistic);
+            assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
+    
+            final int actualNumberOfResults = crsTransformationResultStatistic.getNumberOfResults();
+            assertEquals(1, actualNumberOfResults);
+            final double actualMaxDiffXLongitude = crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude();
+            final double actualMaxDiffYLatitude = crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude();
+            final double actualMaxDiffXorY = Math.max(actualMaxDiffXLongitude, actualMaxDiffYLatitude);
+            assertEquals(0, actualMaxDiffXorY); // zero differences since there should be only one result !
+    
+            assertTrue(resultWhenTransformingToSwedishCRS.isReliable(actualNumberOfResults, actualMaxDiffXorY));
+    
+            // assertFalse below since trying to require one more result than available
+            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(actualNumberOfResults + 1, actualMaxDiffXorY));
+    
+            // assertFalse below since trying to require too small maxdiff
+            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(actualNumberOfResults, actualMaxDiffXorY - 0.00000000001));
+        }
+    }
+
 }
