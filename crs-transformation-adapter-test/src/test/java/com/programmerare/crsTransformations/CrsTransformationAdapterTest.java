@@ -12,6 +12,7 @@ import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -275,7 +276,7 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
     }
     
     @Test
-    void isReliable_shoudReturnTrueForLeafs_whenUsingCriteriaNumberOfResultsOneAndMaxDiffZero() {
+    void isReliable_shouldReturnTrueForLeafs_whenUsingCriteriaNumberOfResultsOneAndMaxDiffZero() {
         final int criteriaNumberOfResults = 1; // always one for a Leaf
         final double criteriaMaxDiff = 0.0; // always zero for a Leaf
         // The tested method 'isReliable' is actually relevant only for aggregated
@@ -283,7 +284,16 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
         // for the "Leaf" implementations regarding the number of results (always 1)
         // and the "differences" in lat/long for the "different" implementations
         // i.e. the "difference" should always be zero since there is only one implementation
-        for (CrsTransformationAdapter crsTransformationAdapterLeaf : super.crsTransformationAdapterLeafImplementations) {
+
+        final List<CrsTransformationAdapter> crsTransformationAdapterImplementationsExpectingOneResult = new ArrayList<>();
+        crsTransformationAdapterImplementationsExpectingOneResult.addAll(super.crsTransformationAdapterLeafImplementations);
+        crsTransformationAdapterImplementationsExpectingOneResult.add(CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility());        
+        assertEquals(6, crsTransformationAdapterImplementationsExpectingOneResult.size()); // 5 leafs plus 1 
+        
+        for (CrsTransformationAdapter crsTransformationAdapterLeaf : crsTransformationAdapterImplementationsExpectingOneResult) {
+            // suffix "Leaf" is not quite true, but in one of the iterations
+            // it will be the Composite ChainOfResponsibility which also will only have one result 
+            // and thus can be tested in the same way as the leafs in this method
             final CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.latLon(59.29,18.03);
             final CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationAdapterLeaf.transform(wgs84coordinateInSweden, com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber.SWEDEN__SWEREF99_TM__3006);
             assertNotNull(resultWhenTransformingToSwedishCRS);
@@ -308,6 +318,49 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
     
             // assertFalse below since trying to require too small maxdiff
             assertFalse(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResults, criteriaMaxDiff - 0.00000000001));
+        }
+    }
+
+    @Test
+    void isReliable_shouldReturnTrueOrFalseForComposites_dependingOnCriteriasUsedAsMethodParameter() {
+        // the below value is the max difference when comparing the five leaf implementations 
+        final double actualMaxDiffXorY = 0.0032574664801359177;
+       
+        final int criteriaNumberOfResultsSuccess = 5; // all 5 should succeed
+        final int criteriaNumberOfResultsFailure = 6; // 6 implementations can not succeed since there are not so many implementations
+        final double criteriaMaxDiffFailure = actualMaxDiffXorY - 0.0001; // a little too small requirement for max difference
+        final double criteriaMaxDiffSuccess  = actualMaxDiffXorY + 0.0001; // should result in success since the actual number is smaller 
+
+        final List<CrsTransformationAdapter> crsTransformationAdapterImplementationsExpectingManyResults = new ArrayList<>();
+        for (CrsTransformationAdapter crsTransformationAdapterComposite : super.crsTransformationAdapterCompositeImplementations) {
+            if(crsTransformationAdapterComposite.getAdapteeType() != CrsTransformationAdapteeType.COMPOSITE_CHAIN_OF_RESPONSIBILITY) {
+                crsTransformationAdapterImplementationsExpectingManyResults.add(crsTransformationAdapterComposite);
+            }
+        }
+        assertEquals(3, crsTransformationAdapterImplementationsExpectingManyResults.size()); // 3 composites i.e. all composite except COMPOSITE_CHAIN_OF_RESPONSIBILITY
+        
+        for (CrsTransformationAdapter crsTransformationAdapterComposite : crsTransformationAdapterImplementationsExpectingManyResults) {
+            final CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.latLon(59.29,18.03);
+            final CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationAdapterComposite.transform(wgs84coordinateInSweden, com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+            assertNotNull(resultWhenTransformingToSwedishCRS);
+            assertTrue(resultWhenTransformingToSwedishCRS.isSuccess());
+            final CrsTransformationResultStatistic crsTransformationResultStatistic = resultWhenTransformingToSwedishCRS.getCrsTransformationResultStatistic();
+            assertNotNull(crsTransformationResultStatistic);
+            assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
+            // so far the same code as the previous test method for the test method with leafs
+            
+            final int actualNumberOfResults = crsTransformationResultStatistic.getNumberOfResults();
+            assertEquals(criteriaNumberOfResultsSuccess, actualNumberOfResults);
+            final double actualMaxDiffXLongitude = crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude();
+            final double actualMaxDiffYLatitude = crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude();
+            // final double actualMaxDiffXorY = Math.max(actualMaxDiffXLongitude, actualMaxDiffYLatitude);
+            // System.out.println("actualMaxDiffXorY " + actualMaxDiffXorY + "  " + crsTransformationAdapterComposite.getAdapteeType());
+
+            // method "isReliable" used below is the method under test
+            assertTrue(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResultsSuccess, criteriaMaxDiffSuccess));
+            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResultsSuccess, criteriaMaxDiffFailure));
+            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResultsFailure, criteriaMaxDiffSuccess));
+            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResultsFailure, criteriaMaxDiffFailure));
         }
     }
 
