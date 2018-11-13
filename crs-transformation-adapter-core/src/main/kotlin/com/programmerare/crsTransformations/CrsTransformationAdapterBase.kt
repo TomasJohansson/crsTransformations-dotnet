@@ -4,6 +4,7 @@ import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 import com.programmerare.crsTransformations.crsIdentifier.createFromCrsCode
 import com.programmerare.crsTransformations.crsIdentifier.createFromEpsgNumber
+import java.lang.IllegalArgumentException
 import java.security.ProtectionDomain
 
 /**
@@ -47,7 +48,7 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
         inputCoordinate: CrsCoordinate,
         epsgNumberForOutputCoordinateSystem: Int
     ): CrsCoordinate {
-        return transformHook(
+        return transformToCoordinate(
             inputCoordinate,
             createFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
         )
@@ -57,10 +58,12 @@ abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
         inputCoordinate: CrsCoordinate,
         crsIdentifierForOutputCoordinateSystem: CrsIdentifier
     ): CrsCoordinate {
-        return transformHook(
+        val crsCoordinate = transformHook(
             inputCoordinate,
             crsIdentifierForOutputCoordinateSystem
         )
+        // println("" + this.getAdapteeType() + " transformToCoordinate " + crsCoordinate)
+        return crsCoordinate        
     }
     // -------------------------------------------------
 
