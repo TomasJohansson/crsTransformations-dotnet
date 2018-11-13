@@ -56,7 +56,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
         assertThat(exceptionMessage, containsString(nameOfInterfaceThatShouldBeImplemented));
         assertThat(exceptionMessage, startsWith("Failed to instantiate")); // Fragile but the message string will not change often and if it does change then it will be very easy to modify the string here
     }
-    
+
     @Test
     void listOfNonClassNamesForAdapters_shouldNotBeRecognizedAsAdapters() {
         final List<String> stringsNotBeingClassNameForAnyAdapter = Arrays.asList(
@@ -94,6 +94,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
         for (String hardcodedClassNameForKnownImplementation : hardcodedClassNamesForAllKnownImplementations) {
             CrsTransformationAdapter crsTransformationAdapter = CrsTransformationAdapterLeafFactory.createCrsTransformationAdapter(hardcodedClassNameForKnownImplementation);
             verifyThatTheCreatedAdapterIsRealObject(crsTransformationAdapter);
+            assertThat(actualClassNamesForAllKnownImplementations, hasItem(crsTransformationAdapter.getLongNameOfImplementation()));
         }
     }
 
@@ -119,9 +120,13 @@ public class CrsTransformationAdapterLeafFactoryTest {
     void listOfHardcodedClassnames_shouldCorrespondToActualClassNames() {
         final List<String> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.getClassNamesForAllKnownImplementations();
         assertEquals(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, hardcodedClassNamesForAllKnownImplementations.size());
-        
+        assertEquals(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, actualClassNamesForAllKnownImplementations.size());
+
         for (String actualClassNameForAnImplementation : actualClassNamesForAllKnownImplementations) {
             assertThat(hardcodedClassNamesForAllKnownImplementations, hasItem(actualClassNameForAnImplementation));
         }
+        for (String hardcodedClassNamesForAllKnownImplementation : hardcodedClassNamesForAllKnownImplementations) {
+            assertThat(actualClassNamesForAllKnownImplementations, hasItem(hardcodedClassNamesForAllKnownImplementation));
+        }        
     }
 }
