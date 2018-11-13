@@ -19,7 +19,7 @@ class CompositeStrategyForMedianValueTest extends CompositeStrategyTestBase {
     private final static double delta = 0.00001;
 
     @Test
-    void transformWithAdapterCompositeMedianTest() {
+    void transform_shouldReturnMedianResult_whenUsingMedianCompositeAdapter() {
         CrsCoordinate expectedCoordinateWithMedianLatitudeAndLongitude = calculateMedianCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
 
         CrsTransformationAdapter medianCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(

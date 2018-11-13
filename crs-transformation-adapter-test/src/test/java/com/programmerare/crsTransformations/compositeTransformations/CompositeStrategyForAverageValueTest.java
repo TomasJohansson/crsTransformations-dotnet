@@ -21,7 +21,7 @@ public class CompositeStrategyForAverageValueTest extends CompositeStrategyTestB
     private final static double delta = 0.000000001;
 
     @Test
-    void createCRSTransformationAdapterAverage() {
+    void transform_shouldReturnAverageResult_whenUsingAverageCompositeAdapter() {
         CrsCoordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(super.allCoordinateResultsForTheDifferentImplementations);
 
         CrsTransformationAdapter averageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(

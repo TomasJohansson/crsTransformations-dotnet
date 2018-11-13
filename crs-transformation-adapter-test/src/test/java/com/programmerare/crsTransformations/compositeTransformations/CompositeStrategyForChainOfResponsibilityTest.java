@@ -13,7 +13,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class CompositeStrategyForChainOfResponsibilityTest extends CompositeStrategyTestBase {
 
     @Test
-    void createCRSTransformationAdapterChainOfResponsibility() {
+    void transform_shouldReturnFirstResult_whenUsingChainOfResponsibilityCompositeAdapter() {
         CrsTransformationAdapter chainOfResponsibilityCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility(
             // note that geotools should be the first item in the below list defined in the baseclass,
             // and therefore geotools should be the implementation providing the result

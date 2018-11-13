@@ -6,15 +6,12 @@ import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapt
 import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
 import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
 import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
-import com.programmerare.crsTransformations.CrsTransformationAdapter;
 import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
-import com.programmerare.crsTransformations.CrsTransformationResult;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -44,7 +41,7 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
     }
 
     @Test
-    void createCompositeStrategyForWeightedAverageValue() {
+    void transform_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapter() {
 
         final List<CrsTransformationAdapterWeight> weights = Arrays.asList(
             CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoTools(), weightForGeoTools),
@@ -54,11 +51,11 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
             CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoPackageNGA(), weightForGeoPackageNGA)
         );
         final CrsTransformationAdapterComposite adapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(weights);
-        createCompositeStrategyForWeightedAverageValueHelper(adapter);
+        assertWeightedAverageResult(adapter);
     }
 
     @Test
-    void createCompositeStrategyForWeightedAverageValueFromStringsWithReflection() {
+    void transform_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapterAndLeafsInstantiatedFromStringsWithClassNames() {
         final String classNameGeoTools = CrsTransformationAdapterGeoTools.class.getName() ;
         final String classNameGoober = CrsTransformationAdapterGooberCTL.class.getName() ;
         final String classNameOrbis = CrsTransformationAdapterOrbisgisCTS.class.getName() ;
@@ -74,11 +71,11 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         );
 
         final CrsTransformationAdapterComposite weightedAverageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(weights);
-        createCompositeStrategyForWeightedAverageValueHelper(weightedAverageCompositeAdapter);
+        assertWeightedAverageResult(weightedAverageCompositeAdapter);
     }
 
-    private void createCompositeStrategyForWeightedAverageValueHelper(
-            CrsTransformationAdapterComposite weightedAverageCompositeAdapter
+    private void assertWeightedAverageResult(
+        CrsTransformationAdapterComposite weightedAverageCompositeAdapter
     ) {
         CrsTransformationResult weightedAverageResult = weightedAverageCompositeAdapter.transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         assertNotNull(weightedAverageResult);

@@ -132,7 +132,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     private final static double SMALL_DELTA_VALUE_FOR_COMPARISONS = 0.00000000000001;
 
     @Test
-    void averageAdapterTest() {
+    void transformToCoordinate_shouldReturnAverageResult_whenUsingAverageCompositeAdapter() {
         CrsTransformationAdapterComposite averageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(allLeafAdapters);
         CrsCoordinate resultCoordinate = averageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         assertNotNull(resultCoordinate);
@@ -149,7 +149,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     }
 
     @Test
-    void medianAdapterTest() {
+    void transformToCoordinate_shouldReturnMedianResult_whenUsingMedianCompositeAdapter() {
         CrsTransformationAdapterComposite medianCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(allLeafAdapters);
         CrsCoordinate resultCoordinate = medianCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         assertNotNull(resultCoordinate);
@@ -164,7 +164,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     }
 
     @Test
-    void ChainOfResponsibilityAdapterTest() {
+    void transformToCoordinate_shouldReturnFirstResult_whenUsingChainOfResponsibilityCompositeAdapter() {
         CrsTransformationAdapterComposite chainOfResponsibilityCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility(allLeafAdapters);
         CrsCoordinate resultCoordinate = chainOfResponsibilityCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         assertNotNull(resultCoordinate);
@@ -181,7 +181,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     }
 
     @Test
-    void weightedAverageAdapterTest() {
+    void transformToCoordinate_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapter() {
         when(leafAdapterImplementation_1.getLongNameOfImplementation()).thenReturn("1");
         when(leafAdapterImplementation_2.getLongNameOfImplementation()).thenReturn("2");
         when(leafAdapterImplementation_3.getLongNameOfImplementation()).thenReturn("3");
