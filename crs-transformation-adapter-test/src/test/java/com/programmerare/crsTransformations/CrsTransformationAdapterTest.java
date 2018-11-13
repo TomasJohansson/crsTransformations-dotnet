@@ -82,41 +82,22 @@ final class CrsTransformationAdapterTest {
     }
     
     @Test
-    void transformationFromWgs84ToSweref99TM() {
+    void transformToCoordinate_shouldReturnCorrectSweref99TMcoordinate_whenTransformingFromWgs84withAllAdapterImplementations() {
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
-            testTransformationFromWgs84ToSweref99TM(crsTransformationAdapter);
+            transformToCoordinate_shouldReturnCorrectSweref99TMcoordinate_whenTransformingFromWgs84(crsTransformationAdapter);
         }
     }
 
+    // 
+    
     @Test
-    void transformationFromRT90ToWgs84() {
+    void transformToCoordinate_shouldReturnCorrectWgs84coordinate_whenTransformingFromRT90withAllAdapterImplementations() {
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
-            testTransformationFromRT90ToWgs84(crsTransformationAdapter);
+            transformToCoordinate_shouldReturnCorrectWgs84coordinate_whenTransformingFromRT90(crsTransformationAdapter);
         }
     }
 
-
-
-    @Test
-    void transformationFromSweref991200ToSweref991500() {
-        for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
-            testTransformationFromSweref991200ToSweref991500(crsTransformationAdapter);
-        }
-    }
-
-    private void testTransformationFromSweref991200ToSweref991500(
-        CrsTransformationAdapter crsTransformationAdapter
-    ) {
-        double sweref1200_Y = 6580822;
-        double sweref1200_X = 674032;
-
-        // transform back and forth (from sweref1200 to sweref1500 and then back to sweref1200)
-        // and then check if you got the same as the original sweref1200
-        CrsCoordinate inputCoordinateSweref1200 = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(sweref1200_X, sweref1200_Y, epsgNumberForSweref991200);
-        transformBackAndForthAndAssertResult(crsTransformationAdapter, inputCoordinateSweref1200, epsgNumberForSweref991500);
-    }
-
-    private void transformBackAndForthAndAssertResult(
+    private void transformToCoordinate_shouldReturnTheOriginalCoordinate_whenTransformingBackAgainFromTheResult(
         CrsTransformationAdapter crsTransformationAdapter,
         CrsCoordinate inputCoordinateOriginalCRS,
         int epsgNumberForTransformTargetCRS
@@ -131,7 +112,8 @@ final class CrsTransformationAdapterTest {
         assertEquals(inputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber(), outputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber());
     }
 
-    private void testTransformationFromWgs84ToSweref99TM(
+    
+    private void transformToCoordinate_shouldReturnCorrectSweref99TMcoordinate_whenTransformingFromWgs84(
         CrsTransformationAdapter crsTransformationAdapter
     ) {
         // This test is using the coordinates of Stockholm Centralstation (Sweden)
@@ -153,7 +135,8 @@ final class CrsTransformationAdapterTest {
         assertEquals(sweref99_X_expected, outputCoordinate.getXEastingLongitude(), 0.5);
     }
 
-    private void testTransformationFromRT90ToWgs84(
+    
+    private void transformToCoordinate_shouldReturnCorrectWgs84coordinate_whenTransformingFromRT90(
         CrsTransformationAdapter crsTransformationAdapter
     ) {
         double rt90_Y = 6580994;
@@ -187,13 +170,35 @@ final class CrsTransformationAdapterTest {
         // which shows the coordinates in the three systems WGS84, RT90, SWREF99
 
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
-            testTransformation(crsTransformationAdapter, epsgNumberForWgs84, epsgNumberForRT90, wgs84Lat, wgs84Lon, rt90north, rt90east, description);
-            testTransformation(crsTransformationAdapter, epsgNumberForWgs84, epsgNumberForSweref99TM, wgs84Lat, wgs84Lon, sweref99north, sweref99east, description);
-            testTransformation(crsTransformationAdapter, epsgNumberForRT90, epsgNumberForSweref99TM, rt90north, rt90east, sweref99north, sweref99east, description);
+            
+            transformToCoordinate_shouldReturnEqualCoordinates_whenTransformingBetweenTwoKnownCoordinatesToAndFromEachOther(
+                crsTransformationAdapter, 
+                epsgNumberForWgs84, epsgNumberForRT90, 
+                wgs84Lat, wgs84Lon, 
+                rt90north, rt90east, 
+                description
+            );
+            
+            transformToCoordinate_shouldReturnEqualCoordinates_whenTransformingBetweenTwoKnownCoordinatesToAndFromEachOther(
+                crsTransformationAdapter, 
+                epsgNumberForWgs84, epsgNumberForSweref99TM, 
+                wgs84Lat, wgs84Lon, 
+                sweref99north, sweref99east, 
+                description
+            );
+            
+            transformToCoordinate_shouldReturnEqualCoordinates_whenTransformingBetweenTwoKnownCoordinatesToAndFromEachOther(
+                crsTransformationAdapter, 
+                epsgNumberForRT90, epsgNumberForSweref99TM, 
+                rt90north, rt90east, 
+                sweref99north, sweref99east, 
+                description
+            );
         }
     }
 
-    private void testTransformation(
+    
+    private void transformToCoordinate_shouldReturnEqualCoordinates_whenTransformingBetweenTwoKnownCoordinatesToAndFromEachOther(
         CrsTransformationAdapter crsTransformationAdapter,
         int epsgNumber1, int epsgNumber2,
         double yLat1, double xLon1,
@@ -273,19 +278,23 @@ final class CrsTransformationAdapterTest {
        CrsCoordinate inputCoordinateWGS84 = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
             for (Integer epsgNumber : epsgNumbersForSwedishProjectionsUsingMeterAsUnit) {
-                transformBackAndForthAndAssertResult(crsTransformationAdapter, inputCoordinateWGS84, epsgNumber);
+                transformToCoordinate_shouldReturnTheOriginalCoordinate_whenTransformingBackAgainFromTheResult(
+                    crsTransformationAdapter, 
+                    inputCoordinateWGS84, 
+                    epsgNumber
+                );
             }
         }
     }
 
-    private void transformWithTwoImplementationsAndCompareTheResults(
+    private void transformToCoordinate_shouldReturnTheSameCoordinate_whenTransformingWithTwoDifferentImplementations(
         CrsTransformationAdapter crsTransformationAdapter1,
         CrsTransformationAdapter crsTransformationAdapter2,
         CrsCoordinate inputCoordinate,
         int epsgNumberForOutputCoordinate
     ) {
         double delta = getDeltaValueForComparisons(epsgNumberForOutputCoordinate);
-
+        
         CrsCoordinate outputCoordinate1 = crsTransformationAdapter1.transformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinate);
         CrsCoordinate outputCoordinate2 = crsTransformationAdapter2.transformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinate);
 
@@ -299,7 +308,7 @@ final class CrsTransformationAdapterTest {
     @ParameterizedTest
     @CsvFileSource(resources = "/coordinatesForSweden.csv", numLinesToSkip = 3, delimiter = ';')
     @DisplayName("The same transformation but with different implementations should produce the same coordinates")
-    void verifyTransformationResultsAreTheSameWithDifferentImplementations(
+    void transformToCoordinate_shouldReturnTheSameCoordinate_whenTransformingWithDifferentImplementations(
         String description,
         double wgs84Lat, double wgs84Lon // ignore the rest of columns for this test method
     ) {
@@ -307,7 +316,7 @@ final class CrsTransformationAdapterTest {
         for (int i = 0; i < crsTransformationAdapterImplementations.size()-1; i++) {
             for (int j = i+1; j < crsTransformationAdapterImplementations.size(); j++) {
                 for (Integer epsgNumber : epsgNumbersForSwedishProjectionsUsingMeterAsUnit) {
-                    transformWithTwoImplementationsAndCompareTheResults(
+                    transformToCoordinate_shouldReturnTheSameCoordinate_whenTransformingWithTwoDifferentImplementations(
                         crsTransformationAdapterImplementations.get(i),
                         crsTransformationAdapterImplementations.get(j),
                         inputCoordinateWGS84,
@@ -334,7 +343,7 @@ final class CrsTransformationAdapterTest {
 
     @DisplayName("Testing CrsTransformationResult with expected successe")
     @Test
-    void transformToResultObjectWithValidInputCoordinate() {
+    void transform_shouldSuccess_whenInputCoordinateIsCorrect() {
         double wgs84Lat = 59.330231;
         double wgs84Lon = 18.059196;
         CrsCoordinate wgs84InputCoordinate = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(wgs84Lon, wgs84Lat, epsgNumberForWgs84);
@@ -373,22 +382,24 @@ final class CrsTransformationAdapterTest {
     }
 
     @Test
-    void getLongNameOfImplementationTest() {
+    void getLongNameOfImplementation_shouldReturnFullClassNameIncludingPackageName() {
         // Of course fragile, but the class/package name will not change
         // often and if/when it does the test will fail but will be trivial to fix.
-        // The purpose of this test is not so much to "test" but rather to
+        // The purpose of this test is not only to "test" but rather to
         // illustrate what the method returns
         assertEquals(
             "com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools",
             (new CrsTransformationAdapterGeoTools()).getLongNameOfImplementation()
         );
+        // There are more related tests in 'CrsTransformationAdapterLeafFactoryTest'
+        // which will detect problems if a class is renamed        
     }
 
     @Test
-    void getShortNameOfImplementationTest() {
+    void getShortNameOfImplementation_shouldReturnUniqueSuffixPartOfTheClassName() {
         // Of course fragile, but the class/package name will not change
         // often and if/when it does the test will fail but will be trivial to fix.
-        // The purpose of this test is not so much to "test" but rather to
+        // The purpose of this test is not only to "test" but also to
         // illustrate what the method returns
         assertEquals(
             "GeoTools",
@@ -428,34 +439,44 @@ final class CrsTransformationAdapterTest {
     }
 
     @Test
-    void isCompositeTest() {
+    void isComposite_shouldReturnTrue_whenComposite() {
         CrsTransformationAdapter compositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
         assertTrue(compositeAdapter.isComposite());
-
+        // TODO: iterate implementations e.g. for (CrsTransformationAdapter crsTransformationAdapterLeaf : crsTransformationAdapterLeafImplementations) {
+    }
+    
+    @Test
+    void isComposite_shouldReturnFalse_whenLeaf() {
+        // TODO: iterate implementations e.g. for (CrsTransformationAdapter crsTransformationAdapterLeaf : crsTransformationAdapterLeafImplementations) {
         CrsTransformationAdapter goober = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
         assertFalse( (new CrsTransformationAdapterGeoPackageNGA()).isComposite());
         assertFalse( (new CrsTransformationAdapterGooberCTL()).isComposite());
         assertFalse( (new CrsTransformationAdapterGeoTools()).isComposite());
         assertFalse( (new CrsTransformationAdapterOrbisgisCTS()).isComposite());
         assertFalse( (new CrsTransformationAdapterProj4J()).isComposite());
-    }
+    }    
 
     @Test
-    void getTransformationAdapterChildrenTest() {
+    void getTransformationAdapterChildren_shouldReturnNonEmptyList_whenComposite() {
         CrsTransformationAdapter compositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
         // 5 below is fragile but will of course be very trivial to fix if ny implementations would be added
         assertEquals(5, compositeAdapter.getTransformationAdapterChildren().size());
-
-        CrsTransformationAdapter goober = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+    }
+    // TODO iteration in above and below methods
+    @Test
+    void getTransformationAdapterChildren_shouldReturnEmptyList_whenLeaf() {
         assertEquals(0,(new CrsTransformationAdapterGeoPackageNGA()).getTransformationAdapterChildren().size());
         assertEquals(0,(new CrsTransformationAdapterGooberCTL()).getTransformationAdapterChildren().size());
         assertEquals(0,(new CrsTransformationAdapterGeoTools()).getTransformationAdapterChildren().size());
         assertEquals(0,(new CrsTransformationAdapterOrbisgisCTS()).getTransformationAdapterChildren().size());
         assertEquals(0,(new CrsTransformationAdapterProj4J()).getTransformationAdapterChildren().size());
     }
+    
 
     @Test
-    void isReliableTest() {
+    void isReliable_shoudReturnTrueForLeafs_whenUsingCriteriaNumberOfResultsOneAndMaxDiffZero() {
+        final int criteriaNumberOfResults = 1; // always one for a Leaf
+        final double criteriaMaxDiff = 0.0; // always zero for a Leaf
         // The tested method 'isReliable' is actually relevant only for aggregated
         // transformations, but nevertheless there is a reaonable behavouor also
         // for the "Leaf" implementations regarding the number of results (always 1)
@@ -471,19 +492,21 @@ final class CrsTransformationAdapterTest {
             assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
     
             final int actualNumberOfResults = crsTransformationResultStatistic.getNumberOfResults();
-            assertEquals(1, actualNumberOfResults);
+            assertEquals(criteriaNumberOfResults, actualNumberOfResults);
             final double actualMaxDiffXLongitude = crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude();
             final double actualMaxDiffYLatitude = crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude();
             final double actualMaxDiffXorY = Math.max(actualMaxDiffXLongitude, actualMaxDiffYLatitude);
-            assertEquals(0, actualMaxDiffXorY); // zero differences since there should be only one result !
-    
-            assertTrue(resultWhenTransformingToSwedishCRS.isReliable(actualNumberOfResults, actualMaxDiffXorY));
+            assertEquals(criteriaMaxDiff, actualMaxDiffXorY); // zero differences since there should be only one result !
+
+            // method "isReliable" used below is the method under test
+            
+            assertTrue(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResults, criteriaMaxDiff));
     
             // assertFalse below since trying to require one more result than available
-            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(actualNumberOfResults + 1, actualMaxDiffXorY));
+            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResults + 1, criteriaMaxDiff));
     
             // assertFalse below since trying to require too small maxdiff
-            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(actualNumberOfResults, actualMaxDiffXorY - 0.00000000001));
+            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResults, criteriaMaxDiff - 0.00000000001));
         }
     }
 
