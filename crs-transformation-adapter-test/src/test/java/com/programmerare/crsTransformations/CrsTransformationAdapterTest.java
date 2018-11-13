@@ -79,7 +79,6 @@ final class CrsTransformationAdapterTest {
         assertEquals(expectedNumberOfLeafs, crsTransformationAdapterLeafImplementations.size());
         assertEquals(expectedNumberOfComposites, crsTransformationAdapterCompositeImplementations.size());
         assertEquals(expectedNumberOfLeafs + expectedNumberOfComposites, crsTransformationAdapterImplementations.size());
-        
     }
     
     @Test
@@ -105,7 +104,9 @@ final class CrsTransformationAdapterTest {
         }
     }
 
-    private void testTransformationFromSweref991200ToSweref991500(CrsTransformationAdapter crsTransformationAdapter) {
+    private void testTransformationFromSweref991200ToSweref991500(
+        CrsTransformationAdapter crsTransformationAdapter
+    ) {
         double sweref1200_Y = 6580822;
         double sweref1200_X = 674032;
 
@@ -116,9 +117,9 @@ final class CrsTransformationAdapterTest {
     }
 
     private void transformBackAndForthAndAssertResult(
-            CrsTransformationAdapter crsTransformationAdapter,
-            CrsCoordinate inputCoordinateOriginalCRS,
-            int epsgNumberForTransformTargetCRS
+        CrsTransformationAdapter crsTransformationAdapter,
+        CrsCoordinate inputCoordinateOriginalCRS,
+        int epsgNumberForTransformTargetCRS
     ) {
         double delta = getDeltaValueForComparisons(inputCoordinateOriginalCRS.getCrsIdentifier());
 
@@ -130,7 +131,9 @@ final class CrsTransformationAdapterTest {
         assertEquals(inputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber(), outputCoordinateOriginalCRS.getCrsIdentifier().getEpsgNumber());
     }
 
-    private void testTransformationFromWgs84ToSweref99TM(CrsTransformationAdapter crsTransformationAdapter) {
+    private void testTransformationFromWgs84ToSweref99TM(
+        CrsTransformationAdapter crsTransformationAdapter
+    ) {
         // This test is using the coordinates of Stockholm Centralstation (Sweden)
         // https://kartor.eniro.se/m/03Yxp
         // WGS84 decimal (lat, lon)
@@ -150,7 +153,9 @@ final class CrsTransformationAdapterTest {
         assertEquals(sweref99_X_expected, outputCoordinate.getXEastingLongitude(), 0.5);
     }
 
-    private void testTransformationFromRT90ToWgs84(CrsTransformationAdapter crsTransformationAdapter) {
+    private void testTransformationFromRT90ToWgs84(
+        CrsTransformationAdapter crsTransformationAdapter
+    ) {
         double rt90_Y = 6580994;
         double rt90_X = 1628294;
 
@@ -189,11 +194,11 @@ final class CrsTransformationAdapterTest {
     }
 
     private void testTransformation(
-            CrsTransformationAdapter crsTransformationAdapter,
-            int epsgNumber1, int epsgNumber2,
-            double yLat1, double xLon1,
-            double yLat2, double xLon2,
-            String description
+        CrsTransformationAdapter crsTransformationAdapter,
+        int epsgNumber1, int epsgNumber2,
+        double yLat1, double xLon1,
+        double yLat2, double xLon2,
+        String description
     ) {
         final CrsCoordinate coordinate1 = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(xLon1, yLat1, epsgNumber1);
         final CrsCoordinate coordinate2 = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(xLon2, yLat2, epsgNumber2);
@@ -209,11 +214,16 @@ final class CrsTransformationAdapterTest {
         assertEquals(coordinate1.getYNorthingLatitude(), outputForCoordinate2.getYNorthingLatitude(), delta, description);
     }
 
-    private double getDeltaValueForComparisons(CrsIdentifier crsIdentifier) {
+    private double getDeltaValueForComparisons(
+        CrsIdentifier crsIdentifier
+    ) {
         return getDeltaValueForComparisons(crsIdentifier.getEpsgNumber());
 
     }
-    private double getDeltaValueForComparisons(int epsgNumber) {
+    
+    private double getDeltaValueForComparisons(
+        int epsgNumber
+    ) {
         CoordinateReferenceSystemUnit coordinateReferenceSystemUnit = CoordinateReferenceSystemUnit.UNKNOWN;
         if(epsgNumber == epsgNumberForWgs84) {
             coordinateReferenceSystemUnit = CoordinateReferenceSystemUnit.DEGREES;
@@ -230,7 +240,10 @@ final class CrsTransformationAdapterTest {
         return getDeltaValueForComparisons(coordinateReferenceSystemUnit, epsgNumber);
     }
 
-    private double getDeltaValueForComparisons(CoordinateReferenceSystemUnit coordinateReferenceSystemUnit, int epsgNumberUsedOnlyInErrorMessage) {
+    private double getDeltaValueForComparisons(
+        CoordinateReferenceSystemUnit coordinateReferenceSystemUnit,
+        int epsgNumberUsedOnlyInErrorMessage
+    ) {
         if(coordinateReferenceSystemUnit == CoordinateReferenceSystemUnit.DEGREES) {
             // one of the results:
             // Expected :20.266843
@@ -266,10 +279,10 @@ final class CrsTransformationAdapterTest {
     }
 
     private void transformWithTwoImplementationsAndCompareTheResults(
-            CrsTransformationAdapter crsTransformationAdapter1,
-            CrsTransformationAdapter crsTransformationAdapter2,
-            CrsCoordinate inputCoordinate,
-            int epsgNumberForOutputCoordinate
+        CrsTransformationAdapter crsTransformationAdapter1,
+        CrsTransformationAdapter crsTransformationAdapter2,
+        CrsCoordinate inputCoordinate,
+        int epsgNumberForOutputCoordinate
     ) {
         double delta = getDeltaValueForComparisons(epsgNumberForOutputCoordinate);
 
@@ -340,7 +353,9 @@ final class CrsTransformationAdapterTest {
         }
     }
 
-    private void assertResultStatisticsForLeafImplementation(CrsTransformationResult transformResult) {
+    private void assertResultStatisticsForLeafImplementation(
+        CrsTransformationResult transformResult
+    ) {
         final CrsTransformationResultStatistic crsTransformationResultStatistic = transformResult.getCrsTransformationResultStatistic();
         assertNotNull(crsTransformationResultStatistic);
         assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
