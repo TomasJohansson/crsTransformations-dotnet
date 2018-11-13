@@ -11,9 +11,14 @@ import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
 import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import java.util.Arrays;
+import java.util.List;
+
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
 
@@ -65,20 +70,112 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
     }
 
 
-    @DisplayName("Testing CrsTransformationResult with expected failure")
     @Test
-    void transformToResultObjectWithUnvalidInputCoordinate() {
-        CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(-999999.0, -999999.0, 1);
+    void transform_shouldReturnSuccessFalseButNotThrowException_whenLongitudeIsNotValid() {
+        final CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
+            60.0, // ok wgs84 latitude
+            -9999999999.0, // NOT ok wgs84 longitude
+            epsgNumberForWgs84
+        );
+        transform_shouldReturnSuccessFalseButNotThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
+    }
+
+    @Test
+    void transform_shouldReturnSuccessFalseButNotThrowException_whenLatitudeIsNotValid() {
+        final CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
+            -9999999999.0, // NOT ok wgs84 latitude
+            20.0, // ok wgs84 longitude
+            epsgNumberForWgs84
+        );
+        transform_shouldReturnSuccessFalseButNotThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
+    }
+
+    @Test
+    void transform_shouldReturnSuccessFalseButNotThrowException_whenCrsCodeIsNotValid() {
+        final CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
+            60.0, // ok wgs84 latitude
+            20.0, // ok wgs84 longitude
+            "This string is NOT a correct crs/EPSG code"
+        );
+        transform_shouldReturnSuccessFalseButNotThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
+    }
+    
+    private void transform_shouldReturnSuccessFalseButNotThrowException_whenCoordinateIsNotValid(
+        CrsCoordinate unvalidInputCoordinate
+    ) {
         for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
             final String messageWhenError = "Problem with the implementation " + crsTransformationAdapter.getAdapteeType();
-            CrsTransformationResult transformResult = crsTransformationAdapter.transform(unvalidInputCoordinate, 2);
+            CrsTransformationResult transformResult = crsTransformationAdapter.transform(unvalidInputCoordinate, epsgNumberForSweref99TM);
             assertNotNull(transformResult, messageWhenError);
-            assertFalse(transformResult.isSuccess(), messageWhenError);
-            assertNotNull(transformResult.getException(), messageWhenError);
-            assertEquals(unvalidInputCoordinate, transformResult.getInputCoordinate(), messageWhenError);
-        }
-    }    
+            if(!unvalidInputCoordinate.getCrsIdentifier().isEpsgCode()) {
+                // if the coordinate is unvalid becasue of incorrect crs code
+                // then we can do the below assertions but if the coordinate values 
+                // are unreasonable it may not be detected by the implementations
+                // and we can not expect them to return success=false 
+                assertFalse(transformResult.isSuccess(), messageWhenError);
+                assertNotNull(transformResult.getException(), messageWhenError);
+                assertEquals(unvalidInputCoordinate, transformResult.getInputCoordinate(), messageWhenError);                
+            }
+        }        
+    }
+// These two test below could not be used since all implementations are 
+// not throwing exceptions for unreasonable coordinate values    
+//    @Test
+//    void transformToCoordinate_shouldThrowException_whenLongitudeIsNotValid() {
+//        final CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
+//            60.0, // ok wgs84 latitude
+//            -9999999999.0, // NOT ok wgs84 longitude
+//            epsgNumberForWgs84
+//        );
+//        transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
+//    }
+//
+//    @Test
+//    void transformToCoordinate_shouldThrowException_whenLatitudeIsNotValid() {
+//        final CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
+//            -9999999999.0, // NOT ok wgs84 latitude
+//            20.0, // ok wgs84 longitude
+//            epsgNumberForWgs84
+//        );
+//        transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
+//    }
 
+    @Test
+    void transformToCoordinate_shouldThrowException_whenCrsCodeIsNotValid() {
+        final CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
+            60.0, // ok wgs84 latitude
+            20.0, // ok wgs84 longitude
+            "This string is NOT a correct crs/EPSG code"
+        );
+        transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
+    }
+
+    private final static List<String> classNamesForExpectedPotentialExceptionsWhenIncorrectEPSGcode =
+            Arrays.asList(
+                IllegalArgumentException.class.getName(), // Goober implementation throws this
+                "org.opengis.referencing.NoSuchAuthorityCodeException",
+                "org.osgeo.proj4j.UnknownAuthorityCodeException",
+                "org.cts.crs.CRSException",
+                "mil.nga.sf.util.SFException",
+                RuntimeException.class.getName() // composite throws this
+            );
+    
+    private void transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(
+        CrsCoordinate unvalidInputCoordinate
+    ) {
+        for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
+            Exception exception = assertThrows(
+                Exception.class,
+                () -> crsTransformationAdapter.transformToCoordinate(unvalidInputCoordinate, super.epsgNumberForSweref99TM),
+                () -> "Exception was not thrown but SHOULD have been thrown for implementation " + crsTransformationAdapter.getAdapteeType() + " and coordinate " + unvalidInputCoordinate 
+            );
+
+            boolean isExpectedException = classNamesForExpectedPotentialExceptionsWhenIncorrectEPSGcode.stream().anyMatch(it -> it.equals(exception.getClass().getName()));
+            assertTrue(isExpectedException, () -> "Unexpected exception: " + exception.getClass().getName() + " for adapter " + crsTransformationAdapter.getAdapteeType());
+        }
+    }
+    
+    
     @Test
     void getLongNameOfImplementation_shouldReturnFullClassNameIncludingPackageName() {
         // Of course fragile, but the class/package name will not change
