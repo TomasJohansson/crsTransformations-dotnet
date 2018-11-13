@@ -22,7 +22,7 @@ plugins {
 
 
 ext.crsTransformationGroupId = 'com.programmerare.crs-transformation'
-ext.crsTransformationVersion = '0.59-SNAPSHOT'
+ext.crsTransformationVersion = '0.60-SNAPSHOT'
 group = rootProject.crsTransformationGroupId
 version = rootProject.crsTransformationVersion
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
@@ -166,7 +166,7 @@ project(':crs-transformation-adapter-impl-geotools') {
                     // <name>${project.groupId}:${project.artifactId}</name>
                     name = rootProject.crsTransformationGroupId + ":" + artifactId
 
-                    description = 'Coordinate Reference System Transformations'
+                    description = 'Coordinate Reference System Transformations adapter implementation using the adaptee third-part library GeoTools.'
                     url = rootProject.mavenPomUrl
                     licenses {
                         license {
@@ -212,14 +212,14 @@ project(':crs-transformation-adapter-impl-goober') {
                     // A common and acceptable practice for name is to assemble it from the coordinates using Maven properties:
                     // <name>${project.groupId}:${project.artifactId}</name>
                     name = rootProject.crsTransformationGroupId + ":" + artifactId
-
-                    description = 'TODO'
+                    
+                    description = 'Coordinate Reference System Transformations adapter implementation using the adaptee third-part library goober/coordinate-transformation-library.'
                     url = rootProject.mavenPomUrl
                     licenses {
                         license {
-                            name = 'TODO'
-                            url = 'TODO'
-                            comments = 'TODO'
+                            name = 'Apache License 2.0'
+                            url = 'https://github.com/goober/coordinate-transformation-library/blob/master/LICENSE'
+                            comments = 'Apache License 2.0, i.e. the same license as the used adaptee third-part library goober/coordinate-transformation-library. The artifact crs-transformation-adapter-impl-goober is using goober/coordinate-transformation-library and the same license Apache License 2.0.'
                         }
                     }
                     developers {
@@ -260,13 +260,13 @@ project(':crs-transformation-adapter-impl-orbisgis') {
                     // <name>${project.groupId}:${project.artifactId}</name>
                     name = rootProject.crsTransformationGroupId + ":" + artifactId
 
-                    description = 'TODO'
+                    description = 'Coordinate Reference System Transformations adapter implementation using the adaptee third-part library orbisgis/cts.'
                     url = rootProject.mavenPomUrl
                     licenses {
                         license {
-                            name = 'TODO'
-                            url = 'TODO'
-                            comments = 'TODO'
+                            name = 'GNU Lesser General Public License (LGPLV3+)'
+                            url = 'https://github.com/orbisgis/cts/blob/master/pom.xml'
+                            comments = 'LGPLV3+, i.e. the same license as the used adaptee third-part library orbisgis/cts. The artifact crs-transformation-adapter-impl-orbisgis is using orbisgis/cts and the same license LGPLV3+'
                         }
                     }
                     developers {
@@ -307,13 +307,13 @@ project(':crs-transformation-adapter-impl-proj4j') {
                     // <name>${project.groupId}:${project.artifactId}</name>
                     name = rootProject.crsTransformationGroupId + ":" + artifactId
 
-                    description = 'TODO'
+                    description = 'Coordinate Reference System Transformations adapter implementation using the adaptee third-part library proj4j.'
                     url = rootProject.mavenPomUrl
                     licenses {
                         license {
-                            name = 'TODO'
-                            url = 'TODO'
-                            comments = 'TODO'
+                            name = 'Apache License 2.0'
+                            url = 'https://github.com/Proj4J/proj4j'
+                            comments = 'Apache License 2.0, i.e. the same license as the used adaptee third-part library proj4j. The artifact crs-transformation-adapter-impl-proj4j is using proj4j and the same license Apache License 2.0.'
                         }
                     }
                     developers {
@@ -356,13 +356,13 @@ project(':crs-transformation-adapter-impl-nga') {
                     // <name>${project.groupId}:${project.artifactId}</name>
                     name = rootProject.crsTransformationGroupId + ":" + artifactId
 
-                    description = 'TODO'
+                    description = 'Coordinate Reference System Transformations adapter implementation using the adaptee third-part library ngageoint/geopackage-java.'
                     url = rootProject.mavenPomUrl
                     licenses {
                         license {
-                            name = 'TODO'
-                            url = 'TODO'
-                            comments = 'TODO'
+                            name = 'MIT License'
+                            url = 'https://github.com/ngageoint/geopackage-java/blob/master/LICENSE.txt'
+                            comments = 'MIT License, i.e. the same license as the used adaptee third-part library ngageoint/geopackage-java. The artifact crs-transformation-adapter-impl-nga is using ngageoint/geopackage-java and the same license MIT.'
                         }
                     }
                     developers {
