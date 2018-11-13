@@ -20,11 +20,19 @@ plugins {
     id 'signing'
 }
 
+
 ext.crsTransformationGroupId = 'com.programmerare.crs-transformation'
-ext.crsTransformationVersion = '0.57'
+ext.crsTransformationVersion = '0.58-SNAPSHOT'
 group = rootProject.crsTransformationGroupId
 version = rootProject.crsTransformationVersion
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+
+ext.mavenPomUrl = "https://github.com/TomasJohansson/crsTransformations"
+ext.mavenPomDeveloperName = "Tomas Johansson"
+ext.mavenPomDeveloperOrganizationUrl = "https://programmerare.com"
+ext.mavenPomScmConnection = "scm:git:git://github.com/TomasJohansson/crsTransformations.git"
+ext.mavenPomScmDeveloperConnection = "scm:git:ssh://github.com/TomasJohansson/crsTransformations.git"
+ext.mavenPomScmUrl = "https://github.com/TomasJohansson/crsTransformations"
 
 allprojects {
     group = rootProject.crsTransformationGroupId
@@ -159,7 +167,7 @@ project(':crs-transformation-adapter-impl-geotools') {
                     name = rootProject.crsTransformationGroupId + ":" + artifactId
 
                     description = 'Coordinate Reference System Transformations'
-                    url = 'https://github.com/TomasJohansson/crsTransformations'
+                    url = rootProject.mavenPomUrl
                     licenses {
                         license {
                             name = 'MIT License'
@@ -169,14 +177,14 @@ project(':crs-transformation-adapter-impl-geotools') {
                     }
                     developers {
                         developer {
-                            name = 'Tomas Johansson'
-                            organizationUrl = 'https://github.com/TomasJohansson'
+                            name = rootProject.mavenPomDeveloperName
+                            organizationUrl = rootProject.mavenPomUrl
                         }
                     }
                     scm {
-                        connection = 'scm:git:git://github.com/TomasJohansson/crsTransformations.git'
-                        developerConnection = 'scm:git:ssh://github.com/TomasJohansson/crsTransformations.git'
-                        url = 'https://github.com/TomasJohansson/crsTransformations'
+                        connection = rootProject.mavenPomScmConnection
+                        developerConnection = rootProject.mavenPomScmDeveloperConnection
+                        url = rootProject.mavenPomScmUrl
                     }
                 }                
             }
@@ -363,7 +371,7 @@ project(':crs-transformation-adapter-core') {
                     name = rootProject.crsTransformationGroupId + ":" + artifactId
 
                     description = 'Coordinate Reference System Transformations'
-                    url = 'https://github.com/TomasJohansson/crsTransformations'
+                    url = rootProject.mavenPomUrl
                     licenses {
                         license {
                             name = 'MIT License'
@@ -373,14 +381,14 @@ project(':crs-transformation-adapter-core') {
                     }
                     developers {
                         developer {
-                            name = 'Tomas Johansson'
-                            organizationUrl = 'https://github.com/TomasJohansson'
+                            name = rootProject.mavenPomDeveloperName
+                            organizationUrl = rootProject.mavenPomUrl
                         }
                     }
                     scm {
-                        connection = 'scm:git:git://github.com/TomasJohansson/crsTransformations.git'
-                        developerConnection = 'scm:git:ssh://github.com/TomasJohansson/crsTransformations.git'
-                        url = 'https://github.com/TomasJohansson/crsTransformations'
+                        connection = rootProject.mavenPomScmConnection
+                        developerConnection = rootProject.mavenPomScmDeveloperConnection
+                        url = rootProject.mavenPomScmUrl
                     }
                 }
             }
@@ -423,12 +431,12 @@ project(':crs-transformation-constants') {
                     // gradlew publishCrstransformationsconstantsPublicationToMavenRepository
                     name = rootProject.crsTransformationGroupId + ":" + artifactId
                     description = 'Constants with EPSG codes for Coordinate Reference Systems. The version number is the same as the EPSG database at http://www.epsg.org or http://www.epsg-registry.org'
-                    url = 'https://github.com/TomasJohansson/crsTransformations'
+                    url = rootProject.mavenPomUrl
                     licenses {
                         license {
                             name = 'MIT License'
                             url = 'https://github.com/TomasJohansson/crsTransformations'
-                            comments = 'MIT license for this library with Java constants for EPSG codes. '
+                            comments = 'MIT license for this library with Java constants for EPSG codes.'
                         }
                         license {
                             name = 'The EPSG database is published by IOGP at no charge. Distribution for profit is forbidden. See the URL for detailed information.'
@@ -437,8 +445,8 @@ project(':crs-transformation-constants') {
                     }
                     developers {
                         developer {
-                            name = 'Tomas Johansson'
-                            organizationUrl = 'https://github.com/TomasJohansson'
+                            name = rootProject.mavenPomDeveloperName
+                            organizationUrl = rootProject.mavenPomUrl
                         }
                         developer {
                             name = 'IOGP'
@@ -450,9 +458,9 @@ project(':crs-transformation-constants') {
                         }
                     }
                     scm {
-                        connection = 'scm:git:git://github.com/TomasJohansson/crsTransformations.git'
-                        developerConnection = 'scm:git:ssh://github.com/TomasJohansson/crsTransformations.git'
-                        url = 'https://github.com/TomasJohansson/crsTransformations'
+                        connection = rootProject.mavenPomScmConnection
+                        developerConnection = rootProject.mavenPomScmDeveloperConnection
+                        url = rootProject.mavenPomScmUrl
                     }
                 }
             }
