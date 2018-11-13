@@ -170,9 +170,9 @@ project(':crs-transformation-adapter-impl-geotools') {
                     url = rootProject.mavenPomUrl
                     licenses {
                         license {
-                            name = 'MIT License'
-                            url = 'https://github.com/TomasJohansson/crsTransformations'
-                            comments = 'MIT license for the core library. The adapter libraries have the same license as the adaptee libraries.'
+                            name = 'LGPL (GNU Lesser General Public License)'
+                            url = 'http://docs.geotools.org/latest/userguide/welcome/license.html'
+                            comments = 'LGPL i.e. the same license as the used adaptee third-part library GeoTools. The artifact crs-transformation-adapter-impl-geotools is using GeoTools and the same license LGPL.'
                         }
                     }
                     developers {
