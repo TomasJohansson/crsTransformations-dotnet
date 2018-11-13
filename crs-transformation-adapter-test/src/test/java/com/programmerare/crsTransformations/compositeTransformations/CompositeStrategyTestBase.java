@@ -48,7 +48,7 @@ abstract class CompositeStrategyTestBase {
 
         allAdapters = Arrays.asList(
             // Regarding the order of the items in the list below:
-            // GeoTools should be the first since it is assumed in the test by the subclass CompositeStrategyForChainOfResponsibilityTest
+            // GeoTools should be the first since it is assumed in the test by the subclass CompositeStrategyForFirstSuccessTest
             adapterGeoTools,
             adapterGooberCTL,
             adapterOrbisgisCTS,

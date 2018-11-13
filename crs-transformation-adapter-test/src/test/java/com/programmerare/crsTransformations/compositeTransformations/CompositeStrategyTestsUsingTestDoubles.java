@@ -164,9 +164,9 @@ public class CompositeStrategyTestsUsingTestDoubles {
     }
 
     @Test
-    void transformToCoordinate_shouldReturnFirstResult_whenUsingChainOfResponsibilityCompositeAdapter() {
-        CrsTransformationAdapterComposite chainOfResponsibilityCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility(allLeafAdapters);
-        CrsCoordinate resultCoordinate = chainOfResponsibilityCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
+    void transformToCoordinate_shouldReturnFirstResult_whenUsingFirstSuccessCompositeAdapter() {
+        CrsTransformationAdapterComposite firstSuccessCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess(allLeafAdapters);
+        CrsCoordinate resultCoordinate = firstSuccessCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         assertNotNull(resultCoordinate);
 
         // The assumption below (according to the setup code in the "before" method in this JUnit class)
@@ -175,7 +175,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         assertEquals(outputCoordinateWgs84ForImplementation_1.getXEastingLongitude(), resultCoordinate.getXEastingLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
 
         assertCompositeResultHasLeafSubResults(
-            chainOfResponsibilityCompositeAdapter,
+            firstSuccessCompositeAdapter,
             1 // expectedNumberOfLeafResults
         );
     }

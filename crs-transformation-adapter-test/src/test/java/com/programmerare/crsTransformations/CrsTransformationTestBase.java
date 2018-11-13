@@ -38,7 +38,7 @@ abstract class CrsTransformationTestBase {
         crsTransformationAdapterCompositeImplementations = Arrays.asList(
             CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(),
             CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(),
-            CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility(),
+            CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess(),
             CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(Arrays.asList(
                 CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoTools(), 51.0),
                 CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGooberCTL(), 52.0),

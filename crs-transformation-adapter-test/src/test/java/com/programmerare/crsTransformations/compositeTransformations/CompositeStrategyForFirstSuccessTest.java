@@ -10,25 +10,25 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class CompositeStrategyForChainOfResponsibilityTest extends CompositeStrategyTestBase {
+public class CompositeStrategyForFirstSuccessTest extends CompositeStrategyTestBase {
 
     @Test
-    void transform_shouldReturnFirstResult_whenUsingChainOfResponsibilityCompositeAdapter() {
-        CrsTransformationAdapter chainOfResponsibilityCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility(
+    void transform_shouldReturnFirstResult_whenUsingFirstSuccessCompositeAdapter() {
+        CrsTransformationAdapter firstSuccessCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess(
             // note that geotools should be the first item in the below list defined in the baseclass,
             // and therefore geotools should be the implementation providing the result
             super.allAdapters
         );
-        CrsTransformationResult chainOfResponsibilityResult = chainOfResponsibilityCompositeAdapter.transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
-        assertNotNull(chainOfResponsibilityResult);
-        assertTrue(chainOfResponsibilityResult.isSuccess());
-        assertEquals(1, chainOfResponsibilityResult.getTransformationResultChildren().size());
+        CrsTransformationResult firstSuccessResult = firstSuccessCompositeAdapter.transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        assertNotNull(firstSuccessResult);
+        assertTrue(firstSuccessResult.isSuccess());
+        assertEquals(1, firstSuccessResult.getTransformationResultChildren().size());
 
-        CrsCoordinate coordinateReturnedByCompositeAdapterChainOfResponsibility = chainOfResponsibilityResult.getOutputCoordinate();
+        CrsCoordinate coordinateReturnedByCompositeAdapterFirstSuccess = firstSuccessResult.getOutputCoordinate();
         // The above result of the composite should be equal to the result of GeoTools since it
         // is first in the list of parameters to the constructor and it should produce a result for
         // the input coordinates ... so therefore below assert against the direct result of geotools
         CrsCoordinate coordinateResultWhenUsingGeoTools = adapterGeoTools.transformToCoordinate(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
-        assertEquals(coordinateResultWhenUsingGeoTools, coordinateReturnedByCompositeAdapterChainOfResponsibility);
+        assertEquals(coordinateResultWhenUsingGeoTools, coordinateReturnedByCompositeAdapterFirstSuccess);
     }
 }

@@ -108,10 +108,10 @@ class CrsTransformationAdapteeTypeTest {
     }
 
     @Test
-    void testCompositeChainOfResponsibility() {
+    void testCompositeFirstSuccess() {
         verifyExpectedEnum(
-            CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility(),
-            CrsTransformationAdapteeType.COMPOSITE_CHAIN_OF_RESPONSIBILITY
+            CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess(),
+            CrsTransformationAdapteeType.COMPOSITE_FIRST_SUCCESS
         );
     }
 

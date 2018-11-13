@@ -92,7 +92,7 @@ enum class CrsTransformationAdapteeType {
      * be zero or one, unlike the median and average (or weighted) composites
      * which can have many results from multiple 'leafs' (adapter/adaptee implementations).
      */
-    COMPOSITE_CHAIN_OF_RESPONSIBILITY,
+    COMPOSITE_FIRST_SUCCESS,
 
 
     /**

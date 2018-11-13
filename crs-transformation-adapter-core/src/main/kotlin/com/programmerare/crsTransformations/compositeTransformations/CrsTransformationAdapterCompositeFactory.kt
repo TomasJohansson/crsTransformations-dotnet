@@ -86,32 +86,32 @@ object CrsTransformationAdapterCompositeFactory {
     // ----------------------------------------------
 
     // ----------------------------------------------
-    // Two ChainOfResponsibility factory methods:
+    // Two FirstSuccess factory methods:
 
     /**
      * Please see documentation for the overloaded method.
-     * @see createCrsTransformationChainOfResponsibility
+     * @see createCrsTransformationFirstSuccess
      */    
     @JvmStatic
-    fun createCrsTransformationChainOfResponsibility(): CrsTransformationAdapterComposite {
+    fun createCrsTransformationFirstSuccess(): CrsTransformationAdapterComposite {
         val list = CrsTransformationAdapterLeafFactory.getInstancesOfAllKnownAvailableImplementations()
         throwExceptionIfNoKnownInstancesAreAvailable(list)
-        return createCrsTransformationChainOfResponsibility(
+        return createCrsTransformationFirstSuccess(
             list
         )
     }
 
     /**
      * Please also see the documentation for the factory methods creating a median composite.
-     * The difference is that the chain of responsiblity will not try
+     * The difference is that the 'FirstSuccess' will not try
      * to use all leaf implementations but will only continue with the next
      * leaf implementation until a succesful result has been found.
      * @see createCrsTransformationMedian
      */    
     @JvmStatic
-    fun createCrsTransformationChainOfResponsibility(list: List<CrsTransformationAdapter>): CrsTransformationAdapterComposite {
+    fun createCrsTransformationFirstSuccess(list: List<CrsTransformationAdapter>): CrsTransformationAdapterComposite {
         return CrsTransformationAdapterComposite._createCrsTransformationAdapterComposite(
-            CompositeStrategyForChainOfResponsibility._createCompositeStrategyForChainOfResponsibility(
+            CompositeStrategyForFirstSuccess._createCompositeStrategyForFirstSuccess(
                 list
             )
         )

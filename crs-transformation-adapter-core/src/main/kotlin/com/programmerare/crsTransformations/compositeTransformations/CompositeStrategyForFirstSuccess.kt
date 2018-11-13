@@ -4,7 +4,7 @@ import com.programmerare.crsTransformations.*
 import com.programmerare.crsTransformations.coordinate.CrsCoordinate
 import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
 
-internal class CompositeStrategyForChainOfResponsibility private constructor(
+internal class CompositeStrategyForFirstSuccess private constructor(
     private val crsTransformationAdapters: List<CrsTransformationAdapter>
 ) : CompositeStrategyBase(crsTransformationAdapters), CompositeStrategy {
 
@@ -19,7 +19,7 @@ internal class CompositeStrategyForChainOfResponsibility private constructor(
             crsTransformationAdapterThatCreatedTheResult: CrsTransformationAdapter
     ): CrsTransformationResult {
         if(allResults.size == 1 && allResults.get(0).isSuccess) {
-            // there should never be more than one result with the ChainOfResponsibility implementation
+            // there should never be more than one result with the FirstSuccess implementation
             // since the calculation is interrupted at the first succeful result
             return CrsTransformationResult._createCrsTransformationResult(
                 inputCoordinate,
@@ -43,7 +43,7 @@ internal class CompositeStrategyForChainOfResponsibility private constructor(
     }
 
     override fun _getAdapteeType() : CrsTransformationAdapteeType {
-        return CrsTransformationAdapteeType.COMPOSITE_CHAIN_OF_RESPONSIBILITY
+        return CrsTransformationAdapteeType.COMPOSITE_FIRST_SUCCESS
     }
 
     internal companion object {
@@ -54,10 +54,10 @@ internal class CompositeStrategyForChainOfResponsibility private constructor(
          * @see CrsTransformationAdapterCompositeFactory
          */
         @JvmStatic
-        internal fun _createCompositeStrategyForChainOfResponsibility (
+        internal fun _createCompositeStrategyForFirstSuccess (
             list: List<CrsTransformationAdapter>
-        ): CompositeStrategyForChainOfResponsibility {
-            return CompositeStrategyForChainOfResponsibility(list) 
+        ): CompositeStrategyForFirstSuccess {
+            return CompositeStrategyForFirstSuccess(list) 
         }
     }
 }

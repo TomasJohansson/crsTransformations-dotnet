@@ -29,9 +29,9 @@ public class CrsTransformationAdapterCompositeFactoryTest {
     }
 
     @Test
-    void createCrsTransformationChainOfResponsibility_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
-        CrsTransformationAdapterComposite crsTransformationChainOfResponsibility = CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility();
-        assertCompositeNotNullAndAggregatesManyImplementations(crsTransformationChainOfResponsibility);
+    void createCrsTransformationFirstSuccess_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
+        CrsTransformationAdapterComposite crsTransformationFirstSuccess = CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess();
+        assertCompositeNotNullAndAggregatesManyImplementations(crsTransformationFirstSuccess);
     }
 
     private void assertCompositeNotNullAndAggregatesManyImplementations(CrsTransformationAdapterComposite crsTransformationAdapterComposite) {
@@ -57,9 +57,9 @@ public class CrsTransformationAdapterCompositeFactoryTest {
     }
 
     @Test
-    void createCrsTransformationChainOfResponsibility_shouldThrowException_whenInstantiatingWithEmptyList() {
+    void createCrsTransformationFirstSuccess_shouldThrowException_whenInstantiatingWithEmptyList() {
         helper_shouldThrowException_whenInstantiatingWithEmptyList(
-            list -> CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility(list)
+            list -> CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess(list)
         );
     }    
     

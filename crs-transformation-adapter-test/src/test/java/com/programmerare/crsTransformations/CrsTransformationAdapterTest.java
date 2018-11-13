@@ -287,12 +287,12 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
 
         final List<CrsTransformationAdapter> crsTransformationAdapterImplementationsExpectingOneResult = new ArrayList<>();
         crsTransformationAdapterImplementationsExpectingOneResult.addAll(super.crsTransformationAdapterLeafImplementations);
-        crsTransformationAdapterImplementationsExpectingOneResult.add(CrsTransformationAdapterCompositeFactory.createCrsTransformationChainOfResponsibility());        
+        crsTransformationAdapterImplementationsExpectingOneResult.add(CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess());        
         assertEquals(6, crsTransformationAdapterImplementationsExpectingOneResult.size()); // 5 leafs plus 1 
         
         for (CrsTransformationAdapter crsTransformationAdapterLeaf : crsTransformationAdapterImplementationsExpectingOneResult) {
             // suffix "Leaf" is not quite true, but in one of the iterations
-            // it will be the Composite ChainOfResponsibility which also will only have one result 
+            // it will be the Composite FirstSuccess which also will only have one result 
             // and thus can be tested in the same way as the leafs in this method
             final CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.latLon(59.29,18.03);
             final CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationAdapterLeaf.transform(wgs84coordinateInSweden, com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber.SWEDEN__SWEREF99_TM__3006);
@@ -333,11 +333,11 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
 
         final List<CrsTransformationAdapter> crsTransformationAdapterImplementationsExpectingManyResults = new ArrayList<>();
         for (CrsTransformationAdapter crsTransformationAdapterComposite : super.crsTransformationAdapterCompositeImplementations) {
-            if(crsTransformationAdapterComposite.getAdapteeType() != CrsTransformationAdapteeType.COMPOSITE_CHAIN_OF_RESPONSIBILITY) {
+            if(crsTransformationAdapterComposite.getAdapteeType() != CrsTransformationAdapteeType.COMPOSITE_FIRST_SUCCESS) {
                 crsTransformationAdapterImplementationsExpectingManyResults.add(crsTransformationAdapterComposite);
             }
         }
-        assertEquals(3, crsTransformationAdapterImplementationsExpectingManyResults.size()); // 3 composites i.e. all composite except COMPOSITE_CHAIN_OF_RESPONSIBILITY
+        assertEquals(3, crsTransformationAdapterImplementationsExpectingManyResults.size()); // 3 composites i.e. all composite except COMPOSITE_FIRST_SUCCESS
         
         for (CrsTransformationAdapter crsTransformationAdapterComposite : crsTransformationAdapterImplementationsExpectingManyResults) {
             final CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.latLon(59.29,18.03);
