@@ -22,7 +22,7 @@ plugins {
 
 
 ext.crsTransformationGroupId = 'com.programmerare.crs-transformation'
-ext.crsTransformationVersion = '0.58-SNAPSHOT'
+ext.crsTransformationVersion = '0.59-SNAPSHOT'
 group = rootProject.crsTransformationGroupId
 version = rootProject.crsTransformationVersion
 ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
@@ -207,6 +207,33 @@ project(':crs-transformation-adapter-impl-goober') {
                 from components.java
                 artifact sourcesJar
                 artifact dokkadocJar
+                pom {
+                    // https://central.sonatype.org/pages/requirements.html
+                    // A common and acceptable practice for name is to assemble it from the coordinates using Maven properties:
+                    // <name>${project.groupId}:${project.artifactId}</name>
+                    name = rootProject.crsTransformationGroupId + ":" + artifactId
+
+                    description = 'TODO'
+                    url = rootProject.mavenPomUrl
+                    licenses {
+                        license {
+                            name = 'TODO'
+                            url = 'TODO'
+                            comments = 'TODO'
+                        }
+                    }
+                    developers {
+                        developer {
+                            name = rootProject.mavenPomDeveloperName
+                            organizationUrl = rootProject.mavenPomUrl
+                        }
+                    }
+                    scm {
+                        connection = rootProject.mavenPomScmConnection
+                        developerConnection = rootProject.mavenPomScmDeveloperConnection
+                        url = rootProject.mavenPomScmUrl
+                    }
+                }
             }
         }
     }
@@ -227,6 +254,33 @@ project(':crs-transformation-adapter-impl-orbisgis') {
                 from components.java
                 artifact sourcesJar
                 artifact dokkadocJar
+                pom {
+                    // https://central.sonatype.org/pages/requirements.html
+                    // A common and acceptable practice for name is to assemble it from the coordinates using Maven properties:
+                    // <name>${project.groupId}:${project.artifactId}</name>
+                    name = rootProject.crsTransformationGroupId + ":" + artifactId
+
+                    description = 'TODO'
+                    url = rootProject.mavenPomUrl
+                    licenses {
+                        license {
+                            name = 'TODO'
+                            url = 'TODO'
+                            comments = 'TODO'
+                        }
+                    }
+                    developers {
+                        developer {
+                            name = rootProject.mavenPomDeveloperName
+                            organizationUrl = rootProject.mavenPomUrl
+                        }
+                    }
+                    scm {
+                        connection = rootProject.mavenPomScmConnection
+                        developerConnection = rootProject.mavenPomScmDeveloperConnection
+                        url = rootProject.mavenPomScmUrl
+                    }
+                }
             }
         }
     }
@@ -247,6 +301,33 @@ project(':crs-transformation-adapter-impl-proj4j') {
                 from components.java
                 artifact sourcesJar
                 artifact dokkadocJar
+                pom {
+                    // https://central.sonatype.org/pages/requirements.html
+                    // A common and acceptable practice for name is to assemble it from the coordinates using Maven properties:
+                    // <name>${project.groupId}:${project.artifactId}</name>
+                    name = rootProject.crsTransformationGroupId + ":" + artifactId
+
+                    description = 'TODO'
+                    url = rootProject.mavenPomUrl
+                    licenses {
+                        license {
+                            name = 'TODO'
+                            url = 'TODO'
+                            comments = 'TODO'
+                        }
+                    }
+                    developers {
+                        developer {
+                            name = rootProject.mavenPomDeveloperName
+                            organizationUrl = rootProject.mavenPomUrl
+                        }
+                    }
+                    scm {
+                        connection = rootProject.mavenPomScmConnection
+                        developerConnection = rootProject.mavenPomScmDeveloperConnection
+                        url = rootProject.mavenPomScmUrl
+                    }
+                }
             }
         }
     }    
@@ -269,6 +350,33 @@ project(':crs-transformation-adapter-impl-nga') {
                 from components.java
                 artifact sourcesJar
                 artifact dokkadocJar
+                pom {
+                    // https://central.sonatype.org/pages/requirements.html
+                    // A common and acceptable practice for name is to assemble it from the coordinates using Maven properties:
+                    // <name>${project.groupId}:${project.artifactId}</name>
+                    name = rootProject.crsTransformationGroupId + ":" + artifactId
+
+                    description = 'TODO'
+                    url = rootProject.mavenPomUrl
+                    licenses {
+                        license {
+                            name = 'TODO'
+                            url = 'TODO'
+                            comments = 'TODO'
+                        }
+                    }
+                    developers {
+                        developer {
+                            name = rootProject.mavenPomDeveloperName
+                            organizationUrl = rootProject.mavenPomUrl
+                        }
+                    }
+                    scm {
+                        connection = rootProject.mavenPomScmConnection
+                        developerConnection = rootProject.mavenPomScmDeveloperConnection
+                        url = rootProject.mavenPomScmUrl
+                    }
+                }
             }
         }
     }
@@ -474,9 +582,13 @@ tasks.withType(Sign) {
 // https://docs.gradle.org/current/userguide/signing_plugin.html
 signing {
     // required { isReleaseVersion }
+    sign publishing.publications.crstransformationsconstants    
     sign publishing.publications.crstransformationscore
-    sign publishing.publications.crstransformationsconstants
     sign publishing.publications.crstransformationsgeotools
+    sign publishing.publications.crstransformationsgoober
+    sign publishing.publications.crstransformationsorbisgis
+    sign publishing.publications.crstransformationsproj4j
+    sign publishing.publications.crstransformationsnga
 }
 
 // https://stackoverflow.com/questions/35143514/publishing-of-a-modular-library-to-maven-using-gradle
