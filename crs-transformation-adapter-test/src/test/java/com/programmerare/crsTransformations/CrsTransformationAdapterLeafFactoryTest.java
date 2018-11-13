@@ -111,7 +111,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
         List<CrsTransformationAdapter> list = CrsTransformationAdapterLeafFactory.getInstancesOfAllKnownAvailableImplementations();
         assertThat(list.size(), greaterThanOrEqualTo(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS));
         for (CrsTransformationAdapter crsTransformationAdapter : list) {
-            assertNotNull(crsTransformationAdapter);
+            verifyThatTheCreatedAdapterIsRealObject(crsTransformationAdapter);
         }
     }
 
