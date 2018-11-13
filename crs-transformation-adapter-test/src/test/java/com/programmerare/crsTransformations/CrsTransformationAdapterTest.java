@@ -24,6 +24,9 @@ import java.util.List;
 import java.util.function.Supplier;
 import java.util.stream.IntStream;
 import static java.util.stream.Collectors.toList;
+import static org.hamcrest.number.OrderingComparison.greaterThan;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
 import static org.junit.jupiter.api.Assertions.*;
 
 final class CrsTransformationAdapterTest {
@@ -440,36 +443,43 @@ final class CrsTransformationAdapterTest {
 
     @Test
     void isComposite_shouldReturnTrue_whenComposite() {
-        CrsTransformationAdapter compositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
-        assertTrue(compositeAdapter.isComposite());
-        // TODO: iterate implementations e.g. for (CrsTransformationAdapter crsTransformationAdapterLeaf : crsTransformationAdapterLeafImplementations) {
+        for (CrsTransformationAdapter compositeAdapter : crsTransformationAdapterCompositeImplementations) {
+            assertTrue(compositeAdapter.isComposite());    
+        }
     }
     
     @Test
     void isComposite_shouldReturnFalse_whenLeaf() {
-        // TODO: iterate implementations e.g. for (CrsTransformationAdapter crsTransformationAdapterLeaf : crsTransformationAdapterLeafImplementations) {
-        CrsTransformationAdapter goober = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
-        assertFalse( (new CrsTransformationAdapterGeoPackageNGA()).isComposite());
-        assertFalse( (new CrsTransformationAdapterGooberCTL()).isComposite());
-        assertFalse( (new CrsTransformationAdapterGeoTools()).isComposite());
-        assertFalse( (new CrsTransformationAdapterOrbisgisCTS()).isComposite());
-        assertFalse( (new CrsTransformationAdapterProj4J()).isComposite());
+        for (CrsTransformationAdapter leafAdapter : crsTransformationAdapterLeafImplementations) {
+            assertFalse(leafAdapter.isComposite());
+        }
     }    
 
     @Test
     void getTransformationAdapterChildren_shouldReturnNonEmptyList_whenComposite() {
-        CrsTransformationAdapter compositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
-        // 5 below is fragile but will of course be very trivial to fix if ny implementations would be added
-        assertEquals(5, compositeAdapter.getTransformationAdapterChildren().size());
+        // all leafs should be children 
+        final int expectedNumberOfChildrenForTheComposites = crsTransformationAdapterLeafImplementations.size();
+        assertThat(
+            "Has the number of leaf implementations been reduced?",
+            expectedNumberOfChildrenForTheComposites, greaterThanOrEqualTo(5) // currently five
+        ); 
+        for (CrsTransformationAdapter compositeAdapter : crsTransformationAdapterCompositeImplementations) {
+            assertEquals(
+                expectedNumberOfChildrenForTheComposites, 
+                compositeAdapter.getTransformationAdapterChildren().size()
+            );    
+        }
     }
-    // TODO iteration in above and below methods
+
     @Test
     void getTransformationAdapterChildren_shouldReturnEmptyList_whenLeaf() {
-        assertEquals(0,(new CrsTransformationAdapterGeoPackageNGA()).getTransformationAdapterChildren().size());
-        assertEquals(0,(new CrsTransformationAdapterGooberCTL()).getTransformationAdapterChildren().size());
-        assertEquals(0,(new CrsTransformationAdapterGeoTools()).getTransformationAdapterChildren().size());
-        assertEquals(0,(new CrsTransformationAdapterOrbisgisCTS()).getTransformationAdapterChildren().size());
-        assertEquals(0,(new CrsTransformationAdapterProj4J()).getTransformationAdapterChildren().size());
+        final int zeroExpectedNumberOfChildren = 0;
+        for (CrsTransformationAdapter leafAdapter : crsTransformationAdapterLeafImplementations) {
+            assertEquals(
+                zeroExpectedNumberOfChildren,
+                leafAdapter.getTransformationAdapterChildren().size()
+            );
+        }
     }
     
 
