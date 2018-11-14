@@ -19,6 +19,11 @@ import mil.nga.sf.proj.ProjectionFactory
  * Implementation of the interface CrsTransformationAdapter.
  * See the documentation of the interface.
  * @see com.programmerare.crsTransformations.CrsTransformationAdapter
+ *
+ * @author Tomas Johansson ( http://programmerare.com )
+ * The code in the "crs-transformation-code-generation" project is licensed with MIT.
+ * The code in the "crs-transformation-adapter-impl-nga" project
+ * is also licensed with MIT i.e. the same license as the adaptee library ngageoint/geopackage.
  */
 class CrsTransformationAdapterGeoPackageNGA : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 

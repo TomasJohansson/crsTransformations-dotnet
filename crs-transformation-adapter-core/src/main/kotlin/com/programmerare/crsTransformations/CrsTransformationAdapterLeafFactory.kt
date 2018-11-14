@@ -12,6 +12,12 @@ import java.lang.RuntimeException
  * 
  * Instead the users can choose which implementations to use e.g. through Maven or Gradle dependencies.
  * @see com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory
+ *
+ * @author Tomas Johansson ( http://programmerare.com )
+ * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
+ * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+ * Please find more information in the license file at the root directory of each subproject
+ * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
  */
 object CrsTransformationAdapterLeafFactory {
 

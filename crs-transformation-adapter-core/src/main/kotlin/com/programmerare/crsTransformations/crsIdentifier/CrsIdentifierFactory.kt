@@ -6,6 +6,12 @@
  * From Kotlin code the methods are available as package level functions
  * and each function can be imported as if it would be a class, for example like this:  
  *  import com.programmerare.crsTransformations.crsIdentifier.createFromEpsgNumber
+ *
+ * @author Tomas Johansson ( http://programmerare.com )
+ * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
+ * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+ * Please find more information in the license file at the root directory of each subproject
+ * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
  */
 @file:JvmName("CrsIdentifierFactory")
 package com.programmerare.crsTransformations.crsIdentifier

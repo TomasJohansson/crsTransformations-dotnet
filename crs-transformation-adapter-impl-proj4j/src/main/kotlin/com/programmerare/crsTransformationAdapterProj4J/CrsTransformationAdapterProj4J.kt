@@ -17,6 +17,11 @@ import com.programmerare.crsTransformations.coordinate.createFromXEastingLongitu
  * Implementation of the interface CrsTransformationAdapter.
  * See the documentation of the interface.
  * @see com.programmerare.crsTransformations.CrsTransformationAdapter
+ *
+ * @author Tomas Johansson ( http://programmerare.com )
+ * The code in the "crs-transformation-code-generation" project is licensed with MIT.
+ * The code in the "crs-transformation-adapter-impl-proj4j" project
+ * is licensed with Apache License Version 2.0 i.e. the same license as the adaptee library proj4j.
  */
 class CrsTransformationAdapterProj4J : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 

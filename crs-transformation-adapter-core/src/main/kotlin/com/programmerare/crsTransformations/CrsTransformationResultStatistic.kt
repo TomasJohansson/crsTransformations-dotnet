@@ -6,7 +6,13 @@ import com.programmerare.crsTransformations.utils.MedianValueUtility
 import java.lang.RuntimeException
 
 /**
- * Class providing conveniently available aggregated information from multiple results. 
+ * Class providing conveniently available aggregated information from multiple results.
+ *
+ * @author Tomas Johansson ( http://programmerare.com )
+ * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
+ * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+ * Please find more information in the license file at the root directory of each subproject
+ * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
  */
 class CrsTransformationResultStatistic private constructor(
     private val results: List<CrsTransformationResult>

@@ -21,6 +21,11 @@ import java.util.*
  * Implementation of the interface CrsTransformationAdapter.
  * See the documentation of the interface.
  * @see com.programmerare.crsTransformations.CrsTransformationAdapter
+ *
+ * @author Tomas Johansson ( http://programmerare.com )
+ * The code in the "crs-transformation-code-generation" project is licensed with MIT.
+ * The code in the "crs-transformation-adapter-impl-goober" project
+ * is licensed with Apache License 2.0 i.e. the same license as the adaptee library goober/coordinate-transformation-library.
  */
 class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 

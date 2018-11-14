@@ -18,6 +18,11 @@ import org.cts.registry.EPSGRegistry;
  * Implementation of the interface CrsTransformationAdapter.
  * See the documentation of the interface.
  * @see com.programmerare.crsTransformations.CrsTransformationAdapter
+ *
+ * @author Tomas Johansson ( http://programmerare.com )
+ * The code in the "crs-transformation-code-generation" project is licensed with MIT.
+ * The code in the "crs-transformation-adapter-impl-orbisgis" project
+ * is licensed with LGPLV3+ i.e. the same license as the adaptee library orbisgis/cts.
  */
 class CrsTransformationAdapterOrbisgisCTS : CrsTransformationAdapterBaseLeaf(), CrsTransformationAdapter {
 

@@ -12,6 +12,12 @@ import java.security.ProtectionDomain
  * transform methods as final i.e. not overridden by subclasses.  
  * 
  * @see CrsTransformationAdapter
+ *
+ * @author Tomas Johansson ( http://programmerare.com )
+ * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
+ * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+ * Please find more information in the license file at the root directory of each subproject
+ * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
  */
 abstract class CrsTransformationAdapterBase : CrsTransformationAdapter {
 

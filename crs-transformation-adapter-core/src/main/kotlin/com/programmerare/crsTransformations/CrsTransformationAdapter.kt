@@ -31,7 +31,13 @@ import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
  * The methods 'transform' should always return a result object rather than throwing an exception.
  * 
  * If you use a method returning the result object then you should
- * check for failures with 'TransformationResult.isSuccess'.  
+ * check for failures with 'TransformationResult.isSuccess'.
+ *
+ * @author Tomas Johansson ( http://programmerare.com )
+ * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
+ * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+ * Please find more information in the license file at the root directory of each subproject
+ * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
  */
 interface CrsTransformationAdapter {
 

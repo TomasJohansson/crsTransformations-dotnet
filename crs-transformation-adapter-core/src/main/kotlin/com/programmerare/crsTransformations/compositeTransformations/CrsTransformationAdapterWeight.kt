@@ -14,7 +14,13 @@ import com.programmerare.crsTransformations.CrsTransformationAdapterLeafFactory
  * @see CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage
  * @param crsTransformationAdapter an object implementing the interface CrsTransformationAdapter
  * @param weight the relative weight value to assign for the adapter specified by the adapter parameter
- */
+ *
+ * @author Tomas Johansson ( http://programmerare.com )
+ * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
+ * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+ * Please find more information in the license file at the root directory of each subproject
+ * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
+*/
 class CrsTransformationAdapterWeight private constructor(
     val crsTransformationAdapter: CrsTransformationAdapter,
     val weight: Double

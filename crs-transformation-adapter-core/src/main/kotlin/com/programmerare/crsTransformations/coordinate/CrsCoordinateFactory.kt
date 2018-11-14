@@ -87,7 +87,13 @@ import java.lang.IllegalArgumentException
  * documented here are not methods in a class, and while generating the documentation to
  * javadoc it does not show up at the "class" specified in Kotlin with '@file:JvmName("CrsCoordinateFactory")'
  * so therefore putting the general documentation here in one of the methods instead)
-*/ 
+ *
+ * @author Tomas Johansson ( http://programmerare.com )
+ * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
+ * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+ * Please find more information in the license file at the root directory of each subproject
+ * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
+*/
 fun createFromXEastingLongitudeAndYNorthingLatitude(
     xEastingLongitude: Double?,
     yNorthingLatitude: Double?,

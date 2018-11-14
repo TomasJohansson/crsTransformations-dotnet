@@ -13,8 +13,14 @@ import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
  *      - x/y for a geocentric or cartesian system  
  *      - longitude/latitude for a geodetic or geographic system  
  *      - easting/northing for a cartographic or projected system  
- *      - xEastingLongitude/yNorthingLatitude for general code handling different types of system  
- */
+ *      - xEastingLongitude/yNorthingLatitude for general code handling different types of system
+ *
+ * @author Tomas Johansson ( http://programmerare.com )
+ * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
+ * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+ * Please find more information in the license file at the root directory of each subproject
+ * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
+*/
 class CrsCoordinate private constructor(
     /**
      * One of the four accessors for the part of the coordinate that represents the east-west/X/Longitude direction. 
