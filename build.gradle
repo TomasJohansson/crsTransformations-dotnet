@@ -14,18 +14,21 @@ buildscript {
 }
 
 plugins {
+    // gradlew publishToMavenLocal
+    // gradlew publish
+    // https://oss.sonatype.org/content/repositories/snapshots/com/programmerare/crs-transformation/
     id 'maven-publish' // https://docs.gradle.org/current/userguide/publishing_maven.html#publishing_maven
     // the above configuration enables the tasks "publish" and "publishToMavenLocal"
     // which you can verify by running "gradlew tasks" (i.e. run the command with and without the above 'maven-publish')
     id 'signing'
 }
 
-
+ext.snapshotSuffixOrEmpty = "-SNAPSHOT" // this should be equal to "-SNAPSHOT" or "" (for a release)  
 ext.crsTransformationGroupId = 'com.programmerare.crs-transformation'
-ext.crsTransformationVersion = '0.60-SNAPSHOT'
+ext.crsTransformationVersion = '0.63' + rootProject.snapshotSuffixOrEmpty
 group = rootProject.crsTransformationGroupId
 version = rootProject.crsTransformationVersion
-ext.isReleaseVersion = !version.endsWith("SNAPSHOT")
+ext.isReleaseVersion = !rootProject.snapshotSuffixOrEmpty.endsWith("SNAPSHOT")
 
 ext.mavenPomUrl = "https://github.com/TomasJohansson/crsTransformations"
 ext.mavenPomDeveloperName = "Tomas Johansson"
@@ -178,7 +181,7 @@ project(':crs-transformation-adapter-impl-geotools') {
                     developers {
                         developer {
                             name = rootProject.mavenPomDeveloperName
-                            organizationUrl = rootProject.mavenPomUrl
+                            organizationUrl = rootProject.mavenPomDeveloperOrganizationUrl
                         }
                     }
                     scm {
@@ -225,7 +228,7 @@ project(':crs-transformation-adapter-impl-goober') {
                     developers {
                         developer {
                             name = rootProject.mavenPomDeveloperName
-                            organizationUrl = rootProject.mavenPomUrl
+                            organizationUrl = rootProject.mavenPomDeveloperOrganizationUrl
                         }
                     }
                     scm {
@@ -272,7 +275,7 @@ project(':crs-transformation-adapter-impl-orbisgis') {
                     developers {
                         developer {
                             name = rootProject.mavenPomDeveloperName
-                            organizationUrl = rootProject.mavenPomUrl
+                            organizationUrl = rootProject.mavenPomDeveloperOrganizationUrl
                         }
                     }
                     scm {
@@ -319,7 +322,7 @@ project(':crs-transformation-adapter-impl-proj4j') {
                     developers {
                         developer {
                             name = rootProject.mavenPomDeveloperName
-                            organizationUrl = rootProject.mavenPomUrl
+                            organizationUrl = rootProject.mavenPomDeveloperOrganizationUrl
                         }
                     }
                     scm {
@@ -368,7 +371,7 @@ project(':crs-transformation-adapter-impl-nga') {
                     developers {
                         developer {
                             name = rootProject.mavenPomDeveloperName
-                            organizationUrl = rootProject.mavenPomUrl
+                            organizationUrl = rootProject.mavenPomDeveloperOrganizationUrl
                         }
                     }
                     scm {
@@ -478,7 +481,7 @@ project(':crs-transformation-adapter-core') {
                     // <name>${project.groupId}:${project.artifactId}</name>
                     name = rootProject.crsTransformationGroupId + ":" + artifactId
 
-                    description = 'Coordinate Reference System Transformations'
+                    description = "Coordinate Reference System Transformations. Kotlin/JVM/Java library used for 'converting coordinates between different coordinate systems'. The core library provides an adapter interface which is implemented by other modules using different third-part libraries as adaptees."
                     url = rootProject.mavenPomUrl
                     licenses {
                         license {
@@ -490,7 +493,7 @@ project(':crs-transformation-adapter-core') {
                     developers {
                         developer {
                             name = rootProject.mavenPomDeveloperName
-                            organizationUrl = rootProject.mavenPomUrl
+                            organizationUrl = rootProject.mavenPomDeveloperOrganizationUrl
                         }
                     }
                     scm {
@@ -529,7 +532,7 @@ project(':crs-transformation-constants') {
         publications {
             crstransformationsconstants(MavenPublication) {
                 artifactId = 'crs-transformation-constants'
-                version = '9.5.4'
+                version = '9.5.4' + rootProject.snapshotSuffixOrEmpty
                 from components.java
                 artifact sourcesJar
                 artifact javadocJar // Only Java code in this project. No Kotlin. Therfore not using dokkadoc here
@@ -544,17 +547,18 @@ project(':crs-transformation-constants') {
                         license {
                             name = 'MIT License'
                             url = 'https://github.com/TomasJohansson/crsTransformations'
-                            comments = 'MIT license for this library with Java constants for EPSG codes.'
+                            comments = 'MIT license for this library with Java constants for EPSG codes. Regarding the data itself: Ownership of the EPSG Dataset by IOGP is acknowledged. See the URL http://www.epsg.org/TermsOfUse.aspx'
                         }
                         license {
-                            name = 'The EPSG database is published by IOGP at no charge. Distribution for profit is forbidden. See the URL for detailed information.'
+                            name = "Terms of use"
                             url = 'http://www.epsg.org/TermsOfUse.aspx'
+                            comments = "Some quotes from the 'TermsOfUse' URL: 'The EPSG database is published by IOGP at no charge. Distribution for profit is forbidden.... Ownership of the EPSG Dataset by IOGP must be acknowledged...' See the 'TermsOfUse' URL for detailed information."
                         }
                     }
                     developers {
                         developer {
                             name = rootProject.mavenPomDeveloperName
-                            organizationUrl = rootProject.mavenPomUrl
+                            organizationUrl = rootProject.mavenPomDeveloperOrganizationUrl
                         }
                         developer {
                             name = 'IOGP'
