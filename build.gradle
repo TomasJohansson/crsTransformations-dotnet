@@ -23,9 +23,9 @@ plugins {
     id 'signing'
 }
 
-ext.snapshotSuffixOrEmpty = "-SNAPSHOT" // this should be equal to "-SNAPSHOT" or "" (for a release)  
+ext.snapshotSuffixOrEmpty = "" // this value should be equal to "-SNAPSHOT" or "" (for a release)
 ext.crsTransformationGroupId = 'com.programmerare.crs-transformation'
-ext.crsTransformationVersion = '0.63' + rootProject.snapshotSuffixOrEmpty
+ext.crsTransformationVersion = '1.0.0' + rootProject.snapshotSuffixOrEmpty
 group = rootProject.crsTransformationGroupId
 version = rootProject.crsTransformationVersion
 ext.isReleaseVersion = !rootProject.snapshotSuffixOrEmpty.endsWith("SNAPSHOT")
@@ -140,6 +140,7 @@ subprojects { p->
 // (e.g. comparing the files manually with WinMerge until more automation has been implemented)
 // ---------------------------------------------------------------------------
 project(':crs-transformation-adapter-impl-geotools') {
+    // Clients should also add the following maven repository: "https://download.osgeo.org/webdav/geotools/"
     dependencies {
         implementation project(':crs-transformation-adapter-core')
 
