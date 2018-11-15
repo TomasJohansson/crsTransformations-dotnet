@@ -561,21 +561,13 @@ project(':crs-transformation-constants') {
                         license {
                             name = "Terms of use"
                             url = 'http://www.epsg.org/TermsOfUse.aspx'
-                            comments = "Some quotes from the 'TermsOfUse' URL: 'The EPSG database is published by IOGP at no charge. Distribution for profit is forbidden.... Ownership of the EPSG Dataset by IOGP must be acknowledged...' See the 'TermsOfUse' URL for detailed information."
+                            comments = "Some quotes from the 'Terms of use' URL: 'The EPSG database is published by IOGP at no charge. Distribution for profit is forbidden.... Ownership of the EPSG Dataset by IOGP must be acknowledged...' See the URL for detailed information."
                         }
                     }
                     developers {
                         developer {
                             name = rootProject.mavenPomDeveloperName
                             organizationUrl = rootProject.mavenPomDeveloperOrganizationUrl
-                        }
-                        developer {
-                            name = 'IOGP'
-                            organizationUrl = 'http://www.epsg.org'
-                        }
-                        developer {
-                            name = 'IOGP'
-                            organizationUrl = 'https://www.epsg-registry.org'
                         }
                     }
                     scm {
