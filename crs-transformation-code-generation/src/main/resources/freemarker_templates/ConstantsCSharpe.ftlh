@@ -21,10 +21,10 @@ namespace ${nameOfPackageOrNamespace} {
         <#t>
         <#list constants as constant>
 
-        /// <summary>
-        /// ${constant.documentationCommentForConstant}
-        /// https://epsg.io/${constant.epsgNumber?c}
-        /// </summary>
+        /**
+        * ${constant.documentationCommentForConstant}
+        * https://epsg.io/${constant.epsgNumber?c}
+        */
         public const ${constant.dataTypeForConstant.dataTypeName} ${constant.nameForConstant} = ${constant.valueForConstant?no_esc};
         </#list>
     }
