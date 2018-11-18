@@ -1,0 +1,86 @@
+# --------------------------------------------------------------
+# https://github.com/JetBrains/kotlin/blob/master/.gitignore
+.DS_Store
+.idea/shelf
+/android.tests.dependencies
+/confluence/target
+/dependencies
+/dist
+/local
+/gh-pages
+/ideaSDK
+/clionSDK
+/android-studio/sdk
+out/
+/tmp
+workspace.xml
+*.versionsBackup
+/idea/testData/debugger/tinyApp/classes*
+/jps-plugin/testData/kannotator
+/ultimate/dependencies
+/ultimate/ideaSDK
+/ultimate/out
+/ultimate/tmp
+/js/js.translator/testData/out/
+/js/js.translator/testData/out-min/
+.gradle/
+build/
+!**/src/**/build
+!**/test/**/build
+*.iml
+!**/testData/**/*.iml
+.idea/libraries/Gradle*.xml
+.idea/libraries/Maven*.xml
+.idea/artifacts
+.idea/modules
+.idea/runConfigurations/JPS_*.xml
+.idea/libraries
+.idea/modules.xml
+.idea/gradle.xml
+.idea/compiler.xml
+.idea/inspectionProfiles/profiles_settings.xml
+.idea/.name
+# --------------------------------------------------------------
+# https://github.com/github/gitignore/blob/master/Java.gitignore
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
+hs_err_pid*
+# --------------------------------------------------------------
+.idea/
+
+# backup files for Notepad++
+*.bak
+
+# The purpose of the below line "data_files" is/was to exclude database files from git.
+# MS Access database file (or files with MySQL/MariaDB insert statements)
+# with EPSG codes can be downloaded from here:
+# http://www.epsg.org/EPSGDataset/DownloadDataset.aspx
+# The class "ConstantClassGenerator" previously used the following file path i.e. expected that file to exist:
+# .../data_files/EPSG_v9_3/EPSG_v9_3.mdb
+# However, currently MariaDB (MySQL) SQL insert statements files are used instead of MS Access MDB files
+# and those files can be put in the "data_files"  driectory to avoid them to be saved in GIT
+data_files/
+
+# Avoid ignoring Gradle wrapper jar file (.jar files are usually ignored)
+!gradle/wrapper/gradle-wrapper.jar
+# "Adding the JAR file to version control is expected." https://docs.gradle.org/current/userguide/gradle_wrapper.html
