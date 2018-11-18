@@ -170,6 +170,9 @@ class ConstantClassGenerator : CodeGeneratorBase() {
             else if(typeOfFilesToBeGenerated == "csharpe") {
                 constantClassGenerator.generateFilesWithCSharpeConstants()
             }
+            else if(typeOfFilesToBeGenerated == "fsharpe") {
+                constantClassGenerator.generateFilesWithFSharpeConstants()
+            }
             else if(typeOfFilesToBeGenerated == "kotlin") {
                 constantClassGenerator.generateFilesWithKotlinConstants()
             }
@@ -210,6 +213,7 @@ class ConstantClassGenerator : CodeGeneratorBase() {
 
         private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_JAVA_CONSTANTS = "ConstantsJava.ftlh"
         private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSHARPE_CONSTANTS = "ConstantsCSharpe.ftlh"
+        private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_FSHARPE_CONSTANTS = "ConstantsFSharpe.ftlh"
         private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_KOTLIN_CONSTANTS = "ConstantsKotlin.ftlh"
         private const val NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_CSV_FILE = "CsvFileWithEpsgNumberAndCrsNameAndAreaName.ftlh"
 
@@ -273,6 +277,11 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         generateFilesWithConstants()
     }
 
+    fun generateFilesWithFSharpeConstants() {
+        programmingLanguageStrategy = ProgrammingLanguageFSharpeStrategy()
+        generateFilesWithConstants()
+    }
+
     fun generateFilesWithKotlinConstants() {
         programmingLanguageStrategy = ProgrammingLanguageKotlinStrategy()
         generateFilesWithConstants()
@@ -294,14 +303,14 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         populateListWithNameOfConstants()
 
         // Generate Totally 12 classes below in 6 packages with 2 classes per package:
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger())
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString())
-
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger())
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNameNumberArea(), RenderStrategyNameNumberAreaString())
-
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger())
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForAreaNumberName(), RenderStrategyAreaNumberNameString())
+//        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNameAreaNumber(), RenderStrategyNameAreaNumberInteger())
+//        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNameAreaNumber(), RenderStrategyNameAreaNumberString())
+//
+//        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNameNumberArea(), RenderStrategyNameNumberAreaInteger())
+//        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNameNumberArea(), RenderStrategyNameNumberAreaString())
+//
+//        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForAreaNumberName(), RenderStrategyAreaNumberNameInteger())
+//        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForAreaNumberName(), RenderStrategyAreaNumberNameString())
 
         
         // ------------------------------------------------------------------
@@ -311,14 +320,14 @@ class ConstantClassGenerator : CodeGeneratorBase() {
         // The other 11 classes (except from the above) was not released.
         // When generating and packaging all 12 classes then the javadoc files (required for deployment at Maven central) become very large.        
         // ------------------------------------------------------------------
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString())
-        
-
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), sortByNumber = true)
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(), sortByNumber = true)
-
-        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), sortByNumber = true)
-        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
+//        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForAreaNameNumber(), RenderStrategyAreaNameNumberString())
+//        
+//
+//        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNumberAreaName(), RenderStrategyNumberAreaNameInteger(), sortByNumber = true)
+//        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNumberAreaName(), RenderStrategyNumberAreaNameString(), sortByNumber = true)
+//
+//        generateClassFileWithConstants(CLASS_NAME_INTEGER_CONSTANTS, getNameOfJavaPackageForNumberNameArea(), RenderStrategyNumberNameAreaInteger(), sortByNumber = true)
+//        generateClassFileWithConstants(CLASS_NAME_STRING_CONSTANTS,  getNameOfJavaPackageForNumberNameArea(), RenderStrategyNumberNameAreaString(), sortByNumber = true)
     }
 
 
@@ -490,6 +499,27 @@ class ConstantClassGenerator : CodeGeneratorBase() {
             return FILE_EXTENSION_FOR_CSHARPE_FILE
         }
     }
+
+    inner class ProgrammingLanguageFSharpeStrategy: ProgrammingLanguageStrategy {
+        override fun getRenderStrategy(renderStrategy: RenderStrategy): RenderStrategy {
+            // purpose: render "string" (F# or C#) instead of "String" (Java)
+            return RenderStrategyDecoratorForCSharpe(renderStrategy) // string in F# too so can reuse the same Strategy as C# string
+        }
+        override fun getNameOfFreemarkerTemplateForConstants(): String {
+            return NAME_OF_FREEMARKER_TEMPLATE_FILE_FOR_FSHARPE_CONSTANTS
+        }
+        override fun getDirectoryWhereTheClassFilesShouldBeGenerated(): File {
+            return getFileOrDirectory(NAME_OF_MODULE_DIRECTORY_FOR_CODE_GENERATION, RELATIVE_PATH_TO_TARGET_DIRECTORY_FOR_GENERATED_CODE_WITHIN_RESOURCES_DIRECTORY + "/fsharpe_constants", throwExceptionIfNotExisting = false)
+        }
+        override fun getNameOfPackageOrNamespaceToBeGenerated(nameOfJavaPackage: String): String {
+            // same package name for F# as C# so therefore can reuse the class below 
+            return JavaPackageToCSharpeNamespaceConverter.getAsNameOfCSharpeNameSpace(nameOfJavaPackage)
+        }
+        override fun getFileExtensionForClassFile(): String {
+            return FILE_EXTENSION_FOR_FSHARPE_FILE
+        }
+    }
+    
     inner class ProgrammingLanguageKotlinStrategy: ProgrammingLanguageStrategy {
         override fun getRenderStrategy(renderStrategy: RenderStrategy): RenderStrategy {
             return renderStrategy
