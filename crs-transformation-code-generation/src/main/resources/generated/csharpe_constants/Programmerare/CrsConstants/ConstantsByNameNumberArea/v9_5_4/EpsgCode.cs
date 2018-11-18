@@ -2,7 +2,7 @@ namespace Programmerare.CrsConstants.ConstantsByNameNumberArea.v9_5_4 {
 /** 
 * Copyright (c) Tomas Johansson ( http://programmerare.com )
 * The above person is author of the code that generated this class 
-* with Java constants with EPSG codes for Coordinate Reference Systems.
+* with C# constants with EPSG codes for Coordinate Reference Systems.
 * It is released with license MIT.
 * Regarding the data itself: Ownership of the EPSG Dataset by IOGP is acknowledged.
 * http://www.epsg.org/TermsOfUse.aspx
