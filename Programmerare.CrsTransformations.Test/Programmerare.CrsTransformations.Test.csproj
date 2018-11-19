@@ -17,6 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="crsTransformations\coordinate\CrsCoordinateTest.cs" />
     <Compile Include="crsTransformations\crsIdentifier\CrsIdentifierTest.cs" />
   </ItemGroup>
 
