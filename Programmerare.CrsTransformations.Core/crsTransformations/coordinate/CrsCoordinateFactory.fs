@@ -1,8 +1,5 @@
 namespace  com.programmerare.crsTransformations.coordinate
 
-// TODO: method overloading with F# instead of having different 
-// method name suffixes ... e.g. "Epsg" or "CrsCode" as method name suffix
-
 // TODO: rewrite comments below for .NET ...
 
 // The reason for having Coordinate and this CoordinateFactory
@@ -103,12 +100,14 @@ namespace  com.programmerare.crsTransformations.coordinate
 // TODO: rewrite comments above for .NET ...
 open com.programmerare.crsTransformations.crsIdentifier
 
-module CrsCoordinateFactory =
+type CrsCoordinateFactory =
+
+    // TODO: try to eliminate frequent usage of the factory 
+    // classname in the below F# code e.g. try to use 
+    // something like "using static" in C#
 
     // -------------------------------------------------------------------------
-
-
-    let private _CreateXYcrs
+    static member private _CreateXYcrs
         (
             xEastingLongitude: double,
             yNorthingLatitude: double,
@@ -122,25 +121,25 @@ module CrsCoordinateFactory =
             crsIdentifier
         )
 
-    let private _CreateXYint
+    static member private _CreateXYint
         (
             xEastingLongitude: double,
             yNorthingLatitude: double,
             epsgNumber: int
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             xEastingLongitude,
             yNorthingLatitude,
             CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumber)
         )
 
-    let private _CreateXYstring
+    static member private _CreateXYstring
         (
             xEastingLongitude: double,
             yNorthingLatitude: double,
             crsCode: string
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             xEastingLongitude,
             yNorthingLatitude,
             CrsIdentifierFactory.CreateFromCrsCode(crsCode)
@@ -148,13 +147,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let CreateFromXEastingLongitudeAndYNorthingLatitude
+    static member CreateFromXEastingLongitudeAndYNorthingLatitude
         (
             xEastingLongitude: double,
             yNorthingLatitude: double,
             crsIdentifier: CrsIdentifier
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             xEastingLongitude,
             yNorthingLatitude,
             crsIdentifier
@@ -164,13 +163,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let XY
+    static member XY
         (
             x: double,
             y: double,
             crsIdentifier: CrsIdentifier
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             x,
             y,
             crsIdentifier
@@ -179,13 +178,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let EastingNorthing
+    static member EastingNorthing
         (
             easting: double,
             northing: double,
             crsIdentifier: CrsIdentifier
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             easting,
             northing,
             crsIdentifier
@@ -194,13 +193,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let LonLatCrs
+    static member LonLat
         (
             longitude: double,
             latitude: double,
             crsIdentifier: CrsIdentifier
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             longitude,
             latitude,
             crsIdentifier
@@ -208,13 +207,13 @@ module CrsCoordinateFactory =
 
     // -------------------------------------------------------------------------
 
-    let CreateFromXEastingLongitudeAndYNorthingLatitudeEpsg
+    static member CreateFromXEastingLongitudeAndYNorthingLatitude
         (
             xEastingLongitude: double,
             yNorthingLatitude: double,
             epsgNumber: int
         ) =
-        _CreateXYint(
+        CrsCoordinateFactory._CreateXYint(
             xEastingLongitude,
             yNorthingLatitude,
             epsgNumber
@@ -223,13 +222,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let XYepsg
+    static member XY
         (
             x: double,
             y: double,
             epsgNumber: int
         ) =
-        _CreateXYint(
+        CrsCoordinateFactory._CreateXYint(
             x,
             y,
             epsgNumber
@@ -239,13 +238,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let EastingNorthingEpsg
+    static member EastingNorthing
         (
             easting: double,
             northing: double,
             epsgNumber: int
         ) =
-        _CreateXYint(
+        CrsCoordinateFactory._CreateXYint(
             easting,
             northing,
             epsgNumber
@@ -255,13 +254,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let LonLatEpsg
+    static member LonLat
         (
             longitude: double,
             latitude: double,
             epsgNumber: int
         ) =
-        _CreateXYint(
+        CrsCoordinateFactory._CreateXYint(
             longitude,
             latitude,
             epsgNumber
@@ -274,13 +273,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let CreateFromYNorthingLatitudeAndXEastingLongitudeEpsg
+    static member CreateFromYNorthingLatitudeAndXEastingLongitude
         (
             yNorthingLatitude: double,
             xEastingLongitude: double,
             epsgNumber: int
         ) =
-        _CreateXYint(
+        CrsCoordinateFactory._CreateXYint(
             xEastingLongitude,
             yNorthingLatitude,
             epsgNumber
@@ -290,13 +289,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let YXepsg
+    static member YX
         (
             y: double,
             x: double,
             epsgNumber: int
         ) =
-        _CreateXYint(
+        CrsCoordinateFactory._CreateXYint(
             x,
             y,
             epsgNumber
@@ -305,13 +304,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let NorthingEastingEpsg
+    static member NorthingEasting
         (
             northing: double,
             easting: double,
             epsgNumber: int
         ) =
-        _CreateXYint(
+        CrsCoordinateFactory._CreateXYint(
             easting,
             northing,
             epsgNumber
@@ -321,13 +320,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let LatLonEpsg
+    static member LatLon
         (
             latitude: double,
             longitude: double,
             epsgNumber: int
         ) =
-        _CreateXYint(
+        CrsCoordinateFactory._CreateXYint(
             longitude,
             latitude,
             epsgNumber
@@ -339,13 +338,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let CreateFromXEastingLongitudeAndYNorthingLatitudeCrsCode
+    static member CreateFromXEastingLongitudeAndYNorthingLatitude
         (
             xEastingLongitude: double,
             yNorthingLatitude: double,
             crsCode: string
         ) =
-        _CreateXYstring(
+        CrsCoordinateFactory._CreateXYstring(
             xEastingLongitude,
             yNorthingLatitude,
             crsCode
@@ -355,13 +354,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let XYcrsCode
+    static member XY
         (
             x: double,
             y: double,
             crsCode: string
         ) =
-        _CreateXYstring(
+        CrsCoordinateFactory._CreateXYstring(
             x,
             y,
             crsCode
@@ -371,13 +370,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let EastingNorthingCrsCode
+    static member EastingNorthing
         (
             easting: double,
             northing: double,
             crsCode: string
         ) =
-        _CreateXYstring(
+        CrsCoordinateFactory._CreateXYstring(
             easting,
             northing,
             crsCode
@@ -388,13 +387,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let LonLatCrsCode
+    static member LonLat
         (
             longitude: double,
             latitude: double,
             crsCode: string
         ) =
-        _CreateXYstring(
+        CrsCoordinateFactory._CreateXYstring(
             longitude,
             latitude,
             crsCode
@@ -409,13 +408,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let CreateFromYNorthingLatitudeAndXEastingLongitudeCrsCode
+    static member CreateFromYNorthingLatitudeAndXEastingLongitude
         (
             yNorthingLatitude: double,
             xEastingLongitude: double,
             crsCode: string
         ) =
-        _CreateXYstring(
+        CrsCoordinateFactory._CreateXYstring(
             xEastingLongitude,
             yNorthingLatitude,
             crsCode
@@ -424,13 +423,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let YXcrsCode
+    static member YX
         (
             y: double,
             x: double,
             crsCode: string
         ) =
-        _CreateXYstring(
+        CrsCoordinateFactory._CreateXYstring(
             x,
             y,
             crsCode
@@ -440,13 +439,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let NorthingEastingCrsCode
+    static member NorthingEasting
         (
             northing: double,
             easting: double,
             crsCode: string
         ) =
-        _CreateXYstring(
+        CrsCoordinateFactory._CreateXYstring(
             easting,
             northing,
             crsCode
@@ -457,13 +456,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let LatLonCrsCode
+    static member LatLon
         (
             latitude: double,
             longitude: double,
             crsCode: string
         ) =
-        _CreateXYstring(
+        CrsCoordinateFactory._CreateXYstring(
             longitude,
             latitude,
             crsCode
@@ -476,13 +475,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let CreateFromYNorthingLatitudeAndXEastingLongitude
+    static member CreateFromYNorthingLatitudeAndXEastingLongitude
         (
             yNorthingLatitude: double,
             xEastingLongitude: double,
             crsIdentifier: CrsIdentifier
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             xEastingLongitude,
             yNorthingLatitude,
             crsIdentifier
@@ -492,13 +491,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let YX
+    static member YX
         (
             y: double,
             x: double,
             crsIdentifier: CrsIdentifier
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             x,
             y,
             crsIdentifier
@@ -508,13 +507,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let NorthingEasting
+    static member NorthingEasting
         (
             northing: double,
             easting: double,
             crsIdentifier: CrsIdentifier
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             easting,
             northing,
             crsIdentifier
@@ -524,13 +523,13 @@ module CrsCoordinateFactory =
     (*
      * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
      *)
-    let LatLonCrs
+    static member LatLon
         (
             latitude: double,
             longitude: double,
             crsIdentifier: CrsIdentifier
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             longitude,
             latitude,
             crsIdentifier
@@ -544,64 +543,64 @@ module CrsCoordinateFactory =
      * Therefore it is default for the factory methods not specifying
      * the coordinate reference system.
      *)
-    let private COORDINATE_REFERENCE_SYSTEM_WGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(4326)
+    static member private COORDINATE_REFERENCE_SYSTEM_WGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(4326)
 
     (*
      * The "GPS coordinate system" WGS84 is assumed when using this factory method.
      *)
-    let CreateFromLongitudeLatitude
+    static member CreateFromLongitudeLatitude
         (
             longitude: double,
             latitude: double
         ) = 
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             longitude,
             latitude,
-            COORDINATE_REFERENCE_SYSTEM_WGS84
+            CrsCoordinateFactory.COORDINATE_REFERENCE_SYSTEM_WGS84
         )
 
     (*
      * The "GPS coordinate system" WGS84 is assumed when using this factory method.
      *)
-    let LonLat
+    static member LonLat
         (
             longitude: double,
             latitude: double
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             longitude,
             latitude,
-            COORDINATE_REFERENCE_SYSTEM_WGS84
+            CrsCoordinateFactory.COORDINATE_REFERENCE_SYSTEM_WGS84
         )
 
 
     (*
      * The "GPS coordinate system" WGS84 is assumed when using this factory method.
      *)
-    let CreateFromLatitudeLongitude
+    static member CreateFromLatitudeLongitude
         (
             latitude: double,
             longitude: double
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             longitude,
             latitude,
-            COORDINATE_REFERENCE_SYSTEM_WGS84
+            CrsCoordinateFactory.COORDINATE_REFERENCE_SYSTEM_WGS84
         )
 
 
     (*
      * The "GPS coordinate system" WGS84 is assumed when using this factory method.
      *)
-    let LatLon
+    static member LatLon
         (
             latitude: double,
             longitude: double
         ) =
-        _CreateXYcrs(
+        CrsCoordinateFactory._CreateXYcrs(
             longitude,
             latitude,
-            COORDINATE_REFERENCE_SYSTEM_WGS84
+            CrsCoordinateFactory.COORDINATE_REFERENCE_SYSTEM_WGS84
         )
 
 // -------------------------------------------------------------------------

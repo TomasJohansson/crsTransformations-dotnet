@@ -1,8 +1,5 @@
 namespace com.programmerare.crsTransformations.coordinate {
 
-// TODO: method overloading with F# instead of having different 
-// method name suffixes ... e.g. "Epsg" or "CrsCode" as method name suffix
-
 using com.programmerare.crsTransformations.crsIdentifier;
 using NUnit.Framework;
 using System;
@@ -25,7 +22,7 @@ class CrsCoordinateTest {
 
     [Test]
     public void coordinateProperties_shouldHaveValuesEqualtToFactoryMethodsParameters() {
-        CrsCoordinate coordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitudeEpsg(xLongitude, yLatitude, epsgNumber);
+        CrsCoordinate coordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumber);
         Assert.AreEqual(xLongitude, coordinate.XEastingLongitude, deltaTolerance);
         Assert.AreEqual(yLatitude, coordinate.YNorthingLatitude, deltaTolerance);
         Assert.AreEqual(epsgNumber, coordinate.CrsIdentifier.EpsgNumber);
@@ -33,16 +30,16 @@ class CrsCoordinateTest {
 
     [Test]
     public void coordinates_shouldBeEqual_whenUsingIntegerEpsgNumberAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
-        CrsCoordinate coordinate1 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitudeEpsg(xLongitude, yLatitude, epsgNumber);
-        CrsCoordinate coordinate2 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitudeEpsg(yLatitude, xLongitude, epsgNumber);
+        CrsCoordinate coordinate1 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumber);
+        CrsCoordinate coordinate2 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgNumber);
         AssertEqualCoordinates(coordinate1, coordinate2);
     }
 
     [Test]
     public void coordinates_shouldBeEqual_whenUsingStringEpsgCodeAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
         String crsCode = "EPSG:3006";
-        CrsCoordinate coordinate1 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitudeCrsCode(xLongitude, yLatitude, crsCode);
-        CrsCoordinate coordinate2 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitudeCrsCode(yLatitude, xLongitude, crsCode);
+        CrsCoordinate coordinate1 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, crsCode);
+        CrsCoordinate coordinate2 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, crsCode);
         AssertEqualCoordinates(coordinate1, coordinate2);
     }
 
@@ -131,66 +128,66 @@ class CrsCoordinateTest {
         CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumber);
         string epsgCode = EpsgPrefix + epsgNumber;
         
-        CrsCoordinate expectedCoordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitudeEpsg(xLongitude, yLatitude, epsgNumber);
+        CrsCoordinate expectedCoordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumber);
         // all should be equal to each other, so one of them was chosen above 
         // as the "expected" and then the others are compared with it in the below assertions
 
         // -----------------------------------------------------------------------
         // the last parameter (epsgNumber) is an integer in the first below assertions:
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.LonLatEpsg(xLongitude, yLatitude, epsgNumber)
+            CrsCoordinateFactory.LonLat(xLongitude, yLatitude, epsgNumber)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.XYepsg(xLongitude, yLatitude, epsgNumber)
+            CrsCoordinateFactory.XY(xLongitude, yLatitude, epsgNumber)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.EastingNorthingEpsg(xLongitude, yLatitude, epsgNumber)
+            CrsCoordinateFactory.EastingNorthing(xLongitude, yLatitude, epsgNumber)
         );
 
         // the below four assertions are using x/y values in the opposite order 
         // compared to the above three assertions
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitudeEpsg(yLatitude, xLongitude, epsgNumber)
+            CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgNumber)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.LatLonEpsg(yLatitude, xLongitude, epsgNumber)
+            CrsCoordinateFactory.LatLon(yLatitude, xLongitude, epsgNumber)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.YXepsg(yLatitude, xLongitude, epsgNumber)
+            CrsCoordinateFactory.YX(yLatitude, xLongitude, epsgNumber)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.NorthingEastingEpsg(yLatitude, xLongitude, epsgNumber)
+            CrsCoordinateFactory.NorthingEasting(yLatitude, xLongitude, epsgNumber)
         );
 
         // -----------------------------------------------------------------------
         // epsg code (string parameter) is the last parameter below
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitudeCrsCode(xLongitude, yLatitude, epsgCode)
+            CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgCode)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.LonLatCrsCode(xLongitude, yLatitude, epsgCode)   
+            CrsCoordinateFactory.LonLat(xLongitude, yLatitude, epsgCode)   
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.XYcrsCode(xLongitude, yLatitude, epsgCode)   
+            CrsCoordinateFactory.XY(xLongitude, yLatitude, epsgCode)   
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.EastingNorthingCrsCode(xLongitude, yLatitude, epsgCode)  
+            CrsCoordinateFactory.EastingNorthing(xLongitude, yLatitude, epsgCode)  
         );
 
         // the below four assertions are using x/y values in the opposite order 
         // compared to the above four assertions
 
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitudeCrsCode(yLatitude, xLongitude, epsgCode)
+            CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgCode)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.LatLonCrsCode(yLatitude, xLongitude, epsgCode)
+            CrsCoordinateFactory.LatLon(yLatitude, xLongitude, epsgCode)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.YXcrsCode(yLatitude, xLongitude, epsgCode)
+            CrsCoordinateFactory.YX(yLatitude, xLongitude, epsgCode)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.NorthingEastingCrsCode(yLatitude, xLongitude, epsgCode)
+            CrsCoordinateFactory.NorthingEasting(yLatitude, xLongitude, epsgCode)
         );        
 
         // -----------------------------------------------------------------------
@@ -199,7 +196,7 @@ class CrsCoordinateTest {
             CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, crsIdentifier)   
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.LonLatCrs(xLongitude, yLatitude, crsIdentifier)
+            CrsCoordinateFactory.LonLat(xLongitude, yLatitude, crsIdentifier)
         );
         AssertEqualCoordinates(expectedCoordinate,
             CrsCoordinateFactory.XY(xLongitude, yLatitude, crsIdentifier)
@@ -215,7 +212,7 @@ class CrsCoordinateTest {
             CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, crsIdentifier)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.LatLonCrs(yLatitude, xLongitude, crsIdentifier)
+            CrsCoordinateFactory.LatLon(yLatitude, xLongitude, crsIdentifier)
         );
         AssertEqualCoordinates(expectedCoordinate,
             CrsCoordinateFactory.YX(yLatitude, xLongitude, crsIdentifier)
@@ -227,7 +224,7 @@ class CrsCoordinateTest {
 
     [Test]
     public void coordinate_shouldHaveEquivalentXEastingLongitudeProperties() {
-        CrsCoordinate c = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitudeCrsCode(yLatitude, xLongitude, epsgCode);
+        CrsCoordinate c = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgCode);
         Assert.AreEqual(c.XEastingLongitude, c.X);
         Assert.AreEqual(c.XEastingLongitude, c.Easting);
         Assert.AreEqual(c.XEastingLongitude, c.Longitude);
@@ -235,7 +232,7 @@ class CrsCoordinateTest {
 
     [Test]
     public void coordinate_shouldHaveEquivalentgetYNorthingLatitudeProperties() {
-        CrsCoordinate c = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitudeCrsCode(yLatitude, xLongitude, epsgCode);
+        CrsCoordinate c = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgCode);
         Assert.AreEqual(c.YNorthingLatitude, c.Y);
         Assert.AreEqual(c.YNorthingLatitude, c.Northing);
         Assert.AreEqual(c.YNorthingLatitude, c.Latitude);
@@ -268,7 +265,7 @@ class CrsCoordinateTest {
     {
         string crsCode = null;
         ArgumentException exception = Assert.Throws<ArgumentNullException>( () => {
-            CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitudeCrsCode(
+            CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(
                 60.0,
                 20.0,
                 crsCode
