@@ -9,10 +9,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="crsTransformations\coordinate\CrsCoordinate.fs" />
-    <Compile Include="crsTransformations\coordinate\CrsCoordinateFactory.fs" />
     <Compile Include="crsTransformations\crsIdentifier\CrsIdentifier.fs" />
     <Compile Include="crsTransformations\crsIdentifier\CrsIdentifierFactory.fs" />
+    <Compile Include="crsTransformations\coordinate\CrsCoordinate.fs" />
+    <Compile Include="crsTransformations\coordinate\CrsCoordinateFactory.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>
 

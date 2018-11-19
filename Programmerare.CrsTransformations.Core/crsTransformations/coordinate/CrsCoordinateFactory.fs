@@ -1,5 +1,10 @@
-@file:JvmName("CrsCoordinateFactory")
-package com.programmerare.crsTransformations.coordinate
+namespace  com.programmerare.crsTransformations.coordinate
+
+// TODO: method overloading with F# instead of having different 
+// method name suffixes ... e.g. "Epsg" or "CrsCode" as method name suffix
+
+// TODO: rewrite comments below for .NET ...
+
 // The reason for having Coordinate and this CoordinateFactory
 // in a package of its own is to avoid "polluting" the base
 // package from lots of package level function defined in this file
@@ -7,14 +12,14 @@ package com.programmerare.crsTransformations.coordinate
 // (when using Java we do not see that problem but rather a class
 //   CoordinateFactory with all these function as static method in that class)
 
-import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
-import com.programmerare.crsTransformations.crsIdentifier.createFromCrsCode
-import com.programmerare.crsTransformations.crsIdentifier.createFromEpsgNumber
-import java.lang.IllegalArgumentException
+//import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
+//import com.programmerare.crsTransformations.crsIdentifier.createFromCrsCode
+//import com.programmerare.crsTransformations.crsIdentifier.createFromEpsgNumber
+//import java.lang.IllegalArgumentException
 
 // -------------------------------------------------------------------------
 
-/**
+(*
  * This is one of many factory methods for creating a coordinate.
  * The documentation below is generally describing all methods.
  * (and the reason for not putting it at the class level is documented at the bottom below)
@@ -93,444 +98,510 @@ import java.lang.IllegalArgumentException
  * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
  * Please find more information in the license file at the root directory of each subproject
  * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
-*/
-fun createFromXEastingLongitudeAndYNorthingLatitude(
-    xEastingLongitude: Double?,
-    yNorthingLatitude: Double?,
-    epsgNumber: Int?
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        xEastingLongitude,
-        yNorthingLatitude,
-        createFromEpsgNumber(epsgNumber)
-    )
-}
+*)
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun xy(
-    x: Double?,
-    y: Double?,
-    epsgNumber: Int?
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        x,
-        y,
-        epsgNumber
-    )
-}
+// TODO: rewrite comments above for .NET ...
+open com.programmerare.crsTransformations.crsIdentifier
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun eastingNorthing(
-    easting: Double?,
-    northing: Double?,
-    epsgNumber: Int?
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        easting,
-        northing,
-        epsgNumber
-    )
-}
+module CrsCoordinateFactory =
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun lonLat(
-    longitude: Double?,
-    latitude: Double?,
-    epsgNumber: Int?
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        longitude,
-        latitude,
-        epsgNumber
-    )
-}
+    // -------------------------------------------------------------------------
+
+
+    let private _CreateXYcrs
+        (
+            xEastingLongitude: double,
+            yNorthingLatitude: double,
+            crsIdentifier: CrsIdentifier
+        ) : CrsCoordinate =
+        if isNull crsIdentifier then
+            nullArg "crsIdentifier"
+        CrsCoordinate._internalXYfactory(
+            xEastingLongitude,
+            yNorthingLatitude,
+            crsIdentifier
+        )
+
+    let private _CreateXYint
+        (
+            xEastingLongitude: double,
+            yNorthingLatitude: double,
+            epsgNumber: int
+        ) =
+        _CreateXYcrs(
+            xEastingLongitude,
+            yNorthingLatitude,
+            CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumber)
+        )
+
+    let private _CreateXYstring
+        (
+            xEastingLongitude: double,
+            yNorthingLatitude: double,
+            crsCode: string
+        ) =
+        _CreateXYcrs(
+            xEastingLongitude,
+            yNorthingLatitude,
+            CrsIdentifierFactory.CreateFromCrsCode(crsCode)
+        )
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let CreateFromXEastingLongitudeAndYNorthingLatitude
+        (
+            xEastingLongitude: double,
+            yNorthingLatitude: double,
+            crsIdentifier: CrsIdentifier
+        ) =
+        _CreateXYcrs(
+            xEastingLongitude,
+            yNorthingLatitude,
+            crsIdentifier
+        )
+
+
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let XY
+        (
+            x: double,
+            y: double,
+            crsIdentifier: CrsIdentifier
+        ) =
+        _CreateXYcrs(
+            x,
+            y,
+            crsIdentifier
+        )
+
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let EastingNorthing
+        (
+            easting: double,
+            northing: double,
+            crsIdentifier: CrsIdentifier
+        ) =
+        _CreateXYcrs(
+            easting,
+            northing,
+            crsIdentifier
+        )
+
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let LonLatCrs
+        (
+            longitude: double,
+            latitude: double,
+            crsIdentifier: CrsIdentifier
+        ) =
+        _CreateXYcrs(
+            longitude,
+            latitude,
+            crsIdentifier
+        )
+
+    // -------------------------------------------------------------------------
+
+    let CreateFromXEastingLongitudeAndYNorthingLatitudeEpsg
+        (
+            xEastingLongitude: double,
+            yNorthingLatitude: double,
+            epsgNumber: int
+        ) =
+        _CreateXYint(
+            xEastingLongitude,
+            yNorthingLatitude,
+            epsgNumber
+        )
+
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let XYepsg
+        (
+            x: double,
+            y: double,
+            epsgNumber: int
+        ) =
+        _CreateXYint(
+            x,
+            y,
+            epsgNumber
+        )
+
+
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let EastingNorthingEpsg
+        (
+            easting: double,
+            northing: double,
+            epsgNumber: int
+        ) =
+        _CreateXYint(
+            easting,
+            northing,
+            epsgNumber
+        )
+
+
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let LonLatEpsg
+        (
+            longitude: double,
+            latitude: double,
+            epsgNumber: int
+        ) =
+        _CreateXYint(
+            longitude,
+            latitude,
+            epsgNumber
+        )
 // -------------------------------------------------------------------------
 
 
 // -------------------------------------------------------------------------
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun createFromYNorthingLatitudeAndXEastingLongitude(
-    yNorthingLatitude: Double?,
-    xEastingLongitude: Double?,
-    epsgNumber: Int?
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        xEastingLongitude,
-        yNorthingLatitude,
-        createFromEpsgNumber(epsgNumber)
-    )
-}
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let CreateFromYNorthingLatitudeAndXEastingLongitudeEpsg
+        (
+            yNorthingLatitude: double,
+            xEastingLongitude: double,
+            epsgNumber: int
+        ) =
+        _CreateXYint(
+            xEastingLongitude,
+            yNorthingLatitude,
+            epsgNumber
+        )
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun yx(
-    y: Double?,
-    x: Double?,
-    epsgNumber: Int?
-): CrsCoordinate {
-    return createFromYNorthingLatitudeAndXEastingLongitude(
-        y,
-        x,
-        epsgNumber
-    )
-}
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun northingEasting(
-    northing: Double?,
-    easting: Double?,
-    epsgNumber: Int?
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        easting,
-        northing,
-        epsgNumber
-    )
-}
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let YXepsg
+        (
+            y: double,
+            x: double,
+            epsgNumber: int
+        ) =
+        _CreateXYint(
+            x,
+            y,
+            epsgNumber
+        )
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun latLon(
-    latitude: Double?,
-    longitude: Double?,
-    epsgNumber: Int?
-): CrsCoordinate {
-    return createFromYNorthingLatitudeAndXEastingLongitude(
-        latitude,
-        longitude,
-        epsgNumber
-    )
-}
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let NorthingEastingEpsg
+        (
+            northing: double,
+            easting: double,
+            epsgNumber: int
+        ) =
+        _CreateXYint(
+            easting,
+            northing,
+            epsgNumber
+        )
+
+
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let LatLonEpsg
+        (
+            latitude: double,
+            longitude: double,
+            epsgNumber: int
+        ) =
+        _CreateXYint(
+            longitude,
+            latitude,
+            epsgNumber
+        )
 // -------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun createFromXEastingLongitudeAndYNorthingLatitude(
-    xEastingLongitude: Double?,
-    yNorthingLatitude: Double?,
-    crsCode: String
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        xEastingLongitude,
-        yNorthingLatitude,
-        createFromCrsCode(crsCode)
-    )
-}
-
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun xy(
-    x: Double?,
-    y: Double?,
-    crsCode: String
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        x,
-        y,
-        crsCode
-    )
-}
-
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun eastingNorthing(
-    easting: Double?,
-    northing: Double?,
-    crsCode: String
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        easting,
-        northing,
-        crsCode
-    )
-}
-
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun lonLat(
-    longitude: Double?,
-    latitude: Double?,
-    crsCode: String
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        longitude,
-        latitude,
-        crsCode
-    )
-}
-// -------------------------------------------------------------------------
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let CreateFromXEastingLongitudeAndYNorthingLatitudeCrsCode
+        (
+            xEastingLongitude: double,
+            yNorthingLatitude: double,
+            crsCode: string
+        ) =
+        _CreateXYstring(
+            xEastingLongitude,
+            yNorthingLatitude,
+            crsCode
+        )
 
 
-// -------------------------------------------------------------------------
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let XYcrsCode
+        (
+            x: double,
+            y: double,
+            crsCode: string
+        ) =
+        _CreateXYstring(
+            x,
+            y,
+            crsCode
+        )
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun createFromYNorthingLatitudeAndXEastingLongitude(
-    yNorthingLatitude: Double?,
-    xEastingLongitude: Double?,
-    crsCode: String
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        xEastingLongitude,
-        yNorthingLatitude,
-        createFromCrsCode(crsCode)
-    )
-}
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun yx(
-    y: Double?,
-    x: Double?,
-    crsCode: String
-): CrsCoordinate {
-    return createFromYNorthingLatitudeAndXEastingLongitude(
-        y,
-        x,
-        crsCode
-    )
-}
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let EastingNorthingCrsCode
+        (
+            easting: double,
+            northing: double,
+            crsCode: string
+        ) =
+        _CreateXYstring(
+            easting,
+            northing,
+            crsCode
+        )
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun northingEasting(
-    northing: Double?,
-    easting: Double?,
-    crsCode: String
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        easting,
-        northing,
-        crsCode
-    )
-}
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun latLon(
-    latitude: Double?,
-    longitude: Double?,
-    crsCode: String
-): CrsCoordinate {
-    return createFromYNorthingLatitudeAndXEastingLongitude(
-        latitude,
-        longitude,
-        crsCode
-    )
-}
-// -------------------------------------------------------------------------
+
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let LonLatCrsCode
+        (
+            longitude: double,
+            latitude: double,
+            crsCode: string
+        ) =
+        _CreateXYstring(
+            longitude,
+            latitude,
+            crsCode
+        )
+
 
 // -------------------------------------------------------------------------
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun createFromYNorthingLatitudeAndXEastingLongitude(
-    yNorthingLatitude: Double?,
-    xEastingLongitude: Double?,
-    crsIdentifier: CrsIdentifier
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        xEastingLongitude,
-        yNorthingLatitude,
-        crsIdentifier
-    )
-}
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun yx(
-    y: Double?,
-    x: Double?,
-    crsIdentifier: CrsIdentifier
-): CrsCoordinate {
-    return createFromYNorthingLatitudeAndXEastingLongitude(
-        y,
-        x,
-        crsIdentifier
-    )
-}
+// -------------------------------------------------------------------------
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun northingEasting(
-    northing: Double?,
-    easting: Double?,
-    crsIdentifier: CrsIdentifier
-): CrsCoordinate {
-    return createFromYNorthingLatitudeAndXEastingLongitude(
-        northing,
-        easting,
-        crsIdentifier
-    )
-}
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let CreateFromYNorthingLatitudeAndXEastingLongitudeCrsCode
+        (
+            yNorthingLatitude: double,
+            xEastingLongitude: double,
+            crsCode: string
+        ) =
+        _CreateXYstring(
+            xEastingLongitude,
+            yNorthingLatitude,
+            crsCode
+        )
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun latLon(
-    latitude: Double?,
-    longitude: Double?,
-    crsIdentifier: CrsIdentifier
-): CrsCoordinate {
-    return createFromYNorthingLatitudeAndXEastingLongitude(
-        latitude,
-        longitude,
-        crsIdentifier
-    )
-}
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let YXcrsCode
+        (
+            y: double,
+            x: double,
+            crsCode: string
+        ) =
+        _CreateXYstring(
+            x,
+            y,
+            crsCode
+        )
+
+
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let NorthingEastingCrsCode
+        (
+            northing: double,
+            easting: double,
+            crsCode: string
+        ) =
+        _CreateXYstring(
+            easting,
+            northing,
+            crsCode
+        )
+
+
+
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let LatLonCrsCode
+        (
+            latitude: double,
+            longitude: double,
+            crsCode: string
+        ) =
+        _CreateXYstring(
+            longitude,
+            latitude,
+            crsCode
+        )
+
 // -------------------------------------------------------------------------
 
 // -------------------------------------------------------------------------
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun createFromXEastingLongitudeAndYNorthingLatitude(
-    xEastingLongitude: Double?,
-    yNorthingLatitude: Double?,
-    crsIdentifier: CrsIdentifier
-): CrsCoordinate {
-    if(xEastingLongitude == null || yNorthingLatitude == null) {
-        throw IllegalArgumentException("Neither of the two coordinate parameters must be null i.e. neither 'X / Easting / Longitude' nor 'Y / Northing / Latitude'") 
-    }
-    return CrsCoordinate._internalXYfactory(
-        xEastingLongitude!!,
-        yNorthingLatitude!!,
-        crsIdentifier
-    )
-}
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let CreateFromYNorthingLatitudeAndXEastingLongitude
+        (
+            yNorthingLatitude: double,
+            xEastingLongitude: double,
+            crsIdentifier: CrsIdentifier
+        ) =
+        _CreateXYcrs(
+            xEastingLongitude,
+            yNorthingLatitude,
+            crsIdentifier
+        )
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun xy(
-    x: Double?,
-    y: Double?,
-    crsIdentifier: CrsIdentifier
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        x,
-        y,
-        crsIdentifier
-    )
-}
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun eastingNorthing(
-    easting: Double?,
-    northing: Double?,
-    crsIdentifier: CrsIdentifier
-): CrsCoordinate {
-    return createFromYNorthingLatitudeAndXEastingLongitude(
-        northing,
-        easting,
-        crsIdentifier
-    )
-}
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let YX
+        (
+            y: double,
+            x: double,
+            crsIdentifier: CrsIdentifier
+        ) =
+        _CreateXYcrs(
+            x,
+            y,
+            crsIdentifier
+        )
 
-/**
- * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
- */
-fun lonLat(
-    longitude: Double?,
-    latitude: Double?,
-    crsIdentifier: CrsIdentifier
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        longitude,
-        latitude,
-        crsIdentifier
-    )
-}
+
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let NorthingEasting
+        (
+            northing: double,
+            easting: double,
+            crsIdentifier: CrsIdentifier
+        ) =
+        _CreateXYcrs(
+            easting,
+            northing,
+            crsIdentifier
+        )
+
+
+    (*
+     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
+     *)
+    let LatLonCrs
+        (
+            latitude: double,
+            longitude: double,
+            crsIdentifier: CrsIdentifier
+        ) =
+        _CreateXYcrs(
+            longitude,
+            latitude,
+            crsIdentifier
+        )
 // -------------------------------------------------------------------------
 
-/**
- * WGS84 is probably the most common coordinate reference system,
- * the coordinates typically used with GPS.
- * Therefore it is default for the factory methods not specifying
- * the coordinate reference system.
- */
-private val COORDINATE_REFERENCE_SYSTEM_WGS84 = createFromEpsgNumber(4326)
 
-/**
- * The "GPS coordinate system" WGS84 is assumed when using this factory method.
- */
-fun createFromLongitudeLatitude(
-    longitude: Double?,
-    latitude: Double?
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        longitude,
-        latitude,
-        COORDINATE_REFERENCE_SYSTEM_WGS84
-    )
-}
+    (*
+     * WGS84 is probably the most common coordinate reference system,
+     * the coordinates typically used with GPS.
+     * Therefore it is default for the factory methods not specifying
+     * the coordinate reference system.
+     *)
+    let private COORDINATE_REFERENCE_SYSTEM_WGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(4326)
 
-/**
- * The "GPS coordinate system" WGS84 is assumed when using this factory method.
- */
-fun lonLat(
-    longitude: Double?,
-    latitude: Double?
-): CrsCoordinate {
-    return createFromLongitudeLatitude(
-        longitude,
-        latitude
-    )
-}
+    (*
+     * The "GPS coordinate system" WGS84 is assumed when using this factory method.
+     *)
+    let CreateFromLongitudeLatitude
+        (
+            longitude: double,
+            latitude: double
+        ) = 
+        _CreateXYcrs(
+            longitude,
+            latitude,
+            COORDINATE_REFERENCE_SYSTEM_WGS84
+        )
 
-/**
- * The "GPS coordinate system" WGS84 is assumed when using this factory method.
- */
-fun createFromLatitudeLongitude(
-    latitude: Double?,
-    longitude: Double?
-): CrsCoordinate {
-    return createFromXEastingLongitudeAndYNorthingLatitude(
-        longitude,
-        latitude,
-        COORDINATE_REFERENCE_SYSTEM_WGS84
-    )
-}
+    (*
+     * The "GPS coordinate system" WGS84 is assumed when using this factory method.
+     *)
+    let LonLat
+        (
+            longitude: double,
+            latitude: double
+        ) =
+        _CreateXYcrs(
+            longitude,
+            latitude,
+            COORDINATE_REFERENCE_SYSTEM_WGS84
+        )
 
-/**
- * The "GPS coordinate system" WGS84 is assumed when using this factory method.
- */
-fun latLon(
-    latitude: Double?,
-    longitude: Double?
-): CrsCoordinate {
-    return createFromLatitudeLongitude(
-        latitude,
-        longitude
-    )
-}
+
+    (*
+     * The "GPS coordinate system" WGS84 is assumed when using this factory method.
+     *)
+    let CreateFromLatitudeLongitude
+        (
+            latitude: double,
+            longitude: double
+        ) =
+        _CreateXYcrs(
+            longitude,
+            latitude,
+            COORDINATE_REFERENCE_SYSTEM_WGS84
+        )
+
+
+    (*
+     * The "GPS coordinate system" WGS84 is assumed when using this factory method.
+     *)
+    let LatLon
+        (
+            latitude: double,
+            longitude: double
+        ) =
+        _CreateXYcrs(
+            longitude,
+            latitude,
+            COORDINATE_REFERENCE_SYSTEM_WGS84
+        )
+
 // -------------------------------------------------------------------------

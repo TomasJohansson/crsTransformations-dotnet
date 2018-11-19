@@ -58,6 +58,7 @@ epsgNumber
 
 // TODO: rewrite comments above for .NET ...
 
+[<AllowNullLiteral>] // C# interop
 type CrsIdentifier private 
     (
         crsCode: string,

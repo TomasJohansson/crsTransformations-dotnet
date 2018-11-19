@@ -1,336 +1,298 @@
-package com.programmerare.crsTransformations.coordinate;
+namespace com.programmerare.crsTransformations.coordinate {
 
-import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
-import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
-import org.junit.jupiter.api.Test;
+// TODO: method overloading with F# instead of having different 
+// method name suffixes ... e.g. "Epsg" or "CrsCode" as method name suffix
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.*;
+using com.programmerare.crsTransformations.crsIdentifier;
+using NUnit.Framework;
+using System;
 
+[TestFixture]
 class CrsCoordinateTest {
-    private final static String EpsgPrefix = "EPSG:";
+    private const string EpsgPrefix = "EPSG:";
     
-    private final double deltaTolerance = 0.00001;
-    private final double xLongitude = 12.34;
-    private final double yLatitude = 56.67;
-    private final int epsgNumber = EpsgNumber.SWEDEN__SWEREF99_TM__3006;
-    private final String epsgCode = EpsgPrefix + epsgNumber;// EpsgCode._3006__SWEREF99_TM__SWEDEN;
+    private const double deltaTolerance = 0.00001;
+    private const double xLongitude = 12.34;
+    private const double yLatitude = 56.67;
 
-    @Test
-    void coordinateProperties_shouldHaveValuesEqualtToFactoryMethodsParameters() {
-        CrsCoordinate coordinate = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumber);
-        assertEquals(xLongitude, coordinate.getXEastingLongitude(), deltaTolerance);
-        assertEquals(yLatitude, coordinate.getYNorthingLatitude(), deltaTolerance);
-        assertEquals(epsgNumber, coordinate.getCrsIdentifier().getEpsgNumber());
+    // TODO: include the constants class which currently is still located 
+    // in a directory not included in the Visual Studio Solution
+    // ( JVM_project_to_become_ported_to_dotnet\crs-transformation-constants  ) 
+    private const int epsgNumber = 3006;//EpsgNumber.SWEDEN__SWEREF99_TM__3006;
+    private const int epsgNumberWgs84 = 4326; //EpsgNumber.WORLD__WGS_84__4326,
+
+    private const string epsgCode = "EPSG:3006";//EpsgPrefix + epsgNumber;// EpsgCode._3006__SWEREF99_TM__SWEDEN;
+
+    [Test]
+    public void coordinateProperties_shouldHaveValuesEqualtToFactoryMethodsParameters() {
+        CrsCoordinate coordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitudeEpsg(xLongitude, yLatitude, epsgNumber);
+        Assert.AreEqual(xLongitude, coordinate.XEastingLongitude, deltaTolerance);
+        Assert.AreEqual(yLatitude, coordinate.YNorthingLatitude, deltaTolerance);
+        Assert.AreEqual(epsgNumber, coordinate.CrsIdentifier.EpsgNumber);
     }
 
-    @Test
-    void coordinates_shouldBeEqual_whenUsingIntegerEpsgNumberAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
-        CrsCoordinate coordinate1 = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumber);
-        CrsCoordinate coordinate2 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgNumber);
-        assertEqualCoordinates(coordinate1, coordinate2);
+    [Test]
+    public void coordinates_shouldBeEqual_whenUsingIntegerEpsgNumberAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
+        CrsCoordinate coordinate1 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitudeEpsg(xLongitude, yLatitude, epsgNumber);
+        CrsCoordinate coordinate2 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitudeEpsg(yLatitude, xLongitude, epsgNumber);
+        AssertEqualCoordinates(coordinate1, coordinate2);
     }
 
-    @Test
-    void coordinates_shouldBeEqual_whenUsingStringEpsgCodeAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
+    [Test]
+    public void coordinates_shouldBeEqual_whenUsingStringEpsgCodeAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
         String crsCode = "EPSG:3006";
-        CrsCoordinate coordinate1 = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, crsCode);
-        CrsCoordinate coordinate2 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, crsCode);
-        assertEqualCoordinates(coordinate1, coordinate2);
+        CrsCoordinate coordinate1 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitudeCrsCode(xLongitude, yLatitude, crsCode);
+        CrsCoordinate coordinate2 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitudeCrsCode(yLatitude, xLongitude, crsCode);
+        AssertEqualCoordinates(coordinate1, coordinate2);
     }
 
-    @Test
-    void coordinates_shouldBeEqual_whenUsingCrsIdentifierAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
-        CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(3006);
-        CrsCoordinate coordinate1 = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, crsIdentifier);
-        CrsCoordinate coordinate2 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, crsIdentifier);
-        assertEqualCoordinates(coordinate1, coordinate2);
+    [Test]
+    public void coordinates_shouldBeEqual_whenUsingCrsIdentifierAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromEpsgNumber(3006);
+        CrsCoordinate coordinate1 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, crsIdentifier);
+        CrsCoordinate coordinate2 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, crsIdentifier);
+        AssertEqualCoordinates(coordinate1, coordinate2);
     }
 
-    @Test
-    void coordinate_shouldBeCreatedWithWGS84asDefaultCrs_whenNotSpecifyingCrs() {
+    [Test]
+    public void coordinate_shouldBeCreatedWithWGS84asDefaultCrs_whenNotSpecifyingCrs() {
         CrsCoordinate coordinate;
         
-        coordinate = CrsCoordinateFactory.createFromLongitudeLatitude(xLongitude, yLatitude);
-        assertEquals(
-            EpsgNumber.WORLD__WGS_84__4326,
-            coordinate.getCrsIdentifier().getEpsgNumber()
+        coordinate = CrsCoordinateFactory.CreateFromLongitudeLatitude(xLongitude, yLatitude);
+        Assert.AreEqual(
+            epsgNumberWgs84, // EpsgNumber.WORLD__WGS_84__4326,
+            coordinate.CrsIdentifier.EpsgNumber
         );
 
         // The tets below is the same as above except that the factory method use the reversed order for lat/lon parameters
-        coordinate = CrsCoordinateFactory.createFromLatitudeLongitude(yLatitude, xLongitude);
-        assertEquals(
-            EpsgNumber.WORLD__WGS_84__4326,
-            coordinate.getCrsIdentifier().getEpsgNumber()
+        coordinate = CrsCoordinateFactory.CreateFromLatitudeLongitude(yLatitude, xLongitude);
+        Assert.AreEqual(
+            epsgNumberWgs84, // EpsgNumber.WORLD__WGS_84__4326,
+            coordinate.CrsIdentifier.EpsgNumber
         );        
     }
 
-    private void assertEqualCoordinates(CrsCoordinate coordinate1, CrsCoordinate coordinate2) {
-        assertEquals(coordinate1.getXEastingLongitude(), coordinate2.getXEastingLongitude(), deltaTolerance);
-        assertEquals(coordinate1.getYNorthingLatitude(), coordinate2.getYNorthingLatitude(), deltaTolerance);
-        assertEquals(coordinate1.getCrsIdentifier(), coordinate2.getCrsIdentifier()); // data class
-        assertEquals(coordinate1.getCrsIdentifier().getEpsgNumber(), coordinate2.getCrsIdentifier().getEpsgNumber());
+    private void AssertEqualCoordinates(CrsCoordinate coordinate1, CrsCoordinate coordinate2) {
+        Assert.AreEqual(coordinate1.XEastingLongitude, coordinate2.XEastingLongitude, deltaTolerance);
+        Assert.AreEqual(coordinate1.YNorthingLatitude, coordinate2.YNorthingLatitude, deltaTolerance);
+        Assert.AreEqual(coordinate1.CrsIdentifier, coordinate2.CrsIdentifier); // data class
+        Assert.AreEqual(coordinate1.CrsIdentifier.EpsgNumber, coordinate2.CrsIdentifier.EpsgNumber);
 
-        // TODO: find out how the autogenerated implementations of equals and hashCode
-        // are implemented in a Kotlin data class, e.g. Coordinate,
-        // when properties are typed as double.
-        // Maybe using Double.compare and Double.doubleToLongBits and following recommendations
-        // of "Effective Java" book (Joshua Bloch)
-        assertEquals(coordinate1.hashCode(), coordinate2.hashCode());
-        assertEquals(coordinate1, coordinate2);
-        // Note that the above assertion is not reliable since double fields are used.
-        // Example below from an assertion failure in class CrsTransformationAdapterAverageTest:
-        // assertEquals(coordinateWithAverageLatitudeAndLongitude, coordinateReturnedByCompositeAdapter);
-        // Expected :Coordinate(xEastingLongitude=674032.3572074446, yNorthingLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
-        // Actual   :Coordinate(xEastingLongitude=674032.3572074447, yNorthingLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
+        Assert.AreEqual(coordinate1.GetHashCode(), coordinate2.GetHashCode());
+        Assert.AreEqual(coordinate1, coordinate2);
     }
 
-    @Test // six decimals are commonly used for latitude and longitude values 
-    void coordinateWithSixDecimals_shouldBeEqualToCoordinateConstructedWithTheSameValues_whenTheOnlyDifferenceIsSomeAdditionalZeroes() {
-        CrsCoordinate c1 = CrsCoordinateFactory.createFromLatitudeLongitude(59.123456, 18.123456000);
-        CrsCoordinate c2 = CrsCoordinateFactory.createFromLatitudeLongitude(59.123456000, 18.123456);
-        assertEquals(
+     // six decimals are commonly used for latitude and longitude values 
+    [Test]
+    public void coordinateWithSixDecimals_shouldBeEqualToCoordinateConstructedWithTheSameValues_whenTheOnlyDifferenceIsSomeAdditionalZeroes() {
+        CrsCoordinate c1 = CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456, 18.123456000);
+        CrsCoordinate c2 = CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456000, 18.123456);
+        Assert.AreEqual(
             c1, c2
         );
-        assertEquals(
-            c1.hashCode(), c2.hashCode()
+        Assert.AreEqual(
+            c1.GetHashCode(), c2.GetHashCode()
         );
     }
 
-    @Test
-    void coordinateWithNineDecimals_shouldBeEqualToCoordinateConstructedWithTheSameValues_whenTheOnlyDifferenceIsSomeAdditionalZeroes() {
-        CrsCoordinate c1 = CrsCoordinateFactory.createFromLatitudeLongitude(59.123456789, 18.123456789000);
-        CrsCoordinate c2 = CrsCoordinateFactory.createFromLatitudeLongitude(59.123456789000, 18.123456789);
-        assertEquals(
+    [Test]
+    public void coordinateWithNineDecimals_shouldBeEqualToCoordinateConstructedWithTheSameValues_whenTheOnlyDifferenceIsSomeAdditionalZeroes() {
+        CrsCoordinate c1 = CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456789, 18.123456789000);
+        CrsCoordinate c2 = CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456789000, 18.123456789);
+        Assert.AreEqual(
             c1, c2
         );
-        assertEquals(
-            c1.hashCode(), c2.hashCode()
+        Assert.AreEqual(
+            c1.GetHashCode(), c2.GetHashCode()
         );
     }
 
-    @Test
-    void coordinates_shouldNotBeEqual_whenDifferenceAtTwelfthDecimalOfLatitude() {
+    [Test]
+    public void coordinates_shouldNotBeEqual_whenDifferenceAtTwelfthDecimalOfLatitude()
+    {
         // very small latitude difference:
-        assertNotEquals(
-            CrsCoordinateFactory.createFromLatitudeLongitude(59.123456789000, 18.123456789),
-            CrsCoordinateFactory.createFromLatitudeLongitude(59.123456789001, 18.123456789)
+        Assert.AreNotEqual(
+            CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456789001, 18.123456789),
+            CrsCoordinateFactory.CreateFromLatitudeLongitude(49.123456789002, 18.123456789)
         );
     }
 
-    @Test
-    void coordinates_shouldNotBeEqual_whenDifferenceAtTwelfthDecimalOfLongitude() {
+    [Test]
+    public void coordinates_shouldNotBeEqual_whenDifferenceAtTwelfthDecimalOfLongitude() {
         // very small longitude difference:
-        assertNotEquals(
-            CrsCoordinateFactory.createFromLatitudeLongitude(59.123456789, 18.123456789000),
-            CrsCoordinateFactory.createFromLatitudeLongitude(59.123456789, 18.123456789001)
+        Assert.AreNotEqual(
+            CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456789, 18.123456789000),
+            CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456789, 18.123456789001)
         );
     }
 
-    @Test
-    void coordinates_shouldBeEqual_whenCreatedWithTheSameValuesButDifferentFactoryMethods() {
-        final CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(epsgNumber);
-        final String epsgCode = EpsgPrefix + epsgNumber;
+    [Test]
+    public void coordinates_shouldBeEqual_whenCreatedWithTheSameValuesButDifferentFactoryMethods() {
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumber);
+        string epsgCode = EpsgPrefix + epsgNumber;
         
-        final CrsCoordinate expectedCoordinate = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumber);
+        CrsCoordinate expectedCoordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitudeEpsg(xLongitude, yLatitude, epsgNumber);
         // all should be equal to each other, so one of them was chosen above 
         // as the "expected" and then the others are compared with it in the below assertions
 
         // -----------------------------------------------------------------------
         // the last parameter (epsgNumber) is an integer in the first below assertions:
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.lonLat(xLongitude, yLatitude, epsgNumber)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.LonLatEpsg(xLongitude, yLatitude, epsgNumber)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.xy(xLongitude, yLatitude, epsgNumber)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.XYepsg(xLongitude, yLatitude, epsgNumber)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.eastingNorthing(xLongitude, yLatitude, epsgNumber)  
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.EastingNorthingEpsg(xLongitude, yLatitude, epsgNumber)
         );
 
         // the below four assertions are using x/y values in the opposite order 
         // compared to the above three assertions
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgNumber)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitudeEpsg(yLatitude, xLongitude, epsgNumber)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.latLon(yLatitude, xLongitude, epsgNumber)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.LatLonEpsg(yLatitude, xLongitude, epsgNumber)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.yx(yLatitude, xLongitude, epsgNumber)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.YXepsg(yLatitude, xLongitude, epsgNumber)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.northingEasting(yLatitude, xLongitude, epsgNumber)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.NorthingEastingEpsg(yLatitude, xLongitude, epsgNumber)
         );
 
         // -----------------------------------------------------------------------
         // epsg code (string parameter) is the last parameter below
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgCode)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitudeCrsCode(xLongitude, yLatitude, epsgCode)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.lonLat(xLongitude, yLatitude, epsgCode)   
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.LonLatCrsCode(xLongitude, yLatitude, epsgCode)   
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.xy(xLongitude, yLatitude, epsgCode)   
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.XYcrsCode(xLongitude, yLatitude, epsgCode)   
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.eastingNorthing(xLongitude, yLatitude, epsgCode)  
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.EastingNorthingCrsCode(xLongitude, yLatitude, epsgCode)  
         );
 
         // the below four assertions are using x/y values in the opposite order 
         // compared to the above four assertions
 
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgCode)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitudeCrsCode(yLatitude, xLongitude, epsgCode)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.latLon(yLatitude, xLongitude, epsgCode)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.LatLonCrsCode(yLatitude, xLongitude, epsgCode)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.yx(yLatitude, xLongitude, epsgCode)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.YXcrsCode(yLatitude, xLongitude, epsgCode)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.northingEasting(yLatitude, xLongitude, epsgCode)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.NorthingEastingCrsCode(yLatitude, xLongitude, epsgCode)
         );        
 
         // -----------------------------------------------------------------------
         // crsIdentifier obkect is the last parameter below
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, crsIdentifier)   
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, crsIdentifier)   
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.lonLat(xLongitude, yLatitude, crsIdentifier)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.LonLatCrs(xLongitude, yLatitude, crsIdentifier)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.xy(xLongitude, yLatitude, crsIdentifier)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.XY(xLongitude, yLatitude, crsIdentifier)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.eastingNorthing(xLongitude, yLatitude, crsIdentifier)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.EastingNorthing(xLongitude, yLatitude, crsIdentifier)
         );
 
         // the below four assertions are using x/y values in the opposite order 
         // compared to the above four assertions
 
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, crsIdentifier)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, crsIdentifier)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.latLon(yLatitude, xLongitude, crsIdentifier)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.LatLonCrs(yLatitude, xLongitude, crsIdentifier)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.yx(yLatitude, xLongitude, crsIdentifier)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.YX(yLatitude, xLongitude, crsIdentifier)
         );
-        assertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.northingEasting(yLatitude, xLongitude, crsIdentifier)
+        AssertEqualCoordinates(expectedCoordinate,
+            CrsCoordinateFactory.NorthingEasting(yLatitude, xLongitude, crsIdentifier)
         );        
     }
 
-    @Test
-    void coordinate_shouldHaveEquivalentXEastingLongitudeProperties() {
-        CrsCoordinate c = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgCode);
-        assertEquals(c.getXEastingLongitude(), c.getX());
-        assertEquals(c.getXEastingLongitude(), c.getEasting());
-        assertEquals(c.getXEastingLongitude(), c.getLongitude());
+    [Test]
+    public void coordinate_shouldHaveEquivalentXEastingLongitudeProperties() {
+        CrsCoordinate c = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitudeCrsCode(yLatitude, xLongitude, epsgCode);
+        Assert.AreEqual(c.XEastingLongitude, c.X);
+        Assert.AreEqual(c.XEastingLongitude, c.Easting);
+        Assert.AreEqual(c.XEastingLongitude, c.Longitude);
     }
 
-    @Test
-    void coordinate_shouldHaveEquivalentgetYNorthingLatitudeProperties() {
-        CrsCoordinate c = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgCode);
-        assertEquals(c.getYNorthingLatitude(), c.getY());
-        assertEquals(c.getYNorthingLatitude(), c.getNorthing());
-        assertEquals(c.getYNorthingLatitude(), c.getLatitude());
-//        new CrsCoordinate(1.1,2.1,CrsIdentifierFactory.createFromEpsgNumber(123));
+    [Test]
+    public void coordinate_shouldHaveEquivalentgetYNorthingLatitudeProperties() {
+        CrsCoordinate c = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitudeCrsCode(yLatitude, xLongitude, epsgCode);
+        Assert.AreEqual(c.YNorthingLatitude, c.Y);
+        Assert.AreEqual(c.YNorthingLatitude, c.Northing);
+        Assert.AreEqual(c.YNorthingLatitude, c.Latitude);
     }
 
     // throw IllegalArgumentException("Neither of the two coordinate parameters must be null i.e. neither 'X / Easting / Longitude' nor 'Y / Northing / Latitude'")
     // fragile hardcoded string below but will not change often and if/when then it will be easy to fix when it fails
-    private final static String EXPECTED_PART_OF_EXCEPTION_MESSAGE_WHEN_COORDINATE_VALUES_IS_NULL = "Neither of the two coordinate parameters must be null";
-    
-    @Test
-    void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenXisNull() {
-        Double x = null;
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
-                x,
-                20.0,
-                4326
-            )
-        );
-        assertThat(exception.getMessage(), containsString(EXPECTED_PART_OF_EXCEPTION_MESSAGE_WHEN_COORDINATE_VALUES_IS_NULL));                
-    }
+    private const string EXPECTED_PART_OF_EXCEPTION_MESSAGE_WHEN_COORDINATE_VALUES_IS_NULL = "Neither of the two coordinate parameters must be null";
 
-    @Test
-    void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenYisNull() {
-        Double y = null;
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
-                60.0,
-                y,
-                4326
-            )
-        );
-        assertThat(exception.getMessage(), containsString(EXPECTED_PART_OF_EXCEPTION_MESSAGE_WHEN_COORDINATE_VALUES_IS_NULL));
-    }
 
-    @Test
-    void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenCrsIdentifierIsNull() {
+    [Test]
+    public void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenCrsIdentifierIsNull()
+    {
         CrsIdentifier crsIdentifier = null;
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
+        ArgumentException exception = Assert.Throws<ArgumentNullException>( () => {
+            CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(
                 60.0,
                 20.0,
                 crsIdentifier
-            )
-        );
-        // "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude, parameter crsIdentifier"
-        assertExceptionMessageForIllegalArgumentException(exception, "crsIdentifier");
+            );
+        });
+        // F# may throw this: nullArg "crsIdentifier"
+        // which creates the following kind of message:
+        // "Value cannot be null. Parameter name: crsIdentifier"
+        AssertExceptionMessageForIllegalArgumentException(exception, "crsIdentifier");
     }
 
-    @Test
-    void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenEpsgNumberIsNull() {
-        Integer epsgNumber = null;
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
-                60.0,
-                20.0,
-                epsgNumber
-            )
-        );
-        // fragile hardcoded string below but will not change often and if/when then it will be easy to fix when it fails
-        assertThat(exception.getMessage(), containsString("EPSG number must not be null"));
-    }
-
-    @Test
-    void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenCrsCodeIsNull() {
-        String crsCode = null;
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(
+    [Test]
+    public void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenCrsCodeIsNull()
+    {
+        string crsCode = null;
+        ArgumentException exception = Assert.Throws<ArgumentNullException>( () => {
+            CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitudeCrsCode(
                 60.0,
                 20.0,
                 crsCode
-            )
-        );
-        // "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude, parameter crsCode"        
-        assertExceptionMessageForIllegalArgumentException(exception, "crsCode");
+            );
+        });
+        // F# may throw this: nullArg "crsCode"
+        // which creates the following kind of message:
+        // "Value cannot be null. Parameter name: crsCode"
+        AssertExceptionMessageForIllegalArgumentException(exception, "crsCode");
     }
 
-    private void assertExceptionMessageForIllegalArgumentException(IllegalArgumentException exception, String suffixWithNameOfParameter) {
-        assertNotNull(exception);
-        final String actualEceptionMessage = exception.getMessage();
+    private void AssertExceptionMessageForIllegalArgumentException(
+        ArgumentException exception, 
+        string suffixWithNameOfParameter
+    ) {
+        Assert.NotNull(exception);
+        string actualEceptionMessage = exception.Message;
         // fragile hardcoded strings below but will not change often and if/when then it will be easy to fix when it fails
-        
-        // actualEceptionMessage for example: "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude, parameter crsCode"        
-        final String expectedEceptionMessagePart1 = "Parameter specified as non-null is null:";
-        final String expectedEceptionMessagePart2 = "parameter " + suffixWithNameOfParameter;
-        assertThat(actualEceptionMessage, containsString(expectedEceptionMessagePart1));
-        assertThat(actualEceptionMessage, containsString(expectedEceptionMessagePart2));
+        // actualEceptionMessage for example: "Value cannot be null. Parameter name: crsIdentifier"
+        //string expectedEceptionMessagePart1 = "Parameter specified as non-null is null:";
+        //string expectedEceptionMessagePart2 = "parameter " + suffixWithNameOfParameter;
+        //Assert.That(exception.Message, Does.Contain(expectedEceptionMessagePart1));
+        //Assert.That(exception.Message, Does.Contain(expectedEceptionMessagePart2));
+        Assert.That(exception.Message, Does.Contain(suffixWithNameOfParameter));
     }
-}
+} // class ends
+} // namespace ends
