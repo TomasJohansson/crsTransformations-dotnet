@@ -28,6 +28,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy\Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy.fsproj" />
     <ProjectReference Include="..\Programmerare.CrsTransformations.Core\Programmerare.CrsTransformations.Core.fsproj" />
   </ItemGroup>
 
