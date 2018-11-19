@@ -1,142 +1,124 @@
-package com.programmerare.crsTransformations.crsIdentifier;
+namespace com.programmerare.crsTransformations.crsIdentifier {
 
-import org.junit.jupiter.api.Test;
+using NUnit.Framework;
+using System;
 
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+[TestFixture]
 public class CrsIdentifierTest {
 
-    private String getCrsCodeIncludingUppercasedEpsgPrefix(int epsgNumber) {
+    private String GetCrsCodeIncludingUppercasedEpsgPrefix(int epsgNumber) {
         return "EPSG:" + epsgNumber;
     }
     
-    @Test
-    void crsIdentifier_shouldReturnWhitespaceTrimmedCrsCodeAndNotBeConsideredAsEpsg_whenCreatedFromNonEpsgString() {
-        final CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromCrsCode("  abc  ");
-        assertEquals("abc", crsIdentifier.getCrsCode());
-        assertEquals(false, crsIdentifier.isEpsgCode());
+    [Test]
+    public void crsIdentifier_shouldReturnWhitespaceTrimmedCrsCodeAndNotBeConsideredAsEpsg_whenCreatedFromNonEpsgString() {
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromCrsCode("  abc  ");
+        Assert.AreEqual("abc", crsIdentifier.CrsCode);
+        Assert.AreEqual(false, crsIdentifier.IsEpsgCode);
     }
 
-    @Test
-    void crsIdentifier_shouldReturnEpsgNumberAndEpsgPrefixedCrsCodeAndBeConsideredAsEpsg_whenCreatedFromEpsgNumber() {
-        final int inputEpsgNumber = 3006;
+    [Test]
+    public void crsIdentifier_shouldReturnEpsgNumberAndEpsgPrefixedCrsCodeAndBeConsideredAsEpsg_whenCreatedFromEpsgNumber() {
+        int inputEpsgNumber = 3006;
         // No validation that the number is actually an existing EPSG but any positive integer
         // is assumed to be a EPSG number
-        final CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(inputEpsgNumber);
-        assertEquals(
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromEpsgNumber(inputEpsgNumber);
+        Assert.AreEqual(
             inputEpsgNumber, // expected
-            crsIdentifier.getEpsgNumber()
+            crsIdentifier.EpsgNumber
         );
-        assertEquals(getCrsCodeIncludingUppercasedEpsgPrefix(inputEpsgNumber), crsIdentifier.getCrsCode());
-        assertEquals(true, crsIdentifier.isEpsgCode());
+        Assert.AreEqual(GetCrsCodeIncludingUppercasedEpsgPrefix(inputEpsgNumber), crsIdentifier.CrsCode);
+        Assert.AreEqual(true, crsIdentifier.IsEpsgCode);
     }
 
-    @Test
-    void crsIdentifier_shouldReturnEpsgNumberAndUppercasedEpsgPrefixedWhitespaceTrimmedCrsCodeAndBeConsideredAsEpsg_whenCreatedFromLowecasedEpsgCodeWithSurroundingWhitespace() {
-        final int inputEpsgNumber = 4326;
-        final String inputCrsCode = "  epsg:" + inputEpsgNumber + "  "; 
-        final CrsIdentifier crsIdentifier = CrsIdentifierFactory.createFromCrsCode(inputCrsCode);
+    [Test]
+    public void crsIdentifier_shouldReturnEpsgNumberAndUppercasedEpsgPrefixedWhitespaceTrimmedCrsCodeAndBeConsideredAsEpsg_whenCreatedFromLowecasedEpsgCodeWithSurroundingWhitespace() {
+        int inputEpsgNumber = 4326;
+        String inputCrsCode = "  epsg:" + inputEpsgNumber + "  "; 
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromCrsCode(inputCrsCode);
         // the input should become trimmed and return string with uppercased "EPSG:" prefix
-        assertEquals(
-            getCrsCodeIncludingUppercasedEpsgPrefix(inputEpsgNumber), 
-            crsIdentifier.getCrsCode()
+        Assert.AreEqual(
+            GetCrsCodeIncludingUppercasedEpsgPrefix(inputEpsgNumber), 
+            crsIdentifier.CrsCode
         );
-        assertEquals(true, crsIdentifier.isEpsgCode());
-        assertEquals(inputEpsgNumber, crsIdentifier.getEpsgNumber());
+        Assert.AreEqual(true, crsIdentifier.IsEpsgCode);
+        Assert.AreEqual(inputEpsgNumber, crsIdentifier.EpsgNumber);
     }
 
-    @Test
-    void crsIdentifierFactory_shouldThrowException_whenCrsCodeInputIsNull() {
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> CrsIdentifierFactory.createFromCrsCode(null), // should fail
-            "Must not be null"
-        );
-        assertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-null");
+    [Test]
+    public void crsIdentifierFactory_shouldThrowException_whenCrsCodeInputIsNull()
+    {
+        ArgumentException exception = Assert.Throws<ArgumentNullException>( () => {
+            CrsIdentifierFactory.CreateFromCrsCode(null); // should fail
+        }, "Must not be null");
+        // F# code invoked above may throw exception like this:
+        //  nullArg "crsCode"
+        // Resulting message: "Value cannot be null. Parameter name: crsCode"
+        AssertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "cannot be null");
     }
 
-    @Test
-    void crsIdentifierFactory_shouldThrowException_whenCrsCodeInputIsOnlyWhitespace() {
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> CrsIdentifierFactory.createFromCrsCode("   "), // should fail
-            "Must not be empty string"
-        );
-        assertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-empty");
+    [Test]
+    public void crsIdentifierFactory_shouldThrowException_whenCrsCodeInputIsOnlyWhitespace()
+    {
+        ArgumentException exception = Assert.Throws<ArgumentException>( () => {
+            CrsIdentifierFactory.CreateFromCrsCode("   "); // should fail
+        }, "Must not be empty string");
+        AssertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-empty");
     }
 
-    @Test
-    void crsIdentifierFactory_shouldThrowException_whenCrsCodeIsEpsgWithNegativeNumber() {
-        IllegalArgumentException exception = assertThrows(
-                IllegalArgumentException.class,
-                () -> CrsIdentifierFactory.createFromCrsCode(getCrsCodeIncludingUppercasedEpsgPrefix(-123)), // should fail
-                "EPSG must not be negative"
-        );
-        assertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-positive");
+    [Test]
+    public void crsIdentifierFactory_shouldThrowException_whenCrsCodeIsEpsgWithNegativeNumber()
+    {
+        ArgumentException exception = Assert.Throws<ArgumentException>( () => {
+            CrsIdentifierFactory.CreateFromCrsCode(GetCrsCodeIncludingUppercasedEpsgPrefix(-123)); // should fail
+        }, "EPSG must not be negative");
+        AssertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-positive");
     }
 
 
-    @Test
-    void crsIdentifierFactory_shouldThrowException_epsgNumberIsNegative() {
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> CrsIdentifierFactory.createFromEpsgNumber(-1), // should fail
-            "EPSG must not be negative"
-        );
-        assertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-positive");
-    }
-    
-    @Test
-    void crsIdentifiers_shouldBeEqual_whenCreatedFromEpsgNumberAndCorrespondingCrsCode() {
-        CrsIdentifier fromEpsgNumber    = CrsIdentifierFactory.createFromEpsgNumber(3006);
-        CrsIdentifier fromCrsCode       = CrsIdentifierFactory.createFromCrsCode("  epsg:3006   ");
-        assertEquals(fromEpsgNumber, fromCrsCode);
-        assertEquals(fromEpsgNumber.hashCode(), fromCrsCode.hashCode());
+    [Test]
+    public void crsIdentifierFactory_shouldThrowException_epsgNumberIsNegative()
+    {
+        ArgumentException exception = Assert.Throws<ArgumentException>( () => {
+            CrsIdentifierFactory.CreateFromEpsgNumber(-1); // should fail
+        }, "EPSG must not be negative");
+        AssertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-positive");
     }
 
-    /**
-     * @param exception
-     * @param expectedStringToBeContainedInExceptionMessage e.g. "non-null" or "non-empty"
-     */
-    private void assertExceptionMessageWhenArgumentWasNullOrEmptyString(
-        IllegalArgumentException exception,
+    [Test]
+    public void crsIdentifiers_shouldBeEqual_whenCreatedFromEpsgNumberAndCorrespondingCrsCode()
+    {
+        CrsIdentifier fromEpsgNumber = CrsIdentifierFactory.CreateFromEpsgNumber(3006);
+        CrsIdentifier fromCrsCode = CrsIdentifierFactory.CreateFromCrsCode("  epsg:3006   ");
+        Assert.AreEqual(fromEpsgNumber, fromCrsCode);
+        Assert.AreEqual(fromEpsgNumber.GetHashCode(), fromCrsCode.GetHashCode());
+    }
+
+    ///**
+    // * @param exception
+    // * @param expectedStringToBeContainedInExceptionMessage e.g. "non-null" or "non-empty"
+    // */
+    private void AssertExceptionMessageWhenArgumentWasNullOrEmptyString(
+        ArgumentException exception,
         String expectedStringToBeContainedInExceptionMessage
-    ) {
-        assertNotNull(exception);
-        assertNotNull(exception.getMessage());
+    )
+    {
+        Assert.NotNull(exception);
+        Assert.NotNull(exception.Message);
         // the exception message is currently something like this: "Parameter specified as non-null is null: method com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier$Companion.createFromCrsCode, parameter crsCode"
         // (potentially fragile to test the message strings but it does not really change often, and in such a rare scenario, then easy to fix)
-        assertThat(exception.getMessage(), containsString(expectedStringToBeContainedInExceptionMessage));
+        Assert.That(exception.Message, Does.Contain(expectedStringToBeContainedInExceptionMessage));
+        // Alternative to the above test
+        StringAssert.Contains(expectedStringToBeContainedInExceptionMessage, exception.Message);
     }
 
-    @Test
-    void createFromEpsgNumber_shouldThrowException_whenEpsgNumberIsNull() {
-        Integer epsgNumber = null;
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> CrsIdentifierFactory.createFromEpsgNumber(epsgNumber)
-        );
-        // Previously the above method resulted in a "NullPointerException"
-        // (created by Kotlin when trying to invoke)
-        // but now the validation instead creates an IllegalArgumentException 
-        assertNotNull(exception);
-        final String exceptionMessage = exception.getMessage();
-        // fragile hardcoded string below but will not change often and if/when then it will be easy to fix when it fails
-        assertThat(exceptionMessage, containsString("EPSG number must not be null"));        
+    [Test]
+    public void createFromCrsCode_shouldThrowException_whenCrsCodeIsNull()
+    {
+        ArgumentException exception = Assert.Throws<ArgumentNullException>( () => {
+            CrsIdentifierFactory.CreateFromCrsCode(null);
+        }, "CRS code must not be null");
     }
 
-    @Test
-    void createFromCrsCode_shouldThrowException_whenCrsCodeIsNull() {
-        String crsCode = null;
-        IllegalArgumentException exception = assertThrows(
-            IllegalArgumentException.class,
-            () -> CrsIdentifierFactory.createFromCrsCode(crsCode)
-        );
-        // "java.lang.IllegalArgumentException: Parameter specified as non-null is null: method com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory.createFromCrsCode, parameter crsCode"
-    }
-    
-}
+} // class ends
+} // namespace ends

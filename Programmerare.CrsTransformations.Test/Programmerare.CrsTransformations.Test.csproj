@@ -26,4 +26,8 @@
     <PackageReference Include="NUnit3TestAdapter" Version="3.11.0" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Programmerare.CrsTransformations.Core\Programmerare.CrsTransformations.Core.fsproj" />
+  </ItemGroup>
+
 </Project>
