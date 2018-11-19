@@ -9,6 +9,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="crsTransformations\crsIdentifier\CrsIdentifier.fs" />
+    <Compile Include="crsTransformations\crsIdentifier\CrsIdentifierFactory.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>
 
