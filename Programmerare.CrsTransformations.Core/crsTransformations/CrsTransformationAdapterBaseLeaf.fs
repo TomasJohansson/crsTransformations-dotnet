@@ -1,9 +1,9 @@
-package com.programmerare.crsTransformations
+namespace com.programmerare.crsTransformations
 
-import com.programmerare.crsTransformations.coordinate.CrsCoordinate
-import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
+open com.programmerare.crsTransformations.coordinate
+open com.programmerare.crsTransformations.crsIdentifier
 
-/**
+(*
  * Base class for the 'leaf' adapters.
  * @see CrsTransformationAdapterBase
  * @see CrsTransformationAdapter
@@ -13,55 +13,59 @@ import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
  * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
  * Please find more information in the license file at the root directory of each subproject
  * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
- */
-abstract class CrsTransformationAdapterBaseLeaf : CrsTransformationAdapterBase(), CrsTransformationAdapter {
+ *)
+[<AbstractClass>]
+type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
+    class
+        inherit CrsTransformationAdapterBase()
 
-    override final fun transform(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult {
-        try {
-            val outputCoordinate = transformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
-            if(
-                java.lang.Double.isNaN(outputCoordinate.yNorthingLatitude)
-                ||
-                java.lang.Double.isNaN(outputCoordinate.xEastingLongitude)
-            ) {
-                return CrsTransformationResult._createCrsTransformationResult(
-                    inputCoordinate,
-                    null,
-                    exception = null, 
-                    isSuccess = false,
-                    crsTransformationAdapterResultSource = this
-                )
-            }
-            else {
-                return CrsTransformationResult._createCrsTransformationResult(
-                    inputCoordinate,
-                    outputCoordinate,
-                    exception = null,
-                    isSuccess = outputCoordinate != null,
-                    crsTransformationAdapterResultSource = this
-                )
-            }
-        }
-        catch (e: Throwable) {
-            return CrsTransformationResult._createCrsTransformationResult(
-                inputCoordinate,
-                null,
-                exception = e,
-                isSuccess = false,
-                crsTransformationAdapterResultSource = this
-            )
-        }
-    }
+        abstract _TransformToCoordinateHookLeaf : CrsCoordinate * CrsIdentifier -> CrsCoordinate
 
-    override final fun getTransformationAdapterChildren(): List<CrsTransformationAdapter> {
-        return listOf<CrsTransformationAdapter>()
-    }
+        override this._TransformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
+            //try {
+                let outputCoordinate = this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+                CrsTransformationResult()
+                //if true then
+                //    //java.lang.Double.isNaN(outputCoordinate.yNorthingLatitude)
+                //    //||
+                //    //java.lang.Double.isNaN(outputCoordinate.xEastingLongitude)
+                    
+                //    return CrsTransformationResult._createCrsTransformationResult(
+                //        inputCoordinate,
+                //        null,
+                //        exception = null, 
+                //        isSuccess = false,
+                //        crsTransformationAdapterResultSource = this
+                //    )
+                //}
+                //else {
+                //    return CrsTransformationResult._createCrsTransformationResult(
+                //        inputCoordinate,
+                //        outputCoordinate,
+                //        exception = null,
+                //        isSuccess = outputCoordinate != null,
+                //        crsTransformationAdapterResultSource = this
 
-    override final fun isComposite(): Boolean {
-        return false
-    }
+            //catch (e: Throwable) {
+            //    return CrsTransformationResult._createCrsTransformationResult(
+            //        inputCoordinate,
+            //        null,
+            //        exception = e,
+            //        isSuccess = false,
+            //        crsTransformationAdapterResultSource = this
+            //    )
+            //}
+        
 
-    override fun getAdapteeType() : CrsTransformationAdapteeType {
-        return CrsTransformationAdapteeType.UNSPECIFIED_LEAF
-    }
-}
+        //override this._GetTransformationAdapterChildren(): List<CrsTransformationAdapter> {
+        //    return listOf<CrsTransformationAdapter>()
+        //}
+
+        //override final fun isComposite(): Boolean {
+        //    return false
+        //}
+
+        //override fun getAdapteeType() : CrsTransformationAdapteeType {
+        //    return CrsTransformationAdapteeType.UNSPECIFIED_LEAF
+        //}
+    end

@@ -1,9 +1,9 @@
-package com.programmerare.crsTransformations
+namespace com.programmerare.crsTransformations
 
-import com.programmerare.crsTransformations.coordinate.CrsCoordinate
-import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
+open com.programmerare.crsTransformations.crsIdentifier
+open com.programmerare.crsTransformations.coordinate
 
-/**
+(*
  * This adapter interface is the core type of this CRS transtiomation library.
  * 
  * It defines six transform methods.
@@ -38,112 +38,94 @@ import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
  * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
  * Please find more information in the license file at the root directory of each subproject
  * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
- */
-interface CrsTransformationAdapter {
+ *)
+type CrsTransformationAdapter =
+    interface
+        // -------------------------------------------------
+        // The three methods returning a coordinate object:
 
-    // -------------------------------------------------
-    // The three methods returning a coordinate object:
+        (*
+         * Transforms a coordinate to a coordinate
+         * in another coordinate reference system if possible
+         * but may throw an exception if the transformation fails.
+         *)
+        abstract member TransformToCoordinate : CrsCoordinate * int -> CrsCoordinate
 
-    /**
-     * Transforms a coordinate to a coordinate
-     * in another coordinate reference system if possible
-     * but may throw an exception if the transformation fails.
-     */
-    fun transformToCoordinate(
-        inputCoordinate: CrsCoordinate,
-        epsgNumberForOutputCoordinateSystem: Int
-    ): CrsCoordinate
+        (*
+         * Transforms a coordinate to a coordinate
+         * in another coordinate reference system if possible
+         * but may throw an exception if the transformation fails.
+         *)
+        abstract member TransformToCoordinate : CrsCoordinate * string -> CrsCoordinate
 
-    /**
-     * Transforms a coordinate to a coordinate
-     * in another coordinate reference system if possible
-     * but may throw an exception if the transformation fails.
-     */
-    fun transformToCoordinate(
-        inputCoordinate: CrsCoordinate,
-        crsCodeForOutputCoordinateSystem: String
-    ): CrsCoordinate
+        (*
+         * Transforms a coordinate to a coordinate
+         * in another coordinate reference system if possible
+         * but may throw an exception if the transformation fails.
+         *)
+        abstract member TransformToCoordinate : CrsCoordinate * CrsIdentifier -> CrsCoordinate
+        // -------------------------------------------------
 
-    /**
-     * Transforms a coordinate to a coordinate
-     * in another coordinate reference system if possible
-     * but may throw an exception if the transformation fails.
-     */
-    fun transformToCoordinate(
-        inputCoordinate: CrsCoordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
-    ): CrsCoordinate
-    // -------------------------------------------------
+        // -------------------------------------------------
+        // The three methods returning a transformation result object:
 
-    // -------------------------------------------------
-    // The three methods returning a transformation result object:
+        (*
+         * Transforms a coordinate to another coordinate reference system.
+         * 
+         * The method should never throw an exception but instead one of the methods
+         * in the result object should be used to check for failure.
+         *)
+        abstract member Transform : CrsCoordinate * int -> CrsTransformationResult
 
-    /**
-     * Transforms a coordinate to another coordinate reference system.
-     * 
-     * The method should never throw an exception but instead one of the methods
-     * in the result object should be used to check for failure.
-     */
-    fun transform(
-        inputCoordinate: CrsCoordinate,
-        epsgNumberForOutputCoordinateSystem: Int
-    ): CrsTransformationResult
+        (*
+         * Transforms a coordinate to another coordinate reference system.
+         * 
+         * The method should never throw an exception but instead one of the methods
+         * in the result object should be used to check for failure.
+         *)
+        abstract member Transform : CrsCoordinate * string -> CrsTransformationResult
 
-    /**
-     * Transforms a coordinate to another coordinate reference system.
-     * 
-     * The method should never throw an exception but instead one of the methods
-     * in the result object should be used to check for failure.
-     */
-    fun transform(
-        inputCoordinate: CrsCoordinate,
-        crsCodeForOutputCoordinateSystem: String
-    ): CrsTransformationResult
+        (*
+         * Transforms a coordinate to another coordinate reference system.
+         * 
+         * The method should never throw an exception but instead one of the methods
+         * in the result object should be used to check for failure.
+         *)
+        abstract member Transform : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
+        // -------------------------------------------------
 
-    /**
-     * Transforms a coordinate to another coordinate reference system.
-     * 
-     * The method should never throw an exception but instead one of the methods
-     * in the result object should be used to check for failure.
-     */
-    fun transform(
-        inputCoordinate: CrsCoordinate,
-        crsIdentifierForOutputCoordinateSystem: CrsIdentifier
-    ): CrsTransformationResult
-    // -------------------------------------------------
+        (*
+         * Should normally simply return the full class name (including the package name), 
+         * but when implementing test doubles (e.g. Mockito stub)
+         * then the method should be implemented by defining different names
+         * to simulate that different classes (implementations)
+         * should have different weights.
+         *)
+        abstract member GetLongNameOfImplementation : string
 
+        (*
+         * Should return the unique suffix part of the class name
+         * i.e. the class name without the prefix which is common
+         * for all implementations.
+         *)
+        abstract member GetShortNameOfImplementation : string
 
-    /**
-     * Should normally simply return the full class name (including the package name), 
-     * but when implementing test doubles (e.g. Mockito stub)
-     * then the method should be implemented by defining different names
-     * to simulate that different classes (implementations)
-     * should have different weights.
-     */
-    fun getLongNameOfImplementation(): String
+        (*
+         * @see CrsTransformationAdapteeType
+         *)
+        abstract member GetAdapteeType : CrsTransformationAdapteeType
 
-    /**
-     * Should return the unique suffix part of the class name
-     * i.e. the class name without the prefix which is common
-     * for all implementations.
-     */
-    fun getShortNameOfImplementation(): String
+        (*
+         * @return  true if the implementation is a 'composite'
+         *          but false if it is a 'leaf' implementation
+         *)
+        abstract member IsComposite : bool
 
-    /**
-     * @see CrsTransformationAdapteeType
-     */
-    fun getAdapteeType() : CrsTransformationAdapteeType
+        (*
+         * @return  a list of children/leafs when the implementation
+         *          is a 'composite'but if the implementation is a 'leaf'
+         *          then an empty list should be returned.
+         *)
+        abstract member GetTransformationAdapterChildren : List<CrsTransformationAdapter>
 
-    /**
-     * @return  true if the implementation is a 'composite'
-     *          but false if it is a 'leaf' implementation
-     */
-    fun isComposite(): Boolean
-
-    /**
-     * @return  a list of children/leafs when the implementation
-     *          is a 'composite'but if the implementation is a 'leaf'
-     *          then an empty list should be returned.
-     */
-    fun getTransformationAdapterChildren(): List<CrsTransformationAdapter>
-}
+    end

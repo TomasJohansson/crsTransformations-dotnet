@@ -1,6 +1,8 @@
-package com.programmerare.crsTransformations
+namespace com.programmerare.crsTransformations
 
-/**
+// F# enum
+
+(*
  * Enumeration type returned from a method in the adapter interface.
  * 
  * The purpose is to make it easier to see from where a result originated
@@ -14,45 +16,32 @@ package com.programmerare.crsTransformations
  * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
  * Please find more information in the license file at the root directory of each subproject
  * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
- */
-enum class CrsTransformationAdapteeType {
+ *)
 
-    // After an upgrade, test code should help to remind about updating the enum values.
-    // For exampl, there is test code that retrives the name of the jar file for 
-    // a class within geotools library, and the testcode verifies for example 
-    // the file name "gt-api-20.0.jar" but if the file name would instead be  
-    // for example "gt-api-20.1.jar" then the test would fail to help reminding 
-    // that a new enum should be added
-    
-    /**
+// After an upgrade, test code should help to remind about updating the enum values.
+// For exampl, there is test code that retrives the name of the jar file for 
+// a class within geotools library, and the testcode verifies for example 
+// the file name "gt-api-20.0.jar" but if the file name would instead be  
+// for example "gt-api-20.1.jar" then the test would fail to help reminding 
+// that a new enum should be added
+
+type CrsTransformationAdapteeType =  // F# enum
+
+    (*
      * Maven version for the adaptee library:  
      * "org.geotools:gt-main:20.0"
-     */
-    LEAF_GEOTOOLS_20_0,
+     *)
+    | LEAF_GEOTOOLS_20_0 = 1100
 
-    /**
+    (*
      * Maven version for the adaptee library:
      * "com.github.goober:coordinate-transformation-library:1.1"
-     */
-    LEAF_GOOBER_1_1,
+     *)
+    | LEAF_GOOBER_1_1 = 1200
 
-    /**
-     * Maven version for the adaptee library:  
-     * "org.orbisgis:cts:1.5.1"
-     */
-    LEAF_ORBISGIS_1_5_1,
-
-    /**
-     * Maven version for the adaptee library:  
-     * "mil.nga.geopackage:geopackage-core:3.1.0"
-     */
-    LEAF_NGA_GEOPACKAGE_3_1_0,
-
-    /**
-     * Maven version for the adaptee library:  
-     * "org.osgeo:proj4j:0.1.0"
-     */
-    LEAF_PROJ4J_0_1_0,
+    // NOTE !
+    // The above "leafs" are for the JVM version
+    // and will be replaced with others in this .NET version
 
     // The above "leafs" are the real "adaptees"
     // and the below composite "adapters" are not true adapters
@@ -62,31 +51,30 @@ enum class CrsTransformationAdapteeType {
     // though questionable if that would be meaningful, while it can be more useful
     // for troubleshooting to make it easier to figure out exactly which
     // version of a leaf adaptee is causing a certain transformation
-
-    /**
+    
+    (*
      * Represents a composite which returns a result with
      * longitude and latitude being the median of the 'leafs'.
-     */
-    COMPOSITE_MEDIAN,
+     *)
+    | COMPOSITE_MEDIAN = 9010
 
-    /**
+    (*
      * Represents a composite which returns a result with
      * longitude and latitude being the average of the 'leafs'.
-     */
-    COMPOSITE_AVERAGE,
+     *)
+    | COMPOSITE_AVERAGE = 9020
 
-    /**
+    (*
      * Represents a composite which returns a result with
      * longitude and latitude being a weighted average of the 'leafs'.
      * 
      * The implementation will try to use results from all 'leaf' adapters
      * by calculating the resulting coordinate using weights
      * which must have been provided to the composite object when it was constructed.
-     */
-    COMPOSITE_WEIGHTED_AVERAGE,
+     *)
+    | COMPOSITE_WEIGHTED_AVERAGE = 9030
 
-
-    /**
+    (*
      * Represents a composite which returns a result with
      * longitude and latitude being the first
      * succesful result for a 'leaf'.
@@ -97,28 +85,26 @@ enum class CrsTransformationAdapteeType {
      * In other words, the number of results will always
      * be zero or one, unlike the median and average (or weighted) composites
      * which can have many results from multiple 'leafs' (adapter/adaptee implementations).
-     */
-    COMPOSITE_FIRST_SUCCESS,
+     *)
+    | COMPOSITE_FIRST_SUCCESS = 9040
 
-
-    /**
+    (*
      * A default value for leafs in a base class but this value
      * should normally not occur since it should be overridden in
      * leaf implementations.
-     */
-    UNSPECIFIED_LEAF,
+     *)
+    | UNSPECIFIED_LEAF = 110
 
-    /**
+    (*
      * A default value for composites in a base class but this value
      * should normally not occur since it should be overridden in
      * composite implementations.
-     */
-    UNSPECIFIED_COMPOSITE,
+     *)
+    | UNSPECIFIED_COMPOSITE = 120
 
-    /**
+    (*
      * A default value for adapters in a base class but this value
      * should normally not occur since it should be overridden in
      * subclass implementations.
-     */
-    UNSPECIFIED;
-}
+     *)    
+    | UNSPECIFIED = 100
