@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Remove="crsTransformations\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <Compile Include="Library.fs" />
   </ItemGroup>
 
