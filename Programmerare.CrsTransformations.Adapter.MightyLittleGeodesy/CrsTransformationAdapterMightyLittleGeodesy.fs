@@ -1,3 +1,31 @@
+namespace com.programmerare.crsTransformations
+
+open MightyLittleGeodesy.Positions
+open com.programmerare.crsTransformations
+open com.programmerare.crsTransformations.coordinate
+
+type CrsTransformationAdapterMightyLittleGeodesy() =
+    class
+        inherit CrsTransformationAdapterBaseLeaf()
+
+        override this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifier) = 
+            if inputCoordinate.CrsIdentifier.EpsgNumber <> 4326 then
+                raise (System.NotImplementedException("Currently only from coordinate WGS84 is supported (epsg 4326)"))
+            if crsIdentifier.EpsgNumber <> 3006 then
+                raise (System.NotImplementedException("Currently only to coordinate SWEREF99 is supported (epsg 3006)"))
+
+            let wgsPos = new WGS84Position(inputCoordinate.Latitude, inputCoordinate.Longitude)
+            let rtPos = new SWEREF99Position(wgsPos, SWEREF99Position.SWEREFProjection.sweref_99_tm);
+            CrsCoordinateFactory.LatLon(rtPos.Latitude, rtPos.Longitude, 3006)
+
+        override this._TransformToCoordinateHook(inputCoordinate, crsIdentifier) = 
+            this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifier)
+
+    end
+(*
+TODO: use parts (but modified to F#) of the below Kotlin code (adapter for Goober)
+to improve the above initial F# implementation 
+
 package com.programmerare.crsTransformationAdapterGooberCTL
 
 import com.github.goober.coordinatetransformation.Position
@@ -165,3 +193,4 @@ class CrsTransformationAdapterGooberCTL : CrsTransformationAdapterBaseLeaf(), Cr
         // TODO: maybe more validation, for example validate coordinates to be reasonable i.e. within Sweden since this is an implementation with only coordinate systems used in Sweden  
     }    
 }
+*)
