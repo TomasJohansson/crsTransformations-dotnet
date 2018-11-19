@@ -24,16 +24,16 @@ open com.programmerare.crsTransformations.crsIdentifier
  * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
 
      * One of the four accessors for the part of the coordinate that represents the east-west/X/Longitude direction. 
-     */
+     
     val xEastingLongitude: Double,
 
      * One of the four accessors for the part of the coordinate that represents the east-west/Y/Latitude direction.
-     */    
+     
     val yNorthingLatitude: Double,
 
      * CRS (Coordinate Reference System) identifier with the EPSG code 
      * which defines the coordinate reference system for the coordinate instance. 
-     */    
+     
     val crsIdentifier: CrsIdentifier
 
     // TODO: rewrite comments above for .NET ...

@@ -5,7 +5,7 @@ import com.programmerare.crsTransformations.coordinate.createFromXEastingLongitu
 import com.programmerare.crsTransformations.utils.MedianValueUtility
 import java.lang.RuntimeException
 
-/**
+(*
  * Class providing conveniently available aggregated information from multiple results.
  *
  * @author Tomas Johansson ( http://programmerare.com )
@@ -13,55 +13,55 @@ import java.lang.RuntimeException
  * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
  * Please find more information in the license file at the root directory of each subproject
  * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
- */
+ *)
 class CrsTransformationResultStatistic private constructor(
     private val results: List<CrsTransformationResult>
 ) {
 
-    /**
+    (*
      * @return true if there is at least one succesful result but otherwise false.
-     */
+     *)
     fun isStatisticsAvailable(): Boolean {
         return getNumberOfResults() > 0
     }
 
-    /**
+    (*
      * @return the number of succesful results
-     */
+     *)
     fun getNumberOfResults(): Int {
         return _sucessfulCoordinatesLazyLoaded.size
     }
 
-    /**
+    (*
      * Precondition: isStatisticsAvailable must return true
      * @return a coordinate with the average X/Longitude and the average Y/Latitude
-     */
+     *)
     fun getCoordinateAverage(): CrsCoordinate {
         throwExceptionIfPreconditionViolated()
         return _coordinateAverageLazyLoaded
     }
 
-    /**
+    (*
      * Precondition: isStatisticsAvailable must return true
      * @return a coordinate with the median X/Longitude and the median Y/Latitude
-     */
+     *)
     fun getCoordinateMedian(): CrsCoordinate {
         throwExceptionIfPreconditionViolated()
         return _coordinateMedianLazyLoaded
     }
 
-    /**
+    (*
      * @return the maximal difference in Y/Latitude values
      *      between the coordinate with the smallest and the largest Y/Latitude values.
-     */
+     *)
     fun getMaxDifferenceForYNorthingLatitude(): Double {
         return _maxDiffLatitudesLazyLoaded
     }
     
-    /**
+    (*
      * @return the maximal difference in X/Longitude values
      *      between the coordinate with the smallest and the largest X/Longitude values.
-     */
+     *)
     fun getMaxDifferenceForXEastingLongitude(): Double {
         return _maxDiffLongitudesLazyLoaded
     }
@@ -118,9 +118,9 @@ class CrsTransformationResultStatistic private constructor(
     }
 
     internal companion object {
-        /**
+        (*
          * This method is not intended for public use from client code.
-         */
+         *)
         @JvmStatic
         fun _createCrsTransformationResultStatistic(
             results: List<CrsTransformationResult>

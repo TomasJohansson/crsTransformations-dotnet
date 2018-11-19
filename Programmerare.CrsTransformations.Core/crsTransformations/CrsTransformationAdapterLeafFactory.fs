@@ -2,7 +2,7 @@ package com.programmerare.crsTransformations
 
 import java.lang.RuntimeException
 
-/**
+(*
  * Factory used by 'composites' for creating 'leaf' implementations available at the classpath.  
  * 
  * The factory uses reflection code to instantiate the implementations from strings with full class names.  
@@ -18,14 +18,14 @@ import java.lang.RuntimeException
  * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
  * Please find more information in the license file at the root directory of each subproject
  * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
- */
+ *)
 object CrsTransformationAdapterLeafFactory {
 
-    /**
+    (*
      * @param crsTransformationAdapterClassName the full class name (i.e. including the package name)
      *      of a class which must implement the interface CrsTransformationAdapter
      * @return an instance if it could be created but otherwise an exception      
-     */
+     *)
     @JvmStatic
     fun createCrsTransformationAdapter(crsTransformationAdapterClassName: String): CrsTransformationAdapter {
         try {
@@ -40,11 +40,11 @@ object CrsTransformationAdapterLeafFactory {
         }        
     }
 
-    /**
+    (*
      * @param the full class name (i.e. including the package name)
      *      of a class which must implement the interface CrsTransformationAdapter
      * @return true if it possible to create an instance from the input string 
-     */
+     *)
     @JvmStatic
     fun isCrsTransformationAdapter(crsTransformationAdapterClassName: String?): Boolean {
         try {
@@ -67,19 +67,19 @@ object CrsTransformationAdapterLeafFactory {
         "com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J"
     )
 
-    /**
+    (*
      * @return a list of strings with full class names for known 
      *  leaf implementations of the adapter interface
-     */
+     *)
     @JvmStatic
     fun getClassNamesForAllKnownImplementations(): List<String> {
         return classNamesForAllKnownImplementations
     }
 
-    /**
+    (*
      * @return a list of instances for all known leaf implementations 
      *      of the adapter interface, which are available at the class path.
-     */    
+     *)    
     @JvmStatic
     fun getInstancesOfAllKnownAvailableImplementations(): List<CrsTransformationAdapter> {
         return crsTransformationAdapters
