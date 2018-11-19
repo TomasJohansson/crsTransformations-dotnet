@@ -120,5 +120,32 @@ public class CrsIdentifierTest {
         }, "CRS code must not be null");
     }
 
+    [Test]
+    public void crsIdentifier_shouldNotBeEqual_whenDifferentEpsgNumber()
+    {
+        Assert.AreNotEqual(
+            CrsIdentifierFactory.CreateFromEpsgNumber(123),
+            CrsIdentifierFactory.CreateFromEpsgNumber(124)
+        );
+    }
+
+    [Test]
+    public void crsIdentifier_shouldNotBeEqual_whenDifferentCrsCode()
+    {
+        Assert.AreNotEqual(
+            CrsIdentifierFactory.CreateFromCrsCode("EPSG:987"),
+            CrsIdentifierFactory.CreateFromCrsCode("EPSG:986")
+        );
+    }
+
+    [Test]
+    public void crsIdentifier_shouldNotBeEqual_whenDifferentNonEpsgCrsCode()
+    {
+        Assert.AreNotEqual(
+            CrsIdentifierFactory.CreateFromCrsCode("abc"),
+            CrsIdentifierFactory.CreateFromCrsCode("abd")
+        );
+    }
+
 } // class ends
 } // namespace ends

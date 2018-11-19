@@ -78,9 +78,9 @@ type CrsIdentifier private
         CrsIdentifier(crsCode, isEpsgCode, epsgNumber)
 
     override this.Equals(obj) =
-        // found this below at stack overflow
+        // found similar code as below at stackoverflow
         match obj with
-        | :? CrsIdentifier as c -> (crsCode, isEpsgCode, epsgNumber) = (this.CrsCode, this.IsEpsgCode, this.EpsgNumber)
+        | :? CrsIdentifier as c -> (crsCode, isEpsgCode, epsgNumber) = (c.CrsCode, c.IsEpsgCode, c.EpsgNumber)
         | _ -> false
 
     override this.GetHashCode() =
