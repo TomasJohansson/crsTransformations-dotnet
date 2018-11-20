@@ -19,6 +19,16 @@ open com.programmerare.crsTransformations.crsIdentifier
 [<AbstractClass>]
 type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
     class
+
+        let TrowExceptionIfCoordinateIsNull(inputCoordinate) : unit = 
+            if isNull inputCoordinate then
+                nullArg "inputCoordinate"
+            // The above would cause this error:
+            // "Value cannot be null. Parameter name: inputCoordinate"
+            // instead of the following which would occur later:
+            // "Object reference not set to an instance of an object"
+                
+
         (*
          * Transforms a coordinate to another coordinate reference system.  
          * 
@@ -59,12 +69,15 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
             // which is an abstract method that must be implemented in a subclass.
 
             member this.TransformToCoordinate(inputCoordinate, crsCode) =
+                TrowExceptionIfCoordinateIsNull(inputCoordinate)
                 this._TransformToCoordinateHook(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
 
             member this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
+                TrowExceptionIfCoordinateIsNull(inputCoordinate)
                 this._TransformToCoordinateHook(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
 
             member this.TransformToCoordinate(inputCoordinate, crsIdentifier) = 
+                TrowExceptionIfCoordinateIsNull(inputCoordinate)
                 this._TransformToCoordinateHook(inputCoordinate, crsIdentifier)
             // -------------------------------------------------
 

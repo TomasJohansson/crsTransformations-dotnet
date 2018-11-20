@@ -199,6 +199,53 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
             Assert.AreEqual(0, subresults.Count); // Leaf should have no children
         }
 
+        [Test]
+        public void transformToCoordinate_WhenCrsIsUnvalidForSpecificImplementation()
+        {
+            int epsgNotSupported = 123; // not supported by MightyLittleGeodesy
+            // TransformToCoordinate SHOULD (unlike the transform method) 
+            // throw exception 
+            ArgumentException exception = Assert.Throws<ArgumentException>( () => {
+                crsTransformationAdapter.TransformToCoordinate(coordinateRT90, epsgNotSupported);
+            });
+        }
+
+
+        [Test]
+        public void transformToCoordinate_WhenCrsIsUnvalidForAllImplementations()
+        {
+            int epsgNotSupported = -99999999;
+            // TransformToCoordinate SHOULD (unlike the transform method) 
+            // throw exception 
+            ArgumentException exception = Assert.Throws<ArgumentException>( () => {
+                crsTransformationAdapter.TransformToCoordinate(coordinateRT90, epsgNotSupported);
+            });
+        }
+
+        [Test]
+        public void transformToCoordinate_WhenCrsCodeIsNull()
+        {
+            string crsCode = null;
+            // TransformToCoordinate SHOULD (unlike the transform method) 
+            // throw exception 
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>( () => {
+                crsTransformationAdapter.TransformToCoordinate(coordinateRT90, crsCode);
+            });
+        }
+
+        [Test]
+        public void transformToCoordinate_WhenInputCoordinateIsNull()
+        {
+            CrsIdentifier crsWgs84 = coordinateWgs84.CrsIdentifier;
+            Assert.IsNotNull(crsWgs84);
+            CrsCoordinate nullCordinate = null;
+            // TransformToCoordinate SHOULD (unlike the transform method) 
+            // throw exception 
+            ArgumentNullException exception = Assert.Throws<ArgumentNullException>( () => {
+                crsTransformationAdapter.TransformToCoordinate(nullCordinate, crsWgs84);
+            });
+        }
+
         private void AssertCoordinateResult(
             CrsCoordinate actual, 
             CrsCoordinate expected, 
