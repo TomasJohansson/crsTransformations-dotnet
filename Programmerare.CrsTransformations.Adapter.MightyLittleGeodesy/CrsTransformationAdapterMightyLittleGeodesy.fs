@@ -28,11 +28,6 @@ type CrsTransformationAdapterMightyLittleGeodesy() =
         static let sweREFProjections: Dictionary<int, SWEREF99Position.SWEREFProjection> = new Dictionary<int, SWEREF99Position.SWEREFProjection>()
 
         static do
-            let kalle = new Dictionary<int, string>();
-            kalle.Add(1,"1");
-            kalle.Add(2,"2");
-            kalle.Add(3,"3");
-            printfn("static do begins")
             // Below some EPSG numbers are hardcoded.
             // If those numbers would be used in more than one place in this file or the module,
             // then constants would definitely have been preferred,
@@ -48,8 +43,6 @@ type CrsTransformationAdapterMightyLittleGeodesy() =
             rt90Projections.Add(3022, RT90Position.RT90Projection.rt90_0_0_gon_v)    // EPSG:3022: RT90 0 gon			https://epsg.io/3022
             rt90Projections.Add(3023, RT90Position.RT90Projection.rt90_2_5_gon_o)    // EPSG:3023: RT90 2.5 gon O		https://epsg.io/3023
             rt90Projections.Add(3024, RT90Position.RT90Projection.rt90_5_0_gon_o)    // EPSG:3024: RT90 5 gon O			https://epsg.io/3024
-            Console.WriteLine("static middle med count " + rt90Projections.Count.ToString())
-            Console.WriteLine("static middle med kalle count " + kalle.Count.ToString())
 
             // http://spatialreference.org/ref/?search=sweref
             sweREFProjections.Add(3006, SWEREF99Position.SWEREFProjection.sweref_99_tm)       // EPSG:3006: SWEREF99 TM		https://epsg.io/3006
@@ -65,11 +58,6 @@ type CrsTransformationAdapterMightyLittleGeodesy() =
             sweREFProjections.Add(3016, SWEREF99Position.SWEREFProjection.sweref_99_20_15)    // EPSG:3016: SWEREF99 20 15	https://epsg.io/3016
             sweREFProjections.Add(3017, SWEREF99Position.SWEREFProjection.sweref_99_21_45)    // EPSG:3017: SWEREF99 21 45	https://epsg.io/3017
             sweREFProjections.Add(3018, SWEREF99Position.SWEREFProjection.sweref_99_23_15)    // EPSG:3018: SWEREF99 23 15	https://epsg.io/3018
-            //printfn "static do ends med count %s" CrsTransformationAdapterMightyLittleGeodesy.sweREFProjections.Count.ToString()
-            Console.WriteLine("static do ends med count " + sweREFProjections.Count.ToString())
-
-
-
 
         member private this.isWgs84(epsgNumber) = epsgNumber = WGS84.EpsgNumber
         member private this.isSweref99(epsgNumber: int) = sweREFProjections.ContainsKey(epsgNumber)
