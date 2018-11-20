@@ -126,5 +126,14 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
         public void IsCompositeTest() {
             Assert.IsFalse(crsTransformationAdapter.IsComposite);
         }
+
+        [Test]
+        public void LongNameOfImplementationTest() {
+            string fullClassName = crsTransformationAdapter.GetType().FullName;
+            Assert.AreEqual(
+                fullClassName,  // expected
+                crsTransformationAdapter.LongNameOfImplementation
+            );
+        }
     }
 }

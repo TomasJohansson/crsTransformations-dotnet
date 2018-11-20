@@ -101,7 +101,7 @@ type CrsTransformationAdapter =
          * to simulate that different classes (implementations)
          * should have different weights.
          *)
-        abstract member GetLongNameOfImplementation : string
+        abstract member LongNameOfImplementation : string
 
         (*
          * Should return the unique suffix part of the class name

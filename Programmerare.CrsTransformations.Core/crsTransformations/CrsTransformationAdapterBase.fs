@@ -38,6 +38,9 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
 
         abstract member IsComposite : bool
         default this.IsComposite = raise (System.NotImplementedException())
+
+        abstract member LongNameOfImplementation : string
+        default this.LongNameOfImplementation = raise (System.NotImplementedException())
         
 
         interface CrsTransformationAdapter with
@@ -72,10 +75,7 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
 
             // -------------------------------------------------
 
-            member this.GetLongNameOfImplementation =
-                raise (System.NotImplementedException())
-                //"return this.javaClass.name"
-
+            member this.LongNameOfImplementation = this.LongNameOfImplementation
 
             member this.GetShortNameOfImplementation =
                 raise (System.NotImplementedException())

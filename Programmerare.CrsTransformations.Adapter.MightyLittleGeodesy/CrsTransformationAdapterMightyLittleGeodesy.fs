@@ -149,6 +149,8 @@ type CrsTransformationAdapterMightyLittleGeodesy() =
 
         override this.AdapteeType =
             CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1
+
+        override this.LongNameOfImplementation = this.GetType().FullName
     end
 (*
 // https://www.nuget.org/packages/MightyLittleGeodesy/
