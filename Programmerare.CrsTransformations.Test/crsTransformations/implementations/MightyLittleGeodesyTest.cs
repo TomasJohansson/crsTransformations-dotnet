@@ -1,5 +1,6 @@
 ﻿using com.programmerare.crsTransformations;
 using com.programmerare.crsTransformations.coordinate;
+using com.programmerare.crsTransformations.crsIdentifier;
 using NUnit.Framework;
 using System.Collections.Generic;
 
@@ -9,15 +10,19 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
     class MightyLittleGeodesyTest
     {
         // These coordinate should be corresponding:
-        private static readonly double wgs84Lat = 59.330231;
-        private static readonly double wgs84Lon = 18.059196;
-        private static readonly double sweref99Y = 6580822;
-        private static readonly double sweref99X = 674032;
-        private static readonly double rt90Y = 6580994;
-        private static readonly double rt90X = 1628294;
-        private static readonly int epsgWGS84 = 4326;
-        private static readonly int epsgSweref99 = 3006;
-        private static readonly int epsgRT9025gonv = 3021;// RT90 2.5 gon V
+        private const double wgs84Lat = 59.330231;
+        private const double wgs84Lon = 18.059196;
+        private const double sweref99Y = 6580822;
+        private const double sweref99X = 674032;
+        private const double rt90Y = 6580994;
+        private const double rt90X = 1628294;
+        private const int epsgWGS84 = 4326;
+        private const int epsgSweref99 = 3006;
+        private const int epsgRT9025gonv = 3021;// RT90 2.5 gon V
+        private const string EPSG_PREFIX = "EPSG:";
+        private static readonly string crsCodeWGS84 = EPSG_PREFIX + epsgWGS84;
+        private static readonly string crsCodeSweref99 = EPSG_PREFIX + epsgSweref99;
+        private static readonly string crsCodeRT9025gonv = EPSG_PREFIX + epsgRT9025gonv;// RT90 2.5 gon V
 
         private CrsTransformationAdapter crsTransformationAdapter;
         
@@ -48,6 +53,22 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
                 coordinateSweref99,
                 maxMeterDifferenceForSuccessfulTest
             );
+
+            // testing the same transform as above but with the overloaded 
+            // method taking a string as last parameter instead of integer
+            AssertCoordinateResult(
+                crsTransformationAdapter.TransformToCoordinate(coordinateWgs84, crsCodeSweref99),
+                coordinateSweref99,
+                maxMeterDifferenceForSuccessfulTest
+            );
+
+            // testing the same transform as above but with the overloaded 
+            // method taking a string as last parameter instead of string or integer
+            AssertCoordinateResult(
+                crsTransformationAdapter.TransformToCoordinate(coordinateWgs84, CrsIdentifierFactory.CreateFromEpsgNumber(epsgSweref99)),
+                coordinateSweref99,
+                maxMeterDifferenceForSuccessfulTest
+            );
         }
 
         [Test]
@@ -56,6 +77,22 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
             resultWgs84 = crsTransformationAdapter.TransformToCoordinate(coordinateSweref99, epsgWGS84);
             AssertCoordinateResult(
                 resultWgs84,
+                coordinateWgs84,
+                maxLatLongDifferenceForSuccessfulTest
+            );
+
+            // testing the same transform as above but with the overloaded 
+            // method taking a string as last parameter instead of integer
+            AssertCoordinateResult(
+                crsTransformationAdapter.TransformToCoordinate(coordinateSweref99, crsCodeWGS84),
+                coordinateWgs84,
+                maxLatLongDifferenceForSuccessfulTest
+            );
+
+            // testing the same transform as above but with the overloaded 
+            // method taking a string as last parameter instead of string or integer
+            AssertCoordinateResult(
+                crsTransformationAdapter.TransformToCoordinate(coordinateSweref99, CrsIdentifierFactory.CreateFromEpsgNumber(epsgWGS84)),
                 coordinateWgs84,
                 maxLatLongDifferenceForSuccessfulTest
             );
