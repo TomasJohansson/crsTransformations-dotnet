@@ -31,7 +31,7 @@ type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
                     null,
                     true,
                     this,
-                    new List<CrsTransformationResult>()
+                    CrsTransformationResultStatistic(new List<CrsTransformationResult>())
                 )
             with
                 // | :? System.Exception as exc -> 
@@ -43,7 +43,7 @@ type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
                         exc,
                         false,
                         this,
-                        new List<CrsTransformationResult>()
+                        CrsTransformationResultStatistic(new List<CrsTransformationResult>())
                     )
 
                 //if true then

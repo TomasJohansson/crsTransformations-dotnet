@@ -101,7 +101,7 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
                             exc,
                             false,
                             this,
-                            new List<CrsTransformationResult>()
+                            CrsTransformationResultStatistic(new List<CrsTransformationResult>())
                         )
             // TODO refactor the try/with code duplicated above/below 
             member this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
@@ -120,7 +120,7 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
                             exc,
                             false,
                             this,
-                            new List<CrsTransformationResult>()
+                            CrsTransformationResultStatistic(new List<CrsTransformationResult>())
                         )
 
             // -------------------------------------------------
