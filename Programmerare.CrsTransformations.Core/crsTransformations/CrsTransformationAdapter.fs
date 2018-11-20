@@ -1,4 +1,4 @@
-namespace rec com.programmerare.crsTransformations
+namespace com.programmerare.crsTransformations
 
 open System
 open System.Collections.Generic
