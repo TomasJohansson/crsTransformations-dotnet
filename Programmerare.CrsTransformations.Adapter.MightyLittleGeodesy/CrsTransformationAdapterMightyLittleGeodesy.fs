@@ -1,5 +1,5 @@
-namespace com.programmerare.crsTransformations
-open System
+namespace com.programmerare.crsTransformations.Adapter.MightyLittleGeodesy
+
 open System.Collections.Generic
 open MightyLittleGeodesy.Positions
 open MightyLittleGeodesy.Classes

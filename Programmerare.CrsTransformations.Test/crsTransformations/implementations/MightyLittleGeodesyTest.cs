@@ -1,4 +1,5 @@
 ﻿using com.programmerare.crsTransformations;
+using com.programmerare.crsTransformations.Adapter.MightyLittleGeodesy;
 using com.programmerare.crsTransformations.coordinate;
 using com.programmerare.crsTransformations.crsIdentifier;
 using NUnit.Framework;
