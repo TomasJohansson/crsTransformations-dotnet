@@ -33,6 +33,13 @@ type CrsTransformationAdapteeType =  // F# enum
      *)
     | LEAF_PROJ_NET_4_GEO_API_1_4_1 = 1100
 
+
+    (*
+     * NuGet version for the adaptee library "MightyLittleGeodesy":
+     * '<PackageReference Include="DotSpatial.Projections" Version="1.9.0" />'
+     *)
+    | LEAF_DOT_SPATIAL_1_9_0 = 1200
+
     (*
      * The abbreviation MLG = MightyLittleGeodesy
      * The purpose of using SWEDISH in the name is that 

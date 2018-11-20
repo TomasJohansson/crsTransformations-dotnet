@@ -5,6 +5,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Include="CrsTransformationAdapterDotSpatial.fs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="DotSpatial.Projections" Version="1.9.0" />
   </ItemGroup>
 
