@@ -478,62 +478,41 @@ and CrsTransformationResultStatistic // TODO maybe private constructor(
         else 
             let ma = values.Max()
             let mi = values.Min()
-            //values.Sort()
-            //let diff = Math.Abs(values.[0] - values.[values.Count - 1])
             let diff = Math.Abs(ma - mi)
             diff
-    
-    
-    //let _sucessfulCoordinatesLazyLoaded = null//: List<CrsCoordinate> by lazy {
-    //results.filter { it.isSuccess }.map { it.outputCoordinate }
-    let _successfulCoordinates: Lazy<List<CrsCoordinate>> =  //: List<CrsCoordinate> by lazy {
+
+    // F# Lazy loading: https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/lazy-computations
+
+    let _successfulCoordinatesLazyLoaded: Lazy<List<CrsCoordinate>> =
         lazy (
-            let ff: List<CrsCoordinate> = results.Where(fun r -> r.IsSuccess).Select(fun r -> r.OutputCoordinate).ToList();
-            // TODO Lazy load like in Kotlin ...
-            ff
+            results.Where(fun r -> r.IsSuccess).Select(fun r -> r.OutputCoordinate).ToList();
         )
-        //let _longitudesLazyLoaded = null// List<Double> by lazy {
-        //_sucessfulCoordinatesLazyLoaded.map { it.xEastingLongitude }
-    let _longitudes: Lazy<List<double>> = 
+        
+    let _longitudesLazyLoaded: Lazy<List<double>> = 
         lazy (
-            let longs = _successfulCoordinates.Force().Select(fun c -> c.Longitude).ToList()
-            // TODO Lazy load like in Kotlin ...
-            longs
+            _successfulCoordinatesLazyLoaded.Force().Select(fun c -> c.Longitude).ToList()
         )
 
-    //let _latitudesLazyLoaded = null//: List<Double> by lazy {
-        //_sucessfulCoordinatesLazyLoaded.map { it.yNorthingLatitude }
-    let _latitudes: Lazy<List<double>> = 
+    let _latitudesLazyLoaded: Lazy<List<double>> = 
         lazy (
-            let lats = _successfulCoordinates.Force().Select(fun c -> c.Latitude).ToList()
-            // TODO Lazy load like in Kotlin ...
-            lats
-        )
-    //let _maxDiffLatitudesLazyLoaded = // Kotlin : Double by lazy {
-    let _maxDiffLatitudes: Lazy<double> = // Kotlin : Double by lazy {
-        lazy (
-            //getMaxDiff(_latitudesLazyLoaded)
-            // TODO Lazy load like in Kotlin ...
-            printfn "_maxDiffLatitudes anropas"
-            getMaxDiff(_latitudes.Force())
-        )
-    
-
-    //let _maxDiffLongitudesLazyLoaded = // Kotlin : Double by lazy {
-    let _maxDiffLongitudes: Lazy<double> = // Kotlin : Double by lazy {
-        lazy (
-            //getMaxDiff(_longitudesLazyLoaded)
-            // TODO Lazy load like in Kotlin ...
-            getMaxDiff(_longitudes.Force())
+            _successfulCoordinatesLazyLoaded.Force().Select(fun c -> c.Latitude).ToList()
         )
 
-    //let _coordinateMedianLazyLoaded = // Kotlin : CrsCoordinate by lazy {
-    let _coordinateMedian  = // Kotlin : CrsCoordinate by lazy {
+    let _maxDiffLatitudesLazyLoaded: Lazy<double> =
         lazy (
-            // TODO Lazy load like in Kotlin ...
-            let medianLat = getMedianValue(_latitudes.Force())
-            let medianLon = getMedianValue(_longitudes.Force())
-            let coords = _successfulCoordinates.Force()
+            getMaxDiff(_latitudesLazyLoaded.Force())
+        )
+
+    let _maxDiffLongitudesLazyLoaded: Lazy<double> =
+        lazy (
+            getMaxDiff(_longitudesLazyLoaded.Force())
+        )
+
+    let _coordinateMedianLazyLoaded  =
+        lazy (
+            let medianLat = getMedianValue(_latitudesLazyLoaded.Force())
+            let medianLon = getMedianValue(_longitudesLazyLoaded.Force())
+            let coords = _successfulCoordinatesLazyLoaded.Force()
             if(coords.Count < 1) then
                 invalidOp "No successful result and therefore no average available"
             let crs = coords.[0].CrsIdentifier
@@ -545,15 +524,11 @@ and CrsTransformationResultStatistic // TODO maybe private constructor(
                 )
         )
 
-
-    //let _coordinateAverageLazyLoaded = null//: CrsCoordinate by lazy {
-    let _coordinateAverage = // Kotlin : CrsCoordinate by lazy {
+    let _coordinateAverageLazyLoaded =
         lazy (
-            let avgLat = _latitudes.Force().Average()
-            let avgLon = _longitudes.Force().Average()
-            //createFromXEastingLongitudeAndYNorthingLatitude(_longitudesLazyLoaded.average(), _latitudesLazyLoaded.average(), _sucessfulCoordinatesLazyLoaded.get(0).crsIdentifier)
-            // TODO Lazy load like in Kotlin ...
-            let coords = _successfulCoordinates.Force()
+            let avgLat = _latitudesLazyLoaded.Force().Average()
+            let avgLon = _longitudesLazyLoaded.Force().Average()
+            let coords = _successfulCoordinatesLazyLoaded.Force()
             if(coords.Count < 1) then
                 invalidOp "No successful result and therefore no average available"
             let crs = coords.[0].CrsIdentifier
@@ -567,9 +542,9 @@ and CrsTransformationResultStatistic // TODO maybe private constructor(
                     crs
                 )
         )
+
     let throwExceptionIfPreconditionViolated(isStatisticsAvailable): unit =
         if(not isStatisticsAvailable) then
-        //    throw RuntimeException("Precondition violated. No statistics available")        
             invalidOp "Precondition violated. No statistics available"
 
     // Above: private methods/properties
@@ -591,47 +566,43 @@ and CrsTransformationResultStatistic // TODO maybe private constructor(
      * for the area. However, this property returns the number 
      * of result with *NO OBVIOUS* problems e.g. thrown exception.
      *)
-    member this.NumberOfPotentiallySuccesfulResults = _successfulCoordinates.Force().Count
+    member this.NumberOfPotentiallySuccesfulResults = _successfulCoordinatesLazyLoaded.Force().Count
 
     (*
      * Precondition: isStatisticsAvailable must return true
      * @return a coordinate with the average X/Longitude and the average Y/Latitude
      *)
-    member this.CoordinateAverage = // TODO CrsCoordinate {
+    member this.CoordinateAverage =
         throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
-        //return _coordinateAverageLazyLoaded
-        _coordinateAverage.Force()
+        _coordinateAverageLazyLoaded.Force()
     
 
     (*
      * Precondition: isStatisticsAvailable must return true
      * @return a coordinate with the median X/Longitude and the median Y/Latitude
      *)
-    member this.CoordinateMedian = // CrsCoordinate {
+    member this.CoordinateMedian =
         throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
-        //return _coordinateMedianLazyLoaded
-        _coordinateMedian.Force()
+        _coordinateMedianLazyLoaded.Force()
 
     (*
      * @return the maximal difference in Y/Latitude values
      *      between the coordinate with the smallest and the largest Y/Latitude values.
      *)
-    member this.MaxDifferenceForYNorthingLatitude = // Double {
+    member this.MaxDifferenceForYNorthingLatitude =
         throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
-        //return _maxDiffLatitudesLazyLoaded
-        _maxDiffLatitudes.Force() // https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/lazy-computations
+        _maxDiffLatitudesLazyLoaded.Force() // F# Lazy loading: https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/lazy-computations
     
     
     (*
      * @return the maximal difference in X/Longitude values
      *      between the coordinate with the smallest and the largest X/Longitude values.
      *)
-    member this.MaxDifferenceForXEastingLongitude = //  Double {
+    member this.MaxDifferenceForXEastingLongitude =
         throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
-        //return _maxDiffLongitudesLazyLoaded
-        //let x: double = _maxDiffLongitudes
-        //x
-        _maxDiffLongitudes.Force() // https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/lazy-computations
+        _maxDiffLongitudesLazyLoaded.Force() // F# Lazy loading: https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/lazy-computations
+
+
 
         // Kotlin:
     //internal companion object {
@@ -643,4 +614,3 @@ and CrsTransformationResultStatistic // TODO maybe private constructor(
     //        results: List<CrsTransformationResult>
     //    ): CrsTransformationResultStatistic {
     //        return CrsTransformationResultStatistic(results)
-
