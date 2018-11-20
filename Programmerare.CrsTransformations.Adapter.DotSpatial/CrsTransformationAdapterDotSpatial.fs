@@ -1,16 +1,26 @@
 namespace com.programmerare.crsTransformations.Adapter.DotSpatial
 
-open System.Collections.Generic
+open DotSpatial.Projections
 open com.programmerare.crsTransformations
 open com.programmerare.crsTransformations.coordinate
-open com.programmerare.crsTransformations.crsIdentifier
 
 type CrsTransformationAdapterDotSpatial() =
     class
         inherit CrsTransformationAdapterBaseLeaf()
 
         override this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
-            invalidOp "Unsupported transformation"
+            let projInfoSourceCrs = ProjectionInfo.FromEpsgCode(inputCoordinate.CrsIdentifier.EpsgNumber);
+            let projInfoTargetCrs = ProjectionInfo.FromEpsgCode(crsIdentifierForOutputCoordinateSystem.EpsgNumber);
+
+            let xy: double[] = [| inputCoordinate.X; inputCoordinate.Y |];
+            Reproject.ReprojectPoints(xy, null, projInfoSourceCrs, projInfoTargetCrs, 0, 1);
+
+            CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude
+                (
+                    xy.[0],
+                    xy.[1],
+                    crsIdentifierForOutputCoordinateSystem
+                )
 
         override this._TransformToCoordinateHook(inputCoordinate, crsIdentifier) = 
             this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifier)
