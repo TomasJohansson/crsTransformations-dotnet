@@ -1,6 +1,7 @@
 namespace com.programmerare.crsTransformations
 
 open System
+open System.Linq
 open System.Collections.Generic
 open com.programmerare.crsTransformations.coordinate
 open com.programmerare.crsTransformations.crsIdentifier
@@ -193,8 +194,25 @@ and CrsTransformationResult // TODO maybe make a private constructor
         member this.OutputCoordinate = outputCoordinate
         member this.Exception = exceptionOrNull
         member this.IsSuccess = isSuccess
-        member this.GetTransformationResultChildren() = crsTransformationResultStatistic.GetAllCrsTransformationResults()
         member this.CrsTransformationAdapterResultSource = crsTransformationAdapterResultSource
+
+        member this.CrsTransformationResultStatistic = 
+            if(this.CrsTransformationAdapterResultSource.IsComposite) then
+                crsTransformationResultStatistic
+            else
+                let list = new List<CrsTransformationResult>()
+                list.Add(this)
+                CrsTransformationResultStatistic(list)
+        // TODO refactor the above and the below method !
+        // For a leaf the statistics object should use a list with the one and only result
+        // but for composites it should all results 
+        // but for a leaf the list below should be an empty list
+        member this.GetTransformationResultChildren() = 
+            if(this.CrsTransformationAdapterResultSource.IsComposite) then
+                crsTransformationResultStatistic.GetAllCrsTransformationResults()
+            else
+                new List<CrsTransformationResult>() :> IList<CrsTransformationResult>
+                
 //    (*
 //     * The input coordinate used in the transform that return the result object.
 //     *)        
@@ -436,90 +454,166 @@ and CrsTransformationResultStatistic // TODO maybe private constructor(
         results: IList<CrsTransformationResult>
     ) =
 
-    let throwExceptionIfPreconditionViolated(): unit = ()
-        //if (!isStatisticsAvailable()) {
-        //    throw RuntimeException("Precondition violated. No statistics available")
-
-    
-    let getMaxDiff(values: List<double>) = 1.0//: Double {
-        //if (values.size < 2) {
-        //    return 0.0
-        //} else {
-        //    val sortedValues = values.sorted()
-        //    val diff = Math.abs(sortedValues.get(0) - sortedValues.get(sortedValues.size - 1))
-        //    return diff
-    
-    let _sucessfulCoordinatesLazyLoaded = null//: List<CrsCoordinate> by lazy {
-        //results.filter { it.isSuccess }.map { it.outputCoordinate }
-
-    let _longitudesLazyLoaded = null// List<Double> by lazy {
-        //_sucessfulCoordinatesLazyLoaded.map { it.xEastingLongitude }
-
-    let _latitudesLazyLoaded = null//: List<Double> by lazy {
-        //_sucessfulCoordinatesLazyLoaded.map { it.yNorthingLatitude }
-
-    let _maxDiffLatitudesLazyLoaded = null//: Double by lazy {
-        //getMaxDiff(_latitudesLazyLoaded)
-    
-
-    let _maxDiffLongitudesLazyLoaded = null//: Double by lazy {
-        //getMaxDiff(_longitudesLazyLoaded)
-
-    let _coordinateMedianLazyLoaded = null//: CrsCoordinate by lazy {
+    let getMedianValue(values: List<double>) = 
         //val lon = MedianValueUtility.getMedianValue(_longitudesLazyLoaded)
         //val lat = MedianValueUtility.getMedianValue(_latitudesLazyLoaded)
         //val coord = createFromXEastingLongitudeAndYNorthingLatitude(lon, lat, _sucessfulCoordinatesLazyLoaded.get(0).crsIdentifier)
         //coord
+        // TODO: improve this median currently O(n log n) instead of O(n)
+        // https://stackoverflow.com/questions/4140719/calculate-median-in-c-sharp
+        // https://github.com/mathnet/mathnet-numerics/blob/master/src/Numerics/Statistics/ArrayStatistics.cs
+        // the current below implementation is based on the Kotlin 
+        // implemenation Programmerare.CrsTransformations.Core\crsTransformations\utils\MedianValueUtility.kt
+        values.Sort()
+        let middle = values.Count / 2
+        if (values.Count % 2 = 1) then
+            values.[middle]
+        else
+            (values.[middle-1] + values.[middle]) / 2.0
+        
 
-    let _coordinateAverageLazyLoaded = null//: CrsCoordinate by lazy {
+    let getMaxDiff(values: List<double>) = 
+        if (values.Count < 2) then
+            0.0
+        else 
+            let ma = values.Max()
+            let mi = values.Min()
+            //values.Sort()
+            //let diff = Math.Abs(values.[0] - values.[values.Count - 1])
+            let diff = Math.Abs(ma - mi)
+            diff
+    
+    
+    //let _sucessfulCoordinatesLazyLoaded = null//: List<CrsCoordinate> by lazy {
+        //results.filter { it.isSuccess }.map { it.outputCoordinate }
+    let _successfulCoordinates(): List<CrsCoordinate> = //: List<CrsCoordinate> by lazy {
+        let ff = results.Where(fun r -> r.IsSuccess).Select(fun r -> r.OutputCoordinate).ToList();
+        // TODO Lazy load like in Kotlin ...
+        ff
+
+    //let _longitudesLazyLoaded = null// List<Double> by lazy {
+        //_sucessfulCoordinatesLazyLoaded.map { it.xEastingLongitude }
+    let _longitudes(): List<double> = 
+        let longs = _successfulCoordinates().Select(fun c -> c.Longitude).ToList()
+        // TODO Lazy load like in Kotlin ...
+        longs
+
+    //let _latitudesLazyLoaded = null//: List<Double> by lazy {
+        //_sucessfulCoordinatesLazyLoaded.map { it.yNorthingLatitude }
+    let _latitudes(): List<double> = 
+        let lats = _successfulCoordinates().Select(fun c -> c.Latitude).ToList()
+        // TODO Lazy load like in Kotlin ...
+        lats
+
+    //let _maxDiffLatitudesLazyLoaded = // Kotlin : Double by lazy {
+    let _maxDiffLatitudes() = // Kotlin : Double by lazy {
+        //getMaxDiff(_latitudesLazyLoaded)
+        // TODO Lazy load like in Kotlin ...
+        getMaxDiff(_latitudes())
+    
+
+    //let _maxDiffLongitudesLazyLoaded = // Kotlin : Double by lazy {
+    let _maxDiffLongitudes() = // Kotlin : Double by lazy {
+        //getMaxDiff(_longitudesLazyLoaded)
+        // TODO Lazy load like in Kotlin ...
+        getMaxDiff(_longitudes())
+
+    //let _coordinateMedianLazyLoaded = // Kotlin : CrsCoordinate by lazy {
+    let _coordinateMedian() = // Kotlin : CrsCoordinate by lazy {
+        // TODO Lazy load like in Kotlin ...
+        let medianLat = getMedianValue(_latitudes())
+        let medianLon = getMedianValue(_longitudes())
+        let coords = _successfulCoordinates()
+        if(coords.Count < 1) then
+            invalidOp "No successful result and therefore no average available"
+        let crs = coords.[0].CrsIdentifier
+        CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude
+            (
+                medianLon,
+                medianLat,
+                crs
+            )
+        
+
+
+
+    //let _coordinateAverageLazyLoaded = null//: CrsCoordinate by lazy {
+    let _coordinateAverage() = // Kotlin : CrsCoordinate by lazy {
+        let avgLat = _latitudes().Average()
+        let avgLon = _longitudes().Average()
         //createFromXEastingLongitudeAndYNorthingLatitude(_longitudesLazyLoaded.average(), _latitudesLazyLoaded.average(), _sucessfulCoordinatesLazyLoaded.get(0).crsIdentifier)
+        // TODO Lazy load like in Kotlin ...
+        let coords = _successfulCoordinates()
+        if(coords.Count < 1) then
+            invalidOp "No successful result and therefore no average available"
+        let crs = coords.[0].CrsIdentifier
+        // All CRS should have the same CRS
+        // Theoretically they might have different which would be a bug 
+        // so maybe should iterate them to check and throw exception if different ...
+        CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude
+            (
+                avgLon,
+                avgLat,
+                crs
+            )
+
+    let throwExceptionIfPreconditionViolated(isStatisticsAvailable): unit =
+        if(not isStatisticsAvailable) then
+        //    throw RuntimeException("Precondition violated. No statistics available")        
+            invalidOp "Precondition violated. No statistics available"
 
     // Above: private methods/properties
     // ----------------------------------------------------------
     // Below: public methods
 
-    member this.GetAllCrsTransformationResults() = results
+    member this.GetAllCrsTransformationResults(): IList<CrsTransformationResult> = results
     (*
      * @return true if there is at least one succesful result but otherwise false.
      *)
-    member this.IsStatisticsAvailable = false// TODO getNumberOfResults() > 0
+    member this.IsStatisticsAvailable = this.NumberOfResults > 0
 
     (*
      * @return the number of succesful results
      *)
-    member this.NumberOfResults = 0 // TODO  _sucessfulCoordinatesLazyLoaded.size
+    member this.NumberOfResults = _successfulCoordinates().Count
 
     (*
      * Precondition: isStatisticsAvailable must return true
      * @return a coordinate with the average X/Longitude and the average Y/Latitude
      *)
-    member this.CoordinateAverage = null;// TODO CrsCoordinate {
-        //throwExceptionIfPreconditionViolated()
+    member this.CoordinateAverage = // TODO CrsCoordinate {
+        throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
         //return _coordinateAverageLazyLoaded
+        _coordinateAverage()
     
 
     (*
      * Precondition: isStatisticsAvailable must return true
      * @return a coordinate with the median X/Longitude and the median Y/Latitude
      *)
-    member this.CoordinateMedian = null// CrsCoordinate {
-        //throwExceptionIfPreconditionViolated()
+    member this.CoordinateMedian = // CrsCoordinate {
+        throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
         //return _coordinateMedianLazyLoaded
+        _coordinateMedian()
 
     (*
      * @return the maximal difference in Y/Latitude values
      *      between the coordinate with the smallest and the largest Y/Latitude values.
      *)
-    member this.MaxDifferenceForYNorthingLatitude = null // Double {
+    member this.MaxDifferenceForYNorthingLatitude = // Double {
+        throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
         //return _maxDiffLatitudesLazyLoaded
+        _maxDiffLatitudes()
     
     
     (*
      * @return the maximal difference in X/Longitude values
      *      between the coordinate with the smallest and the largest X/Longitude values.
      *)
-    member this.MaxDifferenceForXEastingLongitude = null //  Double {
+    member this.MaxDifferenceForXEastingLongitude = //  Double {
+        throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
         //return _maxDiffLongitudesLazyLoaded
+        _maxDiffLongitudes()
 
         // Kotlin:
     //internal companion object {

@@ -198,6 +198,8 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
             Assert.IsNotNull(subresults);
             Assert.AreEqual(0, subresults.Count); // Leaf should have no children
             Assert.AreEqual(this.crsTransformationAdapter, result.CrsTransformationAdapterResultSource);
+
+            AssertStatisticsForLeaf(result);
         }
 
         [Test]
@@ -339,7 +341,59 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
             Assert.IsNotNull(subresults);
             Assert.AreEqual(0, subresults.Count); // Leaf should have no children
             Assert.AreEqual(this.crsTransformationAdapter, result.CrsTransformationAdapterResultSource);
+
+            AssertStatisticsForLeaf(result);
         }
+        private void AssertStatisticsForLeaf(CrsTransformationResult result)
+        {
+            var stat = result.CrsTransformationResultStatistic;
+            Assert.IsNotNull(stat);
+
+            // The below assertions should be true for leafs
+            Assert.AreEqual(result.IsSuccess, stat.IsStatisticsAvailable);
+
+            int expectedNumberOfSuccessResultsForLeaf = result.IsSuccess ? 1 : 0;
+            // TODO maybe rename the below property to 
+            // NumberOfSuccesfulResults
+            // although no guarantee for a correct result 
+            // i.e. "success" might just mean that an exception was not thrown ...
+            Assert.AreEqual(
+                expectedNumberOfSuccessResultsForLeaf, 
+                stat.NumberOfResults
+            );
+
+            IList<CrsTransformationResult> allResults = stat.GetAllCrsTransformationResults();
+            Assert.AreEqual(1, allResults.Count);
+
+            if (stat.IsStatisticsAvailable)
+            {
+                // Since we are not testing a Leaf
+                // there should only one result
+                // and therefore now differences in the 
+                // below tests
+                Assert.AreEqual(
+                    0.0, 
+                    stat.MaxDifferenceForXEastingLongitude
+                );
+                Assert.AreEqual(
+                    0.0, 
+                    stat.MaxDifferenceForYNorthingLatitude
+                );
+                double smallValue = 0.000000000000001;
+                Assert.That(stat.MaxDifferenceForXEastingLongitude, Is.LessThan(smallValue));
+            
+                Assert.AreEqual(
+                    result.OutputCoordinate, 
+                    stat.CoordinateAverage
+                );
+
+                Assert.AreEqual(
+                    result.OutputCoordinate, 
+                    stat.CoordinateMedian
+                );
+            }
+        }
+
 
         [Test]
         public void AdapteeTypeTest() {
@@ -387,9 +441,6 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
                 0, 
                 children.Count
             );
-
-            //CrsTransformationResult aa;
-            //aa.
         }
     }
 }
