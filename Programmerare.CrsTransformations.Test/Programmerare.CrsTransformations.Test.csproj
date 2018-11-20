@@ -20,7 +20,7 @@
     <Compile Include="crsTransformations\coordinate\CrsCoordinateTest.cs" />
     <Compile Include="crsTransformations\crsIdentifier\CrsIdentifierTest.cs" />
     <Compile Include="crsTransformations\implementations\DotSpatialTest.cs" />
-    <Compile Include="crsTransformations\implementations\MightyLittleGeodesyTest.cs" />
+    <Compile Include="crsTransformations\implementations\AdaptersTestBase.cs" />
     <Compile Include="crsTransformations\implementations\ProjNet4GeoAPITest.cs" />
   </ItemGroup>
 
