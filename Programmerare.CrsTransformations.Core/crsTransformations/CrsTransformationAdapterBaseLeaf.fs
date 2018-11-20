@@ -68,4 +68,7 @@ type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
         override this.AdapteeType =
             // Should be overridden by subclasses
             CrsTransformationAdapteeType.UNSPECIFIED_LEAF
+
+        override this.IsComposite = false
+
     end

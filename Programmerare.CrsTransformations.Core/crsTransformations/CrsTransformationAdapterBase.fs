@@ -34,8 +34,11 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
         // then it will be detected by a failing test
 
         abstract member AdapteeType : CrsTransformationAdapteeType
-        default this.AdapteeType =
-            CrsTransformationAdapteeType.UNSPECIFIED
+        default this.AdapteeType = CrsTransformationAdapteeType.UNSPECIFIED
+
+        abstract member IsComposite : bool
+        default this.IsComposite = raise (System.NotImplementedException())
+        
 
         interface CrsTransformationAdapter with
             member this.GetTransformationAdapterChildren: List<CrsTransformationAdapter> = 
@@ -85,8 +88,7 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
 
             member this.AdapteeType = this.AdapteeType
 
-            member this.IsComposite =
-                raise (System.NotImplementedException())
+            member this.IsComposite = this.IsComposite
 
             (*
              * This helper method is protected since it is NOT intended for
