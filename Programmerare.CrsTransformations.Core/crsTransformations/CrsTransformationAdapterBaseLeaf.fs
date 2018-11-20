@@ -1,5 +1,6 @@
 namespace com.programmerare.crsTransformations
 
+open System.Collections.Generic
 open com.programmerare.crsTransformations.coordinate
 open com.programmerare.crsTransformations.crsIdentifier
 
@@ -70,5 +71,9 @@ type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
             CrsTransformationAdapteeType.UNSPECIFIED_LEAF
 
         override this.IsComposite = false
+
+        // empty list of children adapters for leafs:
+        override this.GetTransformationAdapterChildren() =
+            new List<CrsTransformationAdapter>() :> IList<CrsTransformationAdapter>
 
     end

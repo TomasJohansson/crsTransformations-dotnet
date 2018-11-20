@@ -1,5 +1,6 @@
 namespace com.programmerare.crsTransformations
 
+open System.Collections.Generic
 open com.programmerare.crsTransformations.crsIdentifier
 open com.programmerare.crsTransformations.coordinate
 
@@ -126,6 +127,6 @@ type CrsTransformationAdapter =
          *          is a 'composite'but if the implementation is a 'leaf'
          *          then an empty list should be returned.
          *)
-        abstract member GetTransformationAdapterChildren : List<CrsTransformationAdapter>
+        abstract member GetTransformationAdapterChildren : unit -> IList<CrsTransformationAdapter>
 
     end

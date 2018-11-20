@@ -1,6 +1,7 @@
 ﻿using com.programmerare.crsTransformations;
 using com.programmerare.crsTransformations.coordinate;
 using NUnit.Framework;
+using System.Collections.Generic;
 
 namespace Programmerare.CrsTransformations.Test.crsTransformations.implementations
 {
@@ -152,6 +153,15 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
             Assert.AreEqual(
                 classNameWithoutNamespace, // expected
                 PrefixForImplementations + suffix
+            );
+        }
+
+        [Test]
+        public void GetTransformationAdapterChildrenTest() {
+            IList<CrsTransformationAdapter> children = crsTransformationAdapter.GetTransformationAdapterChildren();
+            Assert.AreEqual(
+                0, 
+                children.Count
             );
         }
     }

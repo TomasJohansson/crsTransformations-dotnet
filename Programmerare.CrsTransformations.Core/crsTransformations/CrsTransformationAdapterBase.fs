@@ -1,5 +1,6 @@
 namespace com.programmerare.crsTransformations
 
+open System.Collections.Generic
 open com.programmerare.crsTransformations.coordinate
 open com.programmerare.crsTransformations.crsIdentifier
 
@@ -45,9 +46,12 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
         abstract member ShortNameOfImplementation : string
         default this.ShortNameOfImplementation = raise (System.NotImplementedException())
 
+        abstract member GetTransformationAdapterChildren : unit -> IList<CrsTransformationAdapter>
+        default this.GetTransformationAdapterChildren() = raise (System.NotImplementedException())
+
         interface CrsTransformationAdapter with
-            member this.GetTransformationAdapterChildren: List<CrsTransformationAdapter> = 
-                raise (System.NotImplementedException())
+            member this.GetTransformationAdapterChildren() =  this.GetTransformationAdapterChildren()
+                
             // -------------------------------------------------
             // The three below methods returning a coordinate object
             // are all final (i.e. not overridden) and invokes
