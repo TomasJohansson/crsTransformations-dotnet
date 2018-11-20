@@ -28,10 +28,10 @@ namespace com.programmerare.crsTransformations
 type CrsTransformationAdapteeType =  // F# enum
 
     (*
-     * Maven version for the adaptee library:  
-     * "org.geotools:gt-main:20.0"
+     * NuGet version for the adaptee library "MightyLittleGeodesy":
+     * '<PackageReference Include="ProjNET4GeoAPI" Version="1.4.1" />'
      *)
-    | LEAF_GEOTOOLS_20_0 = 1100
+    | LEAF_PROJ_NET_4_GEO_API_1_4_1 = 1100
 
     (*
      * The abbreviation MLG = MightyLittleGeodesy
@@ -45,7 +45,7 @@ type CrsTransformationAdapteeType =  // F# enum
      * NuGet version for the adaptee library "MightyLittleGeodesy":
      * '<PackageReference Include="MightyLittleGeodesy" Version="1.0.1" />'
      *)
-    | LEAF_SWEDISH_CRS_MLG_1_0_1 = 1200
+    | LEAF_SWEDISH_CRS_MLG_1_0_1 = 1900
 
     // NOTE !
     // The above "leafs" are for the JVM version
