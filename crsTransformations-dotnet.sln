@@ -11,7 +11,9 @@ Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Programmerare.CrsTransforma
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Programmerare.CrsTransformations.Constants", "Programmerare.CrsTransformations.Constants\Programmerare.CrsTransformations.Constants.fsproj", "{19C5A673-D7C9-49C0-ABE3-660483330B64}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Programmerare.CrsTransformations.Adapter.DotSpatial", "Programmerare.CrsTransformations.Adapter.DotSpatial\Programmerare.CrsTransformations.Adapter.DotSpatial.fsproj", "{4E256F4D-B3DC-436F-82AC-BC3A524C209F}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Programmerare.CrsTransformations.Adapter.DotSpatial", "Programmerare.CrsTransformations.Adapter.DotSpatial\Programmerare.CrsTransformations.Adapter.DotSpatial.fsproj", "{4E256F4D-B3DC-436F-82AC-BC3A524C209F}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI", "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.fsproj", "{1B78D2D9-106B-4E1B-9CDC-7DCC5D98B515}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -39,6 +41,10 @@ Global
 		{4E256F4D-B3DC-436F-82AC-BC3A524C209F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E256F4D-B3DC-436F-82AC-BC3A524C209F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4E256F4D-B3DC-436F-82AC-BC3A524C209F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B78D2D9-106B-4E1B-9CDC-7DCC5D98B515}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B78D2D9-106B-4E1B-9CDC-7DCC5D98B515}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B78D2D9-106B-4E1B-9CDC-7DCC5D98B515}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B78D2D9-106B-4E1B-9CDC-7DCC5D98B515}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

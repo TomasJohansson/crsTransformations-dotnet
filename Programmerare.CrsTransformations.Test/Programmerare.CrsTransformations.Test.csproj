@@ -31,6 +31,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Programmerare.CrsTransformations.Adapter.DotSpatial\Programmerare.CrsTransformations.Adapter.DotSpatial.fsproj" />
     <ProjectReference Include="..\Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy\Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy.fsproj" />
+    <ProjectReference Include="..\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.fsproj" />
     <ProjectReference Include="..\Programmerare.CrsTransformations.Constants\Programmerare.CrsTransformations.Constants.fsproj" />
     <ProjectReference Include="..\Programmerare.CrsTransformations.Core\Programmerare.CrsTransformations.Core.fsproj" />
   </ItemGroup>
