@@ -2,6 +2,7 @@
 using com.programmerare.crsTransformations.coordinate;
 using com.programmerare.crsTransformations.crsIdentifier;
 using NUnit.Framework;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 using System;
 using System.Collections.Generic;
 
@@ -17,9 +18,9 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
         private const double sweref99X = 674032;
         private const double rt90Y = 6580994;
         private const double rt90X = 1628294;
-        private const int epsgWGS84 = 4326;
-        private const int epsgSweref99 = 3006;
-        private const int epsgRT9025gonv = 3021;// RT90 2.5 gon V
+        private const int epsgWGS84 =       EpsgNumber.WORLD__WGS_84__4326;
+        private const int epsgSweref99 =    EpsgNumber.SWEDEN__SWEREF99_TM__3006;
+        private const int epsgRT9025gonv =  EpsgNumber.SWEDEN__2_5_GON_W__RT90_2_5_GON_V__3021;// RT90 2.5 gon V
         private const string EPSG_PREFIX = "EPSG:";
         private static readonly string crsCodeWGS84 = EPSG_PREFIX + epsgWGS84;
         private static readonly string crsCodeSweref99 = EPSG_PREFIX + epsgSweref99;
