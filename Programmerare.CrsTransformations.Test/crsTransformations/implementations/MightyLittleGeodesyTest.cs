@@ -377,8 +377,17 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
                     0.0, 
                     stat.MaxDifferenceForYNorthingLatitude
                 );
-                double smallValue = 0.000000000000001;
-                Assert.That(stat.MaxDifferenceForXEastingLongitude, Is.LessThan(smallValue));
+                //double smallValue = 0.000000000000001;
+                //Assert.That(stat.MaxDifferenceForXEastingLongitude, Is.LessThan(smallValue));
+                // experimentation regardin lazy loading ...
+                var x = stat.MaxDifferenceForYNorthingLatitude;
+                x = stat.MaxDifferenceForYNorthingLatitude;
+                x = stat.MaxDifferenceForYNorthingLatitude;
+                x = stat.MaxDifferenceForYNorthingLatitude;
+                // yes after the lazy loading was implemented 
+                // it could be noticed that the above code did NOT 
+                // trigger calculation many times ...
+
             
                 Assert.AreEqual(
                     result.OutputCoordinate, 
