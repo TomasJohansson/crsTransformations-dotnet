@@ -23,7 +23,7 @@ type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
         abstract _TransformToCoordinateHookLeaf : CrsCoordinate * CrsIdentifier -> CrsCoordinate
 
         override this._TransformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
-            //try {
+            try
                 let outputCoordinate = this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
                 CrsTransformationResult(
                     inputCoordinate,
@@ -32,6 +32,18 @@ type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
                     true,
                     new List<CrsTransformationResult>()
                 )
+            with
+                // | :? System.Exception as exc -> 
+                // alternative to the above:
+                | exc -> 
+                    CrsTransformationResult(
+                        inputCoordinate,
+                        null,
+                        exc,
+                        false,
+                        new List<CrsTransformationResult>()
+                    )
+
                 //if true then
                 //    //java.lang.Double.isNaN(outputCoordinate.yNorthingLatitude)
                 //    //||

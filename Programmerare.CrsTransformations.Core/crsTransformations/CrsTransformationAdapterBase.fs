@@ -69,15 +69,44 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
             // -------------------------------------------------
 
             // -------------------------------------------------
-
-            member this.Transform(inputCoordinate, crsCode) =
-                this._TransformHook(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
-
-            member this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
-                this._TransformHook(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
-
             member this.Transform(inputCoordinate, crsIdentifier) = 
                 this._TransformHook(inputCoordinate, crsIdentifier)
+
+            member this.Transform(inputCoordinate, crsCode) =
+                try
+                    let crs = CrsIdentifierFactory.CreateFromCrsCode(crsCode)
+                    // it is the row above which might throw an exception
+                    // but the row below should not through an exception
+                    this._TransformHook(inputCoordinate, crs)
+                with
+                    // | :? System.Exception as exc -> 
+                    // alternative to the above:
+                    | exc -> 
+                        CrsTransformationResult(
+                            inputCoordinate,
+                            null,
+                            exc,
+                            false,
+                            new List<CrsTransformationResult>()
+                        )
+            // TODO refactor the try/with code duplicated above/below 
+            member this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
+                try
+                    let crs = CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
+                    // it is the row above which might throw an exception
+                    // but the row below should not through an exception
+                    this._TransformHook(inputCoordinate, crs)
+                with
+                    // | :? System.Exception as exc -> 
+                    // alternative to the above:
+                    | exc -> 
+                        CrsTransformationResult(
+                            inputCoordinate,
+                            null,
+                            exc,
+                            false,
+                            new List<CrsTransformationResult>()
+                        )
 
             // -------------------------------------------------
 

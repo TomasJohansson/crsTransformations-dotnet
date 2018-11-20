@@ -38,6 +38,7 @@ open com.programmerare.crsTransformations.crsIdentifier
 
     // TODO: rewrite comments above for .NET ...
 *)
+[<AllowNullLiteral>] // C# interop
 type CrsCoordinate private 
     (
     xEastingLongitude: double,

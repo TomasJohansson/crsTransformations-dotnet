@@ -210,6 +210,88 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
         }
 
         [Test]
+        public void transformResult_WhenCrsIsUnvalidForSpecificImplementation()
+        {
+            // Negative epsgEPSG values are generally unvalid 
+            // and should be handle in a generic way i.e. 
+            // without having to implement it in all implementations
+            //int epsgNotSupported = -99999999; // test this in another methods
+            int epsgNotSupported = 123; // not supported by MightyLittleGeodesy
+            // The transform should not throw exception and not be null
+            // but instead it should return a result object with 
+            // IsSuccess property being false
+            CrsTransformationResult result = crsTransformationAdapter.Transform(coordinateRT90, epsgNotSupported);
+            AssertTransformationResultFailure(
+                result,
+                coordinateRT90,
+                crsTransformationAdapter
+            );
+        }
+
+
+        [Test]
+        public void transformResult_WhenCrsIsUnvalidForAllImplementations()
+        {
+            // Negative epsgEPSG values are generally unvalid 
+            // and should be handle in a generic way i.e. 
+            // without having to implement it in all implementations
+            int epsgNotSupported = -99999999;
+            //int epsgNotSupported = 123; // test this in another method
+            // The transform should not throw exception and not be null
+            // but instead it should return a result object with 
+            // IsSuccess property being false
+            CrsTransformationResult result = crsTransformationAdapter.Transform(coordinateRT90, epsgNotSupported);
+            AssertTransformationResultFailure(
+                result,
+                coordinateRT90,
+                crsTransformationAdapter
+            );
+        }
+
+        [Test]
+        public void transformResult_WhenCrsCodeIsNull()
+        {
+            string crsCode = null;
+            CrsTransformationResult result = crsTransformationAdapter.Transform(coordinateRT90, crsCode);
+            AssertTransformationResultFailure(
+                result,
+                coordinateRT90,
+                crsTransformationAdapter
+            );
+        }
+
+        [Test]
+        public void transformResult_WhenInputCoordinateIsNull()
+        {
+            CrsIdentifier crsWgs84 = coordinateWgs84.CrsIdentifier;
+            Assert.IsNotNull(crsWgs84);
+            CrsCoordinate nullCordinate = null;
+            CrsTransformationResult result = crsTransformationAdapter.Transform(nullCordinate, crsWgs84);
+            AssertTransformationResultFailure(
+                result,
+                nullCordinate,
+                crsTransformationAdapter
+            );
+        }
+
+        private void AssertTransformationResultFailure(
+            CrsTransformationResult result, 
+            CrsCoordinate inputCoordinate, 
+            //CrsCoordinate expectedOutputCoordinate, 
+            CrsTransformationAdapter crsTransformationAdapterSource
+        )
+        {
+            Assert.IsNotNull(result);
+            Assert.IsFalse(result.IsSuccess);
+            Assert.IsNotNull(result.Exception);
+            Assert.IsNull(result.OutputCoordinate);
+            Assert.AreEqual(inputCoordinate, result.InputCoordinate);
+            IList<CrsTransformationResult> subresults = result.GetTransformationResultChildren();
+            Assert.IsNotNull(subresults);
+            Assert.AreEqual(0, subresults.Count); // Leaf should have no children
+        }
+
+        [Test]
         public void AdapteeTypeTest() {
             Assert.IsNotNull(crsTransformationAdapter.AdapteeType);
             Assert.AreEqual(CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1, crsTransformationAdapter.AdapteeType);

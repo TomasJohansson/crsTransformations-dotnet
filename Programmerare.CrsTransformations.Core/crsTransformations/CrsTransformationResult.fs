@@ -17,7 +17,7 @@ open com.programmerare.crsTransformations.coordinate
 type CrsTransformationResult // private
     (
         inputCoordinate: CrsCoordinate,
-        outputCoordinate: CrsCoordinate,
+        outputCoordinate: CrsCoordinate, //[<Optional; DefaultParameterValue(null:CrsCoordinate)>] outputCoordinate: CrsCoordinate,
         exceptionOrNull: Exception,
         isSuccess: bool,
         //crsTransformationAdapterResultSource: CrsTransformationAdapter
