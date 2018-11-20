@@ -100,6 +100,7 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
                             null,
                             exc,
                             false,
+                            this,
                             new List<CrsTransformationResult>()
                         )
             // TODO refactor the try/with code duplicated above/below 
@@ -118,6 +119,7 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
                             null,
                             exc,
                             false,
+                            this,
                             new List<CrsTransformationResult>()
                         )
 

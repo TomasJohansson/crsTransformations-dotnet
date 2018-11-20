@@ -30,6 +30,7 @@ type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
                     outputCoordinate,
                     null,
                     true,
+                    this,
                     new List<CrsTransformationResult>()
                 )
             with
@@ -41,6 +42,7 @@ type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
                         null,
                         exc,
                         false,
+                        this,
                         new List<CrsTransformationResult>()
                     )
 

@@ -197,6 +197,7 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
             IList<CrsTransformationResult> subresults = result.GetTransformationResultChildren();
             Assert.IsNotNull(subresults);
             Assert.AreEqual(0, subresults.Count); // Leaf should have no children
+            Assert.AreEqual(this.crsTransformationAdapter, result.CrsTransformationAdapterResultSource);
         }
 
         [Test]
@@ -337,6 +338,7 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
             IList<CrsTransformationResult> subresults = result.GetTransformationResultChildren();
             Assert.IsNotNull(subresults);
             Assert.AreEqual(0, subresults.Count); // Leaf should have no children
+            Assert.AreEqual(this.crsTransformationAdapter, result.CrsTransformationAdapterResultSource);
         }
 
         [Test]

@@ -14,7 +14,6 @@
     <Compile Include="crsTransformations\coordinate\CrsCoordinate.fs" />
     <Compile Include="crsTransformations\coordinate\CrsCoordinateFactory.fs" />
     <Compile Include="crsTransformations\CrsTransformationAdapteeType.fs" />
-    <Compile Include="crsTransformations\CrsTransformationResult.fs" />
     <Compile Include="crsTransformations\CrsTransformationAdapter.fs" />
     <Compile Include="crsTransformations\CrsTransformationAdapterBase.fs" />
     <Compile Include="crsTransformations\CrsTransformationAdapterBaseLeaf.fs" />
