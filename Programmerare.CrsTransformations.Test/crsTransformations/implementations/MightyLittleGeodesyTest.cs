@@ -353,13 +353,11 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
             Assert.AreEqual(result.IsSuccess, stat.IsStatisticsAvailable);
 
             int expectedNumberOfSuccessResultsForLeaf = result.IsSuccess ? 1 : 0;
-            // TODO maybe rename the below property to 
-            // NumberOfSuccesfulResults
-            // although no guarantee for a correct result 
+            // note that there is no guarantee for a correct result 
             // i.e. "success" might just mean that an exception was not thrown ...
             Assert.AreEqual(
                 expectedNumberOfSuccessResultsForLeaf, 
-                stat.NumberOfResults
+                stat.NumberOfPotentiallySuccesfulResults 
             );
 
             IList<CrsTransformationResult> allResults = stat.GetAllCrsTransformationResults();

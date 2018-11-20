@@ -570,12 +570,18 @@ and CrsTransformationResultStatistic // TODO maybe private constructor(
     (*
      * @return true if there is at least one succesful result but otherwise false.
      *)
-    member this.IsStatisticsAvailable = this.NumberOfResults > 0
+    member this.IsStatisticsAvailable = this.NumberOfPotentiallySuccesfulResults > 0
 
     (*
-     * @return the number of succesful results
+     * the number of potentially succesful results.
+     * The reason for "potentially" is that there is 
+     * no guarantee that a result is correct since an implementation
+     * might choose to return some calculated coordinates 
+     * even though the target (or source) CRS is not intended 
+     * for the area. However, this property returns the number 
+     * of result with *NO OBVIOUS* problems e.g. thrown exception.
      *)
-    member this.NumberOfResults = _successfulCoordinates().Count
+    member this.NumberOfPotentiallySuccesfulResults = _successfulCoordinates().Count
 
     (*
      * Precondition: isStatisticsAvailable must return true
