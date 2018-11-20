@@ -65,7 +65,7 @@ type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
         //    return false
         //}
 
-        //override fun getAdapteeType() : CrsTransformationAdapteeType {
-        //    return CrsTransformationAdapteeType.UNSPECIFIED_LEAF
-        //}
+        override this.AdapteeType =
+            // Should be overridden by subclasses
+            CrsTransformationAdapteeType.UNSPECIFIED_LEAF
     end

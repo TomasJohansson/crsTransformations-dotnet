@@ -147,6 +147,8 @@ type CrsTransformationAdapterMightyLittleGeodesy() =
         override this._TransformToCoordinateHook(inputCoordinate, crsIdentifier) = 
             this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifier)
 
+        override this.AdapteeType =
+            CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1
     end
 (*
 // https://www.nuget.org/packages/MightyLittleGeodesy/

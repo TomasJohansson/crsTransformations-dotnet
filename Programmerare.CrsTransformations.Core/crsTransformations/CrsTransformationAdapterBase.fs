@@ -33,6 +33,10 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
         // if the above string would change because of class renamings
         // then it will be detected by a failing test
 
+        abstract member AdapteeType : CrsTransformationAdapteeType
+        default this.AdapteeType =
+            CrsTransformationAdapteeType.UNSPECIFIED
+
         interface CrsTransformationAdapter with
             member this.GetTransformationAdapterChildren: List<CrsTransformationAdapter> = 
                 raise (System.NotImplementedException())
@@ -79,9 +83,7 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
                 //else 
                 //    return className
 
-            member this.GetAdapteeType =
-                // Should be overridden by subclasses
-                CrsTransformationAdapteeType.UNSPECIFIED
+            member this.AdapteeType = this.AdapteeType
 
             member this.IsComposite =
                 raise (System.NotImplementedException())

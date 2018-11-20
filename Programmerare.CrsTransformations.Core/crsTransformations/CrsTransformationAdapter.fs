@@ -113,7 +113,7 @@ type CrsTransformationAdapter =
         (*
          * @see CrsTransformationAdapteeType
          *)
-        abstract member GetAdapteeType : CrsTransformationAdapteeType
+        abstract member AdapteeType : CrsTransformationAdapteeType
 
         (*
          * @return  true if the implementation is a 'composite'

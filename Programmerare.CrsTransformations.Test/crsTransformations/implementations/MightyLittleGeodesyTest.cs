@@ -115,5 +115,12 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
             Assert.AreEqual(expected.Y, actual.Y, maxDeltaDifference);
             Assert.AreEqual(expected.X, actual.X, maxDeltaDifference);
         }
+
+
+        [Test]
+        public void AdapteeTypeTest() {
+            Assert.IsNotNull(crsTransformationAdapter.AdapteeType);
+            Assert.AreEqual(CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1, crsTransformationAdapter.AdapteeType);
+        }
     }
 }

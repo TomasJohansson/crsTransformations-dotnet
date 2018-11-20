@@ -34,10 +34,18 @@ type CrsTransformationAdapteeType =  // F# enum
     | LEAF_GEOTOOLS_20_0 = 1100
 
     (*
-     * Maven version for the adaptee library:
-     * "com.github.goober:coordinate-transformation-library:1.1"
+     * The abbreviation MLG = MightyLittleGeodesy
+     * The purpose of using SWEDISH in the name is that 
+     * the implementation only supports transformations 
+     * between the the global WGS84 CRS and the "two" (actually more, see below)
+     * Swedish coordinate reference systems SWEREF99 and RT90.
+     * SWEREF99 is the "new" offical CRS for Sweden while RT90 is the "old".
+     * There are 13 supported versions of SWEREFF99 (with EPSG numbers 3006-3018)
+     * and 6 supported versions of RT90 (with EPSG numbers 3019-3024).
+     * NuGet version for the adaptee library "MightyLittleGeodesy":
+     * '<PackageReference Include="MightyLittleGeodesy" Version="1.0.1" />'
      *)
-    | LEAF_GOOBER_1_1 = 1200
+    | LEAF_SWEDISH_CRS_MLG_1_0_1 = 1200
 
     // NOTE !
     // The above "leafs" are for the JVM version
