@@ -173,7 +173,7 @@ and CrsTransformationResult // TODO maybe make a private constructor
         crsTransformationAdapterResultSource: CrsTransformationAdapter,
 
         transformationResultChildren: IList<CrsTransformationResult>
-        //crsTransformationResultStatistic: CrsTransformationResultStatistic
+        // crsTransformationResultStatistic: CrsTransformationResultStatistic // TODO when enabling this parameter: put the class (using the "and" keyword instead of "type") in the same file because of mutual dependencies
     ) =
     class
         //member this.kaleee: Kalle -> Kalle = raise (System.NotImplementedException())

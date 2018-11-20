@@ -17,6 +17,7 @@
     <Compile Include="crsTransformations\CrsTransformationAdapter.fs" />
     <Compile Include="crsTransformations\CrsTransformationAdapterBase.fs" />
     <Compile Include="crsTransformations\CrsTransformationAdapterBaseLeaf.fs" />
+    <Compile Include="crsTransformations\CrsTransformationResultStatistic.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>
 
