@@ -2,6 +2,7 @@
 using com.programmerare.crsTransformations.coordinate;
 using com.programmerare.crsTransformations.crsIdentifier;
 using NUnit.Framework;
+using System;
 using System.Collections.Generic;
 
 namespace Programmerare.CrsTransformations.Test.crsTransformations.implementations
@@ -143,6 +144,60 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
             );
         }
 
+        [Test]
+        public void transformResult_fromRT90_toSweref99()
+        {
+            CrsTransformationResult result = crsTransformationAdapter.Transform(coordinateRT90, epsgSweref99);
+            AssertTransformationResultSuccess(
+                result, 
+                coordinateRT90, 
+                coordinateSweref99, 
+                crsTransformationAdapter,
+                maxMeterDifferenceForSuccessfulTest
+            );
+
+            // testing the same transform as above but with the overloaded 
+            // method taking a string as last parameter instead of integer
+            AssertTransformationResultSuccess(
+                crsTransformationAdapter.Transform(coordinateRT90, crsCodeSweref99), 
+                coordinateRT90, 
+                coordinateSweref99, 
+                crsTransformationAdapter,
+                maxMeterDifferenceForSuccessfulTest
+            );
+            
+            // testing the same transform as above but with the overloaded 
+            // method taking a string as last parameter instead of string or integer
+            AssertTransformationResultSuccess(
+                crsTransformationAdapter.Transform(coordinateRT90, CrsIdentifierFactory.CreateFromEpsgNumber(epsgSweref99)),
+                coordinateRT90, 
+                coordinateSweref99, 
+                crsTransformationAdapter,
+                maxMeterDifferenceForSuccessfulTest
+            );
+        }
+
+        private void AssertTransformationResultSuccess(
+            CrsTransformationResult result, 
+            CrsCoordinate inputCoordinate, 
+            CrsCoordinate expectedOutputCoordinate, 
+            CrsTransformationAdapter crsTransformationAdapterSource,
+            double maxDeltaDifference
+        )
+        {
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.IsSuccess);
+            Assert.IsNull(result.Exception);
+            AssertCoordinateResult(
+                result.OutputCoordinate,
+                expectedOutputCoordinate, 
+                maxDeltaDifference
+            );
+            IList<CrsTransformationResult> subresults = result.GetTransformationResultChildren();
+            Assert.IsNotNull(subresults);
+            Assert.AreEqual(0, subresults.Count); // Leaf should have no children
+        }
+
         private void AssertCoordinateResult(
             CrsCoordinate actual, 
             CrsCoordinate expected, 
@@ -200,6 +255,9 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
                 0, 
                 children.Count
             );
+
+            //CrsTransformationResult aa;
+            //aa.
         }
     }
 }

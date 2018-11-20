@@ -1,5 +1,7 @@
 namespace com.programmerare.crsTransformations
 
+open System
+open System.Collections.Generic
 open com.programmerare.crsTransformations.coordinate
 
 (*
@@ -14,9 +16,20 @@ open com.programmerare.crsTransformations.coordinate
  *)
 type CrsTransformationResult // private
     (
+        inputCoordinate: CrsCoordinate,
+        outputCoordinate: CrsCoordinate,
+        exceptionOrNull: Exception,
+        isSuccess: bool,
+        //crsTransformationAdapterResultSource: CrsTransformationAdapter
+        transformationResultChildren: IList<CrsTransformationResult>
+        //crsTransformationResultStatistic: CrsTransformationResultStatistic
     ) =
     class
-
+        member this.InputCoordinate = inputCoordinate
+        member this.OutputCoordinate = outputCoordinate
+        member this.Exception = exceptionOrNull
+        member this.IsSuccess = isSuccess
+        member this.GetTransformationResultChildren() = transformationResultChildren
 //    (*
 //     * The input coordinate used in the transform that return the result object.
 //     *)        
