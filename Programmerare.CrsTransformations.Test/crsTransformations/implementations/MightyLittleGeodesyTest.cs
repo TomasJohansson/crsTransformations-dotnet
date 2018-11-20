@@ -135,5 +135,24 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
                 crsTransformationAdapter.LongNameOfImplementation
             );
         }
+
+        // CrsTransformationAdapterMightyLittleGeodesy
+        private readonly static string PrefixForImplementations = "CrsTransformationAdapter";
+
+        [Test]
+        public void ShortNameOfImplementationTest() {
+            string classNameWithoutNamespace = crsTransformationAdapter.GetType().Name;
+            Assert.That(classNameWithoutNamespace, Does.StartWith(PrefixForImplementations));
+            string suffix = classNameWithoutNamespace.Substring(PrefixForImplementations.Length);
+            Assert.That(classNameWithoutNamespace, Does.EndWith(suffix));
+            Assert.AreEqual(
+                suffix,  // expected
+                crsTransformationAdapter.ShortNameOfImplementation
+            );
+            Assert.AreEqual(
+                classNameWithoutNamespace, // expected
+                PrefixForImplementations + suffix
+            );
+        }
     }
 }

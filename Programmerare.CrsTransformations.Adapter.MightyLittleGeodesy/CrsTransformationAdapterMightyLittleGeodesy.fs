@@ -151,6 +151,13 @@ type CrsTransformationAdapterMightyLittleGeodesy() =
             CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1
 
         override this.LongNameOfImplementation = this.GetType().FullName
+
+        // it is not a problem to hardcode the name below 
+        // if the type name would become renamed since a 
+        // renaming would then be detected by test code which 
+        // verfifies that this short name actually is the 
+        // suffix of the type name
+        override this.ShortNameOfImplementation = "MightyLittleGeodesy"
     end
 (*
 // https://www.nuget.org/packages/MightyLittleGeodesy/

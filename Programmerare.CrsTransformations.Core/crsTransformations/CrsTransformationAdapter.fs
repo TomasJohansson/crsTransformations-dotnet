@@ -108,7 +108,7 @@ type CrsTransformationAdapter =
          * i.e. the class name without the prefix which is common
          * for all implementations.
          *)
-        abstract member GetShortNameOfImplementation : string
+        abstract member ShortNameOfImplementation : string
 
         (*
          * @see CrsTransformationAdapteeType

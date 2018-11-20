@@ -41,7 +41,9 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
 
         abstract member LongNameOfImplementation : string
         default this.LongNameOfImplementation = raise (System.NotImplementedException())
-        
+
+        abstract member ShortNameOfImplementation : string
+        default this.ShortNameOfImplementation = raise (System.NotImplementedException())
 
         interface CrsTransformationAdapter with
             member this.GetTransformationAdapterChildren: List<CrsTransformationAdapter> = 
@@ -77,14 +79,7 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
 
             member this.LongNameOfImplementation = this.LongNameOfImplementation
 
-            member this.GetShortNameOfImplementation =
-                raise (System.NotImplementedException())
-                //"TODO_name"
-                //let className = this.javaClass.simpleName
-                //if className.startsWith(classNamePrefix) && !className.equals(classNamePrefix) then
-                //    return className.substring(classNamePrefix.length)
-                //else 
-                //    return className
+            member this.ShortNameOfImplementation = this.ShortNameOfImplementation
 
             member this.AdapteeType = this.AdapteeType
 
