@@ -116,7 +116,7 @@ type CrsCoordinate private
         Tuple.Create(this.XEastingLongitude, this.YNorthingLatitude, this.CrsIdentifier).GetHashCode()
 
     override this.ToString() =
-        "Coordinate(xEastingLongitude=$xEastingLongitude, yNorthingLatitude=$yNorthingLatitude, crsIdentifier=$crsIdentifier)"
+        "Coordinate(xEastingLongitude=" + this.X.ToString() + ", yNorthingLatitude=" + this.Y.ToString() + ", crsIdentifier=" + this.CrsIdentifier.ToString() + ")"
 
     //------------------------------------------------------------------
 
