@@ -5,6 +5,21 @@ open System.Collections.Generic
 open com.programmerare.crsTransformations.coordinate
 open com.programmerare.crsTransformations.crsIdentifier
 
+// Note 1 : There are three types in this file separated with "and" 
+//          (or actually the keyword "and" is used instead of "type" for the seoncd and third types in this file)
+//          The reason is that F# compiles files in a certain order 
+//          which often is not a problem since you often want to avoid bidirectional dependencies
+//          but in this case I think it is reasonable/natural with som mutual 
+//          dependencies between the three types in this file 
+//          which is the reason for putting them in the same file 
+//          and solve the problem by doing that and by using the keyword "and".
+// Note 2 : The comments above methods are still written for the Kotlin/JVM/Java version
+// Note 3 : Some Kotlin code still remains in the file (within comments) 
+//          which eventually should become but currently works as a reminder 
+//          about how to continue with the development of the .NET version
+//          instead of mentally reinventing the wheel e.g. 
+//          thinking about appropriate names of methods/properties...
+
 (*
  * This adapter interface is the core type of this CRS transtiomation library.
  * 
