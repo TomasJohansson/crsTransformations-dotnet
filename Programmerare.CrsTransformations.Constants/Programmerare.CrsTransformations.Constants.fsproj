@@ -4,4 +4,8 @@
     <TargetFramework>netstandard2.0</TargetFramework>
   </PropertyGroup>
 
+  <ItemGroup>
+    <Compile Include="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_5_4\EpsgNumber.fs" />
+  </ItemGroup>
+
 </Project>
