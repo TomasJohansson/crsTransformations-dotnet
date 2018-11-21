@@ -5,18 +5,18 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Remove="crsTransformations\**" />
+    <EmbeddedResource Remove="CrsTransformations\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="crsTransformations\crsIdentifier\CrsIdentifier.fs" />
-    <Compile Include="crsTransformations\crsIdentifier\CrsIdentifierFactory.fs" />
-    <Compile Include="crsTransformations\coordinate\CrsCoordinate.fs" />
-    <Compile Include="crsTransformations\coordinate\CrsCoordinateFactory.fs" />
-    <Compile Include="crsTransformations\CrsTransformationAdapteeType.fs" />
-    <Compile Include="crsTransformations\CrsTransformationAdapter.fs" />
-    <Compile Include="crsTransformations\CrsTransformationAdapterBase.fs" />
-    <Compile Include="crsTransformations\CrsTransformationAdapterBaseLeaf.fs" />
+    <Compile Include="CrsTransformations\Identifier\CrsIdentifier.fs" />
+    <Compile Include="CrsTransformations\Identifier\CrsIdentifierFactory.fs" />
+    <Compile Include="CrsTransformations\Ccoordinate\CrsCoordinate.fs" />
+    <Compile Include="CrsTransformations\Ccoordinate\CrsCoordinateFactory.fs" />
+    <Compile Include="CrsTransformations\CrsTransformationAdapteeType.fs" />
+    <Compile Include="CrsTransformations\CrsTransformationAdapter.fs" />
+    <Compile Include="CrsTransformations\CrsTransformationAdapterBase.fs" />
+    <Compile Include="CrsTransformations\CrsTransformationAdapterBaseLeaf.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>
 
