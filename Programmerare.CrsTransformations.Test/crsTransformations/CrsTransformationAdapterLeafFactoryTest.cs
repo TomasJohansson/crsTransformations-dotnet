@@ -1,132 +1,132 @@
-package com.programmerare.crsTransformations;
+using Programmerare.CrsTransformations;
 
-import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformationAdapterGeoPackageNGA.CrsTransformationAdapterGeoPackageNGA;
-import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools;
-import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
-import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
-import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+using System;
+using System.Collections.Generic;
+using NUnit.Framework;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
+using Programmerare.CrsTransformations.Coordinate;
+using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
+using Programmerare.CrsTransformations.Adapter.DotSpatial;
+using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.CoreMatchers.hasItem;
-import static org.hamcrest.CoreMatchers.startsWith;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.greaterThanOrEqualTo;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
+[TestFixture]
 public class CrsTransformationAdapterLeafFactoryTest {
 
-    public final static int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = 5;
+    public const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = 3;
 
-    private static List<String> actualClassNamesForAllKnownImplementations;
+    private static IList<string> actualClassNamesForAllKnownImplementations;
     
-    @BeforeAll
-    static void beforeAll() {
-        actualClassNamesForAllKnownImplementations = Arrays.asList(
-            CrsTransformationAdapterGooberCTL.class.getName(),
-            CrsTransformationAdapterGeoPackageNGA.class.getName(),
-            CrsTransformationAdapterGeoTools.class.getName(),
-            CrsTransformationAdapterOrbisgisCTS.class.getName(),
-            CrsTransformationAdapterProj4J.class.getName()
-        );        
+    [SetUp]
+    public void SetUp() {
+        actualClassNamesForAllKnownImplementations = new List<string> {
+			typeof(CrsTransformationAdapterDotSpatial).FullName,
+			typeof(CrsTransformationAdapterProjNet4GeoAPI).FullName,
+			typeof(CrsTransformationAdapterMightyLittleGeodesy).FullName
+        };
     }
 
-    @Test
-    void createCrsTransformationAdapter_shouldThrowException_whenTheParameterIsNotNameOfClassImplementingTheExpectedInterface() {
-        final String incorrectClassName = "abc";
-        Throwable exception = assertThrows(
-                Throwable.class,
-                () -> CrsTransformationAdapterLeafFactory.createCrsTransformationAdapter(incorrectClassName)
-        );
-        // The default exception message from the instantiation would be something like:
-        // "java.lang.ClassNotFoundException: abc"
-        // However, I have changed it to include for example the full type name (including package)
-        // for the interface assumed to be implemented
-        final String nameOfInterfaceThatShouldBeImplemented = CrsTransformationAdapter.class.getName();
-        assertNotNull(exception);
-        final String exceptionMessage = exception.getMessage();
-        assertThat(exceptionMessage, containsString(nameOfInterfaceThatShouldBeImplemented));
-        assertThat(exceptionMessage, startsWith("Failed to instantiate")); // Fragile but the message string will not change often and if it does change then it will be very easy to modify the string here
+    [Test]
+    public void createCrsTransformationAdapter_shouldThrowException_whenTheParameterIsNotNameOfClassImplementingTheExpectedInterface() {
+        string incorrectClassName = "abc";
+
+		// Assert.That(
+		//		() => CrsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(incorrectClassName),
+		//		Throws.Exception
+		// );
+        // The above test any exception but the below would test specific exception
+        Exception exception = Assert.Throws<Exception>(() => {
+            CrsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(incorrectClassName);
+        });
+
+        string nameOfInterfaceThatShouldBeImplemented = typeof(ICrsTransformationAdapter).FullName;
+        Assert.IsNotNull(exception);
+        string exceptionMessage = exception.Message;
+        Assert.That(exceptionMessage, Does.Contain(nameOfInterfaceThatShouldBeImplemented));
+        Assert.That(exceptionMessage, Does.StartWith("Failed to instantiate")); // Fragile but the message string will not change often and if it does change then it will be very easy to modify the string here
     }
 
-    @Test
-    void listOfNonClassNamesForAdapters_shouldNotBeRecognizedAsAdapters() {
-        final List<String> stringsNotBeingClassNameForAnyAdapter = Arrays.asList(
+    [Test]
+    public void listOfNonClassNamesForAdapters_shouldNotBeRecognizedAsAdapters()
+    {
+        List<string> stringsNotBeingClassNameForAnyAdapter = new List<string>() {
             null,
             "",
             "  ",
             " x ",
             "abc",
-
             // this test class i.e. the below "this" does not imlpement the interface so therefore assertFalse below
-            this.getClass().getName()
-        );
+            this.GetType().FullName
+        };
 
-        for (String stringNotBeingClassNameForAnyAdapter : stringsNotBeingClassNameForAnyAdapter) {
-            assertFalse(
-                CrsTransformationAdapterLeafFactory.isCrsTransformationAdapter(stringNotBeingClassNameForAnyAdapter),
-                "Should not have been recognized as adapter : " +  stringNotBeingClassNameForAnyAdapter
-            );
-        }        
-    }
-
-    @Test
-    void listOfHardcodedClassnames_shouldBeCrsTransformationAdapters() {
-        final List<String> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.getClassNamesForAllKnownImplementations();
-        for (String hardcodedClassNameForKnownImplementation : hardcodedClassNamesForAllKnownImplementations) {
-            assertTrue(
-                CrsTransformationAdapterLeafFactory.isCrsTransformationAdapter(hardcodedClassNameForKnownImplementation),
-                "Name of failing class: " +  hardcodedClassNameForKnownImplementation
+        foreach (string stringNotBeingClassNameForAnyAdapter in stringsNotBeingClassNameForAnyAdapter)
+        {
+            Assert.IsFalse(
+                CrsTransformationAdapterLeafFactory.IsCrsTransformationAdapter(stringNotBeingClassNameForAnyAdapter),
+                "Should not have been recognized as adapter : " + stringNotBeingClassNameForAnyAdapter
             );
         }
     }
-    @Test
-    void listOfHardcodedClassnames_shouldBeCreateableAsNonNullCrsTransformationAdapters() {
-        final List<String> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.getClassNamesForAllKnownImplementations();
-        for (String hardcodedClassNameForKnownImplementation : hardcodedClassNamesForAllKnownImplementations) {
-            CrsTransformationAdapter crsTransformationAdapter = CrsTransformationAdapterLeafFactory.createCrsTransformationAdapter(hardcodedClassNameForKnownImplementation);
-            verifyThatTheCreatedAdapterIsRealObject(crsTransformationAdapter);
-            assertThat(actualClassNamesForAllKnownImplementations, hasItem(crsTransformationAdapter.getLongNameOfImplementation()));
+
+    [Test]
+    public void listOfHardcodedClassnames_shouldBeCrsTransformationAdapters()
+    {
+        IList<string> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.GetClassNamesForAllKnownImplementations();
+        foreach (string hardcodedClassNameForKnownImplementation in hardcodedClassNamesForAllKnownImplementations)
+        {
+            Assert.IsTrue(
+                CrsTransformationAdapterLeafFactory.IsCrsTransformationAdapter(hardcodedClassNameForKnownImplementation),
+                "Name of failing class: " + hardcodedClassNameForKnownImplementation
+            );
         }
     }
 
-    private void verifyThatTheCreatedAdapterIsRealObject(CrsTransformationAdapter crsTransformationAdapter) {
-        assertNotNull(crsTransformationAdapter);
+    [Test]
+    public void listOfHardcodedClassnames_shouldBeCreateableAsNonNullCrsTransformationAdapters()
+    {
+        IList<String> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.GetClassNamesForAllKnownImplementations();
+        foreach (string hardcodedClassNameForKnownImplementation in hardcodedClassNamesForAllKnownImplementations)
+        {
+            ICrsTransformationAdapter crsTransformationAdapter = CrsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(hardcodedClassNameForKnownImplementation);
+			VerifyThatTheCreatedAdapterIsRealObject(crsTransformationAdapter);
+			Assert.That(actualClassNamesForAllKnownImplementations, Contains.Item(crsTransformationAdapter.LongNameOfImplementation));
+        }
+    }
+
+    private void VerifyThatTheCreatedAdapterIsRealObject(ICrsTransformationAdapter crsTransformationAdapter)
+    {
+        Assert.IsNotNull(crsTransformationAdapter);
         // below trying to use the created object to really make sure it works
-        CrsCoordinate coordinateWgs84 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(59.330231, 18.059196, EpsgNumber.WORLD__WGS_84__4326);
-        CrsTransformationResult resultSweref99 = crsTransformationAdapter.transform(coordinateWgs84, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
-        assertNotNull(resultSweref99);
-        assertTrue(resultSweref99.isSuccess());
+        CrsCoordinate coordinateWgs84 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(59.330231, 18.059196, EpsgNumber.WORLD__WGS_84__4326);
+        CrsTransformationResult resultSweref99 = crsTransformationAdapter.Transform(coordinateWgs84, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        Assert.IsNotNull(resultSweref99);
+        Assert.IsTrue(resultSweref99.IsSuccess);
     }
 
-    @Test
-    void listOfKnownInstances_shouldOnlyContainNonNullObjectsAndTheNumberOfItemsShouldBeAtLeastFive() {
-        List<CrsTransformationAdapter> list = CrsTransformationAdapterLeafFactory.getInstancesOfAllKnownAvailableImplementations();
-        assertThat(list.size(), greaterThanOrEqualTo(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS));
-        for (CrsTransformationAdapter crsTransformationAdapter : list) {
-            verifyThatTheCreatedAdapterIsRealObject(crsTransformationAdapter);
+    [Test]
+    public void listOfKnownInstances_shouldOnlyContainNonNullObjectsAndTheNumberOfItemsShouldBeAtLeastFive()
+    {
+        IList<ICrsTransformationAdapter> list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations();
+        Assert.That(list.Count, Is.GreaterThanOrEqualTo(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS));
+        foreach (ICrsTransformationAdapter crsTransformationAdapter in list)
+        {
+            VerifyThatTheCreatedAdapterIsRealObject(crsTransformationAdapter);
         }
     }
 
-    @Test
-    void listOfHardcodedClassnames_shouldCorrespondToActualClassNames() {
-        final List<String> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.getClassNamesForAllKnownImplementations();
-        assertEquals(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, hardcodedClassNamesForAllKnownImplementations.size());
-        assertEquals(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, actualClassNamesForAllKnownImplementations.size());
+    [Test]
+    public void listOfHardcodedClassnames_shouldCorrespondToActualClassNames()
+    {
+        IList<string> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.GetClassNamesForAllKnownImplementations();
+        Assert.AreEqual(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, hardcodedClassNamesForAllKnownImplementations.Count);
+        Assert.AreEqual(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, actualClassNamesForAllKnownImplementations.Count);
 
-        for (String actualClassNameForAnImplementation : actualClassNamesForAllKnownImplementations) {
-            assertThat(hardcodedClassNamesForAllKnownImplementations, hasItem(actualClassNameForAnImplementation));
+        foreach (string actualClassNameForAnImplementation in actualClassNamesForAllKnownImplementations)
+        {
+            Assert.That(hardcodedClassNamesForAllKnownImplementations, Contains.Item(actualClassNameForAnImplementation));
         }
-        for (String hardcodedClassNamesForAllKnownImplementation : hardcodedClassNamesForAllKnownImplementations) {
-            assertThat(actualClassNamesForAllKnownImplementations, hasItem(hardcodedClassNamesForAllKnownImplementation));
-        }        
+        foreach (string hardcodedClassNamesForAllKnownImplementation in hardcodedClassNamesForAllKnownImplementations)
+        {
+            Assert.That(actualClassNamesForAllKnownImplementations, Contains.Item(hardcodedClassNamesForAllKnownImplementation));
+        }
     }
 }
