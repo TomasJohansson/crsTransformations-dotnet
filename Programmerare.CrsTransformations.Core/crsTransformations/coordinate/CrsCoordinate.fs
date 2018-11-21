@@ -1,6 +1,6 @@
-namespace com.programmerare.crsTransformations.coordinate
+namespace Programmerare.CrsTransformations.Coordinate
 open System
-open com.programmerare.crsTransformations.crsIdentifier
+open Programmerare.CrsTransformations.Identifier
 (*
 
 // TODO: rewrite comments below for .NET ...

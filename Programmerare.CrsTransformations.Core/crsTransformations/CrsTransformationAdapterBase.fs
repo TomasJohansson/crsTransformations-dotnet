@@ -1,8 +1,8 @@
-namespace com.programmerare.crsTransformations
+namespace Programmerare.CrsTransformations
 
 open System.Collections.Generic
-open com.programmerare.crsTransformations.coordinate
-open com.programmerare.crsTransformations.crsIdentifier
+open Programmerare.CrsTransformations.Coordinate
+open Programmerare.CrsTransformations.Identifier
 
 (*
  * The base class of the adapter interface implementing most of the 

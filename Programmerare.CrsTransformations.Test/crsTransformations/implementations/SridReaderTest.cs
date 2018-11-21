@@ -1,9 +1,9 @@
 ﻿using NUnit.Framework;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
-using GeoAPI.CoordinateSystems;
 using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using GeoAPI.CoordinateSystems; // ICoordinateSystem
 
-namespace Programmerare.CrsTransformations.Test.crsTransformations.implementations
+namespace Programmerare.CrsTransformations.Test.Implementations
 {
     [TestFixture]
     class SridReaderTest

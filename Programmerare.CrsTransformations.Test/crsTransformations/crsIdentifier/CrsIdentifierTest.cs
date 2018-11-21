@@ -1,4 +1,4 @@
-namespace com.programmerare.crsTransformations.crsIdentifier {
+namespace Programmerare.CrsTransformations.Identifier {
 
 using NUnit.Framework;
 using System;
@@ -105,7 +105,7 @@ public class CrsIdentifierTest {
     {
         Assert.NotNull(exception);
         Assert.NotNull(exception.Message);
-        // the exception message is currently something like this: "Parameter specified as non-null is null: method com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier$Companion.createFromCrsCode, parameter crsCode"
+        // the exception message is currently something like this: "Parameter specified as non-null is null: method Programmerare.CrsTransformations.Identifier.CrsIdentifier$Companion.createFromCrsCode, parameter crsCode"
         // (potentially fragile to test the message strings but it does not really change often, and in such a rare scenario, then easy to fix)
         Assert.That(exception.Message, Does.Contain(expectedStringToBeContainedInExceptionMessage));
         // Alternative to the above test

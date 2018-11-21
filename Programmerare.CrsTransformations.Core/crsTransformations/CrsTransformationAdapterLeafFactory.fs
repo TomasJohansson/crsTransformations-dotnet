@@ -1,4 +1,4 @@
-package com.programmerare.crsTransformations
+package Programmerare.CrsTransformations
 
 import java.lang.RuntimeException
 
@@ -11,7 +11,7 @@ import java.lang.RuntimeException
  * statically predefined enforced dependencies to all leaf adapter implementations.  
  * 
  * Instead the users can choose which implementations to use e.g. through Maven or Gradle dependencies.
- * @see com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory
+ * @see Programmerare.CrsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory
  *
  * @author Tomas Johansson ( http://programmerare.com )
  * The code in the "crs-transformation-adapter-core" project is licensed with MIT.

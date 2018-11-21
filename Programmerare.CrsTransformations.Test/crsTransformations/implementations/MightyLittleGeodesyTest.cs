@@ -1,8 +1,7 @@
-﻿using com.programmerare.crsTransformations.Adapter.MightyLittleGeodesy;
-using com.programmerare.crsTransformations;
+﻿using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using NUnit.Framework;
 
-namespace Programmerare.CrsTransformations.Test.crsTransformations.implementations
+namespace Programmerare.CrsTransformations.Test.Implementations
 {
     [TestFixture]
     class MightyLittleGeodesyTest : AdaptersTestBase

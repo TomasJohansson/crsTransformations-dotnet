@@ -1,8 +1,7 @@
-﻿using com.programmerare.crsTransformations.Adapter.DotSpatial;
-using com.programmerare.crsTransformations;
+﻿using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using NUnit.Framework;
 
-namespace Programmerare.CrsTransformations.Test.crsTransformations.implementations
+namespace Programmerare.CrsTransformations.Test.Implementations
 {
     [TestFixture]
     class DotSpatialTest : AdaptersTestBase

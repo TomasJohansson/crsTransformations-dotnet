@@ -1,4 +1,4 @@
-namespace  com.programmerare.crsTransformations.coordinate
+namespace Programmerare.CrsTransformations.Coordinate
 
 // TODO: rewrite comments below for .NET ...
 
@@ -9,9 +9,9 @@ namespace  com.programmerare.crsTransformations.coordinate
 // (when using Java we do not see that problem but rather a class
 //   CoordinateFactory with all these function as static method in that class)
 
-//import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
-//import com.programmerare.crsTransformations.crsIdentifier.createFromCrsCode
-//import com.programmerare.crsTransformations.crsIdentifier.createFromEpsgNumber
+//import Programmerare.CrsTransformations.Identifier.CrsIdentifier
+//import Programmerare.CrsTransformations.Identifier.createFromCrsCode
+//import Programmerare.CrsTransformations.Identifier.createFromEpsgNumber
 //import java.lang.IllegalArgumentException
 
 // -------------------------------------------------------------------------
@@ -71,7 +71,7 @@ namespace  com.programmerare.crsTransformations.coordinate
  * From Java code these methods will look like a class 'CrsCoordinateFactory' with public static factory methods.
  * From Kotlin code the methods are package level functions, and each function can be imported as
  * if it would be a class, for example like this:
- *  import com.programmerare.crsTransformations.coordinate.createFromXEastingLongitudeAndYNorthingLatitude
+ *  import Programmerare.CrsTransformations.Coordinate.createFromXEastingLongitudeAndYNorthingLatitude
  *
  * Regarding the usage of package level functions like this instead of using a Kotlin object:
  * One advantage is that with a Kotlin object you can actually get the same kind of static
@@ -98,7 +98,7 @@ namespace  com.programmerare.crsTransformations.coordinate
 *)
 
 // TODO: rewrite comments above for .NET ...
-open com.programmerare.crsTransformations.crsIdentifier
+open Programmerare.CrsTransformations.Identifier
 
 type CrsCoordinateFactory =
 

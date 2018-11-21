@@ -1,8 +1,7 @@
-﻿using com.programmerare.crsTransformations.Adapter.ProjNet4GeoAPI;
-using com.programmerare.crsTransformations;
+﻿using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 using NUnit.Framework;
 
-namespace Programmerare.CrsTransformations.Test.crsTransformations.implementations
+namespace Programmerare.CrsTransformations.Test.Implementations
 {
     class ProjNet4GeoAPITest : AdaptersTestBase
     {

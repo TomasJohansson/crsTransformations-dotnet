@@ -1,17 +1,17 @@
-namespace com.programmerare.crsTransformations.Adapter.MightyLittleGeodesy
+namespace Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy
 
 open System.Collections.Generic
 open MightyLittleGeodesy.Positions
 open MightyLittleGeodesy.Classes
-open com.programmerare.crsTransformations
-open com.programmerare.crsTransformations.coordinate
-open com.programmerare.crsTransformations.crsIdentifier
+open Programmerare.CrsTransformations
+open Programmerare.CrsTransformations.Coordinate
+open Programmerare.CrsTransformations.Identifier
 
 // TODO: rewrite comments below for .NET ...
 (*
  * Implementation of the interface CrsTransformationAdapter.
  * See the documentation of the interface.
- * @see com.programmerare.crsTransformations.CrsTransformationAdapter
+ * @see Programmerare.CrsTransformations.CrsTransformationAdapter
  *
  * @author Tomas Johansson ( http://programmerare.com )
  * The code in the "crs-transformation-code-generation" project is licensed with MIT.

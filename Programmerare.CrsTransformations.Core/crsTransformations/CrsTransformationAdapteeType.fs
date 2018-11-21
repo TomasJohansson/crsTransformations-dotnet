@@ -1,4 +1,4 @@
-namespace com.programmerare.crsTransformations
+namespace Programmerare.CrsTransformations
 
 // F# enum
 

@@ -1,12 +1,11 @@
-﻿using com.programmerare.crsTransformations;
-using com.programmerare.crsTransformations.coordinate;
-using com.programmerare.crsTransformations.crsIdentifier;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
+using Programmerare.CrsTransformations.Coordinate;
+using Programmerare.CrsTransformations.Identifier;
 using System;
 using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations.Test.crsTransformations.implementations
+namespace Programmerare.CrsTransformations.Test.Implementations
 {
     abstract class AdaptersTestBase
     {

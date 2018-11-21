@@ -1,8 +1,7 @@
 ﻿using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
-using System;
-using System.Collections.Generic;
-using System.Text;
+
 using NUnit.Framework;
+
 namespace Programmerare.CrsTransformations.Test.CrsConstants
 {
     [TestFixture]

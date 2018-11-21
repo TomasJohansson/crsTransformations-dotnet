@@ -1,6 +1,6 @@
-namespace com.programmerare.crsTransformations.coordinate {
+namespace Programmerare.CrsTransformations.Coordinate {
 
-using com.programmerare.crsTransformations.crsIdentifier;
+using Programmerare.CrsTransformations.Identifier;
 using NUnit.Framework;
 using System;
 

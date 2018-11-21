@@ -1,16 +1,12 @@
-namespace com.programmerare.crsTransformations.Adapter.ProjNet4GeoAPI
-// TODO change the above namespace ... and also in the other adapter projects
-open Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI
+namespace Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI
 
-open GeoAPI.CoordinateSystems
-open GeoAPI.CoordinateSystems.Transformations
-open ProjNet
-open ProjNet.CoordinateSystems
-open ProjNet.CoordinateSystems.Transformations
-open System.Collections.Generic
-open com.programmerare.crsTransformations
-open com.programmerare.crsTransformations.coordinate
-open com.programmerare.crsTransformations.crsIdentifier
+open ProjNet // CoordinateSystemServices
+open ProjNet.CoordinateSystems // CoordinateSystemFactory
+open ProjNet.CoordinateSystems.Transformations // CoordinateTransformationFactory
+open GeoAPI.CoordinateSystems // ICoordinateSystem
+open GeoAPI.CoordinateSystems.Transformations // ICoordinateTransformation
+open Programmerare.CrsTransformations
+open Programmerare.CrsTransformations.Coordinate
 
 type CrsTransformationAdapterProjNet4GeoAPI() =
     class

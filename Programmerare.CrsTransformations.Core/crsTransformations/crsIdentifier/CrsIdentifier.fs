@@ -1,4 +1,4 @@
-namespace com.programmerare.crsTransformations.crsIdentifier
+namespace Programmerare.CrsTransformations.Identifier
 
 open System
 

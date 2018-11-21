@@ -1,10 +1,10 @@
-namespace com.programmerare.crsTransformations
+namespace Programmerare.CrsTransformations
 
 open System
 open System.Linq
 open System.Collections.Generic
-open com.programmerare.crsTransformations.coordinate
-open com.programmerare.crsTransformations.crsIdentifier
+open Programmerare.CrsTransformations.Coordinate
+open Programmerare.CrsTransformations.Identifier
 
 // Note 1 : There are three types in this file separated with "and" 
 //          (or actually the keyword "and" is used instead of "type" for the seoncd and third types in this file)

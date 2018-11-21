@@ -1,8 +1,8 @@
-namespace com.programmerare.crsTransformations.Adapter.DotSpatial
+namespace Programmerare.CrsTransformations.Adapter.DotSpatial
 
 open DotSpatial.Projections
-open com.programmerare.crsTransformations
-open com.programmerare.crsTransformations.coordinate
+open Programmerare.CrsTransformations
+open Programmerare.CrsTransformations.Coordinate
 
 type CrsTransformationAdapterDotSpatial() =
     class

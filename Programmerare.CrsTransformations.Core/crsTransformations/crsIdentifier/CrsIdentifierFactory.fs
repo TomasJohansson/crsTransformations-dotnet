@@ -1,4 +1,4 @@
-namespace com.programmerare.crsTransformations.crsIdentifier
+namespace Programmerare.CrsTransformations.Identifier
 
 open System
 
@@ -7,11 +7,11 @@ open System
 (*
  * From Java code this will look like a class 'CrsIdentifierFactory'
  * with public static factory methods.
- * The Java class name: com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory  
+ * The Java class name: Programmerare.CrsTransformations.Identifier.CrsIdentifierFactory  
  * 
  * From Kotlin code the methods are available as package level functions
  * and each function can be imported as if it would be a class, for example like this:  
- *  import com.programmerare.crsTransformations.crsIdentifier.createFromEpsgNumber
+ *  import Programmerare.CrsTransformations.Identifier.createFromEpsgNumber
  *
  * @author Tomas Johansson ( http://programmerare.com )
  * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
