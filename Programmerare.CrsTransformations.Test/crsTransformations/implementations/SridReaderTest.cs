@@ -44,6 +44,34 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
             );
         }
 
+        [Test]
+        public void EdgeCaseFirstRowInTheCsvFile()
+        {
+            // Testing the very first row in the file.
+
+            // The test is based on the fact that the file 
+            // "SRID.csv" contains a row (the first row) like this:
+            // 2000;PROJCS["Anguilla 1957 / British West Indies Grid",GEOGCS["Anguilla 1957",DATUM["Anguilla_1957",SPHEROID["Clarke 1880 (RGS)",6378249.145,293.465,AUTHORITY["EPSG","7012"]],AUTHORITY["EPSG","6600"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4600"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",-62],PARAMETER["scale_factor",0.9995],PARAMETER["false_easting",400000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","2000"]]
+            TestSridReaderForEpsgNumber(
+                EpsgNumber.ANGUILLA__ONSHORE__ANGUILLA_1957__BRITISH_WEST_INDIES_GRID__2000,
+                "PROJCS[\"Anguilla 1957 / British West Indies Grid"
+            );
+        }
+
+        [Test]
+        public void EdgeCaseLastRowInTheCsvFile()
+        {
+            // Testing the very last row in the file.
+
+            // The test is based on the fact that the file 
+            // "SRID.csv" contains a row (the last row) like this:
+            // 32766;PROJCS["WGS 84 / TM 36 SE",GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",36],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",10000000],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","32766"]]
+            TestSridReaderForEpsgNumber(
+                EpsgNumber.MOZAMBIQUE__OFFSHORE__WGS_84__TM_36_SE__32766,
+                "PROJCS[\"WGS 84 / TM 36 SE"
+            );
+        }
+
         private void TestSridReaderForEpsgNumber(
             int epsgNumber, 
             string expectedInitialPartOfWellKnownTextString
