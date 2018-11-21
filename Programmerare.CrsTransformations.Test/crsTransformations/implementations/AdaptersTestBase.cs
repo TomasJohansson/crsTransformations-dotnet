@@ -1,5 +1,4 @@
 ﻿using com.programmerare.crsTransformations;
-using com.programmerare.crsTransformations.Adapter.MightyLittleGeodesy;
 using com.programmerare.crsTransformations.coordinate;
 using com.programmerare.crsTransformations.crsIdentifier;
 using NUnit.Framework;
@@ -9,8 +8,7 @@ using System.Collections.Generic;
 
 namespace Programmerare.CrsTransformations.Test.crsTransformations.implementations
 {
-    [TestFixture]
-    class MightyLittleGeodesyTest
+    abstract class AdaptersTestBase
     {
         // These coordinate should be corresponding:
         private const double wgs84Lat = 59.330231;
@@ -34,17 +32,26 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
         // These below will be used as the actual values and be asserted with the expected values (i.e. the above objects)
         private CrsCoordinate resultWgs84, resultSweref99, resultRT90;
 
-        double maxMeterDifferenceForSuccessfulTest = 0.5; // 0.5 meter
-        double maxLatLongDifferenceForSuccessfulTest = 0.00001;
+        private double maxMeterDifferenceForSuccessfulTest = 0.5; // 0.5 meter
+        private double maxLatLongDifferenceForSuccessfulTest = 0.00001;
+        
+        private CrsTransformationAdapteeType expectedCrsTransformationAdapteeType;
 
-        [SetUp]
-        public void SetUp()
+        protected void SetUpbase(
+            CrsTransformationAdapter crsTransformationAdapter,
+            CrsTransformationAdapteeType expectedCrsTransformationAdapteeType,
+            double maxMeterDifferenceForSuccessfulTest,
+            double maxLatLongDifferenceForSuccessfulTest 
+        )
         {
+            this.crsTransformationAdapter = crsTransformationAdapter;
+            this.expectedCrsTransformationAdapteeType = expectedCrsTransformationAdapteeType;
+            this.maxMeterDifferenceForSuccessfulTest = maxMeterDifferenceForSuccessfulTest;
+            this.maxLatLongDifferenceForSuccessfulTest = maxLatLongDifferenceForSuccessfulTest;
+
             coordinateWgs84 = CrsCoordinateFactory.LatLon(wgs84Lat, wgs84Lon, epsgWGS84);
             coordinateSweref99 = CrsCoordinateFactory.LatLon(sweref99Y, sweref99X, epsgSweref99);
             coordinateRT90 = CrsCoordinateFactory.LatLon(rt90Y, rt90X, epsgRT9025gonv);
-
-            crsTransformationAdapter = new CrsTransformationAdapterMightyLittleGeodesy();
         }
 
         [Test]
@@ -209,9 +216,21 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
             int epsgNotSupported = 123; // not supported by MightyLittleGeodesy
             // TransformToCoordinate SHOULD (unlike the transform method) 
             // throw exception 
-            ArgumentException exception = Assert.Throws<ArgumentException>( () => {
-                crsTransformationAdapter.TransformToCoordinate(coordinateRT90, epsgNotSupported);
-            });
+            
+            // DotSpatial exception type:
+            //ArgumentOutOfRangeException: Authority Code not found
+
+            //ArgumentException exception = Assert.Throws<ArgumentException>( () => {
+            //Exception exception = Assert.Throws<Exception>( () => {
+            //    crsTransformationAdapter.TransformToCoordinate(coordinateRT90, epsgNotSupported);
+            //});
+            // The above 'Assert.Throws' test for a SPECIFIC exception type 
+            // while the code below works for any exception
+            Assert.That(
+                () => crsTransformationAdapter.TransformToCoordinate(coordinateRT90, epsgNotSupported), 
+                Throws.Exception
+            );
+
         }
 
 
@@ -397,7 +416,10 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
         [Test]
         public void AdapteeTypeTest() {
             Assert.IsNotNull(crsTransformationAdapter.AdapteeType);
-            Assert.AreEqual(CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1, crsTransformationAdapter.AdapteeType);
+            Assert.AreEqual(
+                this.expectedCrsTransformationAdapteeType,
+                crsTransformationAdapter.AdapteeType
+            );
         }
 
         [Test]
