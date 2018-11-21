@@ -1,4 +1,6 @@
 namespace com.programmerare.crsTransformations.Adapter.ProjNet4GeoAPI
+// TODO change the above namespace ... and also in the other adapter projects
+open Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI
 
 open GeoAPI.CoordinateSystems
 open GeoAPI.CoordinateSystems.Transformations
@@ -18,7 +20,8 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
         //Proj.NET doesn't have an embedded Spatial Reference ID database like the EPSG database, so there is no default logic for loading a spatial reference by ID. However Proj.NET does ship with a comma-separated file with EPSG codes, and you can easily iterate through these to load a specific ID. This is not as efficient as loading the data from an indexed database, but it's simple and easy to deploy.
         //Below is a simple class for loading a coordinate system by SRID.
         // public class SridReader ...
-        // TODO ... see above url
+        
+        // The kind of class at the above URL has now been implemented in this F# project
 
         override this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             let css = 
@@ -27,8 +30,15 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
                     new CoordinateSystemFactory(),
                     new CoordinateTransformationFactory()
                     )
-            let sourceCrs: ICoordinateSystem = css.GetCoordinateSystem(inputCoordinate.CrsIdentifier.EpsgNumber)
-            let targetCrs: ICoordinateSystem = css.GetCoordinateSystem(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
+            //let sourceCrs: ICoordinateSystem = css.GetCoordinateSystem(inputCoordinate.CrsIdentifier.EpsgNumber)
+            //let targetCrs: ICoordinateSystem = css.GetCoordinateSystem(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
+            // The above code does not support many CRS and therefore the code below was added
+            // However: TODO: some kind of caching strategy since the code below 
+            // reads the resource file twice, which it will do 
+            // for every usage of the method even if doing multiple 
+            // transformations between the same coordinate systems
+            let sourceCrs: ICoordinateSystem = SridReader.GetCSbyID(inputCoordinate.CrsIdentifier.EpsgNumber)
+            let targetCrs: ICoordinateSystem = SridReader.GetCSbyID(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
             //let csFact: CoordinateSystemFactory = new CoordinateSystemFactory()
             let ctFact: CoordinateTransformationFactory = new CoordinateTransformationFactory()
             let xy: double[] = [| inputCoordinate.X; inputCoordinate.Y |]
