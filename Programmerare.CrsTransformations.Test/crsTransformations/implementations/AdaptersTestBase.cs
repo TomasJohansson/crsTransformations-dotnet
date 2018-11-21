@@ -70,7 +70,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         // to SWEREF99TM :      6580821.890387752  674032.5898864265
         // to RT90 2.5 gon V :  6580994.000084024  1628294.1757153098
 
-        private CrsTransformationAdapter crsTransformationAdapter;
+        private ICrsTransformationAdapter crsTransformationAdapter;
         
         // These three are used as input parameters and as expected values
         private CrsCoordinate coordinateWgs84, coordinateSweref99, coordinateRT90;
@@ -83,7 +83,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         private CrsTransformationAdapteeType expectedCrsTransformationAdapteeType;
 
         protected void SetUpbase(
-            CrsTransformationAdapter crsTransformationAdapter,
+            ICrsTransformationAdapter crsTransformationAdapter,
             CrsTransformationAdapteeType expectedCrsTransformationAdapteeType,
             double maxMeterDifferenceForSuccessfulTest,
             double maxLatLongDifferenceForSuccessfulTest 
@@ -235,7 +235,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             CrsTransformationResult result, 
             CrsCoordinate inputCoordinate, 
             CrsCoordinate expectedOutputCoordinate, 
-            CrsTransformationAdapter crsTransformationAdapterSource,
+            ICrsTransformationAdapter crsTransformationAdapterSource,
             double maxDeltaDifference
         )
         {
@@ -394,7 +394,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             CrsTransformationResult result, 
             CrsCoordinate inputCoordinate, 
             //CrsCoordinate expectedOutputCoordinate, 
-            CrsTransformationAdapter crsTransformationAdapterSource
+            ICrsTransformationAdapter crsTransformationAdapterSource
         )
         {
             Assert.IsNotNull(result);
@@ -502,7 +502,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
 
         [Test]
         public void GetTransformationAdapterChildrenTest() {
-            IList<CrsTransformationAdapter> children = crsTransformationAdapter.GetTransformationAdapterChildren();
+            IList<ICrsTransformationAdapter> children = crsTransformationAdapter.GetTransformationAdapterChildren();
             Assert.AreEqual(
                 0, 
                 children.Count

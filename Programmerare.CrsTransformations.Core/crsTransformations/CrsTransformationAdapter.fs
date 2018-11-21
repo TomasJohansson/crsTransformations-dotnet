@@ -57,7 +57,7 @@ open Programmerare.CrsTransformations.Identifier
  * Please find more information in the license file at the root directory of each subproject
  * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
  *)
-type CrsTransformationAdapter =
+type ICrsTransformationAdapter =
     interface
         // -------------------------------------------------
         // The three methods returning a coordinate object:
@@ -144,7 +144,7 @@ type CrsTransformationAdapter =
          *          is a 'composite'but if the implementation is a 'leaf'
          *          then an empty list should be returned.
          *)
-        abstract member GetTransformationAdapterChildren : unit -> IList<CrsTransformationAdapter>
+        abstract member GetTransformationAdapterChildren : unit -> IList<ICrsTransformationAdapter>
 
     end
 
@@ -183,7 +183,7 @@ and CrsTransformationResult // TODO maybe make a private constructor
         exceptionOrNull: Exception,
         isSuccess: bool,
         
-        crsTransformationAdapterResultSource: CrsTransformationAdapter,
+        crsTransformationAdapterResultSource: ICrsTransformationAdapter,
         // Note that the below parameter is a mutual dependency
         // since CrsTransformationAdapter also uses the CrsTransformationResult
         // as result type for Transform methods

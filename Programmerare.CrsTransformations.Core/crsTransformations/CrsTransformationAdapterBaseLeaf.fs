@@ -99,6 +99,6 @@ type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
 
         // empty list of children adapters for leafs:
         override this.GetTransformationAdapterChildren() =
-            new List<CrsTransformationAdapter>() :> IList<CrsTransformationAdapter>
+            new List<ICrsTransformationAdapter>() :> IList<ICrsTransformationAdapter>
 
     end

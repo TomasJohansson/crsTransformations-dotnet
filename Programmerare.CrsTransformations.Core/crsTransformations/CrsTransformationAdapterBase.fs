@@ -56,10 +56,10 @@ type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
         abstract member ShortNameOfImplementation : string
         default this.ShortNameOfImplementation = raise (System.NotImplementedException())
 
-        abstract member GetTransformationAdapterChildren : unit -> IList<CrsTransformationAdapter>
+        abstract member GetTransformationAdapterChildren : unit -> IList<ICrsTransformationAdapter>
         default this.GetTransformationAdapterChildren() = raise (System.NotImplementedException())
 
-        interface CrsTransformationAdapter with
+        interface ICrsTransformationAdapter with
             member this.GetTransformationAdapterChildren() =  this.GetTransformationAdapterChildren()
                 
             // -------------------------------------------------
