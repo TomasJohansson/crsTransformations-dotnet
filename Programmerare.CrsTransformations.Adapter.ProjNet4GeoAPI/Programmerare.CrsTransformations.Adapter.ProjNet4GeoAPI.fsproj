@@ -2,11 +2,16 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI</AssemblyName>
   </PropertyGroup>
 
   <ItemGroup>
+    <EmbeddedResource Include="SRID.csv" />
+    <Compile Include="SridReader.fs" />
     <Compile Include="CrsTransformationAdapterProjNet4GeoAPI.fs" />
   </ItemGroup>
+
+  <ItemGroup />
 
   <ItemGroup>
     <PackageReference Include="ProjNET4GeoAPI" Version="1.4.1" />

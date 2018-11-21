@@ -23,6 +23,7 @@
     <Compile Include="crsTransformations\implementations\AdaptersTestBase.cs" />
     <Compile Include="crsTransformations\implementations\MightyLittleGeodesyTest.cs" />
     <Compile Include="crsTransformations\implementations\ProjNet4GeoAPITest.cs" />
+    <Compile Include="crsTransformations\implementations\SridReaderTest.cs" />
   </ItemGroup>
 
   <ItemGroup>
