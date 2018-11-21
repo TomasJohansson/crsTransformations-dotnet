@@ -10,13 +10,6 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
 {
     abstract class AdaptersTestBase
     {
-        // These coordinate should be corresponding:
-        private const double wgs84Lat = 59.330231;
-        private const double wgs84Lon = 18.059196;
-        private const double sweref99Y = 6580822;
-        private const double sweref99X = 674032;
-        private const double rt90Y = 6580994;
-        private const double rt90X = 1628294;
         private const int epsgWGS84 =       EpsgNumber.WORLD__WGS_84__4326;
         private const int epsgSweref99 =    EpsgNumber.SWEDEN__SWEREF99_TM__3006;
         private const int epsgRT9025gonv =  EpsgNumber.SWEDEN__2_5_GON_W__RT90_2_5_GON_V__3021;// RT90 2.5 gon V
@@ -24,6 +17,59 @@ namespace Programmerare.CrsTransformations.Test.crsTransformations.implementatio
         private static readonly string crsCodeWGS84 = EPSG_PREFIX + epsgWGS84;
         private static readonly string crsCodeSweref99 = EPSG_PREFIX + epsgSweref99;
         private static readonly string crsCodeRT9025gonv = EPSG_PREFIX + epsgRT9025gonv;// RT90 2.5 gon V
+
+        // These coordinate below should be corresponding:
+        // (FIVE different online transformations, see below,
+        //  have produced the below SWEREF99TM and RT90 2.5 gonv coordinates
+        //  when transforming from the below WGS84 coordinate)
+        private const double wgs84Lat = 59.330231;
+        private const double wgs84Lon = 18.059196;
+        private const double sweref99Y = 6580822;
+        private const double sweref99X = 674032;
+        private const double rt90Y = 6580994;
+        private const double rt90X = 1628294;
+
+        // Regarding the above "correct" coordinates in Sweden:
+        // These are corresponding coordinates 
+        // according to the swedish site Eniro:
+        // https://kartor.eniro.se/?c=59.330231,18.059196&z=13&g=59.330231,18.059196&q=%2259.330231%20,%2018.059196%22
+        //WGS84 decimal (lat, lon)
+        //59.330231, 18.059196
+        //RT90 (nord, öst)
+        //6580994, 1628294
+        //SWEREF99 TM (nord, öst)
+        //6580822, 674032
+
+        // https://www.hitta.se/kartan!~59.33023,18.05920,17z/tr!i=j2e5tYJQ/GPS!l=59.33023:18.05920
+        //WGS84 DD (LAT, LONG)
+        //59.33023, 18.05920
+        //RT90
+        //6580994.18, 1628293.886
+        //SWEREF99 TM
+        //6580821.991, 674032.357
+
+        // Note that the above two websites are simply stating 
+        // "RT90" than "RT90 2.5 gon V"
+        // However, when doing the below transformations 
+        // it was done through the EPSG code 3021
+        // (i.e. RT90 2.5 gon V)
+        // and those transformations were VERY similar 
+        // to those two above.
+
+        // https://epsg.io/transform
+        // Transforming from WGS84 59.33023, 18.05920
+        // to SWEREF99TM :      6580821.89 , 674032.59
+        // to RT90 2.5 gon V :  6580994.03 , 1628294.16
+         
+        // https://mygeodata.cloud/cs2cs/
+        // Transforming from WGS84 59.33023, 18.05920
+        // to SWEREF99TM :      6580821.8903  674032.589891
+        // to RT90 2.5 gon V :  6580994.02535 1628294.16471
+
+        // http://tasks.arcgisonline.com/arcgis/rest/services/Geometry/GeometryServer/project?inSR=4326&outSR=3006
+        // Transforming from WGS84 59.33023, 18.05920
+        // to SWEREF99TM :      6580821.890387752  674032.5898864265
+        // to RT90 2.5 gon V :  6580994.000084024  1628294.1757153098
 
         private CrsTransformationAdapter crsTransformationAdapter;
         
