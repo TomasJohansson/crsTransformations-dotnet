@@ -1,19 +1,16 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="com\**" />
-    <Compile Remove="crsTransformationAdapterOrbisgisCTS\**" />
     <Compile Remove="CrsTransformations\**" />
-    <EmbeddedResource Remove="com\**" />
-    <EmbeddedResource Remove="crsTransformationAdapterOrbisgisCTS\**" />
+    <Compile Remove="TestData\**" />
     <EmbeddedResource Remove="CrsTransformations\**" />
-    <None Remove="com\**" />
-    <None Remove="crsTransformationAdapterOrbisgisCTS\**" />
+    <EmbeddedResource Remove="TestData\**" />
     <None Remove="CrsTransformations\**" />
+    <None Remove="TestData\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -27,6 +24,8 @@
     <Compile Include="CrsTransformations\CompositeTransformations\CrsTransformationAdapterCompositeTest.cs" />
     <Compile Include="CrsTransformations\CompositeTransformations\CrsTransformationAdapterWeightTest.cs" />
     <Compile Include="CrsTransformations\Coordinate\CrsCoordinateTest.cs" />
+    <Compile Include="CrsTransformations\CrsTransformationAdapterTest.cs" />
+    <Compile Include="CrsTransformations\CrsTransformationTestBase.cs" />
     <Compile Include="CrsTransformations\Identifier\CrsIdentifierTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterLeafFactoryTest.cs" />
     <Compile Include="CrsTransformations\Implementations\DotSpatialTest.cs" />

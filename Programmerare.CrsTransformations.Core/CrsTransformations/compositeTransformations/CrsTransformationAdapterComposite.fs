@@ -57,6 +57,9 @@ type CrsTransformationAdapterComposite internal
         override this.IsComposite: bool = 
             true
 
+        override this.ShortNameOfImplementation : string = 
+            "Composite"
+
         override this.AdapteeType : CrsTransformationAdapteeType =
             this._GetCompositeStrategy()._GetAdapteeType()
 

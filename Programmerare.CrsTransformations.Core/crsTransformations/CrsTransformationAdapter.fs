@@ -411,10 +411,18 @@ and CrsTransformationResult // TODO maybe make a private constructor
                 crsTransformationAdapterResultSource: ICrsTransformationAdapter,
                 nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic// = null
             ): CrsTransformationResult =
+            let mutable exc: Exception = exceptionOrNull
+            if( not(isSuccess) && (isNull exc)) then 
+                // problem , maybe some items has an exception, and if so then reuse the first found exception
+                // as the outermost exception in the composite too...
+                let allResults = nullableCrsTransformationResultStatistic.GetAllCrsTransformationResults()
+                for res in allResults do
+                    if not(res.IsSuccess) && not(isNull res.Exception) then 
+                        exc <- res.Exception
             CrsTransformationResult(
                 inputCoordinate,
                 outputCoordinate,
-                exceptionOrNull,
+                exc,
                 isSuccess,
                 crsTransformationAdapterResultSource,
                 nullableCrsTransformationResultStatistic

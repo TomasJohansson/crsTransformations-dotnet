@@ -1,79 +1,71 @@
-package com.programmerare.crsTransformations;
+using System;
+using System.Collections.Generic;
+using NUnit.Framework;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
+using Programmerare.CrsTransformations.Coordinate;
+using Programmerare.CrsTransformations.CompositeTransformations;
+using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
+using Programmerare.CrsTransformations.Adapter.DotSpatial;
+using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 
-import com.programmerare.crsTransformationAdapterGeoPackageNGA.CrsTransformationAdapterGeoPackageNGA;
-import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools;
-import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
-import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
-import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
-import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterComposite;
-import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
-import org.junit.jupiter.api.DisplayName;
-import org.junit.jupiter.api.Test;
+namespace Programmerare.CrsTransformations
+{
+public class CrsTransformationAdapterTest : CrsTransformationTestBase {
+	
+	private const int NUMBER_OF_LEAF_IMPLEMENTATIONS = 3;
+	// TODO the above is defined in some other place too.. find it and remove duplication ....
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.number.OrderingComparison.greaterThanOrEqualTo;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
-final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
-
-    // the keyword "super" is not needed but is still used in this test class 
+    // the keyword "base" is not needed but is still used in this test class 
     // to make it obvious that some variables ar defined and populated in a base class
 
-    @Test
-    void theBaseClass_shouldHaveCreatedFiveLeafAndFourCompositeImplementations() {
-        final int expectedNumberOfLeafs = 5; // will not change often and if/when changed then will be easy to fix
+    [Test]
+    public void theBaseClass_shouldHaveCreatedThreeLeafAndFourCompositeImplementations() {
+        int expectedNumberOfLeafs = NUMBER_OF_LEAF_IMPLEMENTATIONS;
         int expectedNumberOfComposites = 4; // will not change often and if/when changed then will be easy to fix
-        assertEquals(expectedNumberOfLeafs, super.crsTransformationAdapterLeafImplementations.size());
-        assertEquals(expectedNumberOfComposites, super.crsTransformationAdapterCompositeImplementations.size());
-        assertEquals(expectedNumberOfLeafs + expectedNumberOfComposites, super.crsTransformationAdapterImplementations.size());
+        Assert.AreEqual(expectedNumberOfLeafs, base.crsTransformationAdapterLeafImplementations.Count);
+        Assert.AreEqual(expectedNumberOfComposites, base.crsTransformationAdapterCompositeImplementations.Count);
+        Assert.AreEqual(expectedNumberOfLeafs + expectedNumberOfComposites, base.crsTransformationAdapterImplementations.Count);
     }
     
-    @Test
-    void transformToCoordinate_shouldReturnCorrectSweref99TMcoordinate_whenTransformingFromWgs84withAllAdapterImplementations() {
-        for (CrsTransformationAdapter crsTransformationAdapter : super.crsTransformationAdapterImplementations) {
+    [Test]
+    public void transformToCoordinate_shouldReturnCorrectSweref99TMcoordinate_whenTransformingFromWgs84withAllAdapterImplementations() {
+        foreach (ICrsTransformationAdapter crsTransformationAdapter in base.crsTransformationAdapterImplementations) {
             transformToCoordinate_shouldReturnCorrectSweref99TMcoordinate_whenTransformingFromWgs84(crsTransformationAdapter);
         }
     }
 
-    @Test
-    void transformToCoordinate_shouldReturnCorrectWgs84coordinate_whenTransformingFromRT90withAllAdapterImplementations() {
-        for (CrsTransformationAdapter crsTransformationAdapter : super.crsTransformationAdapterImplementations) {
+    [Test]
+    public void transformToCoordinate_shouldReturnCorrectWgs84coordinate_whenTransformingFromRT90withAllAdapterImplementations() {
+        foreach (ICrsTransformationAdapter crsTransformationAdapter in base.crsTransformationAdapterImplementations) {
             transformToCoordinate_shouldReturnCorrectWgs84coordinate_whenTransformingFromRT90(crsTransformationAdapter);
         }
     }
 
-    @DisplayName("Testing CrsTransformationResult with expected successe")
-    @Test
-    void transform_shouldSuccess_whenInputCoordinateIsCorrect() {
+    [Test]
+    public void transform_shouldSuccess_whenInputCoordinateIsCorrect() {
         double wgs84Lat = 59.330231;
         double wgs84Lon = 18.059196;
-        CrsCoordinate wgs84InputCoordinate = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(wgs84Lon, wgs84Lat, super.epsgNumberForWgs84);
+        CrsCoordinate wgs84InputCoordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(wgs84Lon, wgs84Lat, base.epsgNumberForWgs84);
 
-        for (CrsTransformationAdapter crsTransformationAdapter : super.crsTransformationAdapterImplementations) {
-            CrsTransformationResult transformResult = crsTransformationAdapter.transform(wgs84InputCoordinate, super.epsgNumberForSweref99TM);
-            assertNotNull(transformResult);
-            assertTrue(transformResult.isSuccess());
-            assertNull(transformResult.getException());
-            CrsCoordinate outputCoordinate = transformResult.getOutputCoordinate();
-            assertNotNull(outputCoordinate);
-            assertEquals(outputCoordinate.getCrsIdentifier().getEpsgNumber(), super.epsgNumberForSweref99TM);
-            if(!crsTransformationAdapter.isComposite()) {
+        foreach (ICrsTransformationAdapter crsTransformationAdapter in base.crsTransformationAdapterImplementations) {
+            CrsTransformationResult transformResult = crsTransformationAdapter.Transform(wgs84InputCoordinate, base.epsgNumberForSweref99TM);
+            string errorMessage = "Problem implementation: " + crsTransformationAdapter.AdapteeType;
+            Assert.IsNotNull(transformResult, errorMessage);
+            Assert.IsTrue(transformResult.IsSuccess, errorMessage);
+            Assert.IsNull(transformResult.Exception, errorMessage);
+            CrsCoordinate outputCoordinate = transformResult.OutputCoordinate;
+            Assert.IsNotNull(outputCoordinate, errorMessage);
+            Assert.AreEqual(outputCoordinate.CrsIdentifier.EpsgNumber, base.epsgNumberForSweref99TM, errorMessage);
+            if(!crsTransformationAdapter.IsComposite) {
                 assertResultStatisticsForLeafImplementation(transformResult);
             }
         }
     }
 
 
-    @Test
-    void transform_shouldReturnSuccessFalseButNotThrowException_whenLongitudeIsNotValid() {
-        final CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
+    [Test]
+    public void transform_shouldReturnSuccessFalseButNotThrowException_whenLongitudeIsNotValid() {
+        CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.LatLon(
             60.0, // ok wgs84 latitude
             -9999999999.0, // NOT ok wgs84 longitude
             epsgNumberForWgs84
@@ -81,9 +73,9 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
         transform_shouldReturnSuccessFalseButNotThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
     }
 
-    @Test
-    void transform_shouldReturnSuccessFalseButNotThrowException_whenLatitudeIsNotValid() {
-        final CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
+    [Test]
+    public void transform_shouldReturnSuccessFalseButNotThrowException_whenLatitudeIsNotValid() {
+        CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.LatLon(
             -9999999999.0, // NOT ok wgs84 latitude
             20.0, // ok wgs84 longitude
             epsgNumberForWgs84
@@ -91,9 +83,9 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
         transform_shouldReturnSuccessFalseButNotThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
     }
 
-    @Test
-    void transform_shouldReturnSuccessFalseButNotThrowException_whenCrsCodeIsNotValid() {
-        final CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
+    [Test]
+    public void transform_shouldReturnSuccessFalseButNotThrowException_whenCrsCodeIsNotValid() {
+        CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.LatLon(
             60.0, // ok wgs84 latitude
             20.0, // ok wgs84 longitude
             "This string is NOT a correct crs/EPSG code"
@@ -104,18 +96,18 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
     private void transform_shouldReturnSuccessFalseButNotThrowException_whenCoordinateIsNotValid(
         CrsCoordinate unvalidInputCoordinate
     ) {
-        for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
-            final String messageWhenError = "Problem with the implementation " + crsTransformationAdapter.getAdapteeType();
-            CrsTransformationResult transformResult = crsTransformationAdapter.transform(unvalidInputCoordinate, epsgNumberForSweref99TM);
-            assertNotNull(transformResult, messageWhenError);
-            if(!unvalidInputCoordinate.getCrsIdentifier().isEpsgCode()) {
+        foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
+            string messageWhenError = "Problem with the implementation " + crsTransformationAdapter.AdapteeType;
+            CrsTransformationResult transformResult = crsTransformationAdapter.Transform(unvalidInputCoordinate, epsgNumberForSweref99TM);
+            Assert.IsNotNull(transformResult, messageWhenError);
+            if(!unvalidInputCoordinate.CrsIdentifier.IsEpsgCode) {
                 // if the coordinate is unvalid becasue of incorrect crs code
                 // then we can do the below assertions but if the coordinate values 
                 // are unreasonable it may not be detected by the implementations
                 // and we can not expect them to return success=false 
-                assertFalse(transformResult.isSuccess(), messageWhenError);
-                assertNotNull(transformResult.getException(), messageWhenError);
-                assertEquals(unvalidInputCoordinate, transformResult.getInputCoordinate(), messageWhenError);                
+                Assert.IsFalse(transformResult.IsSuccess, messageWhenError);
+                Assert.IsNotNull(transformResult.Exception, messageWhenError);
+                Assert.AreEqual(unvalidInputCoordinate, transformResult.InputCoordinate, messageWhenError);
             }
         }        
     }
@@ -123,7 +115,7 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
 // not throwing exceptions for unreasonable coordinate values    
 //    @Test
 //    void transformToCoordinate_shouldThrowException_whenLongitudeIsNotValid() {
-//        final CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
+//        CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
 //            60.0, // ok wgs84 latitude
 //            -9999999999.0, // NOT ok wgs84 longitude
 //            epsgNumberForWgs84
@@ -133,7 +125,7 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
 //
 //    @Test
 //    void transformToCoordinate_shouldThrowException_whenLatitudeIsNotValid() {
-//        final CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
+//        CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
 //            -9999999999.0, // NOT ok wgs84 latitude
 //            20.0, // ok wgs84 longitude
 //            epsgNumberForWgs84
@@ -141,9 +133,9 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
 //        transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
 //    }
 
-    @Test
-    void transformToCoordinate_shouldThrowException_whenCrsCodeIsNotValid() {
-        final CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
+    [Test]
+    public void transformToCoordinate_shouldThrowException_whenCrsCodeIsNotValid() {
+        CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.LatLon(
             60.0, // ok wgs84 latitude
             20.0, // ok wgs84 longitude
             "This string is NOT a correct crs/EPSG code"
@@ -151,221 +143,219 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
         transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
     }
 
-    private final static List<String> classNamesForExpectedPotentialExceptionsWhenIncorrectEPSGcode =
-            Arrays.asList(
-                IllegalArgumentException.class.getName(), // Goober implementation throws this
+    private static List<String> classNamesForExpectedPotentialExceptionsWhenIncorrectEPSGcode =
+			// TODO: these below were implemented for the Java adapeters ...
+            new List<string>{
+                //IllegalArgumentException.class.getName(), // Goober implementation throws this
                 "org.opengis.referencing.NoSuchAuthorityCodeException",
                 "org.osgeo.proj4j.UnknownAuthorityCodeException",
                 "org.cts.crs.CRSException",
-                "mil.nga.sf.util.SFException",
-                RuntimeException.class.getName() // composite throws this
-            );
+                "mil.nga.sf.util.SFException"
+                //RuntimeException.class.getName() // composite throws this
+            };
     
     private void transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(
         CrsCoordinate unvalidInputCoordinate
     ) {
-        for (CrsTransformationAdapter crsTransformationAdapter : crsTransformationAdapterImplementations) {
-            Exception exception = assertThrows(
-                Exception.class,
-                () -> crsTransformationAdapter.transformToCoordinate(unvalidInputCoordinate, super.epsgNumberForSweref99TM),
-                () -> "Exception was not thrown but SHOULD have been thrown for implementation " + crsTransformationAdapter.getAdapteeType() + " and coordinate " + unvalidInputCoordinate 
-            );
+			// TODO implement below for .NET
+        foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
+            //Exception exception = assertThrows(
+            //    Exception.class,
+            //    () -> crsTransformationAdapter.transformToCoordinate(unvalidInputCoordinate, base.epsgNumberForSweref99TM),
+            //    () -> "Exception was not thrown but SHOULD have been thrown for implementation " + crsTransformationAdapter.getAdapteeType() + " and coordinate " + unvalidInputCoordinate 
+            //);
 
-            boolean isExpectedException = classNamesForExpectedPotentialExceptionsWhenIncorrectEPSGcode.stream().anyMatch(it -> it.equals(exception.getClass().getName()));
-            assertTrue(isExpectedException, () -> "Unexpected exception: " + exception.getClass().getName() + " for adapter " + crsTransformationAdapter.getAdapteeType());
+            //bool isExpectedException = classNamesForExpectedPotentialExceptionsWhenIncorrectEPSGcode.stream().anyMatch(it -> it.equals(exception.getClass().getName()));
+            //Assert.IsTrue(isExpectedException, () -> "Unexpected exception: " + exception.getClass().getName() + " for adapter " + crsTransformationAdapter.getAdapteeType());
         }
     }
     
     
-    @Test
-    void getLongNameOfImplementation_shouldReturnFullClassNameIncludingPackageName() {
+    [Test]
+    public void getLongNameOfImplementation_shouldReturnFullClassNameIncludingPackageName() {
         // Of course fragile, but the class/package name will not change
         // often and if/when it does the test will fail but will be trivial to fix.
         // The purpose of this test is not only to "test" but rather to
         // illustrate what the method returns
-        assertEquals(
-            "com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools",
-            (new CrsTransformationAdapterGeoTools()).getLongNameOfImplementation()
+        Assert.AreEqual(
+            "Programmerare.CrsTransformations.Adapter.DotSpatial.CrsTransformationAdapterDotSpatial",
+            (new CrsTransformationAdapterDotSpatial()).LongNameOfImplementation
         );
         // There are more related tests in 'CrsTransformationAdapterLeafFactoryTest'
         // which will detect problems if a class is renamed        
     }
 
-    @Test
-    void getShortNameOfImplementation_shouldReturnUniqueSuffixPartOfTheClassName() {
+    [Test]
+    public void getShortNameOfImplementation_shouldReturnUniqueSuffixPartOfTheClassName() {
         // Of course fragile, but the class/package name will not change
         // often and if/when it does the test will fail but will be trivial to fix.
         // The purpose of this test is not only to "test" but also to
         // illustrate what the method returns
-        assertEquals(
-            "GeoTools",
-            (new CrsTransformationAdapterGeoTools()).getShortNameOfImplementation()
+        Assert.AreEqual(
+            "DotSpatial",
+            (new CrsTransformationAdapterDotSpatial()).ShortNameOfImplementation
         );
 
-        assertEquals(
-            "GooberCTL",
-            (new CrsTransformationAdapterGooberCTL()).getShortNameOfImplementation()
+        Assert.AreEqual(
+            "MightyLittleGeodesy",
+            (new CrsTransformationAdapterMightyLittleGeodesy()).ShortNameOfImplementation
         );
 
-        assertEquals(
-            "Proj4J",
-            (new CrsTransformationAdapterProj4J()).getShortNameOfImplementation()
-        );
-
-        assertEquals(
-            "OrbisgisCTS",
-            (new CrsTransformationAdapterOrbisgisCTS()).getShortNameOfImplementation()
-        );
-
-        assertEquals(
-            "GeoPackageNGA",
-            (new CrsTransformationAdapterGeoPackageNGA()).getShortNameOfImplementation()
+        Assert.AreEqual(
+            "ProjNet4GeoAPI",
+            (new CrsTransformationAdapterProjNet4GeoAPI()).ShortNameOfImplementation
         );
 
         // The above tests are for the "Leaf" implementations.
         // Below is a "Composite" created
-        CrsTransformationAdapterComposite compositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+        CrsTransformationAdapterComposite compositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
         // The class name for the above adapter is "CrsTransformationAdapterComposite"
         // and the prefix part "CrsTransformationAdapter" is removed from the name
         // to get the short implementation i.e. just "Composite"
-        assertEquals(
+        Assert.AreEqual(
             "Composite",
-            compositeAdapter.getShortNameOfImplementation()
+            compositeAdapter.ShortNameOfImplementation
         );
     }
 
-    @Test
-    void isComposite_shouldReturnTrue_whenComposite() {
-        for (CrsTransformationAdapter compositeAdapter : super.crsTransformationAdapterCompositeImplementations) {
-            assertTrue(compositeAdapter.isComposite());    
+    [Test]
+    public void isComposite_shouldReturnTrue_whenComposite() {
+        foreach (ICrsTransformationAdapter compositeAdapter in base.crsTransformationAdapterCompositeImplementations) {
+            Assert.IsTrue(compositeAdapter.IsComposite);
         }
     }
     
-    @Test
-    void isComposite_shouldReturnFalse_whenLeaf() {
-        for (CrsTransformationAdapter leafAdapter : super.crsTransformationAdapterLeafImplementations) {
-            assertFalse(leafAdapter.isComposite());
+    [Test]
+    public void isComposite_shouldReturnFalse_whenLeaf() {
+        foreach (ICrsTransformationAdapter leafAdapter in base.crsTransformationAdapterLeafImplementations) {
+            Assert.IsFalse(leafAdapter.IsComposite);
         }
     }    
 
-    @Test
-    void getTransformationAdapterChildren_shouldReturnNonEmptyList_whenComposite() {
+    [Test]
+    public void getTransformationAdapterChildren_shouldReturnNonEmptyList_whenComposite() {
         // all leafs should be children 
-        final int expectedNumberOfChildrenForTheComposites = super.crsTransformationAdapterLeafImplementations.size();
-        assertThat(
-            "Has the number of leaf implementations been reduced?",
-            expectedNumberOfChildrenForTheComposites, greaterThanOrEqualTo(5) // currently five
+        int expectedNumberOfChildrenForTheComposites = base.crsTransformationAdapterLeafImplementations.Count;
+        Assert.That(
+            //"Has the number of leaf implementations been reduced?",
+            expectedNumberOfChildrenForTheComposites, Is.GreaterThanOrEqualTo(NUMBER_OF_LEAF_IMPLEMENTATIONS)
         ); 
-        for (CrsTransformationAdapter compositeAdapter : super.crsTransformationAdapterCompositeImplementations) {
-            assertEquals(
+        foreach (ICrsTransformationAdapter compositeAdapter in base.crsTransformationAdapterCompositeImplementations) {
+            Assert.AreEqual(
                 expectedNumberOfChildrenForTheComposites, 
-                compositeAdapter.getTransformationAdapterChildren().size()
+                compositeAdapter.GetTransformationAdapterChildren().Count
             );    
         }
     }
 
-    @Test
-    void getTransformationAdapterChildren_shouldReturnEmptyList_whenLeaf() {
-        final int zeroExpectedNumberOfChildren = 0;
-        for (CrsTransformationAdapter leafAdapter : super.crsTransformationAdapterLeafImplementations) {
-            assertEquals(
+    [Test]
+    public void getTransformationAdapterChildren_shouldReturnEmptyList_whenLeaf() {
+        int zeroExpectedNumberOfChildren = 0;
+        foreach (ICrsTransformationAdapter leafAdapter in base.crsTransformationAdapterLeafImplementations) {
+            Assert.AreEqual(
                 zeroExpectedNumberOfChildren,
-                leafAdapter.getTransformationAdapterChildren().size()
+                leafAdapter.GetTransformationAdapterChildren().Count
             );
         }
     }
     
-    @Test
-    void isReliable_shouldReturnTrueForLeafs_whenUsingCriteriaNumberOfResultsOneAndMaxDiffZero() {
-        final int criteriaNumberOfResults = 1; // always one for a Leaf
-        final double criteriaMaxDiff = 0.0; // always zero for a Leaf
+    [Test]
+    public void isReliable_shouldReturnTrueForLeafs_whenUsingCriteriaNumberOfResultsOneAndMaxDiffZero() {
+        int criteriaNumberOfResults = 1; // always one for a Leaf
+        double criteriaMaxDiff = 0.0; // always zero for a Leaf
         // The tested method 'isReliable' is actually relevant only for aggregated
         // transformations, but nevertheless there is a reaonable behavouor also
         // for the "Leaf" implementations regarding the number of results (always 1)
         // and the "differences" in lat/long for the "different" implementations
         // i.e. the "difference" should always be zero since there is only one implementation
 
-        final List<CrsTransformationAdapter> crsTransformationAdapterImplementationsExpectingOneResult = new ArrayList<>();
-        crsTransformationAdapterImplementationsExpectingOneResult.addAll(super.crsTransformationAdapterLeafImplementations);
-        crsTransformationAdapterImplementationsExpectingOneResult.add(CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess());        
-        assertEquals(6, crsTransformationAdapterImplementationsExpectingOneResult.size()); // 5 leafs plus 1 
+        List<ICrsTransformationAdapter> crsTransformationAdapterImplementationsExpectingOneResult = new List<ICrsTransformationAdapter>();
+        crsTransformationAdapterImplementationsExpectingOneResult.AddRange(base.crsTransformationAdapterLeafImplementations);
+        crsTransformationAdapterImplementationsExpectingOneResult.Add(CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess());
+        Assert.AreEqual(
+			NUMBER_OF_LEAF_IMPLEMENTATIONS + 1,  // 3 leafs plus 1 
+			crsTransformationAdapterImplementationsExpectingOneResult.Count
+		);
         
-        for (CrsTransformationAdapter crsTransformationAdapterLeaf : crsTransformationAdapterImplementationsExpectingOneResult) {
+        foreach (ICrsTransformationAdapter crsTransformationAdapterLeaf in crsTransformationAdapterImplementationsExpectingOneResult) {
             // suffix "Leaf" is not quite true, but in one of the iterations
             // it will be the Composite FirstSuccess which also will only have one result 
             // and thus can be tested in the same way as the leafs in this method
-            final CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.latLon(59.29,18.03);
-            final CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationAdapterLeaf.transform(wgs84coordinateInSweden, com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber.SWEDEN__SWEREF99_TM__3006);
-            assertNotNull(resultWhenTransformingToSwedishCRS);
-            assertTrue(resultWhenTransformingToSwedishCRS.isSuccess());
-            final CrsTransformationResultStatistic crsTransformationResultStatistic = resultWhenTransformingToSwedishCRS.getCrsTransformationResultStatistic();
-            assertNotNull(crsTransformationResultStatistic);
-            assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
+            CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.LatLon(59.29,18.03);
+            CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationAdapterLeaf.Transform(wgs84coordinateInSweden, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+            Assert.IsNotNull(resultWhenTransformingToSwedishCRS);
+            Assert.IsTrue(resultWhenTransformingToSwedishCRS.IsSuccess);
+            CrsTransformationResultStatistic crsTransformationResultStatistic = resultWhenTransformingToSwedishCRS.CrsTransformationResultStatistic;
+            Assert.IsNotNull(crsTransformationResultStatistic);
+            Assert.IsTrue(crsTransformationResultStatistic.IsStatisticsAvailable);
     
-            final int actualNumberOfResults = crsTransformationResultStatistic.getNumberOfResults();
-            assertEquals(criteriaNumberOfResults, actualNumberOfResults);
-            final double actualMaxDiffXLongitude = crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude();
-            final double actualMaxDiffYLatitude = crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude();
-            final double actualMaxDiffXorY = Math.max(actualMaxDiffXLongitude, actualMaxDiffYLatitude);
-            assertEquals(criteriaMaxDiff, actualMaxDiffXorY); // zero differences since there should be only one result !
+            int actualNumberOfResults = crsTransformationResultStatistic.NumberOfPotentiallySuccesfulResults;
+            Assert.AreEqual(criteriaNumberOfResults, actualNumberOfResults);
+            double actualMaxDiffXLongitude = crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude;
+            double actualMaxDiffYLatitude = crsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude;
+            double actualMaxDiffXorY = Math.Max(actualMaxDiffXLongitude, actualMaxDiffYLatitude);
+            Assert.AreEqual(criteriaMaxDiff, actualMaxDiffXorY); // zero differences since there should be only one result !
 
             // method "isReliable" used below is the method under test
             
-            assertTrue(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResults, criteriaMaxDiff));
+            Assert.IsTrue(resultWhenTransformingToSwedishCRS.IsReliable(criteriaNumberOfResults, criteriaMaxDiff));
     
-            // assertFalse below since trying to require one more result than available
-            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResults + 1, criteriaMaxDiff));
+            // Assert.IsFalse below since trying to require one more result than available
+            Assert.IsFalse(resultWhenTransformingToSwedishCRS.IsReliable(criteriaNumberOfResults + 1, criteriaMaxDiff));
     
-            // assertFalse below since trying to require too small maxdiff
-            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResults, criteriaMaxDiff - 0.00000000001));
+            // Assert.IsFalse below since trying to require too small maxdiff
+            Assert.IsFalse(resultWhenTransformingToSwedishCRS.IsReliable(criteriaNumberOfResults, criteriaMaxDiff - 0.00000000001));
         }
     }
 
-    @Test
-    void isReliable_shouldReturnTrueOrFalseForComposites_dependingOnCriteriasUsedAsMethodParameter() {
+    [Test]
+    public void isReliable_shouldReturnTrueOrFalseForComposites_dependingOnCriteriasUsedAsMethodParameter() {
         // the below value is the max difference when comparing the five leaf implementations 
-        final double actualMaxDiffXorY = 0.0032574664801359177;
+        double actualMaxDiffXorY = 0.0032574664801359177;
        
-        final int criteriaNumberOfResultsSuccess = 5; // all 5 should succeed
-        final int criteriaNumberOfResultsFailure = 6; // 6 implementations can not succeed since there are not so many implementations
-        final double criteriaMaxDiffFailure = actualMaxDiffXorY - 0.0001; // a little too small requirement for max difference
-        final double criteriaMaxDiffSuccess  = actualMaxDiffXorY + 0.0001; // should result in success since the actual number is smaller 
+        int criteriaNumberOfResultsSuccess = NUMBER_OF_LEAF_IMPLEMENTATIONS; // all 5 should succeed
+        int criteriaNumberOfResultsFailure = NUMBER_OF_LEAF_IMPLEMENTATIONS + 1; // 6 implementations can not succeed since there are not so many implementations
+        double criteriaMaxDiffFailure = actualMaxDiffXorY - 0.0001; // a little too small requirement for max difference
+        double criteriaMaxDiffSuccess  = actualMaxDiffXorY + 0.0001; // should result in success since the actual number is smaller 
 
-        final List<CrsTransformationAdapter> crsTransformationAdapterImplementationsExpectingManyResults = new ArrayList<>();
-        for (CrsTransformationAdapter crsTransformationAdapterComposite : super.crsTransformationAdapterCompositeImplementations) {
-            if(crsTransformationAdapterComposite.getAdapteeType() != CrsTransformationAdapteeType.COMPOSITE_FIRST_SUCCESS) {
-                crsTransformationAdapterImplementationsExpectingManyResults.add(crsTransformationAdapterComposite);
+        List<ICrsTransformationAdapter> crsTransformationAdapterImplementationsExpectingManyResults = new List<ICrsTransformationAdapter>();
+        foreach (ICrsTransformationAdapter crsTransformationAdapterComposite in base.crsTransformationAdapterCompositeImplementations) {
+            if(crsTransformationAdapterComposite.AdapteeType != CrsTransformationAdapteeType.COMPOSITE_FIRST_SUCCESS) {
+                crsTransformationAdapterImplementationsExpectingManyResults.Add(crsTransformationAdapterComposite);
             }
         }
-        assertEquals(3, crsTransformationAdapterImplementationsExpectingManyResults.size()); // 3 composites i.e. all composite except COMPOSITE_FIRST_SUCCESS
+        Assert.AreEqual(3, crsTransformationAdapterImplementationsExpectingManyResults.Count); // 3 composites i.e. all composite except COMPOSITE_FIRST_SUCCESS
         
-        for (CrsTransformationAdapter crsTransformationAdapterComposite : crsTransformationAdapterImplementationsExpectingManyResults) {
-            final CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.latLon(59.29,18.03);
-            final CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationAdapterComposite.transform(wgs84coordinateInSweden, com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber.SWEDEN__SWEREF99_TM__3006);
-            assertNotNull(resultWhenTransformingToSwedishCRS);
-            assertTrue(resultWhenTransformingToSwedishCRS.isSuccess());
-            final CrsTransformationResultStatistic crsTransformationResultStatistic = resultWhenTransformingToSwedishCRS.getCrsTransformationResultStatistic();
-            assertNotNull(crsTransformationResultStatistic);
-            assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
+        foreach (ICrsTransformationAdapter crsTransformationAdapterComposite in crsTransformationAdapterImplementationsExpectingManyResults) {
+            CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.LatLon(59.29,18.03);
+            CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationAdapterComposite.Transform(wgs84coordinateInSweden, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+            Assert.IsNotNull(resultWhenTransformingToSwedishCRS);
+            Assert.IsTrue(resultWhenTransformingToSwedishCRS.IsSuccess);
+            CrsTransformationResultStatistic crsTransformationResultStatistic = resultWhenTransformingToSwedishCRS.CrsTransformationResultStatistic;
+            Assert.IsNotNull(crsTransformationResultStatistic);
+            Assert.IsTrue(crsTransformationResultStatistic.IsStatisticsAvailable);
             // so far the same code as the previous test method for the test method with leafs
             
-            final int actualNumberOfResults = crsTransformationResultStatistic.getNumberOfResults();
-            assertEquals(criteriaNumberOfResultsSuccess, actualNumberOfResults);
-            final double actualMaxDiffXLongitude = crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude();
-            final double actualMaxDiffYLatitude = crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude();
-            // final double actualMaxDiffXorY = Math.max(actualMaxDiffXLongitude, actualMaxDiffYLatitude);
+            int actualNumberOfResults = crsTransformationResultStatistic.NumberOfPotentiallySuccesfulResults;
+            Assert.AreEqual(
+				criteriaNumberOfResultsSuccess, 
+				actualNumberOfResults
+			);
+            double actualMaxDiffXLongitude = crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude;
+            double actualMaxDiffYLatitude = crsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude;
+            // double actualMaxDiffXorY = Math.max(actualMaxDiffXLongitude, actualMaxDiffYLatitude);
             // System.out.println("actualMaxDiffXorY " + actualMaxDiffXorY + "  " + crsTransformationAdapterComposite.getAdapteeType());
 
             // method "isReliable" used below is the method under test
-            assertTrue(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResultsSuccess, criteriaMaxDiffSuccess));
-            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResultsSuccess, criteriaMaxDiffFailure));
-            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResultsFailure, criteriaMaxDiffSuccess));
-            assertFalse(resultWhenTransformingToSwedishCRS.isReliable(criteriaNumberOfResultsFailure, criteriaMaxDiffFailure));
+            Assert.IsTrue(resultWhenTransformingToSwedishCRS.IsReliable(criteriaNumberOfResultsSuccess, criteriaMaxDiffSuccess));
+            Assert.IsFalse(resultWhenTransformingToSwedishCRS.IsReliable(criteriaNumberOfResultsSuccess, criteriaMaxDiffFailure));
+            Assert.IsFalse(resultWhenTransformingToSwedishCRS.IsReliable(criteriaNumberOfResultsFailure, criteriaMaxDiffSuccess));
+            Assert.IsFalse(resultWhenTransformingToSwedishCRS.IsReliable(criteriaNumberOfResultsFailure, criteriaMaxDiffFailure));
         }
     }
 
     private void transformToCoordinate_shouldReturnCorrectSweref99TMcoordinate_whenTransformingFromWgs84(
-        CrsTransformationAdapter crsTransformationAdapter
+        ICrsTransformationAdapter crsTransformationAdapter
     ) {
         // This test is using the coordinates of Stockholm Centralstation (Sweden)
         // https://kartor.eniro.se/m/03Yxp
@@ -380,14 +370,14 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
         double sweref99_Y_expected = 6580822;
         double sweref99_X_expected = 674032;
 
-        CrsCoordinate inputCoordinate = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(wgs84Lon, wgs84Lat, super.epsgNumberForWgs84);
-        CrsCoordinate outputCoordinate = crsTransformationAdapter.transformToCoordinate(inputCoordinate, super.epsgNumberForSweref99TM);
-        assertEquals(sweref99_Y_expected, outputCoordinate.getYNorthingLatitude(), 0.5);
-        assertEquals(sweref99_X_expected, outputCoordinate.getXEastingLongitude(), 0.5);
+        CrsCoordinate inputCoordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(wgs84Lon, wgs84Lat, base.epsgNumberForWgs84);
+        CrsCoordinate outputCoordinate = crsTransformationAdapter.TransformToCoordinate(inputCoordinate, base.epsgNumberForSweref99TM);
+        Assert.AreEqual(sweref99_Y_expected, outputCoordinate.YNorthingLatitude, 0.5);
+        Assert.AreEqual(sweref99_X_expected, outputCoordinate.XEastingLongitude, 0.5);
     }
 
     private void transformToCoordinate_shouldReturnCorrectWgs84coordinate_whenTransformingFromRT90(
-        CrsTransformationAdapter crsTransformationAdapter
+        ICrsTransformationAdapter crsTransformationAdapter
     ) {
         double rt90_Y = 6580994;
         double rt90_X = 1628294;
@@ -395,24 +385,25 @@ final class CrsTransformationAdapterTest extends CrsTransformationTestBase {
         double wgs84Lat_expected = 59.330231;
         double wgs84Lon_expected = 18.059196;
 
-        CrsCoordinate inputCoordinate = CrsCoordinateFactory.createFromXEastingLongitudeAndYNorthingLatitude(rt90_X, rt90_Y, super.epsgNumberForRT90);
+        CrsCoordinate inputCoordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(rt90_X, rt90_Y, base.epsgNumberForRT90);
 
-        CrsCoordinate outputCoordinate = crsTransformationAdapter.transformToCoordinate(inputCoordinate, super.epsgNumberForWgs84);
-        assertEquals(wgs84Lat_expected, outputCoordinate.getYNorthingLatitude(), 0.1);
-        assertEquals(wgs84Lon_expected, outputCoordinate.getXEastingLongitude(), 0.1);
+        CrsCoordinate outputCoordinate = crsTransformationAdapter.TransformToCoordinate(inputCoordinate, base.epsgNumberForWgs84);
+        Assert.AreEqual(wgs84Lat_expected, outputCoordinate.YNorthingLatitude, 0.1);
+        Assert.AreEqual(wgs84Lon_expected, outputCoordinate.XEastingLongitude, 0.1);
     }
 
     private void assertResultStatisticsForLeafImplementation(
         CrsTransformationResult transformResult
     ) {
-        final CrsTransformationResultStatistic crsTransformationResultStatistic = transformResult.getCrsTransformationResultStatistic();
-        assertNotNull(crsTransformationResultStatistic);
-        assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
-        assertEquals(1, crsTransformationResultStatistic.getNumberOfResults());
-        assertEquals(0, crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude());
-        assertEquals(0, crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude());
-        assertEquals(transformResult.getOutputCoordinate(), crsTransformationResultStatistic.getCoordinateAverage());
-        assertEquals(transformResult.getOutputCoordinate(), crsTransformationResultStatistic.getCoordinateMedian());
+        CrsTransformationResultStatistic crsTransformationResultStatistic = transformResult.CrsTransformationResultStatistic;
+        Assert.IsNotNull(crsTransformationResultStatistic);
+        Assert.IsTrue(crsTransformationResultStatistic.IsStatisticsAvailable);
+        Assert.AreEqual(1, crsTransformationResultStatistic.NumberOfPotentiallySuccesfulResults);
+        Assert.AreEqual(0, crsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude);
+        Assert.AreEqual(0, crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude);
+        Assert.AreEqual(transformResult.OutputCoordinate, crsTransformationResultStatistic.CoordinateAverage);
+        Assert.AreEqual(transformResult.OutputCoordinate, crsTransformationResultStatistic.CoordinateMedian);
     }
     
+}
 }
