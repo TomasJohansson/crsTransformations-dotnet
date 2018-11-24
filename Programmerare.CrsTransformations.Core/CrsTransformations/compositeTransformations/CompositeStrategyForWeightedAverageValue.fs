@@ -66,6 +66,7 @@ type CompositeStrategyForWeightedAverageValue internal
                             if weight < 0.0 then
                                 invalidOp ("The implementation was not configured with a non-null and non-negative weight value for the implementation "+ res.CrsTransformationAdapterResultSource.LongNameOfImplementation)
                             successCount <- successCount + 1
+                            weightSum <- weightSum + weight
                             let coord = res.OutputCoordinate
                             sumLat <- sumLat + weight * coord.YNorthingLatitude
                             sumLon <- sumLon + weight * coord.XEastingLongitude
@@ -106,7 +107,7 @@ type CompositeStrategyForWeightedAverageValue internal
                     //  no need to check for negative weight values here since it 
                     // should be enforced already at construction with an exception being thrown
                     // if the below weight value would be non-positive 
-                    map.[fw.CrsTransformationAdapter.LongNameOfImplementation] = fw.Weight
+                    map.Add(fw.CrsTransformationAdapter.LongNameOfImplementation, fw.Weight);
                 CompositeStrategyForWeightedAverageValue(adapters, map)
 
     end

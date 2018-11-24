@@ -1,37 +1,28 @@
-package com.programmerare.crsTransformations.compositeTransformations;
+namespace Programmerare.CrsTransformations.CompositeTransformations {
 
-import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.*;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
-import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
-import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+using NUnit.Framework;
+using System.Collections.Generic;
+using Programmerare.CrsTransformations;
+using Programmerare.CrsTransformations.Coordinate;
+using Programmerare.CrsTransformations.Identifier;
+using Moq; // https://github.com/Moq/moq4
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 
 public class CompositeStrategyTestsUsingTestDoubles {
 
-    private static double medianLatitude, averageLatitude, medianLongitude, averageLongitude;
-    private static CrsCoordinate inputCoordinateSweref99;
-    private static CrsCoordinate outputCoordinateWgs84ForImplementation_1, outputCoordinateWgs84ForImplementation_2, outputCoordinateWgs84ForImplementation_3, outputCoordinateWgs84ForImplementation_4, outputCoordinateWgs84ForImplementation_5;
-    private static List<CrsCoordinate> outputCoordinates;
-    private static CrsTransformationAdapter leafAdapterImplementation_1, leafAdapterImplementation_2, leafAdapterImplementation_3, leafAdapterImplementation_4, leafAdapterImplementation_5;
-    private static List<CrsTransformationAdapter> allLeafAdapters;
+    private double expectedMedianLatitude, expectedAverageLatitude, expectedMedianLongitude, expectedAverageLongitude;
+    private CrsCoordinate inputCoordinateSweref99;
+    private CrsCoordinate outputCoordinateWgs84ForImplementation_1, outputCoordinateWgs84ForImplementation_2, outputCoordinateWgs84ForImplementation_3, outputCoordinateWgs84ForImplementation_4, outputCoordinateWgs84ForImplementation_5;
+    private List<CrsCoordinate> outputCoordinates;
+    private ICrsTransformationAdapter leafAdapterImplementation_1, leafAdapterImplementation_2, leafAdapterImplementation_3, leafAdapterImplementation_4, leafAdapterImplementation_5;
+    private IList<ICrsTransformationAdapter> allLeafAdapters;
 
-    private static CrsIdentifier crsIdentifierWGS84;
+    private CrsIdentifier crsIdentifierWGS84;
 
-    @BeforeAll
-    static void beforeAll() {
+    private Mock<ICrsTransformationAdapter> mock1, mock2, mock3, mock4, mock5;
+
+    [SetUp]
+    public void SetUp() {
         double[] outputLatitudes = {
             59.1,
             59.2,
@@ -39,8 +30,8 @@ public class CompositeStrategyTestsUsingTestDoubles {
             59.4,
             59.6,
         };
-        medianLatitude = 59.3;
-        averageLatitude = 59.32;
+        expectedMedianLatitude = 59.3;
+        expectedAverageLatitude = 59.32;
 
         double[] outputLongitudes = {
             18.2,
@@ -49,130 +40,159 @@ public class CompositeStrategyTestsUsingTestDoubles {
             18.8,
             18.9
         };
-        medianLongitude = 18.4;
-        averageLongitude = 18.52;
+        expectedMedianLongitude = 18.4;
+        expectedAverageLongitude = 18.52;
 
-        outputCoordinateWgs84ForImplementation_1 = CrsCoordinateFactory.createFromLatitudeLongitude(outputLatitudes[0],outputLongitudes[3]);
-        outputCoordinateWgs84ForImplementation_2 = CrsCoordinateFactory.createFromLatitudeLongitude(outputLatitudes[2],outputLongitudes[1]);
-        outputCoordinateWgs84ForImplementation_3 = CrsCoordinateFactory.createFromLatitudeLongitude(outputLatitudes[4],outputLongitudes[4]);
-        outputCoordinateWgs84ForImplementation_4 = CrsCoordinateFactory.createFromLatitudeLongitude(outputLatitudes[1],outputLongitudes[0]);
-        outputCoordinateWgs84ForImplementation_5 = CrsCoordinateFactory.createFromLatitudeLongitude(outputLatitudes[3],outputLongitudes[2]);
-        outputCoordinates = Arrays.asList(outputCoordinateWgs84ForImplementation_1, outputCoordinateWgs84ForImplementation_2, outputCoordinateWgs84ForImplementation_3, outputCoordinateWgs84ForImplementation_4, outputCoordinateWgs84ForImplementation_5);
+        outputCoordinateWgs84ForImplementation_1 = CrsCoordinateFactory.CreateFromLatitudeLongitude(outputLatitudes[0],outputLongitudes[3]);
+        outputCoordinateWgs84ForImplementation_2 = CrsCoordinateFactory.CreateFromLatitudeLongitude(outputLatitudes[2],outputLongitudes[1]);
+        outputCoordinateWgs84ForImplementation_3 = CrsCoordinateFactory.CreateFromLatitudeLongitude(outputLatitudes[4],outputLongitudes[4]);
+        outputCoordinateWgs84ForImplementation_4 = CrsCoordinateFactory.CreateFromLatitudeLongitude(outputLatitudes[1],outputLongitudes[0]);
+        outputCoordinateWgs84ForImplementation_5 = CrsCoordinateFactory.CreateFromLatitudeLongitude(outputLatitudes[3],outputLongitudes[2]);
+        outputCoordinates = new List<CrsCoordinate>{ 
+            outputCoordinateWgs84ForImplementation_1, 
+            outputCoordinateWgs84ForImplementation_2, 
+            outputCoordinateWgs84ForImplementation_3, 
+            outputCoordinateWgs84ForImplementation_4, 
+            outputCoordinateWgs84ForImplementation_5
+        };
+        
+        mock1 = new Mock<ICrsTransformationAdapter>();
+        mock2 = new Mock<ICrsTransformationAdapter>();
+        mock3 = new Mock<ICrsTransformationAdapter>();
+        mock4 = new Mock<ICrsTransformationAdapter>();
+        mock5 = new Mock<ICrsTransformationAdapter>();
 
-        leafAdapterImplementation_1 = mock(CrsTransformationAdapter.class);
-        leafAdapterImplementation_2 = mock(CrsTransformationAdapter.class);
-        leafAdapterImplementation_3 = mock(CrsTransformationAdapter.class);
-        leafAdapterImplementation_4 = mock(CrsTransformationAdapter.class);
-        leafAdapterImplementation_5 = mock(CrsTransformationAdapter.class);
+        leafAdapterImplementation_1 = mock1.Object;
+        leafAdapterImplementation_2 = mock2.Object;
+        leafAdapterImplementation_3 = mock3.Object;
+        leafAdapterImplementation_4 = mock4.Object;
+        leafAdapterImplementation_5 = mock5.Object;
 
-        inputCoordinateSweref99 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(6580822.0, 674032.0, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        inputCoordinateSweref99 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(6580822.0, 674032.0, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
 
-        CrsTransformationResult leafResult1 = CrsTransformationResult._createCrsTransformationResult(
+        CrsTransformationResult leafResult1 = CrsTransformationResult._CreateCrsTransformationResult(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_1,
             null,
             true,
             leafAdapterImplementation_1,
-            new ArrayList<CrsTransformationResult>(),
-            null
+            new CrsTransformationResultStatistic(new List<CrsTransformationResult>())
         );
-        CrsTransformationResult leafResult2 = CrsTransformationResult._createCrsTransformationResult(
+        CrsTransformationResult leafResult2 = CrsTransformationResult._CreateCrsTransformationResult(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_2,
             null,
             true,
             leafAdapterImplementation_2,
-            new ArrayList<CrsTransformationResult>(),
-            null
+            new CrsTransformationResultStatistic(new List<CrsTransformationResult>())
         );
-        CrsTransformationResult leafResult3 = CrsTransformationResult._createCrsTransformationResult(
+        CrsTransformationResult leafResult3 = CrsTransformationResult._CreateCrsTransformationResult(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_3,
             null,
             true,
             leafAdapterImplementation_3,
-            new ArrayList<CrsTransformationResult>(),
-            null
+            new CrsTransformationResultStatistic(new List<CrsTransformationResult>())
         );
-        CrsTransformationResult leafResult4 = CrsTransformationResult._createCrsTransformationResult(
+        CrsTransformationResult leafResult4 = CrsTransformationResult._CreateCrsTransformationResult(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_4,
             null,
             true,
             leafAdapterImplementation_4,
-            new ArrayList<CrsTransformationResult>(),
-            null
+            new CrsTransformationResultStatistic(new List<CrsTransformationResult>())
         );
-        CrsTransformationResult r5 = CrsTransformationResult._createCrsTransformationResult(
+        CrsTransformationResult leafResult5 = CrsTransformationResult._CreateCrsTransformationResult(
             inputCoordinateSweref99,
             outputCoordinateWgs84ForImplementation_5,
             null,
             true,
             leafAdapterImplementation_5,
-            new ArrayList<CrsTransformationResult>(),
-            null
+            new CrsTransformationResultStatistic(new List<CrsTransformationResult>())
         );
-        crsIdentifierWGS84 = CrsIdentifierFactory.createFromEpsgNumber(EpsgNumber.WORLD__WGS_84__4326);
+        crsIdentifierWGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(EpsgNumber.WORLD__WGS_84__4326);
 
-        when(leafAdapterImplementation_1.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(leafResult1);
-        when(leafAdapterImplementation_2.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(leafResult2);
-        when(leafAdapterImplementation_3.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(leafResult3);
-        when(leafAdapterImplementation_4.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(leafResult4);
-        when(leafAdapterImplementation_5.transform(inputCoordinateSweref99, crsIdentifierWGS84)).thenReturn(r5);
+        mock1.Setup(leaf => leaf.Transform(inputCoordinateSweref99, crsIdentifierWGS84)).Returns(leafResult1);
+        mock2.Setup(leaf => leaf.Transform(inputCoordinateSweref99, crsIdentifierWGS84)).Returns(leafResult2);
+        mock3.Setup(leaf => leaf.Transform(inputCoordinateSweref99, crsIdentifierWGS84)).Returns(leafResult3);
+        mock4.Setup(leaf => leaf.Transform(inputCoordinateSweref99, crsIdentifierWGS84)).Returns(leafResult4);
+        mock5.Setup(leaf => leaf.Transform(inputCoordinateSweref99, crsIdentifierWGS84)).Returns(leafResult5);
 
-        allLeafAdapters = Arrays.asList(
+        allLeafAdapters = new List<ICrsTransformationAdapter>{
             leafAdapterImplementation_1,
             leafAdapterImplementation_2,
             leafAdapterImplementation_3,
             leafAdapterImplementation_4,
             leafAdapterImplementation_5
-        );
+        };
     }
 
-    private final static double SMALL_DELTA_VALUE_FOR_COMPARISONS = 0.00000000000001;
+    private const double SMALL_DELTA_VALUE_FOR_COMPARISONS = 0.00000000000001;
 
-    @Test
-    void transformToCoordinate_shouldReturnAverageResult_whenUsingAverageCompositeAdapter() {
-        CrsTransformationAdapterComposite averageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(allLeafAdapters);
-        CrsCoordinate resultCoordinate = averageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
-        assertNotNull(resultCoordinate);
+    [Test]
+    public void transformToCoordinate_shouldReturnAverageResult_whenUsingAverageCompositeAdapter() {
+        CrsTransformationAdapterComposite averageCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(allLeafAdapters);
+        CrsCoordinate resultCoordinate = averageCompositeAdapter.TransformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
+        Assert.IsNotNull(resultCoordinate);
 
-        // Coordinate expectedAverageCoordinate = CoordinateFactory.createFromLatitudeLongitude(averageLatitude, averageLongitude);
-        // assertEquals(expectedAverageCoordinate, result); // this failed because latitude was 59.31999999999999 instead of 59.32
-        assertEquals(averageLatitude,  resultCoordinate.getYNorthingLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(averageLongitude, resultCoordinate.getXEastingLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        Assert.AreEqual(
+            expectedAverageLatitude,  
+            resultCoordinate.YNorthingLatitude, 
+            SMALL_DELTA_VALUE_FOR_COMPARISONS
+        );
+        Assert.AreEqual(
+            expectedAverageLongitude, 
+            resultCoordinate.XEastingLongitude, 
+            SMALL_DELTA_VALUE_FOR_COMPARISONS
+        );
 
         assertCompositeResultHasLeafSubResults(
             averageCompositeAdapter,
-            allLeafAdapters.size() // expectedNumberOfLeafResults
+            allLeafAdapters.Count // expectedNumberOfLeafResults
         );
     }
 
-    @Test
-    void transformToCoordinate_shouldReturnMedianResult_whenUsingMedianCompositeAdapter() {
-        CrsTransformationAdapterComposite medianCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(allLeafAdapters);
-        CrsCoordinate resultCoordinate = medianCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
-        assertNotNull(resultCoordinate);
+    [Test]
+    public void transformToCoordinate_shouldReturnMedianResult_whenUsingMedianCompositeAdapter() {
+        CrsTransformationAdapterComposite medianCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(allLeafAdapters);
+        CrsCoordinate resultCoordinate = medianCompositeAdapter.TransformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
+        Assert.IsNotNull(resultCoordinate);
 
-        assertEquals(medianLatitude,  resultCoordinate.getYNorthingLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(medianLongitude, resultCoordinate.getXEastingLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        Assert.AreEqual(
+            expectedMedianLatitude,  
+            resultCoordinate.YNorthingLatitude, 
+            SMALL_DELTA_VALUE_FOR_COMPARISONS
+        );
+        Assert.AreEqual(
+            expectedMedianLongitude, 
+            resultCoordinate.XEastingLongitude, 
+            SMALL_DELTA_VALUE_FOR_COMPARISONS
+        );
 
         assertCompositeResultHasLeafSubResults(
             medianCompositeAdapter,
-            allLeafAdapters.size() // expectedNumberOfLeafResults
+            allLeafAdapters.Count // expectedNumberOfLeafResults
         );
     }
 
-    @Test
-    void transformToCoordinate_shouldReturnFirstResult_whenUsingFirstSuccessCompositeAdapter() {
-        CrsTransformationAdapterComposite firstSuccessCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess(allLeafAdapters);
-        CrsCoordinate resultCoordinate = firstSuccessCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
-        assertNotNull(resultCoordinate);
+    [Test]
+    public void transformToCoordinate_shouldReturnFirstResult_whenUsingFirstSuccessCompositeAdapter() {
+        CrsTransformationAdapterComposite firstSuccessCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(allLeafAdapters);
+        CrsCoordinate resultCoordinate = firstSuccessCompositeAdapter.TransformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
+        Assert.IsNotNull(resultCoordinate);
 
         // The assumption below (according to the setup code in the "before" method in this JUnit class)
         // is that the first adapter in the above list allLeafAdapters will return the result outputCoordinateWgs84ForImplementation_1
-        assertEquals(outputCoordinateWgs84ForImplementation_1.getYNorthingLatitude(),  resultCoordinate.getYNorthingLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(outputCoordinateWgs84ForImplementation_1.getXEastingLongitude(), resultCoordinate.getXEastingLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        Assert.AreEqual(
+            outputCoordinateWgs84ForImplementation_1.YNorthingLatitude,  
+            resultCoordinate.YNorthingLatitude, 
+            SMALL_DELTA_VALUE_FOR_COMPARISONS
+        );
+        Assert.AreEqual(
+            outputCoordinateWgs84ForImplementation_1.XEastingLongitude, 
+            resultCoordinate.XEastingLongitude, 
+            SMALL_DELTA_VALUE_FOR_COMPARISONS
+        );
 
         assertCompositeResultHasLeafSubResults(
             firstSuccessCompositeAdapter,
@@ -180,97 +200,97 @@ public class CompositeStrategyTestsUsingTestDoubles {
         );
     }
 
-    @Test
-    void transformToCoordinate_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapter() {
-        when(leafAdapterImplementation_1.getLongNameOfImplementation()).thenReturn("1");
-        when(leafAdapterImplementation_2.getLongNameOfImplementation()).thenReturn("2");
-        when(leafAdapterImplementation_3.getLongNameOfImplementation()).thenReturn("3");
-        when(leafAdapterImplementation_4.getLongNameOfImplementation()).thenReturn("4");
-        when(leafAdapterImplementation_5.getLongNameOfImplementation()).thenReturn("5");
+    [Test]
+    public void transformToCoordinate_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapter() {
+        mock1.Setup(leaf => leaf.LongNameOfImplementation).Returns("1");
+        mock2.Setup(leaf => leaf.LongNameOfImplementation).Returns("2");
+        mock3.Setup(leaf => leaf.LongNameOfImplementation).Returns("3");
+        mock4.Setup(leaf => leaf.LongNameOfImplementation).Returns("4");
+        mock5.Setup(leaf => leaf.LongNameOfImplementation).Returns("5");
 
-        final double[] weights = {1,2,4,5,9};
+        double[] weights = {1,2,4,5,9};
         double totWeights = 0;
         double totLats = 0;
         double totLons = 0;
-        for (int i = 0; i <weights.length ; i++) {
-            final double weight = weights[i];
+        for (int i = 0; i <weights.Length; i++) {
+            double weight = weights[i];
             totWeights += weight;
-            final CrsCoordinate coordinate = outputCoordinates.get(i);
-            totLats += weight * coordinate.getYNorthingLatitude();
-            totLons += weight * coordinate.getXEastingLongitude();
+            CrsCoordinate coordinate = outputCoordinates[i];
+            totLats += weight * coordinate.YNorthingLatitude;
+            totLons += weight * coordinate.XEastingLongitude;
         }
-        final double weightedLat = totLats / totWeights;
-        final double weightedLon = totLons / totWeights;
-        final CrsCoordinate expectedWeightedAverage = CrsCoordinateFactory.createFromLatitudeLongitude(weightedLat, weightedLon);
+        double weightedLat = totLats / totWeights;
+        double weightedLon = totLons / totWeights;
+        CrsCoordinate expectedWeightedAverage = CrsCoordinateFactory.CreateFromLatitudeLongitude(weightedLat, weightedLon);
 
-        List<CrsTransformationAdapterWeight> weightedAdapters = Arrays.asList(
-            CrsTransformationAdapterWeight.createFromInstance(leafAdapterImplementation_1, weights[0]),
-            CrsTransformationAdapterWeight.createFromInstance(leafAdapterImplementation_2, weights[1]),
-            CrsTransformationAdapterWeight.createFromInstance(leafAdapterImplementation_3, weights[2]),
-            CrsTransformationAdapterWeight.createFromInstance(leafAdapterImplementation_4, weights[3]),
-            CrsTransformationAdapterWeight.createFromInstance(leafAdapterImplementation_5, weights[4])
-        );
+        List<CrsTransformationAdapterWeight> weightedAdapters = new List<CrsTransformationAdapterWeight>{
+            CrsTransformationAdapterWeight.CreateFromInstance(leafAdapterImplementation_1, weights[0]),
+            CrsTransformationAdapterWeight.CreateFromInstance(leafAdapterImplementation_2, weights[1]),
+            CrsTransformationAdapterWeight.CreateFromInstance(leafAdapterImplementation_3, weights[2]),
+            CrsTransformationAdapterWeight.CreateFromInstance(leafAdapterImplementation_4, weights[3]),
+            CrsTransformationAdapterWeight.CreateFromInstance(leafAdapterImplementation_5, weights[4])
+        };
 
-        final CrsTransformationAdapterComposite weightedAverageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(weightedAdapters);
-        final CrsCoordinate result = weightedAverageCompositeAdapter.transformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
-        assertNotNull(result);
+        CrsTransformationAdapterComposite weightedAverageCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weightedAdapters);
+        CrsCoordinate result = weightedAverageCompositeAdapter.TransformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
+        Assert.IsNotNull(result);
 
-        assertEquals(expectedWeightedAverage.getYNorthingLatitude(),  result.getYNorthingLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(expectedWeightedAverage.getXEastingLongitude(), result.getXEastingLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        Assert.AreEqual(expectedWeightedAverage.YNorthingLatitude,  result.YNorthingLatitude, SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        Assert.AreEqual(expectedWeightedAverage.XEastingLongitude, result.XEastingLongitude, SMALL_DELTA_VALUE_FOR_COMPARISONS);
 
         assertCompositeResultHasLeafSubResults(
             weightedAverageCompositeAdapter,
-            allLeafAdapters.size() // expectedNumberOfLeafResults
+            allLeafAdapters.Count
         );
     }
 
     private void assertCompositeResultHasLeafSubResults(
-            CrsTransformationAdapterComposite compositeAdapter,
-            int expectedNumberOfLeafResults
+        CrsTransformationAdapterComposite compositeAdapter,
+        int expectedNumberOfLeafResults
     ) {
-        CrsTransformationResult compositeTransformResult = compositeAdapter.transform(inputCoordinateSweref99, crsIdentifierWGS84);
-        assertNotNull(compositeTransformResult);
-        assertTrue(compositeTransformResult.isSuccess());
+        CrsTransformationResult compositeTransformResult = compositeAdapter.Transform(inputCoordinateSweref99, crsIdentifierWGS84);
+        Assert.IsNotNull(compositeTransformResult);
+        Assert.IsTrue(compositeTransformResult.IsSuccess);
         //assertEquals(expectedNumberOfLeafResults, allLeafAdapters.size()); // five "leafs" were used to calculate the composite
-        assertEquals(expectedNumberOfLeafResults, compositeTransformResult.getTransformationResultChildren().size());
+        Assert.AreEqual(expectedNumberOfLeafResults, compositeTransformResult.GetTransformationResultChildren().Count);
 
-        List<CrsTransformationResult> subResults = compositeTransformResult.getTransformationResultChildren();
-        for (int i = 0; i < subResults.size(); i++) {
-            CrsTransformationResult transformResult = subResults.get(i);
-            CrsTransformationAdapter leafAdapter = allLeafAdapters.get(i);
-            CrsTransformationResult transformResultForLeaf = leafAdapter.transform(inputCoordinateSweref99, crsIdentifierWGS84);
-            assertNotNull(transformResultForLeaf);
-            assertTrue(transformResultForLeaf.isSuccess());
-            assertEqualCoordinate(transformResult.getOutputCoordinate(), transformResultForLeaf.getOutputCoordinate());
-            assertEquals(0, transformResultForLeaf.getTransformationResultChildren().size()); // no subresults for a leaf
+        IList<CrsTransformationResult> subResults = compositeTransformResult.GetTransformationResultChildren();
+        for (int i = 0; i < subResults.Count; i++) {
+            CrsTransformationResult transformResult = subResults[i];
+            ICrsTransformationAdapter leafAdapter = allLeafAdapters[i];
+            CrsTransformationResult transformResultForLeaf = leafAdapter.Transform(inputCoordinateSweref99, crsIdentifierWGS84);
+            Assert.IsNotNull(transformResultForLeaf);
+            Assert.IsTrue(transformResultForLeaf.IsSuccess);
+            assertEqualCoordinate(transformResult.OutputCoordinate, transformResultForLeaf.OutputCoordinate);
+            Assert.AreEqual(0, transformResultForLeaf.GetTransformationResultChildren().Count); // no subresults for a leaf
         }
     }
 
     private void assertEqualCoordinate(
-            CrsCoordinate c1,
-            CrsCoordinate c2
+        CrsCoordinate c1,
+        CrsCoordinate c2
     ) {
-        assertEquals(c1.getYNorthingLatitude(), c2.getYNorthingLatitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
-        assertEquals(c1.getXEastingLongitude(), c2.getXEastingLongitude(), SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        Assert.AreEqual(c1.YNorthingLatitude, c2.YNorthingLatitude, SMALL_DELTA_VALUE_FOR_COMPARISONS);
+        Assert.AreEqual(c1.XEastingLongitude, c2.XEastingLongitude, SMALL_DELTA_VALUE_FOR_COMPARISONS);
     }
 
     // --------------------------------------------------------------
-    @Test
-    void simpleExampleShowingHowToUseTestStubbingWithMockito() {
-        // Mockito documentation:
-        // http://static.javadoc.io/org.mockito/mockito-core/2.23.0/org/mockito/Mockito.html
+    [Test]
+    public void simpleExampleShowingHowToUseTestStubbingWithMoq() {
+        // Moq: https://github.com/Moq/moq4
 
-        List<String> mockedList = mock(List.class);
-
-        when(mockedList.get(0)).thenReturn("first");
-        when(mockedList.get(1)).thenReturn("second");
+        var mock = new Mock<IList<string>>();
+        mock.Setup(list => list[0]).Returns("first");
+        mock.Setup(list => list[1]).Returns("second");
+        IList<string> mockedList = mock.Object;
 
         // Note that the method/parameter combination "get(0)" and "get(1)"
         // can be invoked multiple times and in different order sompared to the order defined above
-        assertEquals("second", mockedList.get(1));
-        assertEquals("first", mockedList.get(0));
-        assertEquals("first", mockedList.get(0));
-        assertEquals("second", mockedList.get(1));
+        Assert.AreEqual("second", mockedList[1]);
+        Assert.AreEqual("first", mockedList[0]);
+        Assert.AreEqual("first", mockedList[0]);
+        Assert.AreEqual("second", mockedList[1]);
     }
     // --------------------------------------------------------------
+}
 }
