@@ -57,6 +57,7 @@ open Programmerare.CrsTransformations.Identifier
  * Please find more information in the license file at the root directory of each subproject
  * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
  *)
+[<AllowNullLiteral>] // C# interop
 type ICrsTransformationAdapter =
     interface
         // -------------------------------------------------
@@ -212,7 +213,45 @@ and CrsTransformationResult // TODO maybe make a private constructor
                 crsTransformationResultStatistic.GetAllCrsTransformationResults()
             else
                 new List<CrsTransformationResult>() :> IList<CrsTransformationResult>
-                
+
+        (*
+        * Convenience method intended for "Composite" implementations
+        * to easy check that more than one implementation (the specified min number)
+        * resulted in the same coordinate (within the specified delta value).
+        *
+        * If false is returned then you can retrieve the CrsTransformationResultStatistic object
+        * to find the details regarding the differences.
+        *
+        * The method is actually relevant to use only for aggregated transformations i.e. the "Composite" implementations.
+        *
+        * However, there is also a reasonable behaviour for the "Leaf" implementations
+        * regarding the number of results (always 1) and the "differences" in lat/long for the "different"
+        * implementations i.e. the "difference" should always be zero since there is only one implementation.
+        *
+        * In other words, the method is meaningful only for the "Composite" implementations
+        * but the "Leaf" implementations should not cause exception to be thrown when using
+        * the method but instead logically expected behaviour.
+        * @param minimumNumberOfSuccesfulResults specifies the minimum number of results for a results to be considered as reliable.
+        *      Currently there are five implementations (though one of them can only handle coordinate system used in Sweden)
+        *      so you will probably not want to use a value smaller than 4.
+        * @param maxDeltaValueForXLongitudeAndYLatitude specifies the maximum difference in either x/Long or y/Lat to be considered as reliable.
+        *      IMPORTANT note: the unit for the delta value is the unit of the output/result coordinate.
+        *      For example if you are using a projected coordinate system with x/Y values in meters then the value 1 (i.e. one meter)
+        *      is fairly small, but the value 1 would be very big for "GPS" (WGS84) latitude/longitude values.
+        *)
+        member this.IsReliable
+            (
+                minimumNumberOfSuccesfulResults: int,
+                maxDeltaValueForXLongitudeAndYLatitude: Double
+            ): bool =
+            let numberOfResults = this.CrsTransformationResultStatistic.NumberOfPotentiallySuccesfulResults
+            let maxX = this.CrsTransformationResultStatistic.MaxDifferenceForXEastingLongitude
+            let maxY = this.CrsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude
+            let okNumber = numberOfResults >= minimumNumberOfSuccesfulResults
+            let okX = maxX <= maxDeltaValueForXLongitudeAndYLatitude
+            let okY = maxY <= maxDeltaValueForXLongitudeAndYLatitude
+            okNumber && okX && okY
+
 //    (*
 //     * The input coordinate used in the transform that return the result object.
 //     *)        
@@ -360,70 +399,26 @@ and CrsTransformationResult // TODO maybe make a private constructor
 //            return _crsTransformationResultStatisticLazyLoaded
 //        }
 
-//    (*
-//     * Convenience method intended for "Composite" implementations
-//     * to easy check that more than one implementation (the specified min number)
-//     * resulted in the same coordinate (within the specified delta value).
-//     *
-//     * If false is returned then you can retrieve the CrsTransformationResultStatistic object
-//     * to find the details regarding the differences.
-//     *
-//     * The method is actually relevant to use only for aggregated transformations i.e. the "Composite" implementations.
-//     *
-//     * However, there is also a reasonable behaviour for the "Leaf" implementations
-//     * regarding the number of results (always 1) and the "differences" in lat/long for the "different"
-//     * implementations i.e. the "difference" should always be zero since there is only one implementation.
-//     *
-//     * In other words, the method is meaningful only for the "Composite" implementations
-//     * but the "Leaf" implementations should not cause exception to be thrown when using
-//     * the method but instead logically expected behaviour.
-//     * @param minimumNumberOfSuccesfulResults specifies the minimum number of results for a results to be considered as reliable.
-//     *      Currently there are five implementations (though one of them can only handle coordinate system used in Sweden)
-//     *      so you will probably not want to use a value smaller than 4.
-//     * @param maxDeltaValueForXLongitudeAndYLatitude specifies the maximum difference in either x/Long or y/Lat to be considered as reliable.
-//     *      IMPORTANT note: the unit for the delta value is the unit of the output/result coordinate.
-//     *      For example if you are using a projected coordinate system with x/Y values in meters then the value 1 (i.e. one meter)
-//     *      is fairly small, but the value 1 would be very big for "GPS" (WGS84) latitude/longitude values.
-//     *)
-//    fun isReliable(
-//        minimumNumberOfSuccesfulResults: Int,
-//        maxDeltaValueForXLongitudeAndYLatitude: Double
-//    ): Boolean {
-//        val numberOfResults = this.crsTransformationResultStatistic.getNumberOfResults()
-//        val maxX = this.crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude()
-//        val maxY = this.crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude()
-//        val okNumber = numberOfResults >= minimumNumberOfSuccesfulResults
-//        val okX = maxX <= maxDeltaValueForXLongitudeAndYLatitude
-//        val okY = maxY <= maxDeltaValueForXLongitudeAndYLatitude
-//        return okNumber && okX && okY
-//    }
-
-//    internal companion object {
-
 //        (*
 //         * This method is not intended for public use from client code.
 //         *)
-//        @JvmStatic
-//        fun _createCrsTransformationResult(
-//            inputCoordinate: CrsCoordinate,
-//            outputCoordinate: CrsCoordinate?,
-//            exception: Throwable?,
-//            isSuccess: Boolean,
-//            crsTransformationAdapterResultSource: CrsTransformationAdapter,
-//            transformationResultChildren: List<CrsTransformationResult> = listOf<CrsTransformationResult>(), // empty list default for the "leaf" transformations, but the composite should have non-empty list)
-//            nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic? = null
-//        ): CrsTransformationResult {
-//            return CrsTransformationResult(
-//                inputCoordinate,
-//                outputCoordinate,
-//                exception,
-//                isSuccess,
-//                crsTransformationAdapterResultSource,
-//                transformationResultChildren,
-//                nullableCrsTransformationResultStatistic
-//            )
-//        }
-//    }    
+        static member _CreateCrsTransformationResult
+            (
+                inputCoordinate: CrsCoordinate,
+                outputCoordinate: CrsCoordinate,
+                exceptionOrNull: Exception,
+                isSuccess: Boolean,
+                crsTransformationAdapterResultSource: ICrsTransformationAdapter,
+                nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic// = null
+            ): CrsTransformationResult =
+            CrsTransformationResult(
+                inputCoordinate,
+                outputCoordinate,
+                exceptionOrNull,
+                isSuccess,
+                crsTransformationAdapterResultSource,
+                nullableCrsTransformationResultStatistic
+            )
     end
 
 // NOTE THAT THERE ARE MORE THAN ONE TYPES IN THIS FILE

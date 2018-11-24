@@ -1,40 +1,47 @@
-package com.programmerare.crsTransformations.compositeTransformations;
+namespace Programmerare.CrsTransformations.CompositeTransformations {
 
-import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
-import com.programmerare.crsTransformations.CrsTransformationResultStatistic;
-import com.programmerare.crsTransformations.CrsTransformationResult;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
-import org.junit.jupiter.api.Test;
+using System;
+using Programmerare.CrsTransformations;
+using Programmerare.CrsTransformations.Coordinate;
+using NUnit.Framework;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 
-import static org.junit.jupiter.api.Assertions.*;
-
+[TestFixture]
 public class CrsTransformationAdapterCompositeTest {
 
-    @Test
-    void isReliableTest() {
-        final CrsTransformationAdapterComposite crsTransformationComposite = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian();
+    private const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = CrsTransformationAdapterLeafFactoryTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
 
-        final CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.latLon(59.31,18.04);
-        final CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationComposite.transform(wgs84coordinateInSweden, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
-        assertNotNull(resultWhenTransformingToSwedishCRS);
-        assertTrue(resultWhenTransformingToSwedishCRS.isSuccess());
-        final CrsTransformationResultStatistic crsTransformationResultStatistic = resultWhenTransformingToSwedishCRS.getCrsTransformationResultStatistic();
-        assertNotNull(crsTransformationResultStatistic);
-        assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
+    [Test]
+    public void isReliableTest() {
+        CrsTransformationAdapterComposite crsTransformationComposite = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
+        var children = crsTransformationComposite.GetTransformationAdapterChildren();
+        Assert.AreEqual(3, children.Count);
 
-        final int actualNumberOfResults = crsTransformationResultStatistic.getNumberOfResults();
-        assertEquals(5, actualNumberOfResults); // fragile but will be very easy to detect and fix if/when a new implementation is added to the factory
-        final double actualMaxDiffXLongitude = crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude();
-        final double actualMaxDiffYLatitude = crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude();
-        final double actualMaxDiffXorY = Math.max(actualMaxDiffXLongitude, actualMaxDiffYLatitude);
+        CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.LatLon(59.31,18.04);
+        CrsTransformationResult resultWhenTransformingToSwedishCRS = crsTransformationComposite.Transform(wgs84coordinateInSweden, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        Assert.IsNotNull(resultWhenTransformingToSwedishCRS);
+        Assert.IsTrue(resultWhenTransformingToSwedishCRS.IsSuccess);
+        CrsTransformationResultStatistic crsTransformationResultStatistic = resultWhenTransformingToSwedishCRS.CrsTransformationResultStatistic;
+        Assert.IsNotNull(crsTransformationResultStatistic);
+        Assert.IsTrue(crsTransformationResultStatistic.IsStatisticsAvailable);
 
-        assertTrue(resultWhenTransformingToSwedishCRS.isReliable(actualNumberOfResults, actualMaxDiffXorY));
+        int actualNumberOfResults = crsTransformationResultStatistic.NumberOfPotentiallySuccesfulResults;
+        Assert.AreEqual(
+            EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS,
+            actualNumberOfResults
+        );
+        double actualMaxDiffXLongitude = crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude;
+        double actualMaxDiffYLatitude = crsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude;
+        double actualMaxDiffXorY = Math.Max(actualMaxDiffXLongitude, actualMaxDiffYLatitude);
+        Assert.That(actualMaxDiffXorY, Is.LessThan(0.01));
+
+        Assert.IsTrue(resultWhenTransformingToSwedishCRS.IsReliable(actualNumberOfResults, actualMaxDiffXorY));
 
         // assertFalse below since trying to require one more result than available
-        assertFalse(resultWhenTransformingToSwedishCRS.isReliable(actualNumberOfResults + 1, actualMaxDiffXorY));
+        Assert.IsFalse(resultWhenTransformingToSwedishCRS.IsReliable(actualNumberOfResults + 1, actualMaxDiffXorY));
 
         // assertFalse below since trying to require too small maxdiff
-        assertFalse(resultWhenTransformingToSwedishCRS.isReliable(actualNumberOfResults, actualMaxDiffXorY - 0.00000000001));
+        Assert.IsFalse(resultWhenTransformingToSwedishCRS.IsReliable(actualNumberOfResults, actualMaxDiffXorY - 0.00000000001));
     }
+}
 }

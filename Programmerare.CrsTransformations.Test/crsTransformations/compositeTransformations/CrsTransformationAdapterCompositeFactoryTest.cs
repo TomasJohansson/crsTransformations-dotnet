@@ -1,79 +1,79 @@
-package com.programmerare.crsTransformations.compositeTransformations;
+namespace Programmerare.CrsTransformations.CompositeTransformations {
 
-import com.programmerare.crsTransformations.CrsTransformationAdapter;
-import org.junit.jupiter.api.Test;
+using System;
+using NUnit.Framework;
+using System.Collections.Generic;
+using Programmerare.CrsTransformations;
+using Programmerare.CrsTransformations.Coordinate;
+using Programmerare.CrsTransformations.Identifier;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.function.Function;
-
-import static com.programmerare.crsTransformations.CrsTransformationAdapterLeafFactoryTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
-import static org.hamcrest.CoreMatchers.containsString;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertThrows;
-
+[TestFixture]
 public class CrsTransformationAdapterCompositeFactoryTest {
 
-    @Test
-    void createCrsTransformationAverage_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
-        CrsTransformationAdapterComposite crsTransformationAverage = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+    private const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = CrsTransformationAdapterLeafFactoryTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
+
+    [Test]
+    public void createCrsTransformationAverage_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
+        CrsTransformationAdapterComposite crsTransformationAverage = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
         assertCompositeNotNullAndAggregatesManyImplementations(crsTransformationAverage);
     }
 
-    @Test
-    void createCrsTransformationMedian_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
-        CrsTransformationAdapterComposite crsTransformationMedian = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian();
+    [Test]
+    public void createCrsTransformationMedian_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
+        CrsTransformationAdapterComposite crsTransformationMedian = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
         assertCompositeNotNullAndAggregatesManyImplementations(crsTransformationMedian);
     }
 
-    @Test
-    void createCrsTransformationFirstSuccess_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
-        CrsTransformationAdapterComposite crsTransformationFirstSuccess = CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess();
+    [Test]
+    public void createCrsTransformationFirstSuccess_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
+        CrsTransformationAdapterComposite crsTransformationFirstSuccess = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
         assertCompositeNotNullAndAggregatesManyImplementations(crsTransformationFirstSuccess);
     }
 
     private void assertCompositeNotNullAndAggregatesManyImplementations(CrsTransformationAdapterComposite crsTransformationAdapterComposite) {
-        assertNotNull(crsTransformationAdapterComposite);
-        List<CrsTransformationAdapter> list = crsTransformationAdapterComposite.getCompositeStrategy()._getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked();
-        assertEquals(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, list.size());
+        Assert.IsNotNull(crsTransformationAdapterComposite);
+        IList<ICrsTransformationAdapter> list = crsTransformationAdapterComposite._GetCompositeStrategy()._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked();
+        Assert.AreEqual(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, list.Count);
     }
 
-    private final static List<CrsTransformationAdapter> emptyListOfCrsTransformationAdapters = new ArrayList<>();
+    private static IList<ICrsTransformationAdapter> emptyListOfCrsTransformationAdapters = new List<ICrsTransformationAdapter>();
 
-    @Test
-    void createCrsTransformationAverage_shouldThrowException_whenInstantiatingWithEmptyList() {
+    [Test]
+    public void createCrsTransformationAverage_shouldThrowException_whenInstantiatingWithEmptyList()
+    {
         helper_shouldThrowException_whenInstantiatingWithEmptyList(
-            list -> CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(list)
+            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage
         );
     }
 
-    @Test
-    void createCrsTransformationMedian_shouldThrowException_whenInstantiatingWithEmptyList() {
+    [Test]
+    public void createCrsTransformationMedian_shouldThrowException_whenInstantiatingWithEmptyList() {
         helper_shouldThrowException_whenInstantiatingWithEmptyList(
-            list -> CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(list)
+            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian
         );
     }
 
-    @Test
-    void createCrsTransformationFirstSuccess_shouldThrowException_whenInstantiatingWithEmptyList() {
+    [Test]
+    public void createCrsTransformationFirstSuccess_shouldThrowException_whenInstantiatingWithEmptyList() {
         helper_shouldThrowException_whenInstantiatingWithEmptyList(
-            list -> CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess(list)
+            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess
         );
-    }    
-    
+    }
+
     private void helper_shouldThrowException_whenInstantiatingWithEmptyList(
-        final Function<List<CrsTransformationAdapter>, CrsTransformationAdapterComposite> compositeCreator            
-    ) {
-        Throwable exception = assertThrows(
-            Throwable.class,
-            () -> compositeCreator.apply(emptyListOfCrsTransformationAdapters)
-        );
-        assertNotNull(exception);
+        Func<IList<ICrsTransformationAdapter>, CrsTransformationAdapterComposite> compositeCreator
+    )
+    {
+        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
+        {
+            compositeCreator(emptyListOfCrsTransformationAdapters);
+        });
+        Assert.IsNotNull(exception);
         // the exception message might be something like:
         // 'Composite' adapter can not be created with an empty list of 'leaf' adapters
         // At least it should contain the word "empty" (is the assumption in the below test)
-        assertThat(exception.getMessage(), containsString("empty"));
-    }    
-}
+        Assert.That(exception.Message, Does.Contain("empty"));
+    }
+
+} // class ends
+} // namespace ends

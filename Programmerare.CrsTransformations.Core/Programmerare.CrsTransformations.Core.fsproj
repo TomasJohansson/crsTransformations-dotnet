@@ -18,6 +18,15 @@
     <Compile Include="CrsTransformations\CrsTransformationAdapterBase.fs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterBaseLeaf.fs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterLeafFactory.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategy.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyBase.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyForFirstSuccess.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyForMedianValue.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyForAverageValue.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterWeight.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyForWeightedAverageValue.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterComposite.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeFactory.fs" />
     <Compile Include="Library.fs" />
   </ItemGroup>
 

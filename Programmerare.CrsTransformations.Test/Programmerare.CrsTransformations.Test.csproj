@@ -17,6 +17,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="crsTransformations\compositeTransformations\CrsTransformationAdapterCompositeFactoryTest.cs" />
+    <Compile Include="crsTransformations\compositeTransformations\CrsTransformationAdapterCompositeTest.cs" />
+    <Compile Include="crsTransformations\compositeTransformations\CrsTransformationAdapterWeightTest.cs" />
     <Compile Include="crsTransformations\coordinate\CrsCoordinateTest.cs" />
     <Compile Include="crsTransformations\crsIdentifier\CrsIdentifierTest.cs" />
     <Compile Include="crsTransformations\CrsTransformationAdapterLeafFactoryTest.cs" />

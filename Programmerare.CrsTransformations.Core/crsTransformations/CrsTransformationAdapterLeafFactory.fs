@@ -108,7 +108,7 @@ module CrsTransformationAdapterLeafFactory =
                 | exc -> 
                     let nameOfInterfaceThatShouldBeImplemented = typeof<ICrsTransformationAdapter>.FullName
                     let message = "Failed to instantiate a class with the name '" + crsTransformationAdapterClassName + "' . The parameter must be the name of an available class which implements the interface '" + nameOfInterfaceThatShouldBeImplemented + "'"
-                    failwith message
+                    invalidArg "crsTransformationAdapterClassName" message
 
         let private instancesOfAllKnownAvailableImplementations: Lazy<List<ICrsTransformationAdapter>> = 
             lazy (

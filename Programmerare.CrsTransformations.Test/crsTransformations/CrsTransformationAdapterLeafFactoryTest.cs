@@ -28,13 +28,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
     [Test]
     public void createCrsTransformationAdapter_shouldThrowException_whenTheParameterIsNotNameOfClassImplementingTheExpectedInterface() {
         string incorrectClassName = "abc";
-
-		// Assert.That(
-		//		() => CrsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(incorrectClassName),
-		//		Throws.Exception
-		// );
-        // The above test any exception but the below would test specific exception
-        Exception exception = Assert.Throws<Exception>(() => {
+        ArgumentException exception = Assert.Throws<ArgumentException>(() => {
             CrsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(incorrectClassName);
         });
 

@@ -17,7 +17,9 @@ open Programmerare.CrsTransformations.Identifier
  * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
  *)
 [<AbstractClass>]
-type CrsTransformationAdapterBase() = // : CrsTransformationAdapter {
+type CrsTransformationAdapterBase
+    (
+    ) =
     class
 
         let TrowExceptionIfCoordinateIsNull(inputCoordinate) : unit = 

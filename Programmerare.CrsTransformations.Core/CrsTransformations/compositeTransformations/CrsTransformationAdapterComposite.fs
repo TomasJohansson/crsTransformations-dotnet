@@ -1,14 +1,13 @@
-package com.programmerare.crsTransformations.compositeTransformations
+namespace Programmerare.CrsTransformations.CompositeTransformations
 
-import com.programmerare.crsTransformations.CrsTransformationAdapteeType
-import com.programmerare.crsTransformations.coordinate.CrsCoordinate
-import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier
-import com.programmerare.crsTransformations.CrsTransformationAdapter
-import com.programmerare.crsTransformations.CrsTransformationAdapterBase
-import com.programmerare.crsTransformations.CrsTransformationResult
-import java.lang.RuntimeException
+open System.Collections.Generic
+open Programmerare.CrsTransformations
+open Programmerare.CrsTransformations.Coordinate
+open Programmerare.CrsTransformations.Identifier
 
-/**
+// TODO: rewrite comments below for .NET ...
+
+(*
  * Base class for the 'composite' adapters.
  * @see CrsTransformationAdapterBase
  * @see CompositeStrategy
@@ -18,66 +17,93 @@ import java.lang.RuntimeException
  * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
  * Please find more information in the license file at the root directory of each subproject
  * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
-*/
-final class CrsTransformationAdapterComposite private constructor(
-
-    /**
+*)
+type CrsTransformationAdapterComposite internal
+    (
+    (*
      * Interface for calculating the resulting coordinate in different ways, 
      * e.g. one stratefy implementation calculates the median and another the average.
-     */        
-    protected val compositeStrategy: CompositeStrategy
+     *)        
+    compositeStrategy: ICompositeStrategy
+    ) =
 
-) : CrsTransformationAdapterBase(), CrsTransformationAdapter {
+    class
+        inherit CrsTransformationAdapterBase()
 
-    override final protected fun transformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsCoordinate {
-        val transformResult = transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
-        if(transformResult.isSuccess) {
-            return transformResult.outputCoordinate
-        }
-        else {
-            throw RuntimeException("Transformation failed")
-        }
-    }
+        member this._GetCompositeStrategy() = compositeStrategy
 
-    override final fun transform(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult {
-        val allCrsTransformationAdapters = compositeStrategy._getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
-        val list = mutableListOf<CrsTransformationResult>()
-        var lastResultOrNullIfNoPrevious: CrsTransformationResult? = null
-        for (crsTransformationAdapter: CrsTransformationAdapter in allCrsTransformationAdapters) {
-            if(!compositeStrategy._shouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious)) {
-                break
-            }
-            val res = crsTransformationAdapter.transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
-            list.add(res)
-            lastResultOrNullIfNoPrevious = res
-        }
-        return compositeStrategy._calculateAggregatedResult(list, inputCoordinate, crsIdentifierForOutputCoordinateSystem, this)
-    }
+        override this._TransformToCoordinateHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsCoordinate =
+            let transformResult = this._TransformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+            if(transformResult.IsSuccess) then
+                transformResult.OutputCoordinate
+            else
+                failwith "Transformation failed"
 
-    override final fun getTransformationAdapterChildren(): List<CrsTransformationAdapter> {
-        return compositeStrategy._getAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
-    }
+        override this._TransformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
+            let allCrsTransformationAdapters = this._GetCompositeStrategy()._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
+            let list = new List<CrsTransformationResult>()
+            let mutable shouldContinue = true
+            for crsTransformationAdapter in allCrsTransformationAdapters do
+                if shouldContinue then
+                    let res = crsTransformationAdapter.Transform(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+                    list.Add(res)
+                    if not(this._GetCompositeStrategy()._ShouldContinueIterationOfAdaptersToInvoke(res)) then
+                        shouldContinue <- false
+            this._GetCompositeStrategy()._CalculateAggregatedResult(list, inputCoordinate, crsIdentifierForOutputCoordinateSystem, this)
 
-    override final fun isComposite(): Boolean {
-        return true
-    }
+        override this.GetTransformationAdapterChildren(): IList<ICrsTransformationAdapter> =
+            this._GetCompositeStrategy()._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
 
-    override fun getAdapteeType() : CrsTransformationAdapteeType {
-        return compositeStrategy._getAdapteeType()
-    }
+        override this.IsComposite: bool = 
+            true
 
-    internal companion object {
-        /**
-         * This method is not intended for public use,
-         * but instead the factory class should be used.
-         * @see CrsTransformationAdapterCompositeFactory
-         */
-        @JvmStatic
-        internal fun _createCrsTransformationAdapterComposite(
-            compositeStrategy: CompositeStrategy
-        ): CrsTransformationAdapterComposite {
-            return CrsTransformationAdapterComposite(compositeStrategy)
-        }
-    }
-    
-}
+        override this.AdapteeType : CrsTransformationAdapteeType =
+            this._GetCompositeStrategy()._GetAdapteeType()
+
+        static member _CreateCrsTransformationAdapterComposite
+            (
+                compositeStrategy: ICompositeStrategy
+            ): CrsTransformationAdapterComposite =
+                CrsTransformationAdapterComposite(compositeStrategy)
+
+        member this.TransformToCoordinate(inputCoordinate, crsCode) =
+            this._TransformToCoordinateHook(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
+
+        member this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
+            this._TransformToCoordinateHook(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
+
+        member this.TransformToCoordinate(inputCoordinate, crsIdentifier) = 
+            this._TransformToCoordinateHook(inputCoordinate, crsIdentifier)
+
+
+        member this.Transform(inputCoordinate, crsCode) =
+            this._TransformHook(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
+
+        member this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
+            this._TransformHook(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
+
+        member this.Transform(inputCoordinate, crsIdentifier) = 
+            this._TransformHook(inputCoordinate, crsIdentifier)
+                
+
+        interface ICrsTransformationAdapter with
+            override this.GetTransformationAdapterChildren() =  this.GetTransformationAdapterChildren()
+
+            override this.TransformToCoordinate(inputCoordinate, crsCode: string) =
+                this.TransformToCoordinate(inputCoordinate, crsCode)
+
+            override this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem: int) = 
+                this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem)
+
+            override this.TransformToCoordinate(inputCoordinate, crsIdentifier: CrsIdentifier) = 
+                this.TransformToCoordinate(inputCoordinate, crsIdentifier)
+
+            override this.Transform(inputCoordinate, crsCode: string) =
+                this.Transform(inputCoordinate, crsCode) 
+
+            override this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem: int) = 
+                this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem)
+
+            override this.Transform(inputCoordinate, crsIdentifier: CrsIdentifier) = 
+                this.Transform(inputCoordinate, crsIdentifier)
+    end
