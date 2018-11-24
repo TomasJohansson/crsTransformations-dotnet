@@ -7,33 +7,33 @@
   <ItemGroup>
     <Compile Remove="com\**" />
     <Compile Remove="crsTransformationAdapterOrbisgisCTS\**" />
-    <Compile Remove="crsTransformations\**" />
+    <Compile Remove="CcrsTransformations\**" />
     <EmbeddedResource Remove="com\**" />
     <EmbeddedResource Remove="crsTransformationAdapterOrbisgisCTS\**" />
-    <EmbeddedResource Remove="crsTransformations\**" />
+    <EmbeddedResource Remove="CcrsTransformations\**" />
     <None Remove="com\**" />
     <None Remove="crsTransformationAdapterOrbisgisCTS\**" />
-    <None Remove="crsTransformations\**" />
+    <None Remove="CcrsTransformations\**" />
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="crsTransformations\compositeTransformations\CompositeStrategyForAverageValueTest.cs" />
-    <Compile Include="crsTransformations\compositeTransformations\CompositeStrategyForFirstSuccessTest.cs" />
-    <Compile Include="crsTransformations\compositeTransformations\CompositeStrategyForMedianValueTest.cs" />
-    <Compile Include="crsTransformations\compositeTransformations\CompositeStrategyForWeightedAverageValueTest.cs" />
-    <Compile Include="crsTransformations\compositeTransformations\CompositeStrategyTestBase.cs" />
-    <Compile Include="crsTransformations\compositeTransformations\CompositeStrategyTestsUsingTestDoubles.cs" />
-    <Compile Include="crsTransformations\compositeTransformations\CrsTransformationAdapterCompositeFactoryTest.cs" />
-    <Compile Include="crsTransformations\compositeTransformations\CrsTransformationAdapterCompositeTest.cs" />
-    <Compile Include="crsTransformations\compositeTransformations\CrsTransformationAdapterWeightTest.cs" />
-    <Compile Include="crsTransformations\coordinate\CrsCoordinateTest.cs" />
-    <Compile Include="crsTransformations\crsIdentifier\CrsIdentifierTest.cs" />
-    <Compile Include="crsTransformations\CrsTransformationAdapterLeafFactoryTest.cs" />
-    <Compile Include="crsTransformations\implementations\DotSpatialTest.cs" />
-    <Compile Include="crsTransformations\implementations\AdaptersTestBase.cs" />
-    <Compile Include="crsTransformations\implementations\MightyLittleGeodesyTest.cs" />
-    <Compile Include="crsTransformations\implementations\ProjNet4GeoAPITest.cs" />
-    <Compile Include="crsTransformations\implementations\SridReaderTest.cs" />
+    <Compile Include="CcrsTransformations\CcompositeTransformations\CompositeStrategyForAverageValueTest.cs" />
+    <Compile Include="CcrsTransformations\CcompositeTransformations\CompositeStrategyForFirstSuccessTest.cs" />
+    <Compile Include="CcrsTransformations\CcompositeTransformations\CompositeStrategyForMedianValueTest.cs" />
+    <Compile Include="CcrsTransformations\CcompositeTransformations\CompositeStrategyForWeightedAverageValueTest.cs" />
+    <Compile Include="CcrsTransformations\CcompositeTransformations\CompositeStrategyTestBase.cs" />
+    <Compile Include="CcrsTransformations\CcompositeTransformations\CompositeStrategyTestsUsingTestDoubles.cs" />
+    <Compile Include="CcrsTransformations\CcompositeTransformations\CrsTransformationAdapterCompositeFactoryTest.cs" />
+    <Compile Include="CcrsTransformations\CcompositeTransformations\CrsTransformationAdapterCompositeTest.cs" />
+    <Compile Include="CcrsTransformations\CcompositeTransformations\CrsTransformationAdapterWeightTest.cs" />
+    <Compile Include="CcrsTransformations\Ccoordinate\CrsCoordinateTest.cs" />
+    <Compile Include="CcrsTransformations\Identifier\CrsIdentifierTest.cs" />
+    <Compile Include="CcrsTransformations\CrsTransformationAdapterLeafFactoryTest.cs" />
+    <Compile Include="CcrsTransformations\Iimplementations\DotSpatialTest.cs" />
+    <Compile Include="CcrsTransformations\Iimplementations\AdaptersTestBase.cs" />
+    <Compile Include="CcrsTransformations\Iimplementations\MightyLittleGeodesyTest.cs" />
+    <Compile Include="CcrsTransformations\Iimplementations\ProjNet4GeoAPITest.cs" />
+    <Compile Include="CcrsTransformations\Iimplementations\SridReaderTest.cs" />
   </ItemGroup>
 
   <ItemGroup>
