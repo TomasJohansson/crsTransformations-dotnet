@@ -1,13 +1,12 @@
-namespace Programmerare.CrsTransformations.CompositeTransformations {
-
-using NUnit.Framework;
 using System.Collections.Generic;
-using Programmerare.CrsTransformations;
+using NUnit.Framework;
+using Moq; // https://github.com/Moq/moq4
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Identifier;
-using Moq; // https://github.com/Moq/moq4
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 
+namespace Programmerare.CrsTransformations.CompositeTransformations 
+{
 public class CompositeStrategyTestsUsingTestDoubles {
 
     private double expectedMedianLatitude, expectedAverageLatitude, expectedMedianLongitude, expectedAverageLongitude;

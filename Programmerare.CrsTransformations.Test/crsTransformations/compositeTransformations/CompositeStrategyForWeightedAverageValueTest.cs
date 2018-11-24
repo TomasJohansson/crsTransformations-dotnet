@@ -1,100 +1,82 @@
-package com.programmerare.crsTransformations.compositeTransformations;
+using System;
+using System.Collections.Generic;
+using NUnit.Framework;
+using Programmerare.CrsTransformations.Coordinate;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
+using Programmerare.CrsTransformations.Adapter.DotSpatial;
+using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 
-import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformationAdapterGeoPackageNGA.CrsTransformationAdapterGeoPackageNGA;
-import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools;
-import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
-import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
-import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
-import com.programmerare.crsTransformations.CrsTransformationResult;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
-import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Test;
+namespace Programmerare.CrsTransformations.CompositeTransformations 
+{
+public class CompositeStrategyForWeightedAverageValueTest : CompositeStrategyTestBase {
 
-import java.util.Arrays;
-import java.util.List;
+    private const double SMALL_DELTA_VALUE = 0.0000000001;
 
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.number.OrderingComparison.greaterThan;
-import static org.hamcrest.number.OrderingComparison.lessThan;
-import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-
-class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTestBase {
-
-    private final static double SMALL_DELTA_VALUE = 0.0000000001;
-
-    private static double weightForGeoTools = 40;
-    private static double weightForGoober = 30;
-    private static double weightForOrbis = 20;
-    private static double weightForProj4J = 10;
-    private static double weightForGeoPackageNGA = 5;
-    // Note : The sum of the weights do NOT have to be 100 (e.g. above it is 105)
+    private const double weightForDotSpatial = 40;
+    private const double weightForProjNet4GeoAPI = 30;
+    private const double weightForMightyLittleGeodesy = 20;
+    // Note : The sum of the weights do NOT have to be 100 (e.g. above it is 90)
     // but the percentage of the weight will become calculated by the implementation
 
-    private static CrsCoordinate coordinateWithExpectedWeightedValues;
+    private CrsCoordinate coordinateWithExpectedWeightedValues;
 
-    @BeforeAll
-    static void before() {
-        coordinateWithExpectedWeightedValues = createWeightedValue();
+    [SetUp]
+    public void SetUp() {
+        coordinateWithExpectedWeightedValues = CreateWeightedValue();
     }
 
-    @Test
-    void transform_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapter() {
+    [Test]
+    public void transform_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapter() {
 
-        final List<CrsTransformationAdapterWeight> weights = Arrays.asList(
-            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoTools(), weightForGeoTools),
-            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGooberCTL(), weightForGoober),
-            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterOrbisgisCTS(), weightForOrbis),
-            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterProj4J(), weightForProj4J),
-            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoPackageNGA(), weightForGeoPackageNGA)
-        );
-        final CrsTransformationAdapterComposite adapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(weights);
+        var weights = new List<CrsTransformationAdapterWeight>{
+            CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), weightForDotSpatial),
+            CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), weightForProjNet4GeoAPI),
+            CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), weightForMightyLittleGeodesy)
+        };
+        CrsTransformationAdapterComposite adapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weights);
         assertWeightedAverageResult(adapter);
     }
 
-    @Test
-    void transform_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapterAndLeafsInstantiatedFromStringsWithClassNames() {
-        final String classNameGeoTools = CrsTransformationAdapterGeoTools.class.getName() ;
-        final String classNameGoober = CrsTransformationAdapterGooberCTL.class.getName() ;
-        final String classNameOrbis = CrsTransformationAdapterOrbisgisCTS.class.getName() ;
-        final String classNameProj4J = CrsTransformationAdapterProj4J.class.getName() ;
-        final String classNameGeoPackageNGA = CrsTransformationAdapterGeoPackageNGA.class.getName() ;
+    [Test]
+    public void transform_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapterAndLeafsInstantiatedFromStringsWithClassNames() {
+            
+        string classNameadapterDotSpatial = adapterDotSpatial.LongNameOfImplementation;
+        string classNameProjNet4GeoAPI = adapterProjNet4GeoAPI.LongNameOfImplementation;
+        string classNameMightyLittleGeodesy = adapterMightyLittleGeodesy.LongNameOfImplementation;
 
-        final List<CrsTransformationAdapterWeight> weights = Arrays.asList(
-            CrsTransformationAdapterWeight.createFromStringWithFullClassNameForImplementation(classNameGeoTools, weightForGeoTools),
-            CrsTransformationAdapterWeight.createFromStringWithFullClassNameForImplementation(classNameGoober, weightForGoober),
-            CrsTransformationAdapterWeight.createFromStringWithFullClassNameForImplementation(classNameOrbis, weightForOrbis),
-            CrsTransformationAdapterWeight.createFromStringWithFullClassNameForImplementation(classNameProj4J, weightForProj4J),
-            CrsTransformationAdapterWeight.createFromStringWithFullClassNameForImplementation(classNameGeoPackageNGA, weightForGeoPackageNGA)
-        );
 
-        final CrsTransformationAdapterComposite weightedAverageCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(weights);
+        List<CrsTransformationAdapterWeight> weights = new List<CrsTransformationAdapterWeight>{
+            CrsTransformationAdapterWeight.CreateFromStringWithFullClassNameForImplementation(classNameadapterDotSpatial, weightForDotSpatial),
+            CrsTransformationAdapterWeight.CreateFromStringWithFullClassNameForImplementation(classNameProjNet4GeoAPI, weightForProjNet4GeoAPI),
+            CrsTransformationAdapterWeight.CreateFromStringWithFullClassNameForImplementation(classNameMightyLittleGeodesy, weightForMightyLittleGeodesy)
+        };
+
+        CrsTransformationAdapterComposite weightedAverageCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weights);
         assertWeightedAverageResult(weightedAverageCompositeAdapter);
     }
 
     private void assertWeightedAverageResult(
         CrsTransformationAdapterComposite weightedAverageCompositeAdapter
     ) {
-        CrsTransformationResult weightedAverageResult = weightedAverageCompositeAdapter.transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
-        assertNotNull(weightedAverageResult);
-        assertTrue(weightedAverageResult.isSuccess());
-        assertEquals(super.allCoordinateResultsForTheDifferentImplementations.size(), weightedAverageResult.getTransformationResultChildren().size());
+        CrsTransformationResult weightedAverageResult = weightedAverageCompositeAdapter.Transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        Assert.IsNotNull(weightedAverageResult);
+        Assert.IsTrue(weightedAverageResult.IsSuccess);
+        Assert.AreEqual(base.allCoordinateResultsForTheDifferentImplementations.Count, weightedAverageResult.GetTransformationResultChildren().Count);
 
-        CrsCoordinate weightedAverageCoordinate = weightedAverageResult.getOutputCoordinate();
+        CrsCoordinate weightedAverageCoordinate = weightedAverageResult.OutputCoordinate;
 
-        assertEquals(coordinateWithExpectedWeightedValues.getYNorthingLatitude(), weightedAverageCoordinate.getYNorthingLatitude(), SMALL_DELTA_VALUE);
-        assertEquals(coordinateWithExpectedWeightedValues.getXEastingLongitude(), weightedAverageCoordinate.getXEastingLongitude(), SMALL_DELTA_VALUE);
+        Assert.AreEqual(coordinateWithExpectedWeightedValues.YNorthingLatitude, weightedAverageCoordinate.YNorthingLatitude, SMALL_DELTA_VALUE);
+        Assert.AreEqual(coordinateWithExpectedWeightedValues.XEastingLongitude, weightedAverageCoordinate.XEastingLongitude, SMALL_DELTA_VALUE);
 
         // The logic for the tests below:
         // The tested result should of course be very close to the expected result,
         // i.e. the differences (longitude and latitude differences)
         // // should be less than a very small SMALL_DELTA_VALUE value
-        final double diffLatTestedAdapter = Math.abs(coordinateWithExpectedWeightedValues.getYNorthingLatitude() - weightedAverageCoordinate.getYNorthingLatitude());
-        final double diffLonTestedAdapter = Math.abs(coordinateWithExpectedWeightedValues.getXEastingLongitude() - weightedAverageCoordinate.getXEastingLongitude());
-        assertThat(diffLatTestedAdapter, lessThan(SMALL_DELTA_VALUE));// assertTrue(diffLatTestedAdapter < SMALL_DELTA_VALUE);
-        assertThat(diffLonTestedAdapter, lessThan(SMALL_DELTA_VALUE));
+        double diffLatTestedAdapter = Math.Abs(coordinateWithExpectedWeightedValues.YNorthingLatitude - weightedAverageCoordinate.YNorthingLatitude);
+        double diffLonTestedAdapter = Math.Abs(coordinateWithExpectedWeightedValues.XEastingLongitude - weightedAverageCoordinate.XEastingLongitude);
+        Assert.That(diffLatTestedAdapter, Is.LessThan(SMALL_DELTA_VALUE));// assertTrue(diffLatTestedAdapter < SMALL_DELTA_VALUE);
+        Assert.That(diffLonTestedAdapter, Is.LessThan(SMALL_DELTA_VALUE));
 
         // Now in the rest of the assertions below,
         // the difference between the individual results which were weighted
@@ -107,44 +89,38 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
         // and thus they are asserted here as part of regression testing.
         // If this test would break, it needs to be investigated since these values
         // have benn working fine to assert like below.
-        assertDiffsAreGreaterThanSmallDelta(resultCoordinateGeoTools, coordinateWithExpectedWeightedValues);
-        assertDiffsAreGreaterThanSmallDelta(resultCoordinateGooberCTL, coordinateWithExpectedWeightedValues);
-        assertDiffsAreGreaterThanSmallDelta(resultCoordinateOrbisgisCTS, coordinateWithExpectedWeightedValues);
-        assertDiffsAreGreaterThanSmallDelta(resultCoordinateProj4J, coordinateWithExpectedWeightedValues);
-        assertDiffsAreGreaterThanSmallDelta(resultCoordinateGeoPackageNGA, coordinateWithExpectedWeightedValues);
+        assertDiffsAreGreaterThanSmallDelta(resultCoordinateDotSpatial, coordinateWithExpectedWeightedValues);
+        assertDiffsAreGreaterThanSmallDelta(resultCoordinateMightyLittleGeodesy, coordinateWithExpectedWeightedValues);
+        assertDiffsAreGreaterThanSmallDelta(resultCoordinateProjNet4GeoAPI, coordinateWithExpectedWeightedValues);
     }
 
     private void assertDiffsAreGreaterThanSmallDelta(
-        final CrsCoordinate resultCoordinateIndividualImplementation,
-        final CrsCoordinate coordinateWithExpectedWeightedValues
+        CrsCoordinate resultCoordinateIndividualImplementation,
+        CrsCoordinate coordinateWithExpectedWeightedValues
     ) {
-        final double diffLatIndividualImplementation = Math.abs(
-            coordinateWithExpectedWeightedValues.getYNorthingLatitude() - resultCoordinateIndividualImplementation.getYNorthingLatitude()
+        double diffLatIndividualImplementation = Math.Abs(
+            coordinateWithExpectedWeightedValues.YNorthingLatitude - resultCoordinateIndividualImplementation.YNorthingLatitude
         );
-        final double diffLonIndividualImplementation = Math.abs(
-            coordinateWithExpectedWeightedValues.getXEastingLongitude() - resultCoordinateIndividualImplementation.getXEastingLongitude()
+        double diffLonIndividualImplementation = Math.Abs(
+            coordinateWithExpectedWeightedValues.XEastingLongitude - resultCoordinateIndividualImplementation.XEastingLongitude
         );
-        assertThat(diffLatIndividualImplementation, greaterThan(SMALL_DELTA_VALUE));
-        assertThat(diffLonIndividualImplementation, greaterThan(SMALL_DELTA_VALUE));
+        Assert.That(diffLatIndividualImplementation, Is.GreaterThan(SMALL_DELTA_VALUE));
+        Assert.That(diffLonIndividualImplementation, Is.GreaterThan(SMALL_DELTA_VALUE));
     }
 
-    private static CrsCoordinate createWeightedValue() {
-        final double latitudeWeightedSum =
-                weightForGeoTools * resultCoordinateGeoTools.getYNorthingLatitude() +
-                weightForGoober * resultCoordinateGooberCTL.getYNorthingLatitude() +
-                weightForOrbis * resultCoordinateOrbisgisCTS.getYNorthingLatitude() +
-                weightForProj4J * resultCoordinateProj4J.getYNorthingLatitude() +
-                weightForGeoPackageNGA * resultCoordinateProj4J.getYNorthingLatitude();
+    private CrsCoordinate CreateWeightedValue() {
+        double latitudeWeightedSum =
+            weightForDotSpatial * resultCoordinateDotSpatial.YNorthingLatitude +
+            weightForMightyLittleGeodesy * resultCoordinateMightyLittleGeodesy.YNorthingLatitude +
+            weightForProjNet4GeoAPI * resultCoordinateProjNet4GeoAPI.YNorthingLatitude;
 
-        final double longitutdeWeightedSum =
-                weightForGeoTools * resultCoordinateGeoTools.getXEastingLongitude() +
-                weightForGoober * resultCoordinateGooberCTL.getXEastingLongitude() +
-                weightForOrbis * resultCoordinateOrbisgisCTS.getXEastingLongitude() +
-                weightForProj4J * resultCoordinateProj4J.getXEastingLongitude() +
-                weightForGeoPackageNGA * resultCoordinateProj4J.getXEastingLongitude();
+        double longitutdeWeightedSum =
+            weightForDotSpatial * resultCoordinateDotSpatial.XEastingLongitude +
+            weightForMightyLittleGeodesy * resultCoordinateMightyLittleGeodesy.XEastingLongitude +
+            weightForProjNet4GeoAPI * resultCoordinateProjNet4GeoAPI.XEastingLongitude;
 
-        final double totWeights = weightForGeoTools + weightForGoober + weightForOrbis + weightForProj4J + weightForGeoPackageNGA;
-        return CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude( latitudeWeightedSum/totWeights, longitutdeWeightedSum/totWeights, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        double totWeights = weightForDotSpatial + weightForMightyLittleGeodesy + weightForProjNet4GeoAPI;
+        return CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude( latitudeWeightedSum/totWeights, longitutdeWeightedSum/totWeights, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
     }
 
     /*
@@ -228,4 +204,5 @@ class CompositeStrategyForWeightedAverageValueTest extends CompositeStrategyTest
 
     }
     */
+}
 }

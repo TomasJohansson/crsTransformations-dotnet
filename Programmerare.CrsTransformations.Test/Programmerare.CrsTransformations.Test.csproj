@@ -17,6 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="crsTransformations\compositeTransformations\CompositeStrategyForAverageValueTest.cs" />
+    <Compile Include="crsTransformations\compositeTransformations\CompositeStrategyForFirstSuccessTest.cs" />
+    <Compile Include="crsTransformations\compositeTransformations\CompositeStrategyForMedianValueTest.cs" />
+    <Compile Include="crsTransformations\compositeTransformations\CompositeStrategyForWeightedAverageValueTest.cs" />
+    <Compile Include="crsTransformations\compositeTransformations\CompositeStrategyTestBase.cs" />
     <Compile Include="crsTransformations\compositeTransformations\CompositeStrategyTestsUsingTestDoubles.cs" />
     <Compile Include="crsTransformations\compositeTransformations\CrsTransformationAdapterCompositeFactoryTest.cs" />
     <Compile Include="crsTransformations\compositeTransformations\CrsTransformationAdapterCompositeTest.cs" />

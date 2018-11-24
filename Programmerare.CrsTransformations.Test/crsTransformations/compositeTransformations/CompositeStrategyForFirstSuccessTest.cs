@@ -1,34 +1,32 @@
-package com.programmerare.crsTransformations.compositeTransformations;
+using NUnit.Framework;
+using Programmerare.CrsTransformations.Coordinate;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 
-import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
-import com.programmerare.crsTransformations.CrsTransformationAdapter;
-import com.programmerare.crsTransformations.CrsTransformationResult;
-import org.junit.jupiter.api.Test;
+namespace Programmerare.CrsTransformations.CompositeTransformations 
+{
+public class CompositeStrategyForFirstSuccessTest : CompositeStrategyTestBase {
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-public class CompositeStrategyForFirstSuccessTest extends CompositeStrategyTestBase {
-
-    @Test
-    void transform_shouldReturnFirstResult_whenUsingFirstSuccessCompositeAdapter() {
-        CrsTransformationAdapter firstSuccessCompositeAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess(
-            // note that geotools should be the first item in the below list defined in the baseclass,
-            // and therefore geotools should be the implementation providing the result
-            super.allAdapters
+    [Test]
+    public void transform_shouldReturnFirstResult_whenUsingFirstSuccessCompositeAdapter() {
+        ICrsTransformationAdapter firstSuccessCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(
+            // note that DotSpatial should be the first item in the below list defined in the baseclass,
+            // and therefore DotSpatial should be the implementation providing the result
+            base.allAdapters
         );
-        CrsTransformationResult firstSuccessResult = firstSuccessCompositeAdapter.transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
-        assertNotNull(firstSuccessResult);
-        assertTrue(firstSuccessResult.isSuccess());
-        assertEquals(1, firstSuccessResult.getTransformationResultChildren().size());
+        CrsTransformationResult firstSuccessResult = firstSuccessCompositeAdapter.Transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        Assert.IsNotNull(firstSuccessResult);
+        Assert.IsTrue(firstSuccessResult.IsSuccess);
+        Assert.AreEqual(1, firstSuccessResult.GetTransformationResultChildren().Count);
 
-        CrsCoordinate coordinateReturnedByCompositeAdapterFirstSuccess = firstSuccessResult.getOutputCoordinate();
-        // The above result of the composite should be equal to the result of GeoTools since it
+        CrsCoordinate coordinateReturnedByCompositeAdapterFirstSuccess = firstSuccessResult.OutputCoordinate;
+        // The above result of the composite should be equal to the result of DotSpatial since it
         // is first in the list of parameters to the constructor and it should produce a result for
-        // the input coordinates ... so therefore below assert against the direct result of geotools
-        CrsCoordinate coordinateResultWhenUsingGeoTools = adapterGeoTools.transformToCoordinate(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
-        assertEquals(coordinateResultWhenUsingGeoTools, coordinateReturnedByCompositeAdapterFirstSuccess);
+        // the input coordinates ... so therefore below assert against the direct result of DotSpatial
+        CrsCoordinate coordinateResultWhenUsingDotSpatial = adapterDotSpatial.TransformToCoordinate(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        Assert.AreEqual(
+            coordinateResultWhenUsingDotSpatial, 
+            coordinateReturnedByCompositeAdapterFirstSuccess
+        );
     }
+}
 }
