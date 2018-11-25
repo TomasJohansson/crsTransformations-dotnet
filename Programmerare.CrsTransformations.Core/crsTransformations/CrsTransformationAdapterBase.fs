@@ -1,8 +1,31 @@
 namespace Programmerare.CrsTransformations
 
+open System
+open System.IO
+open System.Text.RegularExpressions
 open System.Collections.Generic
 open Programmerare.CrsTransformations.Coordinate
 open Programmerare.CrsTransformations.Identifier
+
+// ----------------------------------------------------
+// this class is used as return type for a methods 
+// with the only purpose to be used in test code for detecting 
+// upgraded version (of some NuGet package or an adaptee library)
+// i.e. to help remembering to update the enum value 
+// defining which adaptee library version is used
+// maybe use [<AllowNullLiteral>] at FileInfoVersion instead for C# interop
+type FileInfoVersion
+    (
+        fileName: string,
+        fileSize: int64,
+        version: string
+    ) = 
+    class
+        member this.FileName = fileName
+        member this.FileSize = fileSize
+        member this.Version = version
+    end
+// ----------------------------------------------------
 
 (*
  * The base class of the adapter interface implementing most of the 
@@ -21,6 +44,12 @@ type CrsTransformationAdapterBase
     (
     ) =
     class
+
+        // TODO maybe use [<AllowNullLiteral>] at FileInfoVersion declaration 
+        // i.e. use null instead of the below values 
+        // for C# interopability, i.e. like this
+        // let defaultFileInfoVersion: FileInfoVersion = null
+        let defaultFileInfoVersion = FileInfoVersion("", -1L, "")
 
         let TrowExceptionIfCoordinateIsNull(inputCoordinate) : unit = 
             if isNull inputCoordinate then
@@ -60,6 +89,66 @@ type CrsTransformationAdapterBase
 
         abstract member GetTransformationAdapterChildren : unit -> IList<ICrsTransformationAdapter>
         default this.GetTransformationAdapterChildren() = raise (System.NotImplementedException())
+
+        // TODO: rewrite the below Kotlin/JVM comments below for .NET ...
+        // The purpose of the method below is to use it in test code
+        // for detecting upgrades to a new version (and then update the above method returned enum value)
+        // Future failure will be a reminder to update the above enum value
+        (*
+            * This helper method is protected since it is NOT intended for
+            * client code but only for test code purposes.
+            * 
+            * It should be overridden by subclasses.
+            * @return empty string is returned as the default value
+            *      which should also be returned byt the composites (i.e. they should not override).
+            *      
+            *      The 'leaf' adapter implementations should return the
+            *      name of the jar file (potentially including a path)
+            *      for the used adaptee library.
+            *      
+            *      The reason is that the jar files (retrieved through Maven)
+            *      includes the version name and can be asserted in test code
+            *      to help remembering that the value of an enum specifying
+            *      the 'adaptee' (and version) should be updated after an adaptee upgrade.
+            * @see CrsTransformationAdapteeType
+            *)
+        abstract member _GetFileInfoVersion : unit -> FileInfoVersion
+        default this._GetFileInfoVersion() = defaultFileInfoVersion
+        
+        // TODO: rewrite the below Kotlin/JVM comments below for .NET ...
+        (*
+            * Helper method intended to be used from subclasses
+            * when implementing the method that should return the name
+            * of a jar file belonging to an adaptee library.
+            *)
+        member this._GetFileInfoVersionHelper
+            (
+                someTypeInTheThidPartAdapteeLibrary: Type
+            ) =
+            let assembly = someTypeInTheThidPartAdapteeLibrary.Assembly
+            let codeBase = assembly.CodeBase
+            let file = FileInfo(assembly.Location)
+            // AssemblyQualifiedName is something like this: 
+            // "MightyLittleGeodesy.Positions.RT90Position, MightyLittleGeodesy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+            // but the version number 1.0.0.0 is not what I want which is 1.0.1 
+            // which can be extracted from the path below
+            // the code base will be some path like:
+            // "...nuget/packages/mightylittlegeodesy/1.0.1/lib/net45/MightyLittleGeodesy.dll"
+            // version between some slashes in the below regexp: 
+            // e.g. "2.0.0-rc1" or "1.0.1"
+            let inputString = codeBase.ToLower().Replace('\\','/')
+            // printfn "GetFileInfoVersionHelper inputString: %s" inputString
+            let regExp = new Regex("^.*\\/(.{0,10}?[\\d\\.]{3,9}.{0,10}?)\\/.*\\/(.+)$")
+            let regExpMatch = regExp.Match(inputString)
+            if regExpMatch.Success then
+                FileInfoVersion
+                    (
+                    regExpMatch.Groups.[2].Value,
+                    file.Length,
+                    regExpMatch.Groups.[1].Value
+                    )
+            else
+                defaultFileInfoVersion
 
         interface ICrsTransformationAdapter with
             member this.GetTransformationAdapterChildren() =  this.GetTransformationAdapterChildren()
@@ -135,35 +224,6 @@ type CrsTransformationAdapterBase
 
             member this.IsComposite = this.IsComposite
 
-            (*
-             * This helper method is protected since it is NOT intended for
-             * client code but only for test code purposes.
-             * 
-             * It should be overridden by subclasses.
-             * @return empty string is returned as the default value
-             *      which should also be returned byt the composites (i.e. they should not override).
-             *      
-             *      The 'leaf' adapter implementations should return the
-             *      name of the jar file (potentially including a path)
-             *      for the used adaptee library.
-             *      
-             *      The reason is that the jar files (retrieved through Maven)
-             *      includes the version name and can be asserted in test code
-             *      to help remembering that the value of an enum specifying
-             *      the 'adaptee' (and version) should be updated after an adaptee upgrade.
-             * @see CrsTransformationAdapteeType
-             *)
-            //member this.GetNameOfJarFileOrEmptyString() =
-            //    return ""
 
-            (*
-             * Protected helper method intended to be used from subclasses
-             * when implementing the method that should return the name
-             * of a jar file belonging to an adaptee library.
-             *)
-            //member this.GetNameOfJarFileFromProtectionDomain(
-            //    protectionDomainCreatedFromSomeClassInTheThidPartAdapteeLibrary: ProtectionDomain
-            //) =
-            //    protectionDomainCreatedFromSomeClassInTheThidPartAdapteeLibrary.codeSource.location.toExternalForm()
 
     end

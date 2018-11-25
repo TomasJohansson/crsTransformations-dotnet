@@ -26,7 +26,7 @@ type CrsTransformationAdapterDotSpatial() =
             this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifier)
 
         override this.AdapteeType =
-            CrsTransformationAdapteeType.LEAF_DOT_SPATIAL_1_9_0
+            CrsTransformationAdapteeType.LEAF_DOT_SPATIAL_2_0_0_RC1
 
         override this.LongNameOfImplementation = this.GetType().FullName
 
@@ -36,4 +36,8 @@ type CrsTransformationAdapterDotSpatial() =
         // verfifies that this short name actually is the 
         // suffix of the type name
         override this.ShortNameOfImplementation = "DotSpatial"
+
+        override this._GetFileInfoVersion() =
+            base._GetFileInfoVersionHelper(typeof<ProjectionInfo>)
+
     end

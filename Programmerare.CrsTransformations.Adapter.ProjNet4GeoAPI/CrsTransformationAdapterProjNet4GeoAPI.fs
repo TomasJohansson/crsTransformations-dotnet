@@ -61,4 +61,7 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
         // verfifies that this short name actually is the 
         // suffix of the type name
         override this.ShortNameOfImplementation = "ProjNet4GeoAPI"
+
+        override this._GetFileInfoVersion() =
+            base._GetFileInfoVersionHelper(typeof<CoordinateSystemFactory>)
     end

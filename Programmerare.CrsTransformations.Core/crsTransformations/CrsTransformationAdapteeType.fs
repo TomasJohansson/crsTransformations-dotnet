@@ -38,7 +38,7 @@ type CrsTransformationAdapteeType =  // F# enum
      * NuGet version for the adaptee library "MightyLittleGeodesy":
      * '<PackageReference Include="DotSpatial.Projections" Version="1.9.0" />'
      *)
-    | LEAF_DOT_SPATIAL_1_9_0 = 1200
+    | LEAF_DOT_SPATIAL_2_0_0_RC1 = 1200
 
     (*
      * The abbreviation MLG = MightyLittleGeodesy

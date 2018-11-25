@@ -146,6 +146,10 @@ type CrsTransformationAdapterMightyLittleGeodesy() =
         // verfifies that this short name actually is the 
         // suffix of the type name
         override this.ShortNameOfImplementation = "MightyLittleGeodesy"
+
+        override this._GetFileInfoVersion() =
+            base._GetFileInfoVersionHelper(typeof<RT90Position>)
+
     end
 (*
 // https://www.nuget.org/packages/MightyLittleGeodesy/
@@ -159,11 +163,5 @@ to improve the above initial F# implementation
     override fun getAdapteeType() : CrsTransformationAdapteeType {
         return CrsTransformationAdapteeType.LEAF_GOOBER_1_1
     }
-    // The purpose of the method below is to use it in test code
-    // for detecting upgrades to a new version (and then update the above method returned enum value)
-    // Future failure will be a reminder to update the above enum value
-    protected override fun getNameOfJarFileOrEmptyString(): String {
-        return super.getNameOfJarFileFromProtectionDomain(WGS84Position::class.java.protectionDomain)
-    }
-    // ----------------------------------------------------------
+
 *)

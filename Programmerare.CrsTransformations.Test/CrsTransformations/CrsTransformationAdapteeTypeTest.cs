@@ -1,65 +1,55 @@
-package com.programmerare.crsTransformations;
+using NUnit.Framework;
+using Programmerare.CrsTransformations.CompositeTransformations;
+using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
+using Programmerare.CrsTransformations.Adapter.DotSpatial;
+using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using System.Collections.Generic;
 
-import static org.hamcrest.CoreMatchers.endsWith;
-import com.programmerare.crsTransformationAdapterGeoPackageNGA.CrsTransformationAdapterGeoPackageNGA;
-import com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools;
-import com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;
-import com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;
-import com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
-import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory;
-import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterWeight;
-import org.junit.jupiter.api.Test;
-
-import java.util.Arrays;
-
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
+namespace Programmerare.CrsTransformations
+{
+[TestFixture]
 class CrsTransformationAdapteeTypeTest {
     
-    @Test
-    
-    void orbisgisAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+    [Test]
+    public void ProjNet4GeoAPIAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+        var expectedFileInfoVersion = new FileInfoVersion(
+            fileName: "projnet.dll",
+            fileSize: 102912L, // netstandard2.0
+            version: "1.4.1"
+        );
         verifyExpectedEnumAndJarfileVersion(
-            new CrsTransformationAdapterOrbisgisCTS(),
-            "cts-1.5.1.jar",
-            CrsTransformationAdapteeType.LEAF_ORBISGIS_1_5_1
+            new CrsTransformationAdapterProjNet4GeoAPI(),
+            expectedFileInfoVersion,
+            CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1
         );
     }
     
-    @Test
-    void geotoolsAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+    [Test]
+    public void DotSpatialAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+        var expectedFileInfoVersion = new FileInfoVersion(
+            fileName: "dotspatial.projections.dll",
+            fileSize: 1538048L,
+            version: "2.0.0-rc1"
+        );
         verifyExpectedEnumAndJarfileVersion(
-            new CrsTransformationAdapterGeoTools(),
-            "gt-api-20.0.jar",
-            CrsTransformationAdapteeType.LEAF_GEOTOOLS_20_0
+            new CrsTransformationAdapterDotSpatial(),
+            expectedFileInfoVersion,
+            CrsTransformationAdapteeType.LEAF_DOT_SPATIAL_2_0_0_RC1
         );
     }
 
-    @Test
-    void geopackageNgaAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
-        verifyExpectedEnumAndJarfileVersion(
-            new CrsTransformationAdapterGeoPackageNGA(),
-            "geopackage-core-3.1.0.jar",
-            CrsTransformationAdapteeType.LEAF_NGA_GEOPACKAGE_3_1_0
-        );
-    }
-    
-    @Test
-    void proj4jAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
-        verifyExpectedEnumAndJarfileVersion(
-            new CrsTransformationAdapterProj4J(),
-            "proj4j-0.1.0.jar",
-            CrsTransformationAdapteeType.LEAF_PROJ4J_0_1_0
-        );
-    }
 
-    @Test
-    void gooberAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+    [Test]
+    public void MightyLittleGeodesyAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+        FileInfoVersion expectedFileInfoVersion = new FileInfoVersion(
+            fileName: "mightylittlegeodesy.dll", // .nuget\packages\mightylittlegeodesy\1.0.1\lib\net45
+            fileSize: 15872L, // net45 version
+            version: "1.0.1"
+        );
         verifyExpectedEnumAndJarfileVersion(
-            new CrsTransformationAdapterGooberCTL(),
-            "coordinate-transformation-library-1.1.jar",
-            CrsTransformationAdapteeType.LEAF_GOOBER_1_1
+            new CrsTransformationAdapterMightyLittleGeodesy(),
+            expectedFileInfoVersion,
+            CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1
         );
     }
 
@@ -69,60 +59,74 @@ class CrsTransformationAdapteeTypeTest {
     ) {
         verifyExpectedEnumAndJarfileVersion(
             crsTransformationAdapter,
-            "",
+            defaultFileInfoVersion,
             expectedAdaptee
         );
     }
+
+    private FileInfoVersion defaultFileInfoVersion = new FileInfoVersion("", -1L, "");
+
     private void verifyExpectedEnumAndJarfileVersion(
         CrsTransformationAdapterBase crsTransformationAdapter,
-        String emptyStringOrExpectedNameOfJarFile,
+        FileInfoVersion expectedFileInfoVersion,
         CrsTransformationAdapteeType expectedEnumWithMatchingNameInlcudingVersionNumber
     ) {
-        assertEquals(
+        Assert.AreEqual(
             expectedEnumWithMatchingNameInlcudingVersionNumber, 
-            crsTransformationAdapter.getAdapteeType()
+            crsTransformationAdapter.AdapteeType
         );
-        String fileNameIncludingPath = crsTransformationAdapter.getNameOfJarFileOrEmptyString();
-        if(!emptyStringOrExpectedNameOfJarFile.equals("")) {
-            assertThat(
-                "Likely failure reason: You have upgraded a version. If so, then upgrade both the enum value and the filename",
-                fileNameIncludingPath, endsWith(emptyStringOrExpectedNameOfJarFile)
+        FileInfoVersion fileInfoVersion = crsTransformationAdapter._GetFileInfoVersion();
+        if(expectedFileInfoVersion.FileSize > 0) {
+            Assert.That(
+                fileInfoVersion.FileName, Does.EndWith(expectedFileInfoVersion.FileName),
+                "Likely failure reason: You have upgraded a version. If so, then upgrade both the enum value and the filename"
+            );
+            Assert.AreEqual(
+                expectedFileInfoVersion.FileSize,
+                fileInfoVersion.FileSize
+            );
+            Assert.AreEqual(
+                expectedFileInfoVersion.Version,
+                fileInfoVersion.Version
             );
         }
     }
 
-    @Test
-    void testCompositeAverage() {
+    [Test]
+    public void testCompositeAverage() {
         verifyExpectedEnum(
-            CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage(),
+            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(),
             CrsTransformationAdapteeType.COMPOSITE_AVERAGE
         );
     }
 
-    @Test
-    void testCompositeMedian() {
+    [Test]
+    public void testCompositeMedian() {
         verifyExpectedEnum(
-            CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian(),
+            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(),
             CrsTransformationAdapteeType.COMPOSITE_MEDIAN
         );
     }
 
-    @Test
-    void testCompositeFirstSuccess() {
+    [Test]
+    public void testCompositeFirstSuccess() {
         verifyExpectedEnum(
-            CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess(),
+            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(),
             CrsTransformationAdapteeType.COMPOSITE_FIRST_SUCCESS
         );
     }
 
-    @Test
-    void testCompositeWeightedAverage() {
+    [Test]
+    public void testCompositeWeightedAverage() {
         verifyExpectedEnum(
-            CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(
-                Arrays.asList(CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoPackageNGA(), 1))
-            ),
+            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
+                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
+                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
+                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
+            }),
             CrsTransformationAdapteeType.COMPOSITE_WEIGHTED_AVERAGE
         );
     }
 
+}
 }

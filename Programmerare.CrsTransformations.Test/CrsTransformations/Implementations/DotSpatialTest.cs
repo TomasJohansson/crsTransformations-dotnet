@@ -23,7 +23,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         {
             base.SetUpbase(
                 new CrsTransformationAdapterDotSpatial(),
-                CrsTransformationAdapteeType.LEAF_DOT_SPATIAL_1_9_0,
+                CrsTransformationAdapteeType.LEAF_DOT_SPATIAL_2_0_0_RC1,
 
                 // DotSpatial 2.0.0-rc1:
                 0.5, // maxMeterDifferenceForSuccessfulTest
