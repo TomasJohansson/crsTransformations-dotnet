@@ -33,7 +33,7 @@ type CompositeStrategyForMedianValue internal
                     crsIdentifierForOutputCoordinateSystem: CrsIdentifier,
                     crsTransformationAdapterThatCreatedTheResult: ICrsTransformationAdapter
                 ): CrsTransformationResult =
-                    let resultsStatistic = CrsTransformationResultStatistic(allResults)
+                    let resultsStatistic = CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(allResults)
                     base._CalculateAggregatedResultBase
                         (
                             allResults,

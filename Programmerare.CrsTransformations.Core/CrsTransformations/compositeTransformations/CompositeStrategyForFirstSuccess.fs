@@ -43,7 +43,7 @@ type CompositeStrategyForFirstSuccess internal
                         exceptionOrNull = null,
                         isSuccess = true,
                         crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
-                        nullableCrsTransformationResultStatistic = CrsTransformationResultStatistic(allResults)
+                        nullableCrsTransformationResultStatistic = CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(allResults)
                     )
                 else
                     CrsTransformationResult._CreateCrsTransformationResult(
@@ -52,7 +52,7 @@ type CompositeStrategyForFirstSuccess internal
                         exceptionOrNull = null,
                         isSuccess = false,
                         crsTransformationAdapterResultSource = crsTransformationAdapterThatCreatedTheResult,
-                        nullableCrsTransformationResultStatistic = CrsTransformationResultStatistic(allResults)
+                        nullableCrsTransformationResultStatistic = CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(allResults)
                     )
 
             override this._GetAdapteeType() : CrsTransformationAdapteeType =

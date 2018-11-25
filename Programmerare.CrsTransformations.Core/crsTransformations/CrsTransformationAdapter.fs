@@ -203,7 +203,7 @@ and CrsTransformationResult // TODO maybe make a private constructor
             else
                 let list = new List<CrsTransformationResult>()
                 list.Add(this)
-                CrsTransformationResultStatistic(list)
+                CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(list)
         // TODO refactor the above and the below method !
         // For a leaf the statistics object should use a list with the one and only result
         // but for composites it should all results 
@@ -452,7 +452,7 @@ and CrsTransformationResult // TODO maybe make a private constructor
  * Please find more information in the license file at the root directory of each subproject
  * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
  *)
-and CrsTransformationResultStatistic // TODO maybe private constructor(
+and CrsTransformationResultStatistic private
     (
         results: IList<CrsTransformationResult>
     ) =
@@ -606,14 +606,8 @@ and CrsTransformationResultStatistic // TODO maybe private constructor(
         _maxDiffLongitudesLazyLoaded.Force() // F# Lazy loading: https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/lazy-computations
 
 
-
-        // Kotlin:
-    //internal companion object {
-    //    (*
-    //     * This method is not intended for public use from client code.
-    //     *)
-    //    @JvmStatic
-    //    fun _createCrsTransformationResultStatistic(
-    //        results: List<CrsTransformationResult>
-    //    ): CrsTransformationResultStatistic {
-    //        return CrsTransformationResultStatistic(results)
+    static member _CreateCrsTransformationResultStatistic
+        (
+            results: IList<CrsTransformationResult>
+        ): CrsTransformationResultStatistic =
+            CrsTransformationResultStatistic(results)

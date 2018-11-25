@@ -75,7 +75,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             null,
             true,
             leafAdapterImplementation_1,
-            new CrsTransformationResultStatistic(new List<CrsTransformationResult>())
+            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(new List<CrsTransformationResult>())
         );
         CrsTransformationResult leafResult2 = CrsTransformationResult._CreateCrsTransformationResult(
             inputCoordinateSweref99,
@@ -83,7 +83,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             null,
             true,
             leafAdapterImplementation_2,
-            new CrsTransformationResultStatistic(new List<CrsTransformationResult>())
+            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(new List<CrsTransformationResult>())
         );
         CrsTransformationResult leafResult3 = CrsTransformationResult._CreateCrsTransformationResult(
             inputCoordinateSweref99,
@@ -91,7 +91,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             null,
             true,
             leafAdapterImplementation_3,
-            new CrsTransformationResultStatistic(new List<CrsTransformationResult>())
+            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(new List<CrsTransformationResult>())
         );
         CrsTransformationResult leafResult4 = CrsTransformationResult._CreateCrsTransformationResult(
             inputCoordinateSweref99,
@@ -99,7 +99,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             null,
             true,
             leafAdapterImplementation_4,
-            new CrsTransformationResultStatistic(new List<CrsTransformationResult>())
+            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(new List<CrsTransformationResult>())
         );
         CrsTransformationResult leafResult5 = CrsTransformationResult._CreateCrsTransformationResult(
             inputCoordinateSweref99,
@@ -107,7 +107,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             null,
             true,
             leafAdapterImplementation_5,
-            new CrsTransformationResultStatistic(new List<CrsTransformationResult>())
+            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(new List<CrsTransformationResult>())
         );
         crsIdentifierWGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(EpsgNumber.WORLD__WGS_84__4326);
 
