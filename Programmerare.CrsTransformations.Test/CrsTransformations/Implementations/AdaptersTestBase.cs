@@ -400,7 +400,14 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             Assert.IsNotNull(result);
             Assert.IsFalse(result.IsSuccess);
             Assert.IsNotNull(result.Exception);
-            Assert.IsNull(result.OutputCoordinate);
+            
+            InvalidOperationException e = Assert.Throws<InvalidOperationException>(() =>
+                {
+                    var coord = result.OutputCoordinate;
+                },
+                "Should not try to get output coordinate unless the result was a success"
+            );
+
             Assert.AreEqual(inputCoordinate, result.InputCoordinate);
             IList<CrsTransformationResult> subresults = result.GetTransformationResultChildren();
             Assert.IsNotNull(subresults);

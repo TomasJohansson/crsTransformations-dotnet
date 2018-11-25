@@ -26,6 +26,9 @@
     <Compile Include="CrsTransformations\Coordinate\CrsCoordinateTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapteeTypeTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterTest.cs" />
+    <Compile Include="CrsTransformations\CrsTransformationResultStatisticTest.cs" />
+    <Compile Include="CrsTransformations\CrsTransformationResultTest.cs" />
+    <Compile Include="CrsTransformations\CrsTransformationResultTestBase.cs" />
     <Compile Include="CrsTransformations\CrsTransformationTestBase.cs" />
     <Compile Include="CrsTransformations\Identifier\CrsIdentifierTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterLeafFactoryTest.cs" />

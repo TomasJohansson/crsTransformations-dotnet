@@ -191,8 +191,24 @@ and CrsTransformationResult // TODO maybe make a private constructor
         crsTransformationResultStatistic: CrsTransformationResultStatistic
     ) =
     class
+        do
+            if( isSuccess && (isNull outputCoordinate) ) then
+                invalidArg "isSuccess" "Unvalid object construction. If success then output coordinate should NOT be null"
+            if( not(isSuccess) && not(isNull outputCoordinate) ) then
+                invalidArg "isSuccess" "Unvalid object construction. If NOT success then output coordinate should be null"
+            if( not(isNull exceptionOrNull)) then // if exception then should NOT be success and not any resulting coordinate !
+                if(isSuccess || not(isNull outputCoordinate)) then
+                    invalidArg "isSuccess" "Unvalid object construction. If exception then output coordinate should be null and success should be false"
+
+
         member this.InputCoordinate = inputCoordinate
-        member this.OutputCoordinate = outputCoordinate
+
+        member this.OutputCoordinate 
+            with get() = 
+                if(not(isSuccess)) then 
+                    invalidOp "Pre-condition violated. Coordinate retrieval only allowed if result was success"
+                outputCoordinate
+
         member this.Exception = exceptionOrNull
         member this.IsSuccess = isSuccess
         member this.CrsTransformationAdapterResultSource = crsTransformationAdapterResultSource
@@ -304,22 +320,7 @@ and CrsTransformationResult // TODO maybe make a private constructor
 //     * the transform resulted in an exception being thrown.
 //     *)
 //    val exception: Throwable?
-    
-//    init {
-//        if(isSuccess && _outputCoordinate == null) {
-//            throw IllegalStateException("Unvalid object construction. If success then output coordinate should NOT be null")
-//        }
-//        if(!isSuccess && _outputCoordinate != null) {
-//            throw IllegalStateException("Unvalid object construction. If NOT success then output coordinate should be null")
-//        }
-        
-//        if(_exception != null) { // if exception then should NOT be success and not any resulting coordinate !
-//            if(isSuccess || _outputCoordinate != null) {
-//                throw IllegalStateException("Unvalid object construction. If exception then output coordinate should be null and success should be false")
-//            }
-//        }
-//        this.exception = getExceptionIfNotNullButOtherwiseTryToGetExceptionsFromChildrenExceptionsIfExisting(_exception)
-        
+
         
 //        if(transformationResultChildren == null || transformationResultChildren.size <= 0) {
 //            // SHOULD be a leaf since no children, i.e. throw exception if Composite
@@ -604,7 +605,6 @@ and CrsTransformationResultStatistic private
     member this.MaxDifferenceForXEastingLongitude =
         throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
         _maxDiffLongitudesLazyLoaded.Force() // F# Lazy loading: https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/lazy-computations
-
 
     static member _CreateCrsTransformationResultStatistic
         (

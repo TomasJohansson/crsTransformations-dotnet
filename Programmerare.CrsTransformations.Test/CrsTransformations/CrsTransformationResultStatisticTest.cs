@@ -1,19 +1,20 @@
-package com.programmerare.crsTransformations;
+using NUnit.Framework;
 
-import org.junit.jupiter.api.Test;
+namespace Programmerare.CrsTransformations
+{
+public class CrsTransformationResultStatisticTest : CrsTransformationResultTestBase {
 
-public class CrsTransformationResultStatisticTest extends CrsTransformationResultTestBase {
-
-    @Test
-    void transformResultStatistic_shouldCalculateCorrectAverageAndMeanAndMaxDiffValues() {
+    [Test]
+    public void transformResultStatistic_shouldCalculateCorrectAverageAndMeanAndMaxDiffValues() {
         // Both the setup code and the verify/assertion code for this test method 
         // is placed in a base class because it is reused from another test class
         // The keyword "super" is used below to make that more obvious.
         
-        final CrsTransformationResultStatistic crsTransformationResultStatistic = CrsTransformationResultStatistic._createCrsTransformationResultStatistic(
-            super.listOfSubresultsForStatisticsTest
+        CrsTransformationResultStatistic crsTransformationResultStatistic = CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(
+            base.listOfSubresultsForStatisticsTest
         );
         
-        super.assertCrsTransformationResultStatistic(crsTransformationResultStatistic);
+        base.assertCrsTransformationResultStatistic(crsTransformationResultStatistic);
     }
+}
 }
