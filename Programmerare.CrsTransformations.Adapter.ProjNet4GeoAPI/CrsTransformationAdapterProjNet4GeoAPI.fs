@@ -1,5 +1,6 @@
 namespace Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI
 
+open System.Collections.Generic
 open ProjNet // CoordinateSystemServices
 open ProjNet.CoordinateSystems // CoordinateSystemFactory
 open ProjNet.CoordinateSystems.Transformations // CoordinateTransformationFactory
@@ -11,6 +12,33 @@ open Programmerare.CrsTransformations.Coordinate
 type CrsTransformationAdapterProjNet4GeoAPI() =
     class
         inherit CrsTransformationAdapterBaseLeaf()
+
+        static let mutable _crsCachingStrategy: CrsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES_AT_FIRST_LOOKUP_OF_SOME
+        
+        static let mutable _cachedCoordinateSystem: IDictionary<int, ICoordinateSystem> = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
+        
+        static let GetCSbyID(epsgNumber) = 
+            let mutable crs: ICoordinateSystem = null
+            if _cachedCoordinateSystem.ContainsKey(epsgNumber) then
+                crs <- _cachedCoordinateSystem.[epsgNumber]
+                // note that the above might return null since null 
+                // may have been cached if not existing, which is 
+                // intentional behaviour since there is no point of parsing the csv
+                // file again just to find null once again
+            elif (_crsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES_AT_FIRST_LOOKUP_OF_SOME) then
+                if(_cachedCoordinateSystem.Count = 0) then
+                    _cachedCoordinateSystem <- SridReader.GetAllCoordinateSystems()
+                if(_cachedCoordinateSystem.ContainsKey(epsgNumber)) then
+                    crs <- _cachedCoordinateSystem.[epsgNumber]
+                else
+                    // add it anyway (as null) now to avoid looking it up again
+                    _cachedCoordinateSystem.Add(epsgNumber, null)
+            elif (_crsCachingStrategy = CrsCachingStrategy.CACHE_EPSG_CRS_CODE_AT_FIRST_LOOKUP_OF_IT) then
+                crs <- SridReader.GetCSbyID(epsgNumber)
+                _cachedCoordinateSystem.Add(epsgNumber, crs)
+            else
+                crs <- SridReader.GetCSbyID(epsgNumber)
+            crs
 
         //https://github.com/NetTopologySuite/ProjNet4GeoAPI/wiki/Loading-a-projection-by-Spatial-Reference-ID
         //Proj.NET doesn't have an embedded Spatial Reference ID database like the EPSG database, so there is no default logic for loading a spatial reference by ID. However Proj.NET does ship with a comma-separated file with EPSG codes, and you can easily iterate through these to load a specific ID. This is not as efficient as loading the data from an indexed database, but it's simple and easy to deploy.
@@ -33,8 +61,8 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
             // reads the resource file twice, which it will do 
             // for every usage of the method even if doing multiple 
             // transformations between the same coordinate systems
-            let sourceCrs: ICoordinateSystem = SridReader.GetCSbyID(inputCoordinate.CrsIdentifier.EpsgNumber)
-            let targetCrs: ICoordinateSystem = SridReader.GetCSbyID(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
+            let sourceCrs: ICoordinateSystem = GetCSbyID(inputCoordinate.CrsIdentifier.EpsgNumber)
+            let targetCrs: ICoordinateSystem = GetCSbyID(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
             //let csFact: CoordinateSystemFactory = new CoordinateSystemFactory()
             let ctFact: CoordinateTransformationFactory = new CoordinateTransformationFactory()
             let xy: double[] = [| inputCoordinate.X; inputCoordinate.Y |]
@@ -64,4 +92,27 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
 
         override this._GetFileInfoVersion() =
             base._GetFileInfoVersionHelper(typeof<CoordinateSystemFactory>)
+
+        static member SetCrsCachingStrategy(crsCachingStrategy: CrsCachingStrategy) = 
+            if (
+                    crsCachingStrategy = CrsCachingStrategy.NO_CACHING
+                    ||
+                    (
+                        _crsCachingStrategy <> CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES_AT_FIRST_LOOKUP_OF_SOME
+                        &&
+                        crsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES_AT_FIRST_LOOKUP_OF_SOME
+                        // if it changed to looking up everything 
+                        // from something else then now reset the hashtable below
+                        // since the lookup method first check the hash table 
+                    )
+                ) then
+                _cachedCoordinateSystem <- Dictionary<int, ICoordinateSystem>()
+            _crsCachingStrategy <- crsCachingStrategy
+
+        static member GetCrsCachingStrategy() = 
+            _crsCachingStrategy
+        
+        // mainly for testing purpose:
+        static member IsEpsgCached(epsgNumber) : bool =     
+            _cachedCoordinateSystem.ContainsKey(epsgNumber)
     end

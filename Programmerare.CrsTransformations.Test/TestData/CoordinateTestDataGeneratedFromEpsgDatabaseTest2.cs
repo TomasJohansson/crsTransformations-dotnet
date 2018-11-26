@@ -141,15 +141,26 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
     //    return nullStream;
     //}
 
+    //---------------------------------------------------------------
+    // Resulting output from the below method:
+    //---------------------
+    //Result for adapter: LEAF_DOT_SPATIAL_2_0_0_RC1
+    //numberOfSuccesses: 5078
+    //numberOfFailures: 1357
+    //Number of seconds: 1
+    //---------------------
+    //Result for adapter: LEAF_PROJ_NET_4_GEO_API_1_4_1
+    //numberOfSuccesses: 2494
+    //numberOfFailures: 3941
+    //Number of seconds: 2
+    //---------------------
+    //Result for adapter: LEAF_SWEDISH_CRS_MLG_1_0_1
+    //numberOfSuccesses: 19
+    //numberOfFailures: 6416
+    //Number of seconds: 0
+    //---------------------
     [Test] // currently not a real test with assertions but printing console output with differences
     [Category(TestCategory.SideEffectPrintingConsoleOutput)]
-    [Category(TestCategory.SlowTest)] 
-    [Ignore(TestCategory.SlowTest)] 
-    // TODO: improve the currently very slow ProjNet4GeoAPI
-    // (which currently parses a file every time for looking up the CRS definition for a EPSG code)
-    // Result before implementing caching:
-        //Write Console number of rows iterated so far: 500 (for leafAdapter LEAF_PROJ_NET_4_GEO_API_1_4_1 )
-        //Write Console Number of seconds so far (for the above adapter) : 45
     public void FindTheNumberOfEpsgCodesPotentiallySupported() {
         IList<EpsgCrsAndAreaCodeWithCoordinates> coordinatesFromGeneratedCsvFile = CoordinateTestDataGeneratedFromEpsgDatabaseTest.GetCoordinatesFromGeneratedCsvFile();
 
@@ -159,6 +170,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
             var stopWatch = new Stopwatch();
             stopWatch.Start();
             int numberOfFailures = 0;
+            int numberOfSuccesses = 0;
             for (int i = 0; i <coordinatesFromGeneratedCsvFile.Count ; i++) {
                 EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = coordinatesFromGeneratedCsvFile[i];
                 CrsCoordinate coordinateInputWgs84 = CrsCoordinateFactory.LatLon(
@@ -168,31 +180,34 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
                 CrsTransformationResult resultOutputFromWgs4 = leafAdapter.Transform(
                     coordinateInputWgs84, epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode
                 );
-                if(!resultOutputFromWgs4.IsSuccess) {
-                    WriteLine("Failure " + DateTime.Now + " " + leafAdapter.AdapteeType);
-                    numberOfFailures++;
+                if(resultOutputFromWgs4.IsSuccess) {
+                    numberOfSuccesses++;
+                    //WriteLine("Success " + DateTime.Now + " " + leafAdapter.AdapteeType + " " + resultOutputFromWgs4.OutputCoordinate);
                 }
                 else
                 {
-                    WriteLine("Success " + DateTime.Now + " " + leafAdapter.AdapteeType + " " + resultOutputFromWgs4.OutputCoordinate);
+                    //WriteLine("Failure " + DateTime.Now + " " + leafAdapter.AdapteeType);
+                    numberOfFailures++;
                 }
-                if(i % 100 == 0) {
-                    WriteLine("number of rows iterated so far: " + i + " (for leafAdapter " + leafAdapter.AdapteeType + " )");
+                if(i % 500 == 0) {
+                    //WriteLine("number of rows iterated so far: " + i + " (for leafAdapter " + leafAdapter.AdapteeType + " )");
                     totalNumberOfSeconds = (int)stopWatch.Elapsed.TotalSeconds;
-                    WriteLine("Number of seconds so far (for the above adapter) : " + totalNumberOfSeconds);
-                    if(i > 500) break;
+                    //WriteLine("Number of seconds so far (for the above adapter) : " + totalNumberOfSeconds);
+                    //if(i > 500) break;
                 }
             }
-            int numberOfSuccesses = coordinatesFromGeneratedCsvFile.Count - numberOfFailures;
+            totalNumberOfSeconds = (int)stopWatch.Elapsed.TotalSeconds;
             WriteLine("---------------------");
             WriteLine("Result for adapter: " + leafAdapter.AdapteeType);
             WriteLine("numberOfSuccesses: " + numberOfSuccesses);
             WriteLine("numberOfFailures: " + numberOfFailures);
+            WriteLine("Number of seconds: " + totalNumberOfSeconds);
+            WriteLine("---------------------");
         }
     }
 
     private static void WriteLine(String s) {
-        Console.WriteLine("Write Console " + s);
+        Console.WriteLine(s);
         Debug.WriteLine("Write Debug " + s);
         Trace.WriteLine("Write Trace " + s);
     }
