@@ -18,7 +18,9 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class CrsTransformationAdapterParameterizedTests extends CrsTransformationTestBase {
 
-    private final static String testFileWithSomeCoordinatesForSweden = "/coordinatesForSweden.csv";
+    // TODO: implement this Java/JUnit class with C#/Nunit
+
+    private final static String testFileWithSomeCoordinatesForSweden = "resources/coordinatesForSweden.csv";
 
     private final static int lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = EpsgNumber.SWEDEN__SWEREF99_TM__3006; // 3006;
     private final static int upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit = EpsgNumber.SWEDEN__5_GON_E__RT90_5_GON_O__3024; // 3024;

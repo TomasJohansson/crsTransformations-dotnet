@@ -6,10 +6,13 @@
 
   <ItemGroup>
     <Compile Remove="CrsTransformations\**" />
+    <Compile Remove="resources\**" />
     <Compile Remove="TestData\**" />
     <EmbeddedResource Remove="CrsTransformations\**" />
+    <EmbeddedResource Remove="resources\**" />
     <EmbeddedResource Remove="TestData\**" />
     <None Remove="CrsTransformations\**" />
+    <None Remove="resources\**" />
     <None Remove="TestData\**" />
   </ItemGroup>
 
@@ -25,6 +28,7 @@
     <Compile Include="CrsTransformations\CompositeTransformations\CrsTransformationAdapterWeightTest.cs" />
     <Compile Include="CrsTransformations\Coordinate\CrsCoordinateTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapteeTypeTest.cs" />
+    <Compile Include="CrsTransformations\CrsTransformationAdapterParameterizedTests.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationResultStatisticTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationResultTest.cs" />
@@ -37,6 +41,12 @@
     <Compile Include="CrsTransformations\Implementations\MightyLittleGeodesyTest.cs" />
     <Compile Include="CrsTransformations\Implementations\ProjNet4GeoAPITest.cs" />
     <Compile Include="CrsTransformations\Implementations\SridReaderTest.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Include="resources\coordinatesForSweden.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>
