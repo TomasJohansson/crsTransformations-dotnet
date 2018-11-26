@@ -5,14 +5,21 @@ using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Identifier;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Programmerare.CrsTransformations.TestData
 {
 
 // TODO for .NET :
 // @Disabled // you may want to temporary change this line if you want to run the "tests"
-[Ignore("Not yet implemented")]
-public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better class name
+//[Ignore("Not yet implemented")]
+public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformationTestBase { // TODO better class name
+
+        double deltaDiff = 0.0001; // fairly large value to only find the large differences (potential large problems/bugs)
+        // when the delta value above is 0.01 then about 80 EPSG codes are found i.e. there
+        // are than many transformation (from and back that EPSG code) which will create
+        // a bigger difference than 0.01 in either the latitude or longitude (or both)
+        // between at least two of the implementations.
 
     // Note that there are currently two methods 'findPotentialBuggyImplementations'
     // (one in this class and one in the class 'CoordinateTestDataGeneratedFromEpsgDatabaseTest')
@@ -24,24 +31,18 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
     // with all leaf implementations and use methods of the result statistics object
     // to find problematic transformations with large differences.
 
-    // TODO for .NET :
-    //@Test // currently not a real test with assertions but printing console output with differences
-    //@Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    //@Tag(TestCategory.SlowTest) // about 725 seconds iterating all 6435 rows (using the delta value 'double deltaDiff = 0.01' finding 80 results with big diffs)
-    [Test]
+    //Java: @Tag(TestCategory.SlowTest) // about 725 seconds iterating all 6435 rows (using the delta value 'double deltaDiff = 0.01' finding 80 results with big diffs)
+    [Test] // currently not a real test with assertions but printing console output with differences
+    [Category(TestCategory.SideEffectPrintingConsoleOutput)]
+    [Category(TestCategory.SlowTest)] 
+    [Ignore(TestCategory.SlowTest)] 
     public void findPotentialBuggyImplementations() {
         CrsTransformationAdapterComposite crsTransformationComposite = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
-        verifyFiveImplementations(crsTransformationComposite); // to make sure that the above factory really creates an object which will use five implementations
+        verifyThreeImplementations(crsTransformationComposite); // to make sure that the above factory really creates an object which will use three implementations
 
         IList<CrsTransformationResult> transformResultsWithLargeDifferences = new List<CrsTransformationResult>();
 
         CrsIdentifier wgs84 = CrsIdentifierFactory.CreateFromEpsgNumber(EpsgNumber.WORLD__WGS_84__4326);
-
-        double deltaDiff = 0.01; // fairly large value to only find the large differences (potential large problems/bugs)
-        // when the delta value above is 0.01 then about 80 EPSG codes are found i.e. there
-        // are than many transformation (from and back that EPSG code) which will create
-        // a bigger difference than 0.01 in either the latitude or longitude (or both)
-        // between at least two of the implementations.
 
         // TODO for .NET :
         //PrintStream nullStream = getNullStreamToAvoidOutputFromSystemOutAndSystemErr();
@@ -49,19 +50,24 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
         //PrintStream outStream = System.out;
         //PrintStream errStream = System.err;
         //long startTime = System.nanoTime();
+        
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+        IList<EpsgCrsAndAreaCodeWithCoordinates> coordinatesFromGeneratedCsvFile = CoordinateTestDataGeneratedFromEpsgDatabaseTest.GetCoordinatesFromGeneratedCsvFile();
+        int seconds = (int)stopWatch.Elapsed.TotalSeconds;
+        WriteLine("Time for reading the content of the input file: " + seconds);
+        stopWatch.Restart();    
+        int totalNumberOfSeconds;
 
-        List<EpsgCrsAndAreaCodeWithCoordinates> coordinatesFromGeneratedCsvFile = CoordinateTestDataGeneratedFromEpsgDatabaseTest.getCoordinatesFromGeneratedCsvFile();
-        Console.WriteLine("number of rows to iterate: " + coordinatesFromGeneratedCsvFile.Count);
+        WriteLine("number of rows to iterate: " + coordinatesFromGeneratedCsvFile.Count);
         for (int i = 0; i <coordinatesFromGeneratedCsvFile.Count ; i++) {
             //System.setOut(outStream);
             //System.setErr(errStream);
-            if(i % 100 == 0) {
-                Console.WriteLine("i: " + i);
-                //long elapsedNanos = System.nanoTime() - startTime;
-                //long totalNumberOfSeconds = TimeUnit.NANOSECONDS.toSeconds(elapsedNanos);
-                long totalNumberOfSeconds = 123; // TODO
-                Console.WriteLine("Number of seconds so far: " + totalNumberOfSeconds);
-                // if(i > 500) break;
+            if(i % 10 == 0) {
+                WriteLine("number of rows iterated so far: " + i);
+                totalNumberOfSeconds = (int)stopWatch.Elapsed.TotalSeconds;
+                WriteLine("Number of seconds so far: " + totalNumberOfSeconds);
+                if(i > 50) break;
             }
             // now tries to avoid lots of output from the implementations (third part libraries used)
             //System.setOut(nullStream);
@@ -89,41 +95,42 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
         }
         //System.setOut(outStream);
         //System.setErr(errStream);
-        Console.WriteLine("Number of iterated rows/coordinates: " + coordinatesFromGeneratedCsvFile.Count);
+        WriteLine("Number of iterated rows/coordinates: " + coordinatesFromGeneratedCsvFile.Count);
 
-        Console.WriteLine("Number of results with 'large' differences: " + transformResultsWithLargeDifferences.Count);
+        WriteLine("Number of results with 'large' differences: " + transformResultsWithLargeDifferences.Count);
         for (int i = 0; i <transformResultsWithLargeDifferences.Count ; i++) {
             CrsTransformationResult transformResult = transformResultsWithLargeDifferences[i];
-            Console.WriteLine("----------------------------------------");
-            Console.WriteLine("epsg " + transformResult.InputCoordinate.CrsIdentifier.CrsCode);
-            Console.WriteLine("MaxDiffYLatitude : " + transformResult.CrsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude);
-            Console.WriteLine("MaxDiffYLongitude: " + transformResult.CrsTransformationResultStatistic.MaxDifferenceForXEastingLongitude);
+            WriteLine("----------------------------------------");
+            WriteLine("epsg " + transformResult.InputCoordinate.CrsIdentifier.CrsCode);
+            WriteLine("MaxDiffYLatitude : " + transformResult.CrsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude);
+            WriteLine("MaxDiffYLongitude: " + transformResult.CrsTransformationResultStatistic.MaxDifferenceForXEastingLongitude);
             IList<CrsTransformationResult> subResults = transformResult.GetTransformationResultChildren();
             for (int j = 0; j <subResults.Count ; j++) {
                 CrsTransformationResult subTransformResult = subResults[j];
                 if(subTransformResult.IsSuccess) {
-                    Console.WriteLine( subTransformResult.OutputCoordinate + " , " + subTransformResult.CrsTransformationAdapterResultSource.LongNameOfImplementation);
+                    WriteLine( subTransformResult.OutputCoordinate + " , " + subTransformResult.CrsTransformationAdapterResultSource.AdapteeType);
                 }
             }
         }
     }
 
-    private void verifyFiveImplementations(
+    private void verifyThreeImplementations(
         CrsTransformationAdapterComposite crsTransformationAdapterComposite
     ) {
         CrsCoordinate input = CrsCoordinateFactory.LatLon(59.0, 18.0);
         CrsTransformationResult result = crsTransformationAdapterComposite.Transform(input, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         Assert.IsNotNull(result);
         Assert.IsTrue(result.IsSuccess);
-        Assert.AreEqual(5, result.GetTransformationResultChildren().Count);
+        const int numberOfImplementations = 3; // TODO: reuse constant defined in some other class...
+        Assert.AreEqual(numberOfImplementations, result.GetTransformationResultChildren().Count);
         CrsTransformationResultStatistic crsTransformationResultStatistic = result.CrsTransformationResultStatistic;
         Assert.IsNotNull(crsTransformationResultStatistic);
         Assert.IsTrue(crsTransformationResultStatistic.IsStatisticsAvailable);
-        Assert.AreEqual(5, crsTransformationResultStatistic.NumberOfPotentiallySuccesfulResults);
-        Assert.AreEqual(1.4857726637274027E-4, crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude);
+        Assert.AreEqual(numberOfImplementations, crsTransformationResultStatistic.NumberOfPotentiallySuccesfulResults);
+        Assert.That(crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude, Is.LessThan(0.001));
     }
 
-    // TODO for .NET :
+    // TODO maybe for .NET if something similar is needed :
     //private PrintStream getNullStreamToAvoidOutputFromSystemOutAndSystemErr() {
     //    final PrintStream nullStream = new PrintStream(new OutputStream() {
     //        @Override
@@ -133,6 +140,62 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
     //    });
     //    return nullStream;
     //}
+
+    [Test] // currently not a real test with assertions but printing console output with differences
+    [Category(TestCategory.SideEffectPrintingConsoleOutput)]
+    [Category(TestCategory.SlowTest)] 
+    [Ignore(TestCategory.SlowTest)] 
+    // TODO: improve the currently very slow ProjNet4GeoAPI
+    // (which currently parses a file every time for looking up the CRS definition for a EPSG code)
+    // Result before implementing caching:
+        //Write Console number of rows iterated so far: 500 (for leafAdapter LEAF_PROJ_NET_4_GEO_API_1_4_1 )
+        //Write Console Number of seconds so far (for the above adapter) : 45
+    public void FindTheNumberOfEpsgCodesPotentiallySupported() {
+        IList<EpsgCrsAndAreaCodeWithCoordinates> coordinatesFromGeneratedCsvFile = CoordinateTestDataGeneratedFromEpsgDatabaseTest.GetCoordinatesFromGeneratedCsvFile();
+
+        int totalNumberOfSeconds;
+
+        foreach(ICrsTransformationAdapter leafAdapter in base.crsTransformationAdapterLeafImplementations) {
+            var stopWatch = new Stopwatch();
+            stopWatch.Start();
+            int numberOfFailures = 0;
+            for (int i = 0; i <coordinatesFromGeneratedCsvFile.Count ; i++) {
+                EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = coordinatesFromGeneratedCsvFile[i];
+                CrsCoordinate coordinateInputWgs84 = CrsCoordinateFactory.LatLon(
+                    epsgCrsAndAreaCodeWithCoordinates.centroidY, 
+                    epsgCrsAndAreaCodeWithCoordinates.centroidX
+                );
+                CrsTransformationResult resultOutputFromWgs4 = leafAdapter.Transform(
+                    coordinateInputWgs84, epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode
+                );
+                if(!resultOutputFromWgs4.IsSuccess) {
+                    WriteLine("Failure " + DateTime.Now + " " + leafAdapter.AdapteeType);
+                    numberOfFailures++;
+                }
+                else
+                {
+                    WriteLine("Success " + DateTime.Now + " " + leafAdapter.AdapteeType + " " + resultOutputFromWgs4.OutputCoordinate);
+                }
+                if(i % 100 == 0) {
+                    WriteLine("number of rows iterated so far: " + i + " (for leafAdapter " + leafAdapter.AdapteeType + " )");
+                    totalNumberOfSeconds = (int)stopWatch.Elapsed.TotalSeconds;
+                    WriteLine("Number of seconds so far (for the above adapter) : " + totalNumberOfSeconds);
+                    if(i > 500) break;
+                }
+            }
+            int numberOfSuccesses = coordinatesFromGeneratedCsvFile.Count - numberOfFailures;
+            WriteLine("---------------------");
+            WriteLine("Result for adapter: " + leafAdapter.AdapteeType);
+            WriteLine("numberOfSuccesses: " + numberOfSuccesses);
+            WriteLine("numberOfFailures: " + numberOfFailures);
+        }
+    }
+
+    private static void WriteLine(String s) {
+        Console.WriteLine("Write Console " + s);
+        Debug.WriteLine("Write Debug " + s);
+        Trace.WriteLine("Write Trace " + s);
+    }
 }
 }
 

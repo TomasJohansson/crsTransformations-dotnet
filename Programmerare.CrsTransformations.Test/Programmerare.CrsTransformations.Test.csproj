@@ -55,6 +55,9 @@
     <None Include="resources\coordinatesForSweden.csv">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="resources\generated\CoordinateTestDataGeneratedFromEpsgDatabase.csv">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
   <ItemGroup>

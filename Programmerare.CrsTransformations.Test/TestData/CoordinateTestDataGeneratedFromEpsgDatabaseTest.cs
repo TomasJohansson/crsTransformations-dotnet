@@ -32,7 +32,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     // and the content (columns) of the FileInfo are as below:
     // e.g. "3006|1225|Sweden|17.083659606206545|61.98770256318016"
     //      epsgCrsCode | epsgAreaCode | epsgAreaName | centroidX | centroidY
-    private const string INPUT_TEST_DATA_FileInfo = "generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv";
+    private const string INPUT_TEST_DATA_FILE = "resources/generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv";
 
 
     private bool shouldCreateNewRegressionFile = true;
@@ -43,7 +43,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
     [SetUp]
     public void before() {
-        list = getCoordinatesFromGeneratedCsvFile();
+        list = GetCoordinatesFromGeneratedCsvFile();
     }
 
     // -------------------------------------------------------------------------------------
@@ -68,10 +68,14 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         );
     }
 
-    [Test]
     // @Disabled
     //@Tag(TestCategory.SlowTest) // e.g. 224 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
     //@Tag(TestCategory.SideEffectFileCreation) // test/resources/regression_results/
+
+    [Test] // currently not a real test with assertions but printing console output with differences
+    [Category(TestCategory.SideEffectFileCreation)]
+    [Category(TestCategory.SlowTest)] 
+    //[Ignore(TestCategory.SlowTest)] 
     public void testAllTransformationsInGeneratedCsvFileWithGeoTools() {
         //    seconds: 224
         //    countOfSuccess: 4036
@@ -487,26 +491,24 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
      *  and from shapeFileInfo with polygon used for creating the coordinates as centroid points
      *  within a certain area where the EPSG code is defined to be used)
      */
-    public static List<EpsgCrsAndAreaCodeWithCoordinates> getCoordinatesFromGeneratedCsvFile() {
-        //List<EpsgCrsAndAreaCodeWithCoordinates> list = new List<>();
-        //try {
-        //    URL url = Resources.getResource(INPUT_TEST_DATA_FILE);
-        //    List<String> lines = Resources.readLines(url, Charset.forName("UTF-8"));
-        //    for (String line : lines) {
-        //        EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(line);
-        //        list.add(epsgCrsAndAreaCodeWithCoordinates);
-        //    }
-        //} catch (IOException e) {
-        //    throw new RuntimeException(e);
-        //}
-        //return list;
-        throw new Exception(".NET todo");
+    public static IList<EpsgCrsAndAreaCodeWithCoordinates> GetCoordinatesFromGeneratedCsvFile() {
+        var list = new List<EpsgCrsAndAreaCodeWithCoordinates>();
+        using(StreamReader sr = File.OpenText(INPUT_TEST_DATA_FILE)) {
+            string line;
+            while( (line = sr.ReadLine()) != null ) {
+                EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(line);
+                list.Add(epsgCrsAndAreaCodeWithCoordinates);
+            }
+        }
+        return list;
     }
 
-    private static EpsgCrsAndAreaCodeWithCoordinates createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(String line) {
+    private static EpsgCrsAndAreaCodeWithCoordinates createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(string line) {
         string trimmedLine = line.Trim();
+        //Console.WriteLine("EpsgCrsAndAreaCodeWithCoordinates trimmedLine: " + trimmedLine);
         // e.g. "3006|1225|Sweden|17.083659606206545|61.98770256318016"
-        String[] parts = trimmedLine.Split("\\|");
+        string[] parts = trimmedLine.Split('|');
+        Assert.AreEqual(5, parts.Length, "Problem with the expected parts in this line: " + trimmedLine);
         return new EpsgCrsAndAreaCodeWithCoordinates(
             int.Parse(parts[0]),     // epsgCrsCode
             int.Parse(parts[1]),     // epsgAreaCode
