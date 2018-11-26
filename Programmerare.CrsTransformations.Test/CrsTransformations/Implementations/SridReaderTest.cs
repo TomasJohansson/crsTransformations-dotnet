@@ -77,7 +77,8 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             string expectedInitialPartOfWellKnownTextString
         )
         {
-            ICoordinateSystem crs = SridReader.GetCSbyID(epsgNumber);
+            var sridReader = new SridReader();
+            ICoordinateSystem crs = sridReader.GetCSbyID(epsgNumber);
             Assert.IsNotNull(crs);
             Assert.AreEqual(
                 epsgNumber,

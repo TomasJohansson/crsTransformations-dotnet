@@ -6,18 +6,25 @@ open System.Collections.Generic
 open ProjNet.Converters.WellKnownText
 open GeoAPI.CoordinateSystems
 
-module SridReader =
+type SridReader() =
+    
+    // TODO: implement a possibility to 
+    // use an externally provided CSV file,
+    // i.e. with an absolute path,
+    // and maybe also ship with an alternative 
+    // file to the file below, and maybe let it be specified
+    // with an enum
 
-    let private fileName = "SRID.csv"
+    let fileName = "SRID.csv"
     // the above file was downloaded from here:
     // https://github.com/NetTopologySuite/ProjNet4GeoAPI/blob/develop/ProjNet.Tests/SRID.csv
     // (the file version dated "Jul 5, 2013" i.e. git commit c7a8b0c72d55ab64e26d40632abe2c85c2ff92df )
 
-    let private GetSomeTypeInTheAssembly() = 
+    let GetSomeTypeInTheAssembly() = 
         let someTypeInTheNameSpace = typeof<CrsCachingStrategy>
         someTypeInTheNameSpace
         
-    let private GetSRIDs
+    let GetSRIDs
         (
             epsgNumberToLookFor: int
         ) : IDictionary<int, ICoordinateSystem> = 
@@ -74,7 +81,7 @@ module SridReader =
     /// <summary>Gets a coordinate system from the SRID.csv file</summary>
     /// <param name="id">EPSG ID</param>
     /// <returns>Coordinate system, or null if SRID was not found.</returns>
-    let GetCSbyID(epsgId): ICoordinateSystem =
+    member this.GetCSbyID(epsgId): ICoordinateSystem =
         //use stream = GetStreamReaderForTheCsvFile()
         //use reader = new StreamReader(stream)
         // let srids = GetSRIDs(reader, epsgId)
@@ -86,7 +93,7 @@ module SridReader =
             crs <- srids.[epsgId]
         crs
 
-    let GetAllCoordinateSystems() =
+    member this.GetAllCoordinateSystems() =
         //use stream = GetStreamReaderForTheCsvFile()
         //use reader = new StreamReader(stream)
         GetSRIDs(

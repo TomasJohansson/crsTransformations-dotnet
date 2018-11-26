@@ -17,6 +17,8 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
         
         let mutable _cachedCoordinateSystem: IDictionary<int, ICoordinateSystem> = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
         
+        let sridReader = SridReader()
+
         let GetCSbyID(epsgNumber) = 
             let mutable crs: ICoordinateSystem = null
             if _cachedCoordinateSystem.ContainsKey(epsgNumber) then
@@ -27,17 +29,17 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
                 // file again just to find null once again
             elif (_crsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES) then
                 if(_cachedCoordinateSystem.Count = 0) then
-                    _cachedCoordinateSystem <- SridReader.GetAllCoordinateSystems()
+                    _cachedCoordinateSystem <- sridReader.GetAllCoordinateSystems()
                 if(_cachedCoordinateSystem.ContainsKey(epsgNumber)) then
                     crs <- _cachedCoordinateSystem.[epsgNumber]
                 else
                     // add it anyway (as null) now to avoid looking it up again
                     _cachedCoordinateSystem.Add(epsgNumber, null)
             elif (_crsCachingStrategy = CrsCachingStrategy.CACHE_EPSG_CRS_CODE_WHEN_FIRST_USED) then
-                crs <- SridReader.GetCSbyID(epsgNumber)
+                crs <- sridReader.GetCSbyID(epsgNumber)
                 _cachedCoordinateSystem.Add(epsgNumber, crs)
             else
-                crs <- SridReader.GetCSbyID(epsgNumber)
+                crs <- sridReader.GetCSbyID(epsgNumber)
             crs
 
         //https://github.com/NetTopologySuite/ProjNet4GeoAPI/wiki/Loading-a-projection-by-Spatial-Reference-ID
