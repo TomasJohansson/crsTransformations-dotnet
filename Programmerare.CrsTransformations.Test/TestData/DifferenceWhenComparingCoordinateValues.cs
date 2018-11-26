@@ -1,3 +1,4 @@
+// TODO: implement with C# instead of Java
 package com.programmerare.com.programmerare.testData;
 
 public enum DifferenceWhenComparingCoordinateValues {
