@@ -3,9 +3,6 @@ using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 
-// the below row imports static methods IsEpsgCached and SetCrsCachingStrategy
-using static Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.CrsTransformationAdapterProjNet4GeoAPI;
-
 namespace Programmerare.CrsTransformations.Test.Implementations
 {
     class ProjNet4GeoAPITest : AdaptersTestBase
@@ -49,12 +46,24 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             // (plus all the other tests not related to caching which is inherited from the base test class)
             cacheTestForOutputEpsgNumberNotExisting = 123; // EPSG code 123 does NOT exist
             cacheTestInputCoordinateWgs84 = CrsCoordinateFactory.LatLon(60, 18);
-            cacheTestTransformationAdapter = new CrsTransformationAdapterProjNet4GeoAPI();
+            
+            cacheTestTransformationAdapterProjNet4GeoAPI = new CrsTransformationAdapterProjNet4GeoAPI();
+            cacheTestTransformationAdapter = cacheTestTransformationAdapterProjNet4GeoAPI;
+            // TODO: (regarding the above two typed variables) 
+            // Deal with implicit versus explicit interfaces.
+            // Currently:
+                // These method exists:
+                //      cacheTestTransformationAdapter.Transform
+                //      cacheTestTransformationAdapterProjNet4GeoAPI.SetCrsCachingStrategy
+                // These method do NOT exist:
+                //      cacheTestTransformationAdapterProjNet4GeoAPI.Transform
+                //      cacheTestTransformationAdapter.SetCrsCachingStrategy
         }
 
         private CrsCoordinate cacheTestInputCoordinateWgs84;
         private int cacheTestForOutputEpsgNumberNotExisting;
         private ICrsTransformationAdapter cacheTestTransformationAdapter;
+        private CrsTransformationAdapterProjNet4GeoAPI cacheTestTransformationAdapterProjNet4GeoAPI;
 
         [Test]
         public void TestCachingWhenAllEpsgCodesAreCachedInOneReadOfTheCsvFile()
@@ -75,16 +84,16 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         [Test]
         public void TestBehaviourWhenNoCachingIsChosen()
         {
-            SetCrsCachingStrategy( // statically imported from CrsTransformationAdapterProjNet4GeoAPI
+            cacheTestTransformationAdapterProjNet4GeoAPI.SetCrsCachingStrategy(
                 CrsCachingStrategy.NO_CACHING
             );            
             Assert.IsFalse(
-                IsEpsgCached( // statically imported from CrsTransformationAdapterProjNet4GeoAPI
+                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                     cacheTestForOutputEpsgNumberNotExisting
                 )
             );
             Assert.IsFalse(
-                IsEpsgCached( // statically imported from CrsTransformationAdapterProjNet4GeoAPI
+                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                     EpsgNumber.SWEDEN__SWEREF99_TM__3006
                 )
             );
@@ -105,12 +114,12 @@ namespace Programmerare.CrsTransformations.Test.Implementations
 
             // Neither of the above are still not cached since caching is disabled
             Assert.IsFalse(
-                IsEpsgCached( // statically imported from CrsTransformationAdapterProjNet4GeoAPI
+                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                     cacheTestForOutputEpsgNumberNotExisting
                 )
             );
             Assert.IsFalse(
-                IsEpsgCached(
+                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                     EpsgNumber.SWEDEN__SWEREF99_TM__3006
                 )
             );
@@ -122,11 +131,11 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         {
             // First we initialize with "NO_CACHING" but later in the method 
             // we will set the strategy which was parameter to the method
-            SetCrsCachingStrategy( // statically imported from CrsTransformationAdapterProjNet4GeoAPI
+            cacheTestTransformationAdapterProjNet4GeoAPI.SetCrsCachingStrategy(
                 CrsCachingStrategy.NO_CACHING
             );
             Assert.IsFalse(
-                IsEpsgCached( // statically imported from CrsTransformationAdapterProjNet4GeoAPI
+                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                     cacheTestForOutputEpsgNumberNotExisting
                 )
             );
@@ -135,18 +144,18 @@ namespace Programmerare.CrsTransformations.Test.Implementations
                 cacheTestForOutputEpsgNumberNotExisting
             );
             Assert.IsFalse(
-                IsEpsgCached(
+                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                     cacheTestForOutputEpsgNumberNotExisting
                 )
             );
             
-            SetCrsCachingStrategy( // statically imported from CrsTransformationAdapterProjNet4GeoAPI
+            cacheTestTransformationAdapterProjNet4GeoAPI.SetCrsCachingStrategy(
                 crsCachingStrategy
             );
 
             // still false (since it will not be cached until looked up again)
             Assert.IsFalse(
-                IsEpsgCached(
+                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                     cacheTestForOutputEpsgNumberNotExisting
                 )
             );
@@ -167,7 +176,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             // just to get null again, so therefore the null value 
             // is also cached as a kind of value in the semantic of the below method
             Assert.IsTrue(
-                IsEpsgCached(
+                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                     cacheTestForOutputEpsgNumberNotExisting
                 )
             );
@@ -178,14 +187,14 @@ namespace Programmerare.CrsTransformations.Test.Implementations
                 // but since everything (according to the above if statement we are now within)
                 // should have been cached it should be cached already anyway now
                 Assert.IsTrue(
-                    IsEpsgCached(
+                    cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                         EpsgNumber.SWEDEN__SWEREF99_TM__3006
                     )
                 );
             }
             else if(crsCachingStrategy == CrsCachingStrategy.CACHE_EPSG_CRS_CODE_WHEN_FIRST_USED) {
                 Assert.IsFalse(
-                    IsEpsgCached(
+                    cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                         EpsgNumber.SWEDEN__SWEREF99_TM__3006
                     )
                 );
@@ -197,7 +206,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
                 );
 
                 Assert.IsTrue(
-                    CrsTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
+                    cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                         EpsgNumber.SWEDEN__SWEREF99_TM__3006
                     )
                 );

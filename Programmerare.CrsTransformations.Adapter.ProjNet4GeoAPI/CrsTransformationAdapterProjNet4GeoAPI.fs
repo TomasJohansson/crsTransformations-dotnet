@@ -13,11 +13,11 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
     class
         inherit CrsTransformationAdapterBaseLeaf()
 
-        static let mutable _crsCachingStrategy: CrsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
+        let mutable _crsCachingStrategy: CrsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
         
-        static let mutable _cachedCoordinateSystem: IDictionary<int, ICoordinateSystem> = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
+        let mutable _cachedCoordinateSystem: IDictionary<int, ICoordinateSystem> = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
         
-        static let GetCSbyID(epsgNumber) = 
+        let GetCSbyID(epsgNumber) = 
             let mutable crs: ICoordinateSystem = null
             if _cachedCoordinateSystem.ContainsKey(epsgNumber) then
                 crs <- _cachedCoordinateSystem.[epsgNumber]
@@ -93,7 +93,7 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
         override this._GetFileInfoVersion() =
             base._GetFileInfoVersionHelper(typeof<CoordinateSystemFactory>)
 
-        static member SetCrsCachingStrategy(crsCachingStrategy: CrsCachingStrategy) = 
+        member this.SetCrsCachingStrategy(crsCachingStrategy: CrsCachingStrategy) = 
             if (
                     crsCachingStrategy = CrsCachingStrategy.NO_CACHING
                     ||
@@ -109,10 +109,10 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
                 _cachedCoordinateSystem <- Dictionary<int, ICoordinateSystem>()
             _crsCachingStrategy <- crsCachingStrategy
 
-        static member GetCrsCachingStrategy() = 
+        member this.GetCrsCachingStrategy() = 
             _crsCachingStrategy
         
         // mainly for testing purpose:
-        static member IsEpsgCached(epsgNumber) : bool =     
+        member this.IsEpsgCached(epsgNumber) : bool =     
             _cachedCoordinateSystem.ContainsKey(epsgNumber)
     end
