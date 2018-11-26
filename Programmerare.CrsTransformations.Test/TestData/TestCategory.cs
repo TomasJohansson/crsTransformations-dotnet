@@ -1,5 +1,7 @@
-// TODO: implement with C# instead of Java
-package com.programmerare.com.programmerare.testData;
+namespace Programmerare.CrsTransformations.TestData
+{
+
+// TODO: rewrite below Java/JVM comments for C#/.NET
 
 /**
  * Some of the code which is executable through JUnit are not actually
@@ -22,19 +24,20 @@ public class TestCategory {
     /**
      * Used for a "test" method (see above class level comment) creating some file.
      */
-    public final static String SideEffectFileCreation = "SideEffectFileCreation";
+    public const string SideEffectFileCreation = "SideEffectFileCreation";
 
     /**
      * Used for a "test" method (see above class level comment) producing output to the console with 'System.out.print' statements
      */
-    public final static String SideEffectPrintingConsoleOutput = "SideEffectPrintingConsoleOutput";
+    public const string SideEffectPrintingConsoleOutput = "SideEffectPrintingConsoleOutput";
 
 
     /**
      * Used for a method which can take more than one minute (and potentiall much more than one minute)
      */
-    public final static String SlowTest = "SlowTest";
+    public const string SlowTest = "SlowTest";
     // To run all tests excluding tests labeled with @Tag("SlowTest") or @Tag(TestCategory.SideEffectFileCreation)
     // as below, in IntelliJ IDEA:
     // Run --> Edit configuration --> Junit --> Test kind --> Tags --> Tag expression: !SlowTest
+}
 }

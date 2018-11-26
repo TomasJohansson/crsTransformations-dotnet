@@ -41,6 +41,14 @@
     <Compile Include="CrsTransformations\Implementations\MightyLittleGeodesyTest.cs" />
     <Compile Include="CrsTransformations\Implementations\ProjNet4GeoAPITest.cs" />
     <Compile Include="CrsTransformations\Implementations\SridReaderTest.cs" />
+    <Compile Include="TestData\CoordinateTestDataGeneratedFromEpsgDatabaseTest.cs" />
+    <Compile Include="TestData\CoordinateTestDataGeneratedFromEpsgDatabaseTest2.cs" />
+    <Compile Include="TestData\DifferenceWhenComparingCoordinateValues.cs" />
+    <Compile Include="TestData\EpsgCrsAndAreaCodeWithCoordinates.cs" />
+    <Compile Include="TestData\ResultAggregator.cs" />
+    <Compile Include="TestData\TestCategory.cs" />
+    <Compile Include="TestData\TestResult.cs" />
+    <Compile Include="TestData\TestResultItem.cs" />
   </ItemGroup>
 
   <ItemGroup>

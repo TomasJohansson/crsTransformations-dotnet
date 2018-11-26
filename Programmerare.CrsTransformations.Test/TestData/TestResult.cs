@@ -1,18 +1,16 @@
-// TODO: implement with C# instead of Java
-package com.programmerare.com.programmerare.testData;
+using System.Collections.Generic;
 
-import com.programmerare.crsTransformations.CrsTransformationAdapter;
-
-import java.util.List;
+namespace Programmerare.CrsTransformations.TestData
+{
 
 public class TestResult {
     // TODO: getters instead of public fields below ...
-    public final CrsTransformationAdapter adapter;
-    public final long totalNumberOfSecondsForAllTransformations;
-    public final List<TestResultItem> testResultItems;
+    public ICrsTransformationAdapter adapter;
+    public long totalNumberOfSecondsForAllTransformations;
+    public List<TestResultItem> testResultItems;
 
-    TestResult(
-            CrsTransformationAdapter adapter,
+    public TestResult(
+            ICrsTransformationAdapter adapter,
             long totalNumberOfSecondsForAllTransformations,
             List<TestResultItem> testResultItems
     ) {
@@ -20,4 +18,5 @@ public class TestResult {
         this.totalNumberOfSecondsForAllTransformations = totalNumberOfSecondsForAllTransformations;
         this.testResultItems = testResultItems;
     }
+}
 }

@@ -1,31 +1,17 @@
-// TODO: implement with C# instead of Java
-package com.programmerare.com.programmerare.testData;
+using NUnit.Framework;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
+using Programmerare.CrsTransformations.CompositeTransformations;
+using Programmerare.CrsTransformations.Coordinate;
+using Programmerare.CrsTransformations.Identifier;
+using System;
+using System.Collections.Generic;
 
-import com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber;
-import com.programmerare.crsTransformations.*;
-import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterComposite;
-import com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinate;
-import com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory;
-import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifier;
-import com.programmerare.crsTransformations.crsIdentifier.CrsIdentifierFactory;
-import org.junit.jupiter.api.Disabled;
-import org.junit.jupiter.api.Tag;
-import org.junit.jupiter.api.Test;
+namespace Programmerare.CrsTransformations.TestData
+{
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.concurrent.TimeUnit;
-
-import static com.programmerare.com.programmerare.testData.CoordinateTestDataGeneratedFromEpsgDatabaseTest.getCoordinatesFromGeneratedCsvFile;
-import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-
-@Disabled // you may want to temporary change this line if you want to run the "tests"
+// TODO for .NET :
+// @Disabled // you may want to temporary change this line if you want to run the "tests"
+[Ignore("Not yet implemented")]
 public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better class name
 
     // Note that there are currently two methods 'findPotentialBuggyImplementations'
@@ -38,111 +24,116 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 { // TODO better c
     // with all leaf implementations and use methods of the result statistics object
     // to find problematic transformations with large differences.
 
-    @Test // currently not a real test with assertions but printing console output with differences
-    @Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    @Tag(TestCategory.SlowTest) // about 725 seconds iterating all 6435 rows (using the delta value 'double deltaDiff = 0.01' finding 80 results with big diffs)
-    void findPotentialBuggyImplementations() {
-        final CrsTransformationAdapterComposite crsTransformationComposite = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian();
+    // TODO for .NET :
+    //@Test // currently not a real test with assertions but printing console output with differences
+    //@Tag(TestCategory.SideEffectPrintingConsoleOutput)
+    //@Tag(TestCategory.SlowTest) // about 725 seconds iterating all 6435 rows (using the delta value 'double deltaDiff = 0.01' finding 80 results with big diffs)
+    [Test]
+    public void findPotentialBuggyImplementations() {
+        CrsTransformationAdapterComposite crsTransformationComposite = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
         verifyFiveImplementations(crsTransformationComposite); // to make sure that the above factory really creates an object which will use five implementations
 
-        final List<CrsTransformationResult> transformResultsWithLargeDifferences = new ArrayList<CrsTransformationResult>();
+        IList<CrsTransformationResult> transformResultsWithLargeDifferences = new List<CrsTransformationResult>();
 
-        final CrsIdentifier wgs84 = CrsIdentifierFactory.createFromEpsgNumber(EpsgNumber.WORLD__WGS_84__4326);
+        CrsIdentifier wgs84 = CrsIdentifierFactory.CreateFromEpsgNumber(EpsgNumber.WORLD__WGS_84__4326);
 
-        final double deltaDiff = 0.01; // fairly large value to only find the large differences (potential large problems/bugs)
+        double deltaDiff = 0.01; // fairly large value to only find the large differences (potential large problems/bugs)
         // when the delta value above is 0.01 then about 80 EPSG codes are found i.e. there
         // are than many transformation (from and back that EPSG code) which will create
         // a bigger difference than 0.01 in either the latitude or longitude (or both)
         // between at least two of the implementations.
 
-        final PrintStream nullStream = getNullStreamToAvoidOutputFromSystemOutAndSystemErr();
+        // TODO for .NET :
+        //PrintStream nullStream = getNullStreamToAvoidOutputFromSystemOutAndSystemErr();
         // System.setOut/System.setErr will be used with the above but later restore with the two below
-        final PrintStream outStream = System.out;
-        final PrintStream errStream = System.err;
+        //PrintStream outStream = System.out;
+        //PrintStream errStream = System.err;
+        //long startTime = System.nanoTime();
 
-        long startTime = System.nanoTime();
-
-        final List<EpsgCrsAndAreaCodeWithCoordinates> coordinatesFromGeneratedCsvFile = getCoordinatesFromGeneratedCsvFile();
-        System.out.println("number of rows to iterate: " + coordinatesFromGeneratedCsvFile.size());
-        for (int i = 0; i <coordinatesFromGeneratedCsvFile.size() ; i++) {
-            System.setOut(outStream);
-            System.setErr(errStream);
+        List<EpsgCrsAndAreaCodeWithCoordinates> coordinatesFromGeneratedCsvFile = CoordinateTestDataGeneratedFromEpsgDatabaseTest.getCoordinatesFromGeneratedCsvFile();
+        Console.WriteLine("number of rows to iterate: " + coordinatesFromGeneratedCsvFile.Count);
+        for (int i = 0; i <coordinatesFromGeneratedCsvFile.Count ; i++) {
+            //System.setOut(outStream);
+            //System.setErr(errStream);
             if(i % 100 == 0) {
-                System.out.println("i: " + i);
-                long elapsedNanos = System.nanoTime() - startTime;
-                long totalNumberOfSeconds = TimeUnit.NANOSECONDS.toSeconds(elapsedNanos);
-                System.out.println("Number of seconds so far: " + totalNumberOfSeconds);
+                Console.WriteLine("i: " + i);
+                //long elapsedNanos = System.nanoTime() - startTime;
+                //long totalNumberOfSeconds = TimeUnit.NANOSECONDS.toSeconds(elapsedNanos);
+                long totalNumberOfSeconds = 123; // TODO
+                Console.WriteLine("Number of seconds so far: " + totalNumberOfSeconds);
                 // if(i > 500) break;
             }
             // now tries to avoid lots of output from the implementations (third part libraries used)
-            System.setOut(nullStream);
-            System.setErr(nullStream);
+            //System.setOut(nullStream);
+            //System.setErr(nullStream);
 
-            final EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = coordinatesFromGeneratedCsvFile.get(i);
-            final CrsCoordinate coordinateInputWgs84 = CrsCoordinateFactory.createFromYNorthingLatitudeAndXEastingLongitude(epsgCrsAndAreaCodeWithCoordinates.centroidY, epsgCrsAndAreaCodeWithCoordinates.centroidX, wgs84);
+            EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = coordinatesFromGeneratedCsvFile[i];
+            CrsCoordinate coordinateInputWgs84 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(epsgCrsAndAreaCodeWithCoordinates.centroidY, epsgCrsAndAreaCodeWithCoordinates.centroidX, wgs84);
 
-            final CrsTransformationResult resultOutputFromWgs4 = crsTransformationComposite.transform(coordinateInputWgs84, epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode);
-            if(!resultOutputFromWgs4.isSuccess()) continue;
+            CrsTransformationResult resultOutputFromWgs4 = crsTransformationComposite.Transform(coordinateInputWgs84, epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode);
+            if(!resultOutputFromWgs4.IsSuccess) continue;
 
-            final CrsTransformationResult resultWhenTransformedBackToWgs84 = crsTransformationComposite.transform(resultOutputFromWgs4.getOutputCoordinate(), wgs84);
-            if(!resultWhenTransformedBackToWgs84.isSuccess()) continue;
+            CrsTransformationResult resultWhenTransformedBackToWgs84 = crsTransformationComposite.Transform(resultOutputFromWgs4.OutputCoordinate, wgs84);
+            if(!resultWhenTransformedBackToWgs84.IsSuccess) continue;
 
-            final CrsTransformationResultStatistic crsTransformationResultStatistic = resultWhenTransformedBackToWgs84.getCrsTransformationResultStatistic();
-            assertNotNull(crsTransformationResultStatistic);
-            assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
+            CrsTransformationResultStatistic crsTransformationResultStatistic = resultWhenTransformedBackToWgs84.CrsTransformationResultStatistic;
+            Assert.IsNotNull(crsTransformationResultStatistic);
+            Assert.IsTrue(crsTransformationResultStatistic.IsStatisticsAvailable);
             if(
-                crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude() > deltaDiff
+                crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude > deltaDiff
                 ||
-                crsTransformationResultStatistic.getMaxDifferenceForYNorthingLatitude() > deltaDiff
+                crsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude > deltaDiff
             ) {
-                transformResultsWithLargeDifferences.add(resultWhenTransformedBackToWgs84);
+                transformResultsWithLargeDifferences.Add(resultWhenTransformedBackToWgs84);
             }
         }
-        System.setOut(outStream);
-        System.setErr(errStream);
-        System.out.println("Number of iterated rows/coordinates: " + coordinatesFromGeneratedCsvFile.size());
+        //System.setOut(outStream);
+        //System.setErr(errStream);
+        Console.WriteLine("Number of iterated rows/coordinates: " + coordinatesFromGeneratedCsvFile.Count);
 
-        System.out.println("Number of results with 'large' differences: " + transformResultsWithLargeDifferences.size());
-        for (int i = 0; i <transformResultsWithLargeDifferences.size() ; i++) {
-            final CrsTransformationResult transformResult = transformResultsWithLargeDifferences.get(i);
-            System.out.println("----------------------------------------");
-            System.out.println("epsg " + transformResult.getInputCoordinate().getCrsIdentifier().getCrsCode());
-            System.out.println("MaxDiffYLatitude : " + transformResult.getCrsTransformationResultStatistic().getMaxDifferenceForYNorthingLatitude());
-            System.out.println("MaxDiffYLongitude: " + transformResult.getCrsTransformationResultStatistic().getMaxDifferenceForXEastingLongitude());
-            final List<CrsTransformationResult> subResults = transformResult.getTransformationResultChildren();
-            for (int j = 0; j <subResults.size() ; j++) {
-                final CrsTransformationResult subTransformResult = subResults.get(j);
-                if(subTransformResult.isSuccess()) {
-                    System.out.println( subTransformResult.getOutputCoordinate() + " , " + subTransformResult.getCrsTransformationAdapterResultSource().getLongNameOfImplementation());
+        Console.WriteLine("Number of results with 'large' differences: " + transformResultsWithLargeDifferences.Count);
+        for (int i = 0; i <transformResultsWithLargeDifferences.Count ; i++) {
+            CrsTransformationResult transformResult = transformResultsWithLargeDifferences[i];
+            Console.WriteLine("----------------------------------------");
+            Console.WriteLine("epsg " + transformResult.InputCoordinate.CrsIdentifier.CrsCode);
+            Console.WriteLine("MaxDiffYLatitude : " + transformResult.CrsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude);
+            Console.WriteLine("MaxDiffYLongitude: " + transformResult.CrsTransformationResultStatistic.MaxDifferenceForXEastingLongitude);
+            IList<CrsTransformationResult> subResults = transformResult.GetTransformationResultChildren();
+            for (int j = 0; j <subResults.Count ; j++) {
+                CrsTransformationResult subTransformResult = subResults[j];
+                if(subTransformResult.IsSuccess) {
+                    Console.WriteLine( subTransformResult.OutputCoordinate + " , " + subTransformResult.CrsTransformationAdapterResultSource.LongNameOfImplementation);
                 }
             }
         }
     }
 
     private void verifyFiveImplementations(
-        final CrsTransformationAdapterComposite crsTransformationAdapterComposite
+        CrsTransformationAdapterComposite crsTransformationAdapterComposite
     ) {
-        final CrsCoordinate input = CrsCoordinateFactory.latLon(59.0, 18.0);
-        final CrsTransformationResult result = crsTransformationAdapterComposite.transform(input, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
-        assertNotNull(result);
-        assertTrue(result.isSuccess());
-        assertEquals(5, result.getTransformationResultChildren().size());
-        final CrsTransformationResultStatistic crsTransformationResultStatistic = result.getCrsTransformationResultStatistic();
-        assertNotNull(crsTransformationResultStatistic);
-        assertTrue(crsTransformationResultStatistic.isStatisticsAvailable());
-        assertEquals(5, crsTransformationResultStatistic.getNumberOfResults());
-        assertEquals(1.4857726637274027E-4, crsTransformationResultStatistic.getMaxDifferenceForXEastingLongitude());
+        CrsCoordinate input = CrsCoordinateFactory.LatLon(59.0, 18.0);
+        CrsTransformationResult result = crsTransformationAdapterComposite.Transform(input, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        Assert.IsNotNull(result);
+        Assert.IsTrue(result.IsSuccess);
+        Assert.AreEqual(5, result.GetTransformationResultChildren().Count);
+        CrsTransformationResultStatistic crsTransformationResultStatistic = result.CrsTransformationResultStatistic;
+        Assert.IsNotNull(crsTransformationResultStatistic);
+        Assert.IsTrue(crsTransformationResultStatistic.IsStatisticsAvailable);
+        Assert.AreEqual(5, crsTransformationResultStatistic.NumberOfPotentiallySuccesfulResults);
+        Assert.AreEqual(1.4857726637274027E-4, crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude);
     }
 
-    private PrintStream getNullStreamToAvoidOutputFromSystemOutAndSystemErr() {
-        final PrintStream nullStream = new PrintStream(new OutputStream() {
-            @Override
-            public void write(int b) throws IOException {
-                // do NOTHING here !
-            }
-        });
-        return nullStream;
-    }
+    // TODO for .NET :
+    //private PrintStream getNullStreamToAvoidOutputFromSystemOutAndSystemErr() {
+    //    final PrintStream nullStream = new PrintStream(new OutputStream() {
+    //        @Override
+    //        public void write(int b) throws IOException {
+    //            // do NOTHING here !
+    //        }
+    //    });
+    //    return nullStream;
+    //}
+}
 }
 
 /*

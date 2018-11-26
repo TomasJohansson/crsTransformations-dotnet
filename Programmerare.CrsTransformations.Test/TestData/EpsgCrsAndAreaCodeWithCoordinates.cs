@@ -1,17 +1,17 @@
-// TODO: implement with C# instead of Java
-package com.programmerare.com.programmerare.testData;
+namespace Programmerare.CrsTransformations.TestData
+{
 
 public class EpsgCrsAndAreaCodeWithCoordinates {
-    final int epsgCrsCode;
-    final int epsgAreaCode;
-    final String epsgAreaName;
-    final double centroidX;
-    final double centroidY;
+    public int epsgCrsCode;
+    public int epsgAreaCode;
+    public string epsgAreaName;
+    public double centroidX;
+    public double centroidY;
 
-    EpsgCrsAndAreaCodeWithCoordinates(
+    public EpsgCrsAndAreaCodeWithCoordinates(
             int epsgCrsCode,
             int epsgAreaCode,
-            String epsgAreaName,
+            string epsgAreaName,
             double centroidX,
             double centroidY
     ) {
@@ -22,8 +22,7 @@ public class EpsgCrsAndAreaCodeWithCoordinates {
         this.centroidY = centroidY;
     }
 
-    @Override
-    public String toString() {
+    public override string ToString() {
         return
             "EpsgCrsAndAreaCodeWithCoordinates{" +
             " epsgAreaCode=" + epsgAreaCode +
@@ -33,4 +32,5 @@ public class EpsgCrsAndAreaCodeWithCoordinates {
             ", centroidY=" + centroidY +
             '}';
     }
+}
 }

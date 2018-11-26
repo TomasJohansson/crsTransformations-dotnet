@@ -1,69 +1,66 @@
-// TODO: implement with C# instead of Java
-package com.programmerare.com.programmerare.testData;
+using System.Collections.Generic;
+using System.IO;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
-
+namespace Programmerare.CrsTransformations.TestData
+{
 // TODO: figure out a better class name
-final class ResultAggregator {
+class ResultAggregator {
 
-    private final List<FileWithRows> listOfFileWithRows = new ArrayList<FileWithRows>();
+    private IList<FileWithRows> listOfFileWithRows = new List<FileWithRows>();
 
     public void addRowsFromFile(
-        final List<String> rowsFromFile,
-        final File sourceFile
+        IList<string> rowsFromFile,
+        FileInfo sourceFile
     ) {
-        final FileWithRows fileWithRows = new FileWithRows(sourceFile, rowsFromFile);
-        listOfFileWithRows.add(fileWithRows);
-        final Set<Integer> indexes = fileWithRows.getIndexesForRowsWithSignificantDifference(fileWithRows, 0.001);
+        FileWithRows fileWithRows = new FileWithRows(sourceFile, rowsFromFile);
+        listOfFileWithRows.Add(fileWithRows);
+        ISet<int> indexes = fileWithRows.getIndexesForRowsWithSignificantDifference(fileWithRows, 0.001);
     }
 
-    public Set<Integer> getIndexesForRowsWithSignificantDifference(
-        final double deltaValueForDifferencesToIgnore
+    public ISet<int> getIndexesForRowsWithSignificantDifference(
+        double deltaValueForDifferencesToIgnore
     ) {
-        final Set<Integer> indexes = new HashSet<Integer>();
-        for (int i = 0; i < listOfFileWithRows.size()-1; i++) {
-            for (int j = i+1; j < listOfFileWithRows.size(); j++) {
-                final FileWithRows fileWithRows_i = listOfFileWithRows.get(i);
-                final FileWithRows fileWithRows_j = listOfFileWithRows.get(j);
-                final Set<Integer> indexesForRowsWithSignificantDifference = fileWithRows_i.getIndexesForRowsWithSignificantDifference(fileWithRows_j, deltaValueForDifferencesToIgnore);
-                indexes.addAll(indexesForRowsWithSignificantDifference);
+        ISet<int> indexes = new HashSet<int>();
+        for (int i = 0; i < listOfFileWithRows.Count-1; i++) {
+            for (int j = i+1; j < listOfFileWithRows.Count; j++) {
+                FileWithRows fileWithRows_i = listOfFileWithRows[i];
+                FileWithRows fileWithRows_j = listOfFileWithRows[j];
+                ISet<int> indexesForRowsWithSignificantDifference = fileWithRows_i.getIndexesForRowsWithSignificantDifference(fileWithRows_j, deltaValueForDifferencesToIgnore);
+                indexes.UnionWith(indexesForRowsWithSignificantDifference);
             }
         }
         return indexes;
     }
 
-    final class FileWithRows {
-        private final File sourceFile;
-        private final List<String> rowsFromFile;
+    class FileWithRows {
+        private FileInfo sourceFile;
+        private IList<string> rowsFromFile;
 
         public FileWithRows(
-            final File sourceFile,
-            final List<String> rowsFromFile
+            FileInfo sourceFile,
+            IList<string> rowsFromFile
         ) {
             this.sourceFile = sourceFile;
             this.rowsFromFile = rowsFromFile;
         }
 
-        public Set<Integer> getIndexesForRowsWithSignificantDifference(
-            final FileWithRows that,
-            final double deltaValueForDifferencesToIgnore
+        public ISet<int> getIndexesForRowsWithSignificantDifference(
+            FileWithRows that,
+            double deltaValueForDifferencesToIgnore
         ) {
-            final Set<Integer> indexes = new HashSet<Integer>();
-            for (int fileRowIndex = 0; fileRowIndex < rowsFromFile.size(); fileRowIndex++) {
-                final String thisRow = this.rowsFromFile.get(fileRowIndex);
-                final String thatRow = that.rowsFromFile.get(fileRowIndex);
-                final TestResultItem t1 = new TestResultItem(thisRow);
-                final TestResultItem t2 = new TestResultItem(thatRow);
-                final DifferenceWhenComparingCoordinateValues diff = t1.isDeltaDifferenceSignificant(t2, deltaValueForDifferencesToIgnore);
+            ISet<int> indexes = new HashSet<int>();
+            for (int fileRowIndex = 0; fileRowIndex < rowsFromFile.Count; fileRowIndex++) {
+                string thisRow = this.rowsFromFile[fileRowIndex];
+                string thatRow = that.rowsFromFile[fileRowIndex];
+                TestResultItem t1 = new TestResultItem(thisRow);
+                TestResultItem t2 = new TestResultItem(thatRow);
+                DifferenceWhenComparingCoordinateValues diff = t1.isDeltaDifferenceSignificant(t2, deltaValueForDifferencesToIgnore);
                 if(diff == DifferenceWhenComparingCoordinateValues.SIGNIFICANT_VALUE_DIFFERENCE) {
-                    indexes.add(fileRowIndex);
+                    indexes.Add(fileRowIndex);
                 }
             }
             return indexes;
         }
     }
+}
 }
