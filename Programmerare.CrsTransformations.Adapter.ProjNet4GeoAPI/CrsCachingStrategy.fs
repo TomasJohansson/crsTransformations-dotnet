@@ -5,8 +5,6 @@ type CrsCachingStrategy =
     
     | NO_CACHING = 10
 
-    // TODO better names for the below enums 
+    | CACHE_ALL_EPSG_CRS_CODES = 20
 
-    | CACHE_ALL_EPSG_CRS_CODES_AT_FIRST_LOOKUP_OF_SOME = 20
-
-    | CACHE_EPSG_CRS_CODE_AT_FIRST_LOOKUP_OF_IT = 30
+    | CACHE_EPSG_CRS_CODE_WHEN_FIRST_USED = 30

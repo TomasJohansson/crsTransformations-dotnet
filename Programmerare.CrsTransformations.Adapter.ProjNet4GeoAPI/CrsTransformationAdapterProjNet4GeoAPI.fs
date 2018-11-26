@@ -13,7 +13,7 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
     class
         inherit CrsTransformationAdapterBaseLeaf()
 
-        static let mutable _crsCachingStrategy: CrsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES_AT_FIRST_LOOKUP_OF_SOME
+        static let mutable _crsCachingStrategy: CrsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
         
         static let mutable _cachedCoordinateSystem: IDictionary<int, ICoordinateSystem> = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
         
@@ -25,7 +25,7 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
                 // may have been cached if not existing, which is 
                 // intentional behaviour since there is no point of parsing the csv
                 // file again just to find null once again
-            elif (_crsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES_AT_FIRST_LOOKUP_OF_SOME) then
+            elif (_crsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES) then
                 if(_cachedCoordinateSystem.Count = 0) then
                     _cachedCoordinateSystem <- SridReader.GetAllCoordinateSystems()
                 if(_cachedCoordinateSystem.ContainsKey(epsgNumber)) then
@@ -33,7 +33,7 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
                 else
                     // add it anyway (as null) now to avoid looking it up again
                     _cachedCoordinateSystem.Add(epsgNumber, null)
-            elif (_crsCachingStrategy = CrsCachingStrategy.CACHE_EPSG_CRS_CODE_AT_FIRST_LOOKUP_OF_IT) then
+            elif (_crsCachingStrategy = CrsCachingStrategy.CACHE_EPSG_CRS_CODE_WHEN_FIRST_USED) then
                 crs <- SridReader.GetCSbyID(epsgNumber)
                 _cachedCoordinateSystem.Add(epsgNumber, crs)
             else
@@ -98,9 +98,9 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
                     crsCachingStrategy = CrsCachingStrategy.NO_CACHING
                     ||
                     (
-                        _crsCachingStrategy <> CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES_AT_FIRST_LOOKUP_OF_SOME
+                        _crsCachingStrategy <> CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
                         &&
-                        crsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES_AT_FIRST_LOOKUP_OF_SOME
+                        crsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
                         // if it changed to looking up everything 
                         // from something else then now reset the hashtable below
                         // since the lookup method first check the hash table 
