@@ -2,36 +2,33 @@
 
 open System.IO
 open System.Text
+open System.Collections.Generic
 open ProjNet.Converters.WellKnownText
 open GeoAPI.CoordinateSystems
-open System.Collections.Generic
 
 module SridReader =
     
-    type WKTstring(WKID, WKT)  =
-        member this.WKID = WKID
-        member this.WKT = WKT
-
-    let GetSRIDs(reader: StreamReader) : List<WKTstring> = 
+    let private GetSRIDs(reader: StreamReader) : IDictionary<int, ICoordinateSystem> = 
+        let coordinateSystemsWithKeyEpsgNumber = new Dictionary<int, ICoordinateSystem>()
         let mutable valid = true
-        let wktStrings = List<WKTstring>()
-        while valid do
+        while valid do 
             let line = reader.ReadLine()
             if line = null then
                 valid <- false
             else
                 let split = line.IndexOf(';')
                 if (split > -1) then
-                    let id = System.Int32.Parse(line.Substring(0, split))
-                    let str = line.Substring(split + 1)
-                    wktStrings.Add(WKTstring(id, str))
-        wktStrings
+                    let epsgNumber = System.Int32.Parse(line.Substring(0, split))
+                    let wellKnownText = line.Substring(split + 1)
+                    let crs:ICoordinateSystem = CoordinateSystemWktReader.Parse(wellKnownText, Encoding.UTF8) :?> ICoordinateSystem
+                    coordinateSystemsWithKeyEpsgNumber.Add(epsgNumber, crs)
+        coordinateSystemsWithKeyEpsgNumber :> IDictionary<int, ICoordinateSystem>
 
     /// <summary>Gets a coordinate system from the SRID.csv file</summary>
     /// <param name="id">EPSG ID</param>
     /// <returns>Coordinate system, or null if SRID was not found.</returns>
     let GetCSbyID(epsgId): ICoordinateSystem =
-        let typeInTheNameSpace = typeof<WKTstring>
+        let typeInTheNameSpace = typeof<CrsCachingStrategy>
         let assembly = typeInTheNameSpace.Assembly
         let fileName = "SRID.csv"
         // the above file was downloaded from here:
@@ -49,7 +46,6 @@ module SridReader =
 
         let srids = GetSRIDs(reader)
         let mutable crs: ICoordinateSystem = null
-        for wkt in srids do
-            if(wkt.WKID = epsgId) then
-                crs <- CoordinateSystemWktReader.Parse(wkt.WKT, Encoding.UTF8) :?> ICoordinateSystem
+        if srids.ContainsKey(epsgId) then
+            crs <- srids.[epsgId]
         crs
