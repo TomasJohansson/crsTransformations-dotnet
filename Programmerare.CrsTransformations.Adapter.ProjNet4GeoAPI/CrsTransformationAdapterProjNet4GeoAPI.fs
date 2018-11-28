@@ -17,7 +17,9 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
         
         let mutable _cachedCoordinateSystem: IDictionary<int, ICoordinateSystem> = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
         
-        let sridReader = SridReader()
+        //let mutable _sridReader = SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI)
+        // the above causes failing tests for Swedish CRS RT90
+        let mutable _sridReader = SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml)
 
         let GetCSbyID(epsgNumber) = 
             let mutable crs: ICoordinateSystem = null
@@ -29,17 +31,17 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
                 // file again just to find null once again
             elif (_crsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES) then
                 if(_cachedCoordinateSystem.Count = 0) then
-                    _cachedCoordinateSystem <- sridReader.GetAllCoordinateSystems()
+                    _cachedCoordinateSystem <- _sridReader.GetAllCoordinateSystems()
                 if(_cachedCoordinateSystem.ContainsKey(epsgNumber)) then
                     crs <- _cachedCoordinateSystem.[epsgNumber]
                 else
                     // add it anyway (as null) now to avoid looking it up again
                     _cachedCoordinateSystem.Add(epsgNumber, null)
             elif (_crsCachingStrategy = CrsCachingStrategy.CACHE_EPSG_CRS_CODE_WHEN_FIRST_USED) then
-                crs <- sridReader.GetCSbyID(epsgNumber)
+                crs <- _sridReader.GetCSbyID(epsgNumber)
                 _cachedCoordinateSystem.Add(epsgNumber, crs)
             else
-                crs <- sridReader.GetCSbyID(epsgNumber)
+                crs <- _sridReader.GetCSbyID(epsgNumber)
             crs
 
         //https://github.com/NetTopologySuite/ProjNet4GeoAPI/wiki/Loading-a-projection-by-Spatial-Reference-ID
@@ -94,6 +96,9 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
 
         override this._GetFileInfoVersion() =
             base._GetFileInfoVersionHelper(typeof<CoordinateSystemFactory>)
+
+        member this.SetSridReader(sridReader: SridReader) = 
+            _sridReader <- sridReader
 
         member this.SetCrsCachingStrategy(crsCachingStrategy: CrsCachingStrategy) = 
             if (

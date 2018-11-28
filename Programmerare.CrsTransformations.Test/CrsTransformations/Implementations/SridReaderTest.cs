@@ -77,7 +77,9 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             string expectedInitialPartOfWellKnownTextString
         )
         {
-            var sridReader = new SridReader();
+            var sridReader = new SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI);
+            sridReader = new SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml);
+            //sridReader = new SridReader(@"PATH_TO_FILE\crsTransformations-dotnet\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI\SRID_ShippedWithProjNet4GeoAPI_1_4_1.csv");
             ICoordinateSystem crs = sridReader.GetCSbyID(epsgNumber);
             Assert.IsNotNull(crs);
             Assert.AreEqual(

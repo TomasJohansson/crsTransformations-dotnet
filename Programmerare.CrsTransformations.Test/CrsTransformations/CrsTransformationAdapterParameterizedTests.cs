@@ -42,11 +42,19 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
         // Below the list of implementations is overridden for the base class
         // and below currently do not use the ProjNet4GeoAPI implementation
         // since it produces bad results for Swedish projections
-        crsTransformationAdapterImplementations = new List<ICrsTransformationAdapter>{
-            new CrsTransformationAdapterDotSpatial(),
-            // new CrsTransformationAdapterProjNet4GeoAPI(),
-            new CrsTransformationAdapterMightyLittleGeodesy()
-        };
+        //crsTransformationAdapterImplementations = new List<ICrsTransformationAdapter>{
+        //    new CrsTransformationAdapterDotSpatial(),
+        //    // new CrsTransformationAdapterProjNet4GeoAPI(),
+        //    new CrsTransformationAdapterMightyLittleGeodesy()
+        //};
+        // currently the above is required for the shipped CSV file
+        // but if modifying the CRS definition for 
+        // RT90 then it work,
+        // from the implementation class:
+        //let mutable _sridReader = SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI)
+        // the above causes failing tests for Swedish CRS RT90
+        //let mutable _sridReader = SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml)
+        Assert.AreEqual(7, crsTransformationAdapterImplementations.Count); // should include ProjNet4GeoAPI
     }
 
     [TestCaseSource(nameof(GetCsvDataFromFileWithSomeCoordinatesForSweden))]

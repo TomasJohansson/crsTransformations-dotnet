@@ -15,11 +15,11 @@ namespace Programmerare.CrsTransformations.TestData
 //[Ignore("Not yet implemented")]
 public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformationTestBase { // TODO better class name
 
-        double deltaDiff = 0.0001; // fairly large value to only find the large differences (potential large problems/bugs)
-        // when the delta value above is 0.01 then about 80 EPSG codes are found i.e. there
-        // are than many transformation (from and back that EPSG code) which will create
-        // a bigger difference than 0.01 in either the latitude or longitude (or both)
-        // between at least two of the implementations.
+    private const double deltaDiff = 0.0001; // fairly large value to only find the large differences (potential large problems/bugs)
+    // when the delta value above is 0.01 then about 80 EPSG codes are found i.e. there
+    // are than many transformation (from and back that EPSG code) which will create
+    // a bigger difference than 0.01 in either the latitude or longitude (or both)
+    // between at least two of the implementations.
 
     // Note that there are currently two methods 'findPotentialBuggyImplementations'
     // (one in this class and one in the class 'CoordinateTestDataGeneratedFromEpsgDatabaseTest')
@@ -37,6 +37,33 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
     [Category(TestCategory.SlowTest)] 
     [Ignore(TestCategory.SlowTest)] 
     public void findPotentialBuggyImplementations() {
+        findPotentialBuggyImplementationsHelper(0, int.MaxValue);
+    }
+
+    [Test]
+    [Category(TestCategory.SideEffectPrintingConsoleOutput)]
+    public void findPotentialBuggyImplementationsSwedishCrs(
+    ) {
+        // EPSG codes for RT90 and SWEREF99
+        // are in the intervall 3006 - 3024
+        findPotentialBuggyImplementationsHelper(
+            3006, 
+            3024,
+            0.001
+        );
+    }
+    public void findPotentialBuggyImplementationsHelper(
+        int minEpsgCrsCode,
+        int maxEpsgCrsCode,
+        double? optionalDelta = null
+    ) {
+        int numberIfEpsgCodesToConsiderInIteration = maxEpsgCrsCode - minEpsgCrsCode;
+        bool manyWillBeIteraded = numberIfEpsgCodesToConsiderInIteration > 100;
+        double deltaDiffToUse = manyWillBeIteraded ? deltaDiff : double.MinValue;
+        if(optionalDelta.HasValue) {
+            deltaDiffToUse = optionalDelta.Value;
+        }
+
         CrsTransformationAdapterComposite crsTransformationComposite = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
         verifyThreeImplementations(crsTransformationComposite); // to make sure that the above factory really creates an object which will use three implementations
 
@@ -61,19 +88,29 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
 
         WriteLine("number of rows to iterate: " + coordinatesFromGeneratedCsvFile.Count);
         for (int i = 0; i <coordinatesFromGeneratedCsvFile.Count ; i++) {
-            //System.setOut(outStream);
-            //System.setErr(errStream);
-            if(i % 10 == 0) {
-                WriteLine("number of rows iterated so far: " + i);
-                totalNumberOfSeconds = (int)stopWatch.Elapsed.TotalSeconds;
-                WriteLine("Number of seconds so far: " + totalNumberOfSeconds);
-                if(i > 50) break;
-            }
-            // now tries to avoid lots of output from the implementations (third part libraries used)
-            //System.setOut(nullStream);
-            //System.setErr(nullStream);
+                //System.setOut(outStream);
+                //System.setErr(errStream);
+                if (manyWillBeIteraded && (i % 100 == 0)) {
+                    WriteLine("number of rows iterated so far: " + i);
+                    totalNumberOfSeconds = (int)stopWatch.Elapsed.TotalSeconds;
+                    WriteLine("Number of seconds so far: " + totalNumberOfSeconds);
+                    // if (i > 50) break;
+                }
+                // now tries to avoid lots of output from the implementations (third part libraries used)
+                //System.setOut(nullStream);
+                //System.setErr(nullStream);
 
-            EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = coordinatesFromGeneratedCsvFile[i];
+                EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = coordinatesFromGeneratedCsvFile[i];
+            if(
+                epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode < minEpsgCrsCode
+                    ||
+                epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode > maxEpsgCrsCode
+            ) continue;
+            if(!manyWillBeIteraded) {
+                //Console.WriteLine("iterated epsgCrsCode: " + epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode);
+            }
+            
+
             CrsCoordinate coordinateInputWgs84 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(epsgCrsAndAreaCodeWithCoordinates.centroidY, epsgCrsAndAreaCodeWithCoordinates.centroidX, wgs84);
 
             CrsTransformationResult resultOutputFromWgs4 = crsTransformationComposite.Transform(coordinateInputWgs84, epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode);
@@ -86,11 +123,18 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
             Assert.IsNotNull(crsTransformationResultStatistic);
             Assert.IsTrue(crsTransformationResultStatistic.IsStatisticsAvailable);
             if(
-                crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude > deltaDiff
+                crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude > deltaDiffToUse
                 ||
-                crsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude > deltaDiff
+                crsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude > deltaDiffToUse
             ) {
                 transformResultsWithLargeDifferences.Add(resultWhenTransformedBackToWgs84);
+            }
+            else{
+                if(!manyWillBeIteraded) {
+                    //Console.WriteLine("NOT 'big' difference for EPSG " + epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode);
+                    int count = crsTransformationComposite.GetTransformationAdapterChildren().Count;
+                    //Console.WriteLine("Number of implementations not having big difference: " + count);
+                }
             }
         }
         //System.setOut(outStream);

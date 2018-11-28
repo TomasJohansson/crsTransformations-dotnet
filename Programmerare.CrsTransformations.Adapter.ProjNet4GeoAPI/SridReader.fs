@@ -6,42 +6,29 @@ open System.Collections.Generic
 open ProjNet.Converters.WellKnownText
 open GeoAPI.CoordinateSystems
 
-type SridReader() =
+// "enum":
+type EmbeddedResourceFileWithCRSdefinitions = 
     
-    // TODO: implement a possibility to 
-    // use an externally provided CSV file,
-    // i.e. with an absolute path,
-    // and maybe also ship with an alternative 
-    // file to the file below, and maybe let it be specified
-    // with an enum
+    | STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI = 10
 
-    let fileName = "SRID.csv"
-    // the above file was downloaded from here:
-    // https://github.com/NetTopologySuite/ProjNet4GeoAPI/blob/develop/ProjNet.Tests/SRID.csv
-    // (the file version dated "Jul 5, 2013" i.e. git commit c7a8b0c72d55ab64e26d40632abe2c85c2ff92df )
+    // SharpMap/SpatialRefSys.xml
+    | STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml = 20
+
+
+type SridReader private
+    (
+        functionReadingFromResourceFileOrExternalFilePath: int -> IDictionary<int, ICoordinateSystem>
+    ) =
 
     let GetSomeTypeInTheAssembly() = 
         let someTypeInTheNameSpace = typeof<CrsCachingStrategy>
         someTypeInTheNameSpace
-        
-    let GetSRIDs
-        (
-            epsgNumberToLookFor: int
-        ) : IDictionary<int, ICoordinateSystem> = 
-        let someTypeInTheNameAssembly = GetSomeTypeInTheAssembly()
-        let assembly = someTypeInTheNameAssembly.Assembly
 
-        // Regarding the below F# keyword "use" instead of "let":
-        // It tells the compiler to automatically dispose of the resource when it goes out of scope. 
-        // This is equivalent to the C# "using" keyword.
-        // This can only be used in conjunction with classes that implement IDisposable.
-        // NOTE that there can be tricky problems if trying to use "use" 
-        // from outside and then pass a strem or read to the function ...
-        // (see comment further down in this function)
-        use stream = assembly.GetManifestResourceStream(someTypeInTheNameAssembly, fileName)
-        if isNull stream then
-            failwith ("the stream was null for the following namespace and filename: namespace:" + someTypeInTheNameAssembly.Namespace + "  filename: " + fileName)
-        use reader = new StreamReader(stream)
+    let GetSRIDsFromStreamReader
+        (
+            epsgNumberToLookFor: int,
+            reader: StreamReader
+        ) : IDictionary<int, ICoordinateSystem> = 
 
         let coordinateSystemsWithKeyEpsgNumber = new Dictionary<int, ICoordinateSystem>()
         let mutable valid = true
@@ -76,7 +63,53 @@ type SridReader() =
                     if epsgNumber = epsgNumberToLookFor then
                         // we were only looking for a specific number so no need to keep iterating
                         valid <- false
-        coordinateSystemsWithKeyEpsgNumber :> IDictionary<int, ICoordinateSystem>
+        coordinateSystemsWithKeyEpsgNumber :> IDictionary<int, ICoordinateSystem>        
+
+    static member private nameOfEmbeddedResourceFileDefaultShippedWithProjNet4GeoAPI_1_4_1 = "SRID_ShippedWithProjNet4GeoAPI_1_4_1.csv"
+    // the above file was downloaded from here:
+    // https://github.com/NetTopologySuite/ProjNet4GeoAPI/blob/develop/ProjNet.Tests/SRID.csv
+    // (the file version dated "Jul 5, 2013" i.e. git commit c7a8b0c72d55ab64e26d40632abe2c85c2ff92df )
+
+    static member private nameOfEmbeddedResourceFileAdjustedWithSharpMap_SpatialRefSys_xml = "SRID_ShippedWithProjNet4GeoAPI_1_4_1_butUsing_SharpMap_SpatialRefSys_forSwedishRT90.csv"
+
+    // TODO: override the six RT90 CRS in some better way than (as below currently) bundling 
+    // two files with 1.5 MB each with the only modifications being those six rows in the csv file
+    static member private GetNameOfEmbeddedResourceFile(embeddedResourceFileWithCRSdefinition) = 
+        if embeddedResourceFileWithCRSdefinition = EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml then
+            SridReader.nameOfEmbeddedResourceFileAdjustedWithSharpMap_SpatialRefSys_xml
+        else
+            SridReader.nameOfEmbeddedResourceFileDefaultShippedWithProjNet4GeoAPI_1_4_1
+
+    member this.GetSRIDs = functionReadingFromResourceFileOrExternalFilePath
+        
+    member this.GetSRIDsFromCsvFile
+        (
+            epsgNumberToLookFor: int,
+            filePathForCsvFile: string
+        ) : IDictionary<int, ICoordinateSystem> =     
+        use reader = File.OpenText(filePathForCsvFile)
+        GetSRIDsFromStreamReader(epsgNumberToLookFor, reader)
+
+    member this.GetSRIDsFromEmbeddedResourceFile
+        (
+            epsgNumberToLookFor: int,
+            nameOfEmbeddedResourceFile: string
+        ) : IDictionary<int, ICoordinateSystem> = 
+        let someTypeInTheNameAssembly = GetSomeTypeInTheAssembly()
+        let assembly = someTypeInTheNameAssembly.Assembly
+
+        // Regarding the below F# keyword "use" instead of "let":
+        // It tells the compiler to automatically dispose of the resource when it goes out of scope. 
+        // This is equivalent to the C# "using" keyword.
+        // This can only be used in conjunction with classes that implement IDisposable.
+        // NOTE that there can be tricky problems if trying to use "use" 
+        // from outside and then pass a strem or read to the function ...
+        // (see comment further down in this function)
+        use stream = assembly.GetManifestResourceStream(someTypeInTheNameAssembly, nameOfEmbeddedResourceFile)
+        if isNull stream then
+            failwith ("the stream was null for the following namespace and filename: namespace:" + someTypeInTheNameAssembly.Namespace + "  filename: " + nameOfEmbeddedResourceFile)
+        use reader = new StreamReader(stream)
+        GetSRIDsFromStreamReader(epsgNumberToLookFor, reader)
 
     /// <summary>Gets a coordinate system from the SRID.csv file</summary>
     /// <param name="id">EPSG ID</param>
@@ -87,7 +120,7 @@ type SridReader() =
         // let srids = GetSRIDs(reader, epsgId)
         // NOTE that the above kind of code causes problems
         // (see further comment in the below used function)
-        let srids = GetSRIDs(epsgId)
+        let srids = this.GetSRIDs(epsgId)
         let mutable crs: ICoordinateSystem = null
         if srids.ContainsKey(epsgId) then
             crs <- srids.[epsgId]
@@ -96,7 +129,26 @@ type SridReader() =
     member this.GetAllCoordinateSystems() =
         //use stream = GetStreamReaderForTheCsvFile()
         //use reader = new StreamReader(stream)
-        GetSRIDs(
+        this.GetSRIDs(
             //reader //  NOTE that usage of reader as parameter caused problem, see more comments in the function
             -1 // epsgNumberToLookFor (since -1 will not be found, a fully populated dictionary will be returned instead)
+        )
+
+    new (pathToCsvFile: string) as this = 
+        (
+            let fkn: int -> IDictionary<int, ICoordinateSystem> = fun (id) -> this.GetSRIDsFromCsvFile(id, pathToCsvFile)
+            SridReader(fkn)
+        )
+
+    new (
+            //[<Optional; DefaultParameterValue(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI)>]
+            //?embeddedResourceFileWithCRSdefinitions: EmbeddedResourceFileWithCRSdefinitions
+            embeddedResourceFileWithCRSdefinitions: EmbeddedResourceFileWithCRSdefinitions
+            // no the above does not look nice when exposed to C# :
+            // public SridReader([OptionalArgument] FSharpOption<EmbeddedResourceFileWithCRSdefinitions> embeddedResourceFileWithCRSdefinitions = 10);
+        ) as this = 
+        (
+            let nameOfEmbeddedResourceFile = SridReader.GetNameOfEmbeddedResourceFile(embeddedResourceFileWithCRSdefinitions)
+            let fkn: int -> IDictionary<int, ICoordinateSystem> = fun (id) -> this.GetSRIDsFromEmbeddedResourceFile(id, nameOfEmbeddedResourceFile)
+            SridReader(fkn)
         )

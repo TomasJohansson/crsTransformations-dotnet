@@ -28,8 +28,21 @@ namespace Programmerare.CrsTransformations.Test.Implementations
                 // that I have "cheated" with high values 
                 // to get "succeeding" tests ...
 
-                195, // maxMeterDifferenceForSuccessfulTest
-                0.01 // maxLatLongDifferenceForSuccessfulTest
+                //195, // maxMeterDifferenceForSuccessfulTest
+                //0.01 // maxLatLongDifferenceForSuccessfulTest
+
+                // something like the above limits are 
+                // currently required for the shipped CSV file
+                // but if modifying the CRS definition for 
+                // RT90 then the below will work:
+
+                0.5, // maxMeterDifferenceForSuccessfulTest
+                0.00001 // maxLatLongDifferenceForSuccessfulTest
+
+                // from the implementation class:
+                //let mutable _sridReader = SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI)
+                // the above causes failing tests for Swedish CRS RT90
+                //let mutable _sridReader = SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml)
             );
 
 
