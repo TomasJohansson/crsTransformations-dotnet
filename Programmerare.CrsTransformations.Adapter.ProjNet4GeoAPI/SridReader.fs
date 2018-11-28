@@ -85,6 +85,7 @@ type SridReader private
     // TODO: override the six RT90 CRS in some better way than (as below currently) bundling 
     // two files with 1.5 MB each with the only modifications being those six rows in the csv file
     static member private GetNameOfEmbeddedResourceFile(embeddedResourceFileWithCRSdefinition) = 
+        // if this will grow then create a hashtable lookup instead of if statements
         if embeddedResourceFileWithCRSdefinition = EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml then
             SridReader.nameOfEmbeddedResourceFileAdjustedWithSharpMap_SpatialRefSys_xml
         else
@@ -99,6 +100,7 @@ type SridReader private
         ) : IDictionary<int, ICoordinateSystem> =     
         use reader = File.OpenText(filePathForCsvFile)
         GetSRIDsFromStreamReader(epsgNumberToLookFor, reader)
+
 
     member this.GetSRIDsFromEmbeddedResourceFile
         (
@@ -120,6 +122,30 @@ type SridReader private
             failwith ("the stream was null for the following namespace and filename: namespace:" + someTypeInTheNameAssembly.Namespace + "  filename: " + nameOfEmbeddedResourceFile)
         use reader = new StreamReader(stream)
         GetSRIDsFromStreamReader(epsgNumberToLookFor, reader)
+
+    member this.GetSRIDsFromEmbeddedResourceFiles
+        (
+            epsgNumberToLookFor: int,
+            orderedEmbeddedResourceFileWithCRSdefinitions: ICollection<EmbeddedResourceFileWithCRSdefinitions>
+        ) : IDictionary<int, ICoordinateSystem> =
+            let mutable dict = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
+            for embeddedResourceFileWithCRSdefinitions in orderedEmbeddedResourceFileWithCRSdefinitions do
+                let nameOfEmbeddedResourceFile: string = SridReader.GetNameOfEmbeddedResourceFile(embeddedResourceFileWithCRSdefinitions)
+                let srids = this.GetSRIDsFromEmbeddedResourceFile(epsgNumberToLookFor,nameOfEmbeddedResourceFile)
+                // typically the first item in the iterated collection 
+                // will be the "big file", while the later may contain 
+                // some modification. Therefore, inte first iteration
+                // when there are still no items, we can replace everything
+                // instead of iterating 
+                if (dict.Count = 0) then
+                    dict <- srids
+                else
+                    for srid in srids do
+                        if (dict.ContainsKey(srid.Key)) then
+                            dict.Remove(srid.Key) |> ignore
+                        dict.Add(srid.Key, srid.Value)
+            dict
+                    
 
     /// <summary>Gets a coordinate system from the SRID.csv file</summary>
     /// <param name="id">EPSG ID</param>
@@ -153,12 +179,17 @@ type SridReader private
     new (
             //[<Optional; DefaultParameterValue(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI)>]
             //?embeddedResourceFileWithCRSdefinitions: EmbeddedResourceFileWithCRSdefinitions
-            embeddedResourceFileWithCRSdefinitions: EmbeddedResourceFileWithCRSdefinitions
             // no the above does not look nice when exposed to C# :
             // public SridReader([OptionalArgument] FSharpOption<EmbeddedResourceFileWithCRSdefinitions> embeddedResourceFileWithCRSdefinitions = 10);
+
+            //embeddedResourceFileWithCRSdefinitions: EmbeddedResourceFileWithCRSdefinitions
+
+            // The below semantic of "ordered" is that the resource files 
+            // will be read in the order of the collection parameter
+            // and if similar EPSG codes occur in the later, then the previous will be overridden.
+            orderedEmbeddedResourceFileWithCRSdefinitions: ICollection<EmbeddedResourceFileWithCRSdefinitions>
         ) as this = 
         (
-            let nameOfEmbeddedResourceFile = SridReader.GetNameOfEmbeddedResourceFile(embeddedResourceFileWithCRSdefinitions)
-            let fkn: int -> IDictionary<int, ICoordinateSystem> = fun (id) -> this.GetSRIDsFromEmbeddedResourceFile(id, nameOfEmbeddedResourceFile)
+            let fkn: int -> IDictionary<int, ICoordinateSystem> = fun (id) -> this.GetSRIDsFromEmbeddedResourceFiles(id, orderedEmbeddedResourceFileWithCRSdefinitions)
             SridReader(fkn)
         )

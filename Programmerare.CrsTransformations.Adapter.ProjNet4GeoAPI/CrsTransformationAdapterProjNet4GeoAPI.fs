@@ -17,9 +17,13 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
         
         let mutable _cachedCoordinateSystem: IDictionary<int, ICoordinateSystem> = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
         
-        //let mutable _sridReader = SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI)
-        // the above causes failing tests for Swedish CRS RT90
-        let mutable _sridReader = SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml)
+        let mutable _sridReader = 
+            let list = new ResizeArray<EmbeddedResourceFileWithCRSdefinitions>([
+                    EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI
+                    EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml
+                ]
+            )
+            SridReader(list)
 
         let GetCSbyID(epsgNumber) = 
             let mutable crs: ICoordinateSystem = null
