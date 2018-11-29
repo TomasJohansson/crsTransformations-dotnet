@@ -8,4 +8,8 @@
     <Compile Include="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_5_4\EpsgNumber.fs" />
   </ItemGroup>
 
+  <ItemGroup>
+    <PackageReference Update="FSharp.Core" Version="4.5.4" />
+  </ItemGroup>
+
 </Project>
