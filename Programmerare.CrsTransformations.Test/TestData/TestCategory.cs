@@ -1,6 +1,15 @@
 namespace Programmerare.CrsTransformations.TestData
 {
 
+// To run tests from a certain category in Visual Studio:
+// Test -> Windows -> Test Explorer -> Group By -> Traits
+// ("Traits" are mapped to NUnit Category)
+// Note that you may habe to disable "Show test category"
+// (first little button in Test Explorer) 
+//  before being able to select anything 
+// from the "Group By" dropdown
+// (first little button in Test Explorer) 
+
 // TODO: rewrite below Java/JVM comments for C#/.NET
 
 /**
