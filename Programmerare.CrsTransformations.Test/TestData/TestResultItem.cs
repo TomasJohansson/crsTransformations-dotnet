@@ -5,11 +5,12 @@ namespace Programmerare.CrsTransformations.TestData
 {
 
 public class TestResultItem {
-    private String wgs84sourceX , wgs84sourceY , epsgCrsCode;
-    private String epsgTargetSourceX = "", epsgTargetSourceY = "", wgs84targetX = "", wgs84targetY = "";
-    private const string SEPARATOR = "|";
+    private string wgs84sourceX , wgs84sourceY , epsgCrsCode;
+    private string epsgTargetSourceX = "", epsgTargetSourceY = "", wgs84targetX = "", wgs84targetY = "";
+    private const char SEPARATOR_CHARACTER = '|';
+    private readonly static string SEPARATOR = "" + SEPARATOR_CHARACTER;
 
-    public String getResultStringForRegressionFile() {
+    public string GetResultStringForRegressionFile() {
         return
             wgs84sourceX + SEPARATOR +
             wgs84sourceY + SEPARATOR +
@@ -20,8 +21,9 @@ public class TestResultItem {
             wgs84targetY;
     }
 
-    public TestResultItem(String lineFromRow) {
-        String[] array = lineFromRow.Split("\\" + SEPARATOR);
+    public TestResultItem(string lineFromRow) {
+        string[] array = lineFromRow.Split(SEPARATOR_CHARACTER);
+        if(array.Length < 2) throw new Exception("Too short array for lineFromRow: " + lineFromRow);
         this.wgs84sourceX = array[0];
         this.wgs84sourceY = array[1];
         this.epsgCrsCode = array[2];
@@ -36,10 +38,10 @@ public class TestResultItem {
     }
 
     public TestResultItem(
-            EpsgCrsAndAreaCodeWithCoordinates item,
-            CrsCoordinate inputCoordinateWGS84,
-            CrsTransformationResult resultOfTransformationFromWGS84,
-            CrsTransformationResult resultOfTransformationBackToWGS84
+        EpsgCrsAndAreaCodeWithCoordinates item,
+        CrsCoordinate inputCoordinateWGS84,
+        CrsTransformationResult resultOfTransformationFromWGS84,
+        CrsTransformationResult resultOfTransformationBackToWGS84
     ) {
         wgs84sourceX = "" + item.centroidX;
         wgs84sourceY = "" + item.centroidY;
@@ -56,13 +58,13 @@ public class TestResultItem {
         }
     }
 
-    public CrsCoordinate getInputCoordinateWGS84() {
+    public CrsCoordinate GetInputCoordinateWGS84() {
         double lat = Double.Parse(wgs84sourceY);
         double lon = Double.Parse(wgs84sourceX);
         return CrsCoordinateFactory.LatLon(lat, lon);
     }
 
-    public bool isSuccessfulTransformationFromWGS84() {
+    public bool IsSuccessfulTransformationFromWGS84() {
         if(IsNullOrEmpty(epsgTargetSourceX)) return false;
         if(IsNullOrEmpty(epsgTargetSourceY)) return false;
         // TODO: to improve this we should also verify that the values are doubles
@@ -74,19 +76,19 @@ public class TestResultItem {
         return (s == null || s.Trim().Equals(""));
     }
 
-    public bool isSuccessfulTransformationBackToWGS84() {
+    public bool IsSuccessfulTransformationBackToWGS84() {
         if(IsNullOrEmpty(wgs84targetX)) return false;
         if(IsNullOrEmpty(wgs84targetY)) return false;
-        // TODO: to improve this we should also verify that the values are doubles
+        // TODO: to improve this method, it should also be verified that the values are doubles
         return true;
     }
 
-    public CrsCoordinate getCoordinateOutputTransformationBackToWGS84() {
-        if(!isSuccessfulTransformationBackToWGS84()) {
+    public CrsCoordinate GetCoordinateOutputTransformationBackToWGS84() {
+        if(!IsSuccessfulTransformationBackToWGS84()) {
             return null;
         }
-        // TODO: to improve this we should also verify that the values are doubles
-        // i.e. exception might be thrown below
+        // TODO: to improve this method, it should also be verified that the values are doubles
+        // (now exceptions might be thrown below)
         double lat = Double.Parse(wgs84targetY);
         double lon = Double.Parse(wgs84targetX);
         return CrsCoordinateFactory.LatLon(lat, lon);
@@ -97,14 +99,14 @@ public class TestResultItem {
      * @param deltaValueForDifferencesToIgnore
      * @return
      */
-    public DifferenceWhenComparingCoordinateValues isDeltaDifferenceSignificant(
-            TestResultItem that,
-            double deltaValueForDifferencesToIgnore
+    public DifferenceWhenComparingCoordinateValues IsDeltaDifferenceSignificant(
+        TestResultItem that,
+        double deltaValueForDifferencesToIgnore
     ) {
-        bool thisXIsDouble = isValueExistingAndDouble(this.wgs84targetX);
-        bool thisYIsDouble = isValueExistingAndDouble(this.wgs84targetY);
-        bool thatXIsDouble = isValueExistingAndDouble(that.wgs84targetX);
-        bool thatYIsDouble = isValueExistingAndDouble(that.wgs84targetY);
+        bool thisXIsDouble = IsValueExistingAndDouble(this.wgs84targetX);
+        bool thisYIsDouble = IsValueExistingAndDouble(this.wgs84targetY);
+        bool thatXIsDouble = IsValueExistingAndDouble(that.wgs84targetX);
+        bool thatYIsDouble = IsValueExistingAndDouble(that.wgs84targetY);
         if(thisXIsDouble != thatXIsDouble) {
             return DifferenceWhenComparingCoordinateValues.EXISTING_VS_NOT_EXISTING;
         }
@@ -121,10 +123,10 @@ public class TestResultItem {
             double diffLat = Math.Abs(thisLat - thatLat);
             double diffLon = Math.Abs(thisLon - thatLon);
 
-            //    System.out.println("diffLat " + diffLat);
-            //    System.out.println("diffLon " + diffLon);
-            //    System.out.println("thisLon " + thisLon);
-            //    System.out.println("thatLon " + thatLon);
+            //    Console.WriteLine("diffLat " + diffLat);
+            //    Console.WriteLine("diffLon " + diffLon);
+            //    Console.WriteLine("thisLon " + thisLon);
+            //    Console.WriteLine("thatLon " + thatLon);
 
             if(diffLon > deltaValueForDifferencesToIgnore || diffLat > deltaValueForDifferencesToIgnore) {
                 return DifferenceWhenComparingCoordinateValues.SIGNIFICANT_VALUE_DIFFERENCE;
@@ -133,11 +135,11 @@ public class TestResultItem {
         return DifferenceWhenComparingCoordinateValues.NO;
     }
 
-    private bool isValueExistingAndDouble(string value) {
+    private bool IsValueExistingAndDouble(string value) {
         if (value == null) return false;
         if (value.Trim().Equals("")) return false;
         // TODO improve the code below, maybe with a regular expression instead,
-        // see the documentation of 'Double.valueOf(String)'
+        // see the documentation of Java's 'Double.valueOf(String)'
         try {
             Double.Parse(value);
             return true;

@@ -9,11 +9,11 @@ public class EpsgCrsAndAreaCodeWithCoordinates {
     public double centroidY;
 
     public EpsgCrsAndAreaCodeWithCoordinates(
-            int epsgCrsCode,
-            int epsgAreaCode,
-            string epsgAreaName,
-            double centroidX,
-            double centroidY
+        int epsgCrsCode,
+        int epsgAreaCode,
+        string epsgAreaName,
+        double centroidX,
+        double centroidY
     ) {
         this.epsgCrsCode = epsgCrsCode;
         this.epsgAreaCode = epsgAreaCode;

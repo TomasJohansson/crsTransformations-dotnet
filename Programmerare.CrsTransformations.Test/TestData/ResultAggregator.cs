@@ -8,16 +8,16 @@ class ResultAggregator {
 
     private IList<FileWithRows> listOfFileWithRows = new List<FileWithRows>();
 
-    public void addRowsFromFile(
+    public void AddRowsFromFile(
         IList<string> rowsFromFile,
         FileInfo sourceFile
     ) {
         FileWithRows fileWithRows = new FileWithRows(sourceFile, rowsFromFile);
         listOfFileWithRows.Add(fileWithRows);
-        ISet<int> indexes = fileWithRows.getIndexesForRowsWithSignificantDifference(fileWithRows, 0.001);
+        ISet<int> indexes = fileWithRows.GetIndexesForRowsWithSignificantDifference(fileWithRows, 0.001);
     }
 
-    public ISet<int> getIndexesForRowsWithSignificantDifference(
+    public ISet<int> GetIndexesForRowsWithSignificantDifference(
         double deltaValueForDifferencesToIgnore
     ) {
         ISet<int> indexes = new HashSet<int>();
@@ -25,7 +25,7 @@ class ResultAggregator {
             for (int j = i+1; j < listOfFileWithRows.Count; j++) {
                 FileWithRows fileWithRows_i = listOfFileWithRows[i];
                 FileWithRows fileWithRows_j = listOfFileWithRows[j];
-                ISet<int> indexesForRowsWithSignificantDifference = fileWithRows_i.getIndexesForRowsWithSignificantDifference(fileWithRows_j, deltaValueForDifferencesToIgnore);
+                ISet<int> indexesForRowsWithSignificantDifference = fileWithRows_i.GetIndexesForRowsWithSignificantDifference(fileWithRows_j, deltaValueForDifferencesToIgnore);
                 indexes.UnionWith(indexesForRowsWithSignificantDifference);
             }
         }
@@ -44,7 +44,7 @@ class ResultAggregator {
             this.rowsFromFile = rowsFromFile;
         }
 
-        public ISet<int> getIndexesForRowsWithSignificantDifference(
+        public ISet<int> GetIndexesForRowsWithSignificantDifference(
             FileWithRows that,
             double deltaValueForDifferencesToIgnore
         ) {
@@ -54,7 +54,7 @@ class ResultAggregator {
                 string thatRow = that.rowsFromFile[fileRowIndex];
                 TestResultItem t1 = new TestResultItem(thisRow);
                 TestResultItem t2 = new TestResultItem(thatRow);
-                DifferenceWhenComparingCoordinateValues diff = t1.isDeltaDifferenceSignificant(t2, deltaValueForDifferencesToIgnore);
+                DifferenceWhenComparingCoordinateValues diff = t1.IsDeltaDifferenceSignificant(t2, deltaValueForDifferencesToIgnore);
                 if(diff == DifferenceWhenComparingCoordinateValues.SIGNIFICANT_VALUE_DIFFERENCE) {
                     indexes.Add(fileRowIndex);
                 }

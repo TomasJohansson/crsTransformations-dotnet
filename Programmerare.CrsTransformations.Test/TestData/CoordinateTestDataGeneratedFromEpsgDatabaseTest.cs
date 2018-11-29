@@ -1,48 +1,80 @@
 using NUnit.Framework;
-using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
-using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using Programmerare.CrsTransformations.CompositeTransformations;
-using Programmerare.CrsTransformations.Coordinate;
-using Programmerare.CrsTransformations.Identifier;
+
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
+using System.Text;
+
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
+using Programmerare.CrsTransformations.Adapter.DotSpatial;
+using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
+using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Coordinate;
 
 namespace Programmerare.CrsTransformations.TestData
 {
 /**
- * The CSV FileInfo used in this test:
- *  src/test/resources/generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv
- * The above FileInfo ahs been created with the following class:
- *  \crsCodeGeneration\src\main\kotlin\com\programmerare\crsCodeGeneration\coordinateTestDataGenerator\CoordinateTestDataGenerator.kt
+ * This class can be used for producing "regression files" with lots of transformations
+ * for different EPSG codes and saving those results in files.
+ * Those files (produced by different adapter implementations) 
+ * can then be compared with each other (also with methods in this class below).
+ * It will also be possible to compare files produced by different versions 
+ * of the same implementations when having done an upgrade.
+ * For example, there is currently a produced file "ProjNet4GeoAPI_version_1.4.1.csv"
+ * and if there will be a version 1.4.2. in the future then another file 
+ * "ProjNet4GeoAPI_version_1.4.2.csv" can be created and then those two files 
+ * can be compared with each other, and then it might be possible to detect 
+ * problems for certain EPSG codes when there is a new significant difference.
+ * (Of course, a new detected difference can be explained in two ways,
+ *  either an improvement/bugfix or the opposite)
+ * 
+ * The CSV file used as input in this "test" class:
+ *  [YOUR_BASE_DIRECTORY_FOR_VS_SOLUTION]\Programmerare.CrsTransformations.Test\resources\generated\CoordinateTestDataGeneratedFromEpsgDatabase.csv
+ * The above file has been created with the following class:
+ *  [NOT_THIS_DOTNET_SOLUTION_BUT_A_JVM_PROJECT]\crsCodeGeneration\src\main\kotlin\com\programmerare\crsCodeGeneration\coordinateTestDataGenerator\CoordinateTestDataGenerator.kt
  * The relevant columns are the first column (EPSG code) and the last two column with WGS84 coordinates.
  * The WGS84 coordinate defines the "centroid" within an area where some other coordinate
  * system is used (and that other coordinate system is defined byt the EPSG code in the first column)
- * Thus the FileInfo defines a list of appropriate WGS84 coordinates which can be transformed back and forth
+ * Thus the file defines a list of appropriate WGS84 coordinates which can be transformed back and forth
  * to/from the coordinate system in the first EPSG column.
  */
-//@Disabled // you may want to temporary change this line if you want to run the "tests"
-// (and also see comments in the class TestCategory regarding that this "test" FileInfo creates files and produces output to the console)
-[Ignore("Not yet implemented")]
+
+[TestFixture]
+[Category(TestCategory.SideEffectPrintingConsoleOutput)]
+[Ignore("Not real tests but a method in this class can be executed if you temporary disable this 'Ignore'")]
+// You may want to temporary change the above line if you want to run the "tests"
+//  ( and also see comments in the class TestCategory regarding that this "test" file 
+//    creates files and produces output to the console)
 public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
-    private const string OUTPUT_DIRECTORY_FOR_REGRESSION_RESULTS = "src/test/resources/regression_results";
-
-    // the below FileInfo is used with method 'Resources.getResource' (the path is test/resources/generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv )
-    // and the content (columns) of the FileInfo are as below:
-    // e.g. "3006|1225|Sweden|17.083659606206545|61.98770256318016"
-    //      epsgCrsCode | epsgAreaCode | epsgAreaName | centroidX | centroidY
+    private const string NameOfVisualStudioProject = "Programmerare.CrsTransformations.Test";
+    private const string OUTPUT_DIRECTORY_FOR_REGRESSION_RESULTS = "resources/regression_results";
+    // The above two constants are used for finding a path like this:
+    // ...\crsTransformations-dotnet\Programmerare.CrsTransformations.Test\resources\regression_results
+    // by in runtime finding a path like this:
+    // ...crsTransformations-dotnet\Programmerare.CrsTransformations.Test\bin\Debug\...
+    // and then "navigating upwards" until the above project name is found,
+    // and then combining it with the above relative path to the regression results
+    
     private const string INPUT_TEST_DATA_FILE = "resources/generated/CoordinateTestDataGeneratedFromEpsgDatabase.csv";
-
-
+    // The content (columns) of the above file are as below:
+    // e.g. "3006|1225|Sweden|17.083659606206545|61.98770256318016"
+    //  epsgCrsCode | epsgAreaCode | epsgAreaName | centroidX | centroidY
+    
+    
     private bool shouldCreateNewRegressionFile = true;
 
     private const double DELTA_LIMIT_FOR_SUCCESS = 0.0001;
 
+    private const string PART_OF_FILENAME_DotSpatial = "DotSpatial";
+    private const string PART_OF_FILENAME_ProjNet4GeoAPI = "ProjNet4GeoAPI";
+    private const string PART_OF_FILENAME_MightyLittleGeodesy = "MightyLittleGeodesy";
+
     private static IList<EpsgCrsAndAreaCodeWithCoordinates> list;
 
     [SetUp]
-    public void before() {
+    public void Before() {
         list = GetCoordinatesFromGeneratedCsvFile();
     }
 
@@ -51,73 +83,65 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     // -------------------------------------------------------------------------------------
     // Below: "tests" labeled with 'TestCategory.SideEffectFileCreation'
 
-    // To run all tests excluding tests labeled with @Tag("SlowTest")
-    // as below, in IntelliJ IDEA:
-    // Run --> Edit configuration --> Junit --> Test kind --> Tags --> Tag expression: !SlowTest
+    // To run tests from a certain Category from within Visual Studio,
+    // see instructions in the file TestCategory.cs
 
-    [Test]
-    // @Tag("SlowTest") // actually not at all slow but very fast since very few coordinate systems are supported
-    //@Tag(TestCategory.SideEffectFileCreation) // test/resources/regression_results/
-    public void testAllTransformationsInGeneratedCsvFileWithGoober() {
-        TestResult testResultForGoober = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationAdapterDotSpatial(), list);
-        handleTestResults(
-            testResultForGoober,
+    [Test] // currently not a real test with assertions but printing console output with differences
+    // [Category(TestCategory.SlowTest)]  // actually not at all slow but very fast since very few coordinate systems are supported
+    [Category(TestCategory.SideEffectFileCreation)] // directory: .../resources/regression_results/
+    public void TestAllTransformationsInGeneratedCsvFileWithMightyLittleGeodesy() {
+        //testResults for CrsTransformationAdapterMightyLittleGeodesy
+        //seconds: 1
+        //countOfSuccess: 19
+        //countOfFailures: 6416
+        TestResult testResultForMightyLittleGeodesy = RunAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationAdapterMightyLittleGeodesy(), list);
+        HandleTestResults(
+            testResultForMightyLittleGeodesy,
             DELTA_LIMIT_FOR_SUCCESS,
             shouldCreateNewRegressionFile,
-            "_version_1.1" // build.gradle: implementation("com.github.goober:coordinate-transformation-library:1.1")
+            "_version_1.0.1" // LEAF_SWEDISH_CRS_MLG_1_0_1
+            // File created: "resources/regression_results/MightyLittleGeodesy_version_1.0.1.csv
         );
     }
 
-    // @Disabled
-    //@Tag(TestCategory.SlowTest) // e.g. 224 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
-    //@Tag(TestCategory.SideEffectFileCreation) // test/resources/regression_results/
-
     [Test] // currently not a real test with assertions but printing console output with differences
-    [Category(TestCategory.SideEffectFileCreation)]
-    [Category(TestCategory.SlowTest)] 
-    //[Ignore(TestCategory.SlowTest)] 
-    public void testAllTransformationsInGeneratedCsvFileWithGeoTools() {
-        //    seconds: 224
-        //    countOfSuccess: 4036
-        //    countOfFailures: 2399
-        TestResult testResultForGeoTools = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationAdapterDotSpatial(), list);
-        handleTestResults(
-            testResultForGeoTools,
+    [Category(TestCategory.SideEffectFileCreation)] // directory: .../resources/regression_results/
+    //[Category(TestCategory.SlowTest)] // no actually only 4 seconds which is not too bad
+    public void TestAllTransformationsInGeneratedCsvFileWithDotSpatial() {
+        //testResults for CrsTransformationAdapterDotSpatial
+        //seconds: 4
+        //countOfSuccess: 5074
+        //countOfFailures: 1361
+        TestResult testResultForDotSpatial = RunAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationAdapterDotSpatial(), list);
+        HandleTestResults(
+            testResultForDotSpatial,
             DELTA_LIMIT_FOR_SUCCESS,
             shouldCreateNewRegressionFile,
-            "_version_20.0"  // build.gradle: implementation("org.geotools:gt-main:20.0")
-            // FileInfo created: "test/resources/regression_results/CrsTransformationAdapterGeoTools_version_20.0_.csv
+            "_version_2.0.0_rc1"  // LEAF_DOT_SPATIAL_2_0_0_RC1
+            // File created: "resources/regression_results/DotSpatial_version_2.0.0_rc1.csv
         );
-        // There are differences in the above generated FileInfo (when using version 20.0 instead of 19.1)
-        // but when roughly looking at the files with WinMerge the differences seem to be very small.
-        // However: TODO: use code to detect significant differences, and if those exist,
-        // then try to figure out if it is improvement or the opposite.
-        // If the later version seem to have introduced a bug/error then try to report it to the GeoTools project
-
         // TODO: compute standard deviations for the results e.g.
         // the deviations from the original coordinate when transforming back and forth,
         // and also compare them with each other and caluclate the standard deviation
         // from the median value ...
     }
 
-    //@Test
-    //@Tag(TestCategory.SlowTest) // e.g. 122 seconds for this test method while all other (approx 80) tests (except those in this test class) take about one minute
-    //@Tag(TestCategory.SideEffectFileCreation)
     [Test]
-    public void testAllTransformationsInGeneratedCsvFileWithGeoPackage() {
-        //    seconds: 122
-        //    countOfSuccess: 3918
-        //    countOfFailures: 2517
-        TestResult testResultForGeoPackage = runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationAdapterDotSpatial(), list);
-        handleTestResults(
-            testResultForGeoPackage,
+    [Category(TestCategory.SideEffectFileCreation)] // directory: .../resources/regression_results/
+    //[Category(TestCategory.SlowTest)] // no actually only 5 seconds which is not too bad
+    public void TestAllTransformationsInGeneratedCsvFileWithProjNet4GeoAPI() {
+        //testResults for CrsTransformationAdapterProjNet4GeoAPI
+        //seconds: 5
+        //countOfSuccess: 2481
+        //countOfFailures: 3954
+        TestResult testResultForProjNet4GeoAPI = RunAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationAdapterProjNet4GeoAPI(), list);
+        HandleTestResults(
+            testResultForProjNet4GeoAPI,
             DELTA_LIMIT_FOR_SUCCESS,
             shouldCreateNewRegressionFile,
-            "_version_3.1.0" // build.gradle: compile group: 'mil.nga.geopackage', name: 'geopackage', version: '3.1.0'
-            // FileInfo created: "test/resources/regression_results/CrsTransformationAdapterGeoPackageNGA_version_3.1.0.csv
+            "_version_1.4.1" // LEAF_PROJ_NET_4_GEO_API_1_4_1
+            // File created: "resources/regression_results/ProjNet4GeoAPI_version_1.4.1.csv
         );
-        // The above created latest output FileInfo "CrsTransformationAdapterGeoPackageNGA_version_3.1.0.csv"
-        // was identical with the FileInfo created for the previous version (generated by GeoPackage 3.0.0)
     }
 
     // Above: "tests" labeled with 'TestCategory.SideEffectFileCreation'
@@ -133,36 +157,34 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
     private static double deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation = 0.000000000001;
 
-    //@Test // currently not a real test with assertions but printing console output with differences
-    //@Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    public void compareResultsForDifferentVersionsOfGeoTools() {
-        // filename e.g. "CrsTransformationAdapterGeoTools_version_20.0.csv"
-        compareTheTwoLatestVersion(
-            "DotSpatial",
+    [Test] // currently not a real test with assertions but printing console output with differences
+    [Category(TestCategory.SideEffectPrintingConsoleOutput)]
+    public void CompareResultsForDifferentVersionsOfDotSpatial() {
+        // filename e.g. "DotSpatial_version_2.0.0_rc1.csv"
+        CompareTheTwoLatestVersion(
+            PART_OF_FILENAME_DotSpatial,
             deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
             true // shouldAlsoDisplayDifferencesWhenValueIsMissing
         );
     }
 
-    //@Test // currently not a real test with assertions but printing console output with differences
-    //@Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    [Test]
-    public void compareResultsForDifferentVersionsOfNGA() {
-        // filename e.g. "CrsTransformationAdapterGeoPackageNGA_version_3.1.0.csv"
-        compareTheTwoLatestVersion(
-            "NGA",
+    [Test] // currently not a real test with assertions but printing console output with differences
+    [Category(TestCategory.SideEffectPrintingConsoleOutput)]
+    public void CompareResultsForDifferentVersionsOfProjNet4GeoAPI() {
+        // filename e.g. "ProjNet4GeoAPI_version_1.4.1.csv"
+        CompareTheTwoLatestVersion(
+            PART_OF_FILENAME_ProjNet4GeoAPI,
             deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
             true // shouldAlsoDisplayDifferencesWhenValueIsMissing
         );
     }
 
-    //@Test // currently not a real test with assertions but printing console output with differences
-    //@Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    [Test]
-    public void compareResultsForDifferentVersionsOfGoober() {
-        // filename e.g. "CrsTransformationAdapterGooberCTL_version_1.1.csv"
-        compareTheTwoLatestVersion(
-            "Goober",
+    [Test] // currently not a real test with assertions but printing console output with differences
+    [Category(TestCategory.SideEffectPrintingConsoleOutput)]
+    public void CompareResultsForDifferentVersionsOfMightyLittleGeodesy() {
+        // filename e.g. "MightyLittleGeodesy_version_1.0.1.csv"
+        CompareTheTwoLatestVersion(
+            PART_OF_FILENAME_MightyLittleGeodesy,
             deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
             true // shouldAlsoDisplayDifferencesWhenValueIsMissing
         );
@@ -179,38 +201,53 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
     // Below: "tests" comparing results with different implementations
 
-    private const double deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation = 0.00001;
+    private const double deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation = 0.0000001;
+
 
     // -------------------------------------------------------------------------------------
-    // Comparing the latest results of GeoTools with the results from the other files
-    // (since GeoTools seem to support the greatest number of EPSG codes, based on the FileInfo sizes for the regression files)
-    //@Test // currently not a real test with assertions but printing console output with differences
-    //@Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    [Test]
-    public void compareResultsForLatestGeoToolsAndGoober() {
-        // filenames e.g. "CrsTransformationAdapterGeoTools_version_20.0.csv" and "CrsTransformationAdapterGooberCTL_version_1.1.csv"
-        FileInfo geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
-        FileInfo gooberFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Goober")[0];
-        compareWithRegressionFileContent(
-                geoToolsFile,
-                gooberFile,
-                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
-                false // shouldAlsoDisplayDifferencesWhenValueIsMissing
+    // Comparing the latest results of DotSpatial with the results from the other files
+    // (since DotSpatial seem to support the greatest number of EPSG codes, 
+    //  based on the file sizes for the regression files)
+    [Category(TestCategory.SideEffectPrintingConsoleOutput)]
+    [Test] // currently not a real test with assertions but printing console output with differences
+    public void CompareResultsForLatestDotSpatialAndMightyLittleGeodesyFile () {
+        // filenames e.g. "MightyLittleGeodesy_version_1.0.1.csv"
+        FileInfo dotSpatialFile = GetLatestDotSpatialFile();
+        FileInfo mightyLittleGeodesyFile = GetLatestMightyLittleGeodesyFile();
+        CompareWithRegressionFileContent(
+            dotSpatialFile,
+            mightyLittleGeodesyFile,
+            deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
+            false // shouldAlsoDisplayDifferencesWhenValueIsMissing
         );
+        // when above comparing DotSpatial and MightyLittleGeodesy
+        // with the following delta values:
+        //0.0000001 (no difference detected)
+        //0.00000001 (five differences detected, EPSG 3019-3024 i.e. when using CRS RT90)
+        //0.000000001 (differences detected for ALMOST all transformatsions RT90 and SWEREF99 , EPSG 3006-3024, except EPSG 3012)
+        //0.0000000001 (differences detected for ALL above including EPSG 3012)
+        // Difference when transforming with EPSG 3012:
+        //  13.7217045972052|62.9689174122742
+        //  versus:
+        //  13.7217045977201|62.9689174125193
+        //   0.0000000001     0.0000000001
     }
 
-    //@Test // currently not a real test with assertions but printing console output with differences
-    //@Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    [Test]
-    public void compareResultsForLatestGeoToolsAndGeoPackageNGA() {
-        FileInfo geoToolsFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
-        FileInfo geoPackageNGAFile = this.getFilesWithRegressionsResultsSortedWithLatesFirst("NGA")[0];
-        compareWithRegressionFileContent(
-                geoToolsFile,
-                geoPackageNGAFile,
-                deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForDIFFERENTImplementation,
-                false // shouldAlsoDisplayDifferencesWhenValueIsMissing
+    [Category(TestCategory.SideEffectPrintingConsoleOutput)]
+    [Test] // currently not a real test with assertions but printing console output with differences
+    public void CompareResultsForLatestDotSpatialAndProjNet4GeoAPIFile() {
+        FileInfo dotSpatialFile = GetLatestDotSpatialFile();
+        FileInfo projNet4GeoAPIFile = GetLatestProjNet4GeoAPIFile();
+        CompareWithRegressionFileContent(
+            dotSpatialFile,
+            projNet4GeoAPIFile,
+            0.01,
+            false // shouldAlsoDisplayDifferencesWhenValueIsMissing
         );
+        // when above comparing DotSpatial and ProjNet4GeoAPIFile
+        // with the following delta values:
+        // 0.01 (no difference detected larger than this delta)
+        // 0.001 (eight differences detected, with these EPSG codes: 4804 4817 25700 27394 27395 27396 27397 27398)
     }
 
     // Above: "tests" comparing results with different implementations
@@ -223,47 +260,48 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     // i.e. to make it easier to find implementations which are potentially very incorrect (buggy)
     // for transformatsion regarding a certain EPSG code where the significant differences were found
 
-    //@Test // currently not a real test with assertions but printing console output with differences
-    //@Tag(TestCategory.SideEffectPrintingConsoleOutput)
-    [Test]
-    public void findPotentialBuggyImplementations() { // similarly named method in another class, see comment there (current class name: CoordinateTestDataGeneratedFromEpsgDatabaseTest2')
-        FileInfo geoToolsFileInfo = this.getFilesWithRegressionsResultsSortedWithLatesFirst("GeoTools")[0];
-        FileInfo gooberFileInfo = this.getFilesWithRegressionsResultsSortedWithLatesFirst("Goober")[0];
-        FileInfo ngaFileInfo = this.getFilesWithRegressionsResultsSortedWithLatesFirst("NGA")[0];
-
-        throw new Exception(".NET todo below");
-        //List<FileInfo> filesToCompare = Arrays.asList(geoToolsFile, gooberFile, ngaFile, orbisFile, projFile);
-        //double deltaValueForDifferencesToIgnore = 0.001;
-        //compareFiles(
-        //    filesToCompare,
-        //    deltaValueForDifferencesToIgnore
-        //);
+    [Category(TestCategory.SideEffectPrintingConsoleOutput)]
+    [Test] // currently not a real test with assertions but printing console output with differences
+    public void FindPotentialBuggyImplementations() { // similarly named method in another class, see comment there (current class name: CoordinateTestDataGeneratedFromEpsgDatabaseTest2')
+        FileInfo dotSpatialFile = GetLatestDotSpatialFile();
+        FileInfo projNet4GeoAPIFile = GetLatestProjNet4GeoAPIFile();
+        FileInfo mightyLittleGeodesyFile = GetLatestMightyLittleGeodesyFile();
+        IList<FileInfo> filesToCompare = new List<FileInfo>{dotSpatialFile, projNet4GeoAPIFile, mightyLittleGeodesyFile };
+        double deltaValueForDifferencesToIgnore = 0.001;
+        CompareFiles(
+            filesToCompare,
+            deltaValueForDifferencesToIgnore
+        );
+        /// result from the above when using delta 0.001 :
+        // Eight differences detected, with these EPSG codes: 4804 4817 25700 27394 27395 27396 27397 27398
     }
 
-    private void compareFiles(
+    private void CompareFiles(
         IList<FileInfo> filesToCompare,
         double deltaValueForDifferencesToIgnore
     ) {
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
         ResultAggregator resultAggregator = new ResultAggregator();
         bool shouldShowALLdifferences = deltaValueForDifferencesToIgnore < 0;
-        List<List<String>> listOfRowsPerFile = new List<List<string>>();
+        IList<IList<String>> listOfRowsPerFile = new List<IList<string>>();
         int numberOfRowsInFile = -1;
         foreach(FileInfo file in filesToCompare) {
-            List<String> rowsInFile = getAllLinesFromTextFileUTF8(file);
+            IList<string> rowsInFile = GetAllLinesFromTextFileUTF8(file);
             listOfRowsPerFile.Add(rowsInFile);
-            resultAggregator.addRowsFromFile(rowsInFile, file);
+            resultAggregator.AddRowsFromFile(rowsInFile, file);
             if(numberOfRowsInFile < 0) {
                 numberOfRowsInFile = rowsInFile.Count;
             }
             else {
                 if(rowsInFile.Count != numberOfRowsInFile) {
-                    String errorMessage = "Not even the same number of rows in the files";
+                    string errorMessage = "Not even the same number of rows in the files";
                     Console.WriteLine(errorMessage);
                     throw new Exception(errorMessage);
                 }
             }
         }
-        ISet<int> indexesForRowsWithSignificantDifference = resultAggregator.getIndexesForRowsWithSignificantDifference(deltaValueForDifferencesToIgnore);
+        ISet<int> indexesForRowsWithSignificantDifference = resultAggregator.GetIndexesForRowsWithSignificantDifference(deltaValueForDifferencesToIgnore);
         foreach (int ind in indexesForRowsWithSignificantDifference) {
             Console.WriteLine("-----------------");
             Console.WriteLine("index " + ind);
@@ -273,19 +311,22 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
                 Console.WriteLine(rowContent + " ; " + file.Name);
             }
         }
+        long totalNumberOfSecondsForAllTransformations = (long)stopWatch.Elapsed.TotalSeconds;
+        Console.WriteLine("Total number of seconds for method compareFiles: " + totalNumberOfSecondsForAllTransformations);
         Console.WriteLine("-------------------------------------------------");
     }
     // -------------------------------------------------------------------------------------
 
 
-    private TestResult runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(
-            ICrsTransformationAdapter crsTransformationAdapter,
-            IList<EpsgCrsAndAreaCodeWithCoordinates> coordinatesFromGeneratedCsvFile
+    private TestResult RunAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(
+        ICrsTransformationAdapter crsTransformationAdapter,
+        IList<EpsgCrsAndAreaCodeWithCoordinates> coordinatesFromGeneratedCsvFile
     ) {
-        List<TestResultItem> testResultItems = new List<TestResultItem>();
+        var stopWatch = new Stopwatch();
+        stopWatch.Start();
+        IList<TestResultItem> testResultItems = new List<TestResultItem>();
         int counter = 0;
 
-        //long startTime = System.nanoTime();
         foreach (EpsgCrsAndAreaCodeWithCoordinates item in coordinatesFromGeneratedCsvFile) {
             CrsCoordinate inputCoordinateWGS84 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(item.centroidX, item.centroidY, EpsgNumber.WORLD__WGS_84__4326);
             CrsTransformationResult resultOfTransformationFromWGS84 = crsTransformationAdapter.Transform(inputCoordinateWGS84, item.epsgCrsCode);
@@ -298,9 +339,8 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
                 Console.WriteLine(this.GetType().Name + " , counter: " + counter + " (of the total " + coordinatesFromGeneratedCsvFile.Count + ") for adapter " + crsTransformationAdapter.GetType().Name); // to show some progress
             // if(counter > 300) break;
         }
-        //long elapsedNanos = System.nanoTime() - startTime;
-        //long totalNumberOfSecondsForAllTransformations = TimeUnit.NANOSECONDS.toSeconds(elapsedNanos);
-        long totalNumberOfSecondsForAllTransformations = 432; // TODO
+        long totalNumberOfSecondsForAllTransformations = (long)stopWatch.Elapsed.TotalSeconds;
+        Console.WriteLine("Total number of seconds for method runAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile: " + totalNumberOfSecondsForAllTransformations);
         return new TestResult(crsTransformationAdapter, totalNumberOfSecondsForAllTransformations, testResultItems);
     }
 
@@ -316,30 +356,29 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
      * @param deltaLimitForSuccess
      * @param createNewRegressionFileInfo if false, then instead compare with previous regression file
      */
-    private void handleTestResults(
+    private void HandleTestResults(
         TestResult testResult,
         double deltaLimitForSuccess,
         bool shouldCreateNewRegressionFile,
-        String fileNameSuffixExcludingExtension
+        string fileNameSuffixExcludingExtension
     ) {
         Console.WriteLine("-------------------------------");
         Console.WriteLine("testResults for " + testResult.adapter.GetType().Name);
         Console.WriteLine("seconds: " + testResult.totalNumberOfSecondsForAllTransformations);
-        List<TestResultItem> testResultItems = testResult.testResultItems;
+        IList<TestResultItem> testResultItems = testResult.testResultItems;
         int countOfFailures = 0;
         int countOfSuccess = 0;
         bool isSuccess;
         IList<string> linesWithCurrentResults = new List<string>();
         foreach (TestResultItem testResultItem in testResultItems) {
-            String s = testResultItem.getResultStringForRegressionFile();
-            linesWithCurrentResults.Add(s);
-            isSuccess = testResultItem.isSuccessfulTransformationFromWGS84();
+            string resultString = testResultItem.GetResultStringForRegressionFile();
+            linesWithCurrentResults.Add(resultString);
+            isSuccess = testResultItem.IsSuccessfulTransformationFromWGS84();
             if (isSuccess) {
-                isSuccess  = testResultItem.isSuccessfulTransformationBackToWGS84();
+                isSuccess  = testResultItem.IsSuccessfulTransformationBackToWGS84();
                 if (isSuccess) {
-                    CrsCoordinate inputCoordinateWGS84 = testResultItem.getInputCoordinateWGS84();
-                    //Coordinate wgs84Again = resultOfTransformationBackToWGS84.getOutputCoordinate();
-                    CrsCoordinate wgs84Again = testResultItem.getCoordinateOutputTransformationBackToWGS84();
+                    CrsCoordinate inputCoordinateWGS84 = testResultItem.GetInputCoordinateWGS84();
+                    CrsCoordinate wgs84Again = testResultItem.GetCoordinateOutputTransformationBackToWGS84();
                     double deltaLong = Math.Abs(inputCoordinateWGS84.XEastingLongitude - wgs84Again.XEastingLongitude);
                     double deltaLat = Math.Abs(inputCoordinateWGS84.YNorthingLatitude - wgs84Again.YNorthingLatitude);
                     isSuccess = deltaLong < deltaLimitForSuccess && deltaLat < deltaLimitForSuccess;
@@ -355,48 +394,69 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         Console.WriteLine("countOfFailures: " + countOfFailures);
         Console.WriteLine("-------------------------------");
 
-        FileInfo file = getFileForRegressionResults(testResult.adapter, fileNameSuffixExcludingExtension);
+        FileInfo file = GetFileForRegressionResults(testResult.adapter, fileNameSuffixExcludingExtension);
         if (shouldCreateNewRegressionFile) {
-            createNewRegressionFile(file, linesWithCurrentResults);
+            CreateNewRegressionFile(file, linesWithCurrentResults);
         }
     }
 
-    private FileInfo getFileForRegressionResults(
+    private FileInfo GetFileForRegressionResults(
         ICrsTransformationAdapter adapter, 
         string fileNameSuffixExcludingExtension
     ) {
-        DirectoryInfo directoryForRegressionsResults = getDirectoryForRegressionsResults();
-            //new FileInfo()
-        FileInfo file = new FileInfo(directoryForRegressionsResults.Name + "" + adapter.GetType().Name + fileNameSuffixExcludingExtension + ".csv");
+        DirectoryInfo directoryForRegressionsResults = GetDirectoryForRegressionsResults();
+        FileInfo file = new FileInfo(
+            Path.Combine(
+                directoryForRegressionsResults.FullName, 
+                adapter.ShortNameOfImplementation + fileNameSuffixExcludingExtension + ".csv")
+        );
         return file;
     }
 
-    private DirectoryInfo getDirectoryForRegressionsResults() {
-        //// https://docs.oracle.com/javase/7/docs/api/java/io/File.html
-        //// "... system property user.dir, and is typically the directory in which the Java virtual machine was invoked"
-        //FileInfo userDir = new FileInfo(System.getProperty("user.dir"));
-        //FileInfo directoryForRegressionsResults = new File(userDir, OUTPUT_DIRECTORY_FOR_REGRESSION_RESULTS);
-        //if (!directoryForRegressionsResults.exists() || !directoryForRegressionsResults.isDirectory()) {
-        //    throw new Exception("Directory does not exist: " + directoryForRegressionsResults.getAbsolutePath());
-        //}
-        //return directoryForRegressionsResults;
-        throw new Exception("Not implemented with .NET yet");
+    /// <summary>
+    /// Should return a directory something like this:
+    /// [YOUR_BASE_DIRECTORY_FOR_VS_SOLUTION]\Programmerare.CrsTransformations.Test\resources\regression_results
+    /// </summary>
+    /// <returns></returns>
+    private DirectoryInfo GetDirectoryForRegressionsResults() {
+        DirectoryInfo dir = new DirectoryInfo(".");
+        // the above directory should now be something like below:
+        // ...\Programmerare.CrsTransformations.Test\bin\Debug\netcoreapp2.1
+        const int maxParentDirectoriesToNavigateUpwards = 4;
+        int directoryNavigationCounter = 0;
+        while(directoryNavigationCounter < maxParentDirectoriesToNavigateUpwards) {
+            directoryNavigationCounter++;
+            dir = dir.Parent;
+            if(dir.Name.Equals(NameOfVisualStudioProject)) break;
+        }
+        if(!dir.Name.Equals(NameOfVisualStudioProject)) {
+            throw new Exception("Could not find the project directory with the following name: " + NameOfVisualStudioProject);
+        }
+        DirectoryInfo directoryForRegressionsResults = new DirectoryInfo(
+            Path.Combine(
+                dir.FullName, 
+                OUTPUT_DIRECTORY_FOR_REGRESSION_RESULTS
+            )
+        );
+        if (!directoryForRegressionsResults.Exists) {
+            Console.WriteLine("Directory did not exist: " + directoryForRegressionsResults.FullName);
+            throw new Exception("Create the following directory manually if it seems to be a proper directory path: " + directoryForRegressionsResults.FullName);
+        }
+        return directoryForRegressionsResults;
     }
 
-    private void createNewRegressionFile(FileInfo file, IList<string> linesWithCurrentResults) {
-        //try {
-        //    Path write = Files.write(file.toPath(), linesWithCurrentResults, Charset.forName("UTF-8"));
-        //} catch (IOException e) {
-        //    e.printStackTrace();
-        //}
-        throw new Exception("Not implemented with .NET yet");
+    private void CreateNewRegressionFile(
+        FileInfo file, 
+        IList<string> linesWithCurrentResults
+    ) {
+        //Console.WriteLine("createNewRegressionFile " + file.FullName);
+        File.WriteAllLines(file.FullName, linesWithCurrentResults, Encoding.UTF8);
     }
 
-    //@Test
-    //@Tag(TestCategory.SideEffectPrintingConsoleOutput)
+    [Category(TestCategory.SideEffectPrintingConsoleOutput)]
     [Test]
-    public void showDifferenceIfSignificantTest() {
-        DifferenceWhenComparingCoordinateValues differenceWhenComparingCoordinateValues = showDifferenceIfSignificant(
+    public void ShowDifferenceIfSignificantTest() {
+        DifferenceWhenComparingCoordinateValues differenceWhenComparingCoordinateValues = ShowDifferenceIfSignificant(
             "35.00827072383671|31.517029225386523|2039|200816.30213267874|602774.2381723676|35.00827072137521|31.517029283149466",
             "35.00827072383671|31.517029225386523|2039|200816.30213267755|602774.2381723677|35.00827072137521|31.517029283149473",
             deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
@@ -405,10 +465,32 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         if(differenceWhenComparingCoordinateValues != DifferenceWhenComparingCoordinateValues.SIGNIFICANT_VALUE_DIFFERENCE) {
 //            Console.WriteLine("no significant differenceWhenComparingCoordinateValues");
         }
-        Assert.AreNotEqual(differenceWhenComparingCoordinateValues, DifferenceWhenComparingCoordinateValues.SIGNIFICANT_VALUE_DIFFERENCE);
+        Assert.AreNotEqual(
+            differenceWhenComparingCoordinateValues, 
+            DifferenceWhenComparingCoordinateValues.SIGNIFICANT_VALUE_DIFFERENCE
+        );
     }
 
-    private void compareWithRegressionFileContent(
+    /// <summary>
+    /// The method can be used for comparing different versions for the same adapter
+    /// (i.e. produced by different versions)
+    /// In other words, if there would be (but currently not) a version 1.4.2 of ProjNet4GeoAPI,
+    /// then the following two files would be compared:
+    ///     ProjNet4GeoAPI_version_1.4.2.csv (in the parameter "fileWithLatestResults")
+    ///     ProjNet4GeoAPI_version_1.4.1.csv (in the parameter "fileWithSecondLatestResults")
+    /// However, the method actually can be used for comparing versions from 
+    /// different adapters e.g. comparing these two files:
+    ///     ProjNet4GeoAPI_version_1.4.1.csv
+    ///     MightyLittleGeodesy_version_1.0.1.csv
+    /// In the latter case, the file parameter names does not make as much sense.
+    /// (TODO: rename the parameters, but then also rename other 
+    ///     similarly named variables within the method)
+    /// </summary>
+    /// <param name="fileWithLatestResults"></param>
+    /// <param name="fileWithSecondLatestResults"></param>
+    /// <param name="deltaValueForDifferencesToIgnore"></param>
+    /// <param name="shouldAlsoDisplayDifferencesWhenValueIsMissing"></param>
+    private void CompareWithRegressionFileContent(
         FileInfo fileWithLatestResults,
         FileInfo fileWithSecondLatestResults,
         double deltaValueForDifferencesToIgnore, // if negative value then show ANY difference
@@ -417,14 +499,16 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         bool shouldShowALLdifferences = deltaValueForDifferencesToIgnore < 0;
         Console.WriteLine("-------------------------------------------------");
         Console.WriteLine("Will now compare the files " + fileWithLatestResults.Name + " and " + fileWithSecondLatestResults.Name);
-        List<String> linesWithLatestResults = getAllLinesFromTextFileUTF8(fileWithLatestResults);
-        List<String> linesWithSecondLatestResults = getAllLinesFromTextFileUTF8(fileWithSecondLatestResults);
+        IList<string> linesWithLatestResults = GetAllLinesFromTextFileUTF8(fileWithLatestResults);
+        IList<string> linesWithSecondLatestResults = GetAllLinesFromTextFileUTF8(fileWithSecondLatestResults);
 
+        Console.WriteLine("number of rows: " + linesWithLatestResults.Count);
         // assertEquals(linesWithLatestResults.size(), linesWithSecondLatestResults.size(), "Not even the same number of results as previously");
         if(linesWithLatestResults.Count != linesWithSecondLatestResults.Count) {
             Console.WriteLine("Not even the same number of results as previously: " + linesWithLatestResults.Count + " vs " + linesWithSecondLatestResults.Count);
         }
-        for (int i = 0; i < linesWithLatestResults.Count; i++) {
+        int numberOfRowsToIiterate = linesWithLatestResults.Count;
+        for (int i = 0; i < numberOfRowsToIiterate; i++) {
             //assertEquals(linesWithLatestResults.get(i), linesWithSecondLatestResults.get(i));
             if(!linesWithLatestResults[i].Equals(linesWithSecondLatestResults[i])) {
                 if(shouldShowALLdifferences) {
@@ -433,7 +517,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
                     Console.WriteLine(linesWithSecondLatestResults[i]);
                 }
                 else {
-                    showDifferenceIfSignificant(
+                    ShowDifferenceIfSignificant(
                         linesWithLatestResults[i],
                         linesWithSecondLatestResults[i],
                         deltaValueForDifferencesToIgnore,
@@ -445,15 +529,15 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         Console.WriteLine("-------------------------------------------------");
     }
 
-    private DifferenceWhenComparingCoordinateValues showDifferenceIfSignificant(
-        String lineFromFileWithRegressionResults,
-        String lineFromFileWithRegressionResults2,
+    private DifferenceWhenComparingCoordinateValues ShowDifferenceIfSignificant(
+        string lineFromFileWithRegressionResults,
+        string lineFromFileWithRegressionResults2,
         double deltaValueForDifferencesToIgnore,
         bool shouldAlsoDisplayDifferencesWhenValueIsMissing
     ) {
         TestResultItem t1 = new TestResultItem(lineFromFileWithRegressionResults);
         TestResultItem t2 = new TestResultItem(lineFromFileWithRegressionResults2);
-        DifferenceWhenComparingCoordinateValues diff = t1.isDeltaDifferenceSignificant(t2, deltaValueForDifferencesToIgnore);
+        DifferenceWhenComparingCoordinateValues diff = t1.IsDeltaDifferenceSignificant(t2, deltaValueForDifferencesToIgnore);
         if(
             (shouldAlsoDisplayDifferencesWhenValueIsMissing &&
                 (
@@ -476,119 +560,130 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         return diff;
     }
 
-    private List<String> getAllLinesFromTextFileUTF8(FileInfo file) {
-        //try {
-        //    return Resources.readLines(file.toURI().toURL(), Charset.forName("UTF-8"));
-        //} catch (IOException e) {
-        //    throw new RuntimeException(e);
-        //}
-        throw new Exception(".NET todo");
-    }
-
-    /**
-     * The FileInfo with coordinates are generated from another module "crsCodeGeneration".
-     *  (the class 'CoordinateTestDataGenerator' which are creating the data from a MS Access file
-     *  and from shapeFileInfo with polygon used for creating the coordinates as centroid points
-     *  within a certain area where the EPSG code is defined to be used)
-     */
-    public static IList<EpsgCrsAndAreaCodeWithCoordinates> GetCoordinatesFromGeneratedCsvFile() {
-        var list = new List<EpsgCrsAndAreaCodeWithCoordinates>();
-        using(StreamReader sr = File.OpenText(INPUT_TEST_DATA_FILE)) {
+    private static IList<string> GetAllLinesFromTextFileUTF8(
+        FileInfo file
+    ) {
+        var list = new List<string>();
+        // the below "File.OpenText" opens an UTF8 encoded text file
+        using(StreamReader sr = File.OpenText(file.FullName)) {
             string line;
             while( (line = sr.ReadLine()) != null ) {
-                EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(line);
-                list.Add(epsgCrsAndAreaCodeWithCoordinates);
+                list.Add(line);
             }
         }
         return list;
     }
 
-    private static EpsgCrsAndAreaCodeWithCoordinates createEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(string line) {
+    /**
+     * The FileInfo with coordinates are generated from another project "crsCodeGeneration" (a JVM project from which this .NET solution was ported).
+     *  (the class 'CoordinateTestDataGenerator' which are creating the data from a relational database ("EPSG database")
+     *  and from shapeFileInfo with polygon used for creating the coordinates as centroid points
+     *  within a certain area where the EPSG code is defined to be used)
+     *  Both the relational (SQL) database and the polygon was downloaded from EPSG website.
+     */
+    public static IList<EpsgCrsAndAreaCodeWithCoordinates> GetCoordinatesFromGeneratedCsvFile() {
+        var list = new List<EpsgCrsAndAreaCodeWithCoordinates>();
+        var lines = GetAllLinesFromTextFileUTF8(new FileInfo(INPUT_TEST_DATA_FILE));
+        foreach(string line in lines) {
+            EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = CreateEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(line);
+            list.Add(epsgCrsAndAreaCodeWithCoordinates);
+        }
+        return list;
+    }
+
+    private static EpsgCrsAndAreaCodeWithCoordinates CreateEpsgCrsAndAreaCodeWithCoordinatesFromLineInCsvFile(
+        string line
+    ) {
         string trimmedLine = line.Trim();
         //Console.WriteLine("EpsgCrsAndAreaCodeWithCoordinates trimmedLine: " + trimmedLine);
         // e.g. "3006|1225|Sweden|17.083659606206545|61.98770256318016"
         string[] parts = trimmedLine.Split('|');
         Assert.AreEqual(5, parts.Length, "Problem with the expected parts in this line: " + trimmedLine);
         return new EpsgCrsAndAreaCodeWithCoordinates(
-            int.Parse(parts[0]),     // epsgCrsCode
-            int.Parse(parts[1]),     // epsgAreaCode
-            parts[2],                       // epsgAreaName
-            Double.Parse(parts[3]),   // centroidX
-            Double.Parse(parts[4])    // centroidY
+            int.Parse(parts[0]),    // epsgCrsCode
+            int.Parse(parts[1]),    // epsgAreaCode
+            parts[2],               // epsgAreaName
+            Double.Parse(parts[3]), // centroidX
+            Double.Parse(parts[4])  // centroidY
         );
     }
 
 
-    private FileInfo[] getFilesWithRegressionsResultsSortedWithLatesFirst(
-        String partOfTheFileName
+    private FileInfo GetLatestFileWithRegressionsResults(
+        string partOfTheFileName
     ) {
-        //FileInfo directoryForRegressionsResults = getDirectoryForRegressionsResults();
-        //FileInfo[] files = directoryForRegressionsResults.listFiles(FileInfo -> file.getName().contains(partOfTheFileName));
-        //sortFilesWithLatestFirst(files);
-        //foreach (FileInfo f in files) {
-        //    Console.WriteLine(f.Name);
-        //}
-        //return files;
-        throw new Exception(".NET todo");
+        FileInfo[] res = GetFilesWithRegressionsResultsSortedWithLatestFirst(partOfTheFileName);
+        if(res.Length < 1) throw new Exception("Could not find a file with this string as a part of the filename: " + partOfTheFileName);
+        return res[0];
+    }
+    private FileInfo[] GetFilesWithRegressionsResultsSortedWithLatestFirst(
+        string partOfTheFileName
+    ) {
+        DirectoryInfo directoryForRegressionsResults = GetDirectoryForRegressionsResults();
+        //FileInfo[] files = directoryForRegressionsResults.GetFiles(partOfTheFileName); / fails
+        FileInfo[] files = directoryForRegressionsResults.GetFiles("*" + partOfTheFileName +"*");
+        SortFilesWithLatestFirst(files);
+        return files;
     }
 
     /**
-     * @param partOfTheFileName e.g. "GeoTools" to match FileInfo names such as "CrsTransformationAdapterGeoTools_version_19.1"
+     * @param partOfTheFileName e.g. "DotSpatial" to match FileInfo names such as "DotSpatial_version_2.0.0_rc1.csv"
      */
-    private void compareTheTwoLatestVersion(
-        String partOfTheFileName,
+    private void CompareTheTwoLatestVersion(
+        string partOfTheFileName,
         double deltaValueForDifferencesToIgnore,
         bool shouldAlsoDisplayDifferencesWhenValueIsMissing
     ) {
-        FileInfo[] files = getFilesWithRegressionsResultsSortedWithLatesFirst(partOfTheFileName);
+        FileInfo[] files = GetFilesWithRegressionsResultsSortedWithLatestFirst(partOfTheFileName);
         if(files.Length < 2) {
-            Console.WriteLine("There are not two files containing the filename part " + partOfTheFileName + " in the directory " + getDirectoryForRegressionsResults().FullName);
+            Console.WriteLine("There are not two files containing the filename part " + partOfTheFileName + " in the directory " + GetDirectoryForRegressionsResults().FullName);
             return;
         }
-        //compareWithRegressionFileContent(files[0], files[1], 0.0000000000000001);
-        compareWithRegressionFileContent(files[0], files[1], deltaValueForDifferencesToIgnore, shouldAlsoDisplayDifferencesWhenValueIsMissing);
+        CompareWithRegressionFileContent(
+            files[0], 
+            files[1], 
+            deltaValueForDifferencesToIgnore, 
+            shouldAlsoDisplayDifferencesWhenValueIsMissing
+        );
     }
 
-    private void sortFilesWithLatestFirst(FileInfo[] files) {
-        //Arrays.sort(files, new Comparator<File>() {
-        //    @Override
-        //    public int compare(FileInfo o1, FileInfo o2) {
-        //        long diff = o2.lastModified() - o1.lastModified();
-        //        if(diff > 0) return 1;
-        //        if(diff < 0) return -1;
-        //        return 0;
-        //    }
-        //});
-        throw new Exception(".NET todo");
+    private void SortFilesWithLatestFirst(FileInfo[] files) {
+        Array.Sort(files, (f1, f2) => {
+            long diff = f2.LastWriteTime.Ticks - f1.LastWriteTime.Ticks;
+            if (diff > 0) return 1;
+            if (diff < 0) return -1;
+            return 0;
+
+        });
     }
 
+    private FileInfo GetLatestDotSpatialFile() {
+        return GetLatestFileWithRegressionsResults(PART_OF_FILENAME_DotSpatial);
+    }
+        
+    private FileInfo GetLatestProjNet4GeoAPIFile() {
+        return GetLatestFileWithRegressionsResults(PART_OF_FILENAME_ProjNet4GeoAPI);
+    }
+    private FileInfo GetLatestMightyLittleGeodesyFile() {
+        return GetLatestFileWithRegressionsResults(PART_OF_FILENAME_MightyLittleGeodesy);
+    }
 }
 }
 //// The test results below were created when the following delta value was used:
 //double DELTA_LIMIT_FOR_SUCCESS = 0.0001;
 //-------------------------------
-//testResults for CrsTransformationAdapterGooberCTL
-//seconds: 2
+//testResults for CrsTransformationAdapterDotSpatial
+//seconds: 4
+//countOfSuccess: 5074
+//countOfFailures: 1361
+//-------------------------------
+//testResults for CrsTransformationAdapterProjNet4GeoAPI
+//seconds: 5
+//countOfSuccess: 2481
+//countOfFailures: 3954
+//-------------------------------
+//testResults for CrsTransformationAdapterMightyLittleGeodesy
+//seconds: 1
 //countOfSuccess: 19
 //countOfFailures: 6416
-//-------------------------------
-//testResults for CrsTransformationAdapterProj4J
-//seconds: 222
-//countOfSuccess: 3916
-//countOfFailures: 2519
-//-------------------------------
-//testResults for CrsTransformationAdapterOrbisgisCTS
-//seconds: 455
-//countOfSuccess: 3799
-//countOfFailures: 2636
-//-------------------------------
-//testResults for CrsTransformationAdapterGeoTools
-//seconds: 210
-//countOfSuccess: 4036
-//countOfFailures: 2399
-//-------------------------------
-//testResults for CrsTransformationAdapterGeoPackageNGA
-//seconds: 249
-//countOfSuccess: 3918
-//countOfFailures: 2517
 //-------------------------------
