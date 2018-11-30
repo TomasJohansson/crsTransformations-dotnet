@@ -578,7 +578,17 @@ and CrsTransformationResultStatistic private
         throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
         _maxDiffLongitudesLazyLoaded.Force() // F# Lazy loading: https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/lazy-computations
 
-    static member _CreateCrsTransformationResultStatistic
+    (*
+    Factory method not intended to be used from client code.
+    Therefore it is "internal" but still available from test code 
+    because of the following configuration in the project file:
+    <ItemGroup>
+        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+            <_Parameter1>Programmerare.CrsTransformations.Test</_Parameter1>
+        </AssemblyAttribute>
+    </ItemGroup>
+     *)    
+    static member internal _CreateCrsTransformationResultStatistic
         (
             results: IList<CrsTransformationResult>
         ): CrsTransformationResultStatistic =
