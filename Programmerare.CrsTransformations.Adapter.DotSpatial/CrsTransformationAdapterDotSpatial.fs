@@ -1,9 +1,14 @@
 namespace Programmerare.CrsTransformations.Adapter.DotSpatial
-
 open DotSpatial.Projections
 open Programmerare.CrsTransformations
 open Programmerare.CrsTransformations.Coordinate
-
+(*
+Copyright (c) Tomas Johansson , http://programmerare.com
+The code in the "Core" project is licensed with MIT.
+Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+Please find more information in the license file at the root directory of each subproject
+(e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
+*)
 type CrsTransformationAdapterDotSpatial() =
     class
         inherit CrsTransformationAdapterBaseLeaf()
@@ -41,3 +46,8 @@ type CrsTransformationAdapterDotSpatial() =
             base._GetFileInfoVersionHelper(typeof<ProjectionInfo>)
 
     end
+
+(*
+https://github.com/DotSpatial/DotSpatial
+https://www.nuget.org/packages/DotSpatial.Projections
+*)

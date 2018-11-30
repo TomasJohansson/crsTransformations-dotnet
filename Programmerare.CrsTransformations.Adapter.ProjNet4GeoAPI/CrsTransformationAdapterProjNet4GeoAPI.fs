@@ -1,5 +1,4 @@
 namespace Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI
-
 open System.Collections.Generic
 open ProjNet // CoordinateSystemServices
 open ProjNet.CoordinateSystems // CoordinateSystemFactory
@@ -8,7 +7,13 @@ open GeoAPI.CoordinateSystems // ICoordinateSystem
 open GeoAPI.CoordinateSystems.Transformations // ICoordinateTransformation
 open Programmerare.CrsTransformations
 open Programmerare.CrsTransformations.Coordinate
-
+(*
+Copyright (c) Tomas Johansson , http://programmerare.com
+The code in the "Core" project is licensed with MIT.
+Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+Please find more information in the license file at the root directory of each subproject
+(e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
+*)
 type CrsTransformationAdapterProjNet4GeoAPI() =
     class
         inherit CrsTransformationAdapterBaseLeaf()
@@ -65,13 +70,12 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
             //let sourceCrs: ICoordinateSystem = css.GetCoordinateSystem(inputCoordinate.CrsIdentifier.EpsgNumber)
             //let targetCrs: ICoordinateSystem = css.GetCoordinateSystem(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
             // The above code does not support many CRS and therefore the code below was added
-            // However: TODO: some kind of caching strategy since the code below 
-            // reads the resource file twice, which it will do 
+            // Note that it is possible to use a caching strategy since the code below 
+            // would otherwise read the resource file twice, which it would do 
             // for every usage of the method even if doing multiple 
             // transformations between the same coordinate systems
             let sourceCrs: ICoordinateSystem = GetCSbyID(inputCoordinate.CrsIdentifier.EpsgNumber)
             let targetCrs: ICoordinateSystem = GetCSbyID(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
-            //let csFact: CoordinateSystemFactory = new CoordinateSystemFactory()
             let ctFact: CoordinateTransformationFactory = new CoordinateTransformationFactory()
             let xy: double[] = [| inputCoordinate.X; inputCoordinate.Y |]
             let trans: ICoordinateTransformation  = ctFact.CreateFromCoordinateSystems(sourceCrs, targetCrs)
@@ -127,3 +131,7 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
         member this.IsEpsgCached(epsgNumber) : bool =     
             _cachedCoordinateSystem.ContainsKey(epsgNumber)
     end
+(*
+https://github.com/NetTopologySuite/ProjNet4GeoAPI
+https://www.nuget.org/packages/ProjNet4GeoAPI
+*)

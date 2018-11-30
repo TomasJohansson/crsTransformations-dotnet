@@ -1,24 +1,24 @@
 namespace Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy
-
 open System.Collections.Generic
 open MightyLittleGeodesy.Positions
 open MightyLittleGeodesy.Classes
 open Programmerare.CrsTransformations
 open Programmerare.CrsTransformations.Coordinate
 open Programmerare.CrsTransformations.Identifier
+(*
+Copyright (c) Tomas Johansson , http://programmerare.com
+The code in the "Core" project is licensed with MIT.
+Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+Please find more information in the license file at the root directory of each subproject
+(e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
+*)
 
-// TODO: rewrite comments below for .NET ...
 (*
  * Implementation of the interface CrsTransformationAdapter.
  * See the documentation of the interface.
  * @see Programmerare.CrsTransformations.CrsTransformationAdapter
  *
- * @author Tomas Johansson ( http://programmerare.com )
- * The code in the "crs-transformation-code-generation" project is licensed with MIT.
- * The code in the "crs-transformation-adapter-impl-goober" project
- * is licensed with Apache License 2.0 i.e. the same license as the adaptee library goober/coordinate-transformation-library.
  *)
- // TODO: rewrite comments above for .NET ...
 type CrsTransformationAdapterMightyLittleGeodesy() =
     class
         inherit CrsTransformationAdapterBaseLeaf()
@@ -152,16 +152,6 @@ type CrsTransformationAdapterMightyLittleGeodesy() =
 
     end
 (*
-// https://www.nuget.org/packages/MightyLittleGeodesy/
-// https://github.com/bjornsallarp/MightyLittleGeodesy
-
-TODO: use parts (but modified to F#) of the below Kotlin code (adapter for Goober)
-to improve the above initial F# implementation 
-
-    // ----------------------------------------------------------
-    // Kotlin code
-    override fun getAdapteeType() : CrsTransformationAdapteeType {
-        return CrsTransformationAdapteeType.LEAF_GOOBER_1_1
-    }
-
+https://www.nuget.org/packages/MightyLittleGeodesy/
+https://github.com/bjornsallarp/MightyLittleGeodesy
 *)

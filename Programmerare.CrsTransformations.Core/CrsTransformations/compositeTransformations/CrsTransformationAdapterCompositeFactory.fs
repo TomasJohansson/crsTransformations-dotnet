@@ -1,19 +1,15 @@
 namespace Programmerare.CrsTransformations.CompositeTransformations
-
 open System.Collections.Generic
 open Programmerare.CrsTransformations
-
-// TODO: rewrite comments below for .NET ...
-
 (*
+Copyright (c) Tomas Johansson , http://programmerare.com
+The code in the "Core" project is licensed with MIT.
+Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+Please find more information in the license file at the root directory of each subproject
+(e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
+
  * Factory methods creating 'Composite' implementations of the adapter interface.
- *
- * @author Tomas Johansson ( http://programmerare.com )
- * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
- * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
- * Please find more information in the license file at the root directory of each subproject
- * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
- *)
+*)
 type CrsTransformationAdapterCompositeFactory =
 
     static member private throwExceptionIfNoKnownInstancesAreAvailable
@@ -48,9 +44,6 @@ type CrsTransformationAdapterCompositeFactory =
      *      this is not strictly enforced by the type system, so in theory
      *      the list could be composites i.e. you might try to nest 
      *      composites with composites (but it is not obvious why anyone would want to do that)
-     * @see com.programmerare.crsTransformations.CrsTransformationResultStatistic
-     * @see CrsTransformationAdapterComposite
-     * @see CrsTransformationAdapter
      *)    
     static member CreateCrsTransformationMedian(list: IList<ICrsTransformationAdapter>): CrsTransformationAdapterComposite =
         CrsTransformationAdapterComposite._CreateCrsTransformationAdapterComposite
@@ -130,7 +123,6 @@ type CrsTransformationAdapterCompositeFactory =
      * @see createCrsTransformationAverage
      * @see CrsTransformationAdapterWeight
      *)
-    //@JvmStatic
     static member CreateCrsTransformationWeightedAverage
         (
             weightedCrsTransformationAdapters: IList<CrsTransformationAdapterWeight>

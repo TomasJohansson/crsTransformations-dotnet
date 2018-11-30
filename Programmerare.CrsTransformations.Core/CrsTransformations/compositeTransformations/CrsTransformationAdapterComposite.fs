@@ -1,22 +1,21 @@
 namespace Programmerare.CrsTransformations.CompositeTransformations
-
 open System.Collections.Generic
 open Programmerare.CrsTransformations
 open Programmerare.CrsTransformations.Coordinate
 open Programmerare.CrsTransformations.Identifier
-
-// TODO: rewrite comments below for .NET ...
-
 (*
- * Base class for the 'composite' adapters.
+Copyright (c) Tomas Johansson , http://programmerare.com
+The code in the "Core" project is licensed with MIT.
+Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+Please find more information in the license file at the root directory of each subproject
+(e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
+
+ * "Base class" for the 'composite' adapters.
+    (well actually it is THE class since it is not using inheritance 
+        but rather composition)
  * @see CrsTransformationAdapterBase
  * @see CompositeStrategy
  * 
- * @author Tomas Johansson ( http://programmerare.com )
- * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
- * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
- * Please find more information in the license file at the root directory of each subproject
- * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
 *)
 type CrsTransformationAdapterComposite internal
     (

@@ -1,19 +1,29 @@
 namespace Programmerare.CrsTransformations
-
 open System
 open System.IO
 open System.Text.RegularExpressions
 open System.Collections.Generic
 open Programmerare.CrsTransformations.Coordinate
 open Programmerare.CrsTransformations.Identifier
+(*
+Copyright (c) Tomas Johansson , http://programmerare.com
+The code in the "Core" project is licensed with MIT.
+Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+Please find more information in the license file at the root directory of each subproject
+(e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
+
+There are TWO types in this file:
+    - FileInfoVersion
+    - CrsTransformationAdapterBase
+*)
 
 // ----------------------------------------------------
-// this class is used as return type for a methods 
+// This small class is used as return type for a method 
 // with the only purpose to be used in test code for detecting 
 // upgraded version (of some NuGet package or an adaptee library)
 // i.e. to help remembering to update the enum value 
 // defining which adaptee library version is used
-// maybe use [<AllowNullLiteral>] at FileInfoVersion instead for C# interop
+// TODO maybe use [<AllowNullLiteral>] at FileInfoVersion instead for C# interoperability
 type FileInfoVersion
     (
         fileName: string,
@@ -26,18 +36,9 @@ type FileInfoVersion
         member this.Version = version
     end
 // ----------------------------------------------------
-
 (*
  * The base class of the adapter interface implementing most of the 
- * transform methods as final i.e. not overridden by subclasses.  
- * 
- * @see CrsTransformationAdapter
- *
- * @author Tomas Johansson ( http://programmerare.com )
- * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
- * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
- * Please find more information in the license file at the root directory of each subproject
- * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
+ * transform methods as "final" i.e. NOT being declared as overrideable by using "abstract".
  *)
 [<AbstractClass>]
 type CrsTransformationAdapterBase
@@ -47,7 +48,7 @@ type CrsTransformationAdapterBase
 
         // TODO maybe use [<AllowNullLiteral>] at FileInfoVersion declaration 
         // i.e. use null instead of the below values 
-        // for C# interopability, i.e. like this
+        // for C# interoperability, i.e. like this:
         // let defaultFileInfoVersion: FileInfoVersion = null
         let defaultFileInfoVersion = FileInfoVersion("", -1L, "")
 
@@ -56,9 +57,8 @@ type CrsTransformationAdapterBase
                 nullArg "inputCoordinate"
             // The above would cause this error:
             // "Value cannot be null. Parameter name: inputCoordinate"
-            // instead of the following which would occur later:
+            // instead of the following which otherwise might occur later:
             // "Object reference not set to an instance of an object"
-                
 
         (*
          * Transforms a coordinate to another coordinate reference system.  
@@ -66,11 +66,13 @@ type CrsTransformationAdapterBase
          * This is a "hook" method (as it is named in the design pattern Template Method)   
          * which must be implemented by subclasses.
          *)
-        // TODO: try making this method "internal" ... ? since "protected" is not currently used in F# ...
+        // TODO: try making this method "internal" ... ? 
+        // since "protected" can not currently be used in F# ...
         abstract _TransformToCoordinateHook : CrsCoordinate * CrsIdentifier -> CrsCoordinate
 
         abstract _TransformHook : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
 
+        // TODO remove the below...? seems to be unused
         static member private classNamePrefix = "CrsTransformationAdapter"
         // if the above string would change because of class renamings
         // then it will be detected by a failing test
@@ -90,37 +92,43 @@ type CrsTransformationAdapterBase
         abstract member GetTransformationAdapterChildren : unit -> IList<ICrsTransformationAdapter>
         default this.GetTransformationAdapterChildren() = raise (System.NotImplementedException())
 
-        // TODO: rewrite the below Kotlin/JVM comments below for .NET ...
         // The purpose of the method below is to use it in test code
         // for detecting upgrades to a new version (and then update the above method returned enum value)
-        // Future failure will be a reminder to update the above enum value
+        // Future failure will be a reminder to update a corresponding enum value.
         (*
-            * This helper method is protected since it is NOT intended for
+            * This helper method is NOT intended for
             * client code but only for test code purposes.
+             Therefore it is named with "_" as prefix.
             * 
             * It should be overridden by subclasses.
-            * @return empty string is returned as the default value
-            *      which should also be returned byt the composites (i.e. they should not override).
+            * returns a default value should be returned by the composites (i.e. they should not override).
             *      
             *      The 'leaf' adapter implementations should return the
-            *      name of the jar file (potentially including a path)
-            *      for the used adaptee library.
+            *      name of the DLL file and version number retrieved through the file path.
             *      
-            *      The reason is that the jar files (retrieved through Maven)
-            *      includes the version name and can be asserted in test code
+            *      The reason is that the DLL files (retrieved through NuGet)
+            *      includes the version name it the path and can be asserted in test code
             *      to help remembering that the value of an enum specifying
             *      the 'adaptee' (and version) should be updated after an adaptee upgrade.
-            * @see CrsTransformationAdapteeType
+                Example of a nuget path:
+                // ...\.nuget\packages\mightylittlegeodesy\1.0.1\lib\net45\MightyLittleGeodesy.dll
+                // From the above file we can extract two things i.e. the file name "MightyLittleGeodesy.dll"
+                and the version number "1.0.1" and both these components can be put into 
+                a FileInfoVersion instance
             *)
         abstract member _GetFileInfoVersion : unit -> FileInfoVersion
         default this._GetFileInfoVersion() = defaultFileInfoVersion
         
-        // TODO: rewrite the below Kotlin/JVM comments below for .NET ...
         (*
-            * Helper method intended to be used from subclasses
-            * when implementing the method that should return the name
-            * of a jar file belonging to an adaptee library.
-            *)
+         Helper method intended to be used from subclasses
+         when implementing the method that should return the name
+         of a DLL file (and the version information extracted from the path) 
+         file belonging to an adaptee library.
+             This helper method is NOT intended for
+             client code.
+             Therefore it is named with "_" as prefix.
+             TODO maybe try to make it "internal" instead
+        *)
         member this._GetFileInfoVersionHelper
             (
                 someTypeInTheThidPartAdapteeLibrary: Type
@@ -155,8 +163,8 @@ type CrsTransformationAdapterBase
                 
             // -------------------------------------------------
             // The three below methods returning a coordinate object
-            // are all final (i.e. not overridden) and invokes
-            // a so called "hook" method(named so in the Template Method pattern)
+            // are all final (i.e. not overrideable) and invokes
+            // a so called "hook" method (named so in the Template Method pattern)
             // which is an abstract method that must be implemented in a subclass.
 
             member this.TransformToCoordinate(inputCoordinate, crsCode) =

@@ -2,8 +2,11 @@ namespace Programmerare.CrsTransformations.Coordinate
 open System
 open Programmerare.CrsTransformations.Identifier
 (*
-
-// TODO: rewrite comments below for .NET ...
+Copyright (c) Tomas Johansson , http://programmerare.com
+The code in the "Core" project is licensed with MIT.
+Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+Please find more information in the license file at the root directory of each subproject
+(e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 
  * An instance of the coordinate aggregates three values:
  * - X / Easting / Longitude  
@@ -17,26 +20,17 @@ open Programmerare.CrsTransformations.Identifier
  *      - easting/northing for a cartographic or projected system  
  *      - xEastingLongitude/yNorthingLatitude for general code handling different types of system
  *
- * @author Tomas Johansson ( http://programmerare.com )
- * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
- * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
- * Please find more information in the license file at the root directory of each subproject
- * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
 
-     * One of the four accessors for the part of the coordinate that represents the east-west/X/Longitude direction. 
-     
-    val xEastingLongitude: Double,
-
-     * One of the four accessors for the part of the coordinate that represents the east-west/Y/Latitude direction.
-     
-    val yNorthingLatitude: Double,
-
-     * CRS (Coordinate Reference System) identifier with the EPSG code 
-     * which defines the coordinate reference system for the coordinate instance. 
-     
-    val crsIdentifier: CrsIdentifier
-
-    // TODO: rewrite comments above for .NET ...
+ Three parameters for the cnostructor:
+ 
+XEastingLongitude
+(the name is also used as one of the four accessors for the part of the coordinate that represents the east-west/X/Longitude direction)
+    
+YNorthingLatitude
+(the name is also used as one of the four accessors for the part of the coordinate that represents the east-west/Y/Latitude direction)
+    
+CRS (Coordinate Reference System) identifier with the EPSG code 
+which defines the coordinate reference system for the coordinate instance. 
 *)
 [<AllowNullLiteral>] // C# interop
 type CrsCoordinate private 
@@ -53,7 +47,6 @@ type CrsCoordinate private
 
     (*
      * One of the four accessors for the part of the coordinate that represents the east-west direction.
-     * "X" is typically used for a geocentric or cartesian coordinate reference system.
      *)
     member this.XEastingLongitude = xEastingLongitude
 
@@ -98,7 +91,6 @@ type CrsCoordinate private
 
     (*
      * One of the four accessors for the part of the coordinate that represents the north-south direction.
-     * "Latitude" is typically used for a geodetic or geographic coordinate reference system.
      *)
     member this.YNorthingLatitude = yNorthingLatitude
     //------------------------------------------------------------------

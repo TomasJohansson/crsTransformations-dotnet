@@ -1,36 +1,28 @@
 namespace Programmerare.CrsTransformations
-
 open System
 open System.Collections.Generic
 open System.Reflection
 open System.Linq
-
-// TODO: rewrite comments below for .NET ...
-
 (*
- * Factory used by 'composites' for creating 'leaf' implementations available at the classpath.  
+Copyright (c) Tomas Johansson , http://programmerare.com
+The code in the "Core" project is licensed with MIT.
+Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+Please find more information in the license file at the root directory of each subproject
+(e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
+
+
+ * Factory used by 'composites' for creating 'leaf' implementations available in runtime.
  * 
  * The factory uses reflection code to instantiate the implementations from strings with full class names.  
  * 
  * The reason for these string based instantiations is that the core library avoids 
  * statically predefined enforced dependencies to all leaf adapter implementations.  
  * 
- * Instead the users can choose which implementations to use e.g. through Maven or Gradle dependencies.
- * @see Programmerare.CrsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory
- *
- * @author Tomas Johansson ( http://programmerare.com )
- * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
- * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
- * Please find more information in the license file at the root directory of each subproject
- * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
+ * Instead the users can choose which implementation(s) to use with NuGet dependencies.
  *)
-
-// TODO: rewrite comments above for .NET ...
-// (and also below in the module there may be some remaining comments from the Kotlin project)
-
 module CrsTransformationAdapterLeafFactory =
 
-        // The hardcoded strings below will not change often 
+        // The hardcoded strings below will NOT change often 
         // and if they do then it should be detected by failing 
         // tests in the C# class CrsTransformationAdapterLeafFactoryTest
         let private assemblyNamesForAllKnownImplementations = [
@@ -39,7 +31,7 @@ module CrsTransformationAdapterLeafFactory =
             "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI"
         ]
 
-        // The hardcoded strings below will not change often 
+        // The hardcoded strings below will NOT change often 
         // and if they do then it should be detected by failing 
         // tests in the C# class CrsTransformationAdapterLeafFactoryTest
         let private classNamesForAllKnownImplementations = [
@@ -69,10 +61,10 @@ module CrsTransformationAdapterLeafFactory =
                 let types = new List<Type>()
                 let assemblies = assembliesWithAdapterImplementations.Force()
                 for className in classNamesForAllKnownImplementations do
-                    let mutable theType: Type = null;
+                    let mutable theType: Type = null
                     for assembly in assemblies do
                         try
-                            theType <- assembly.GetType(className);
+                            theType <- assembly.GetType(className)
                             if not(isNull theType) then
                                 types.Add(theType)
                         with
@@ -93,7 +85,7 @@ module CrsTransformationAdapterLeafFactory =
             theType
 
         (*
-         * @param crsTransformationAdapterClassName the full class name (i.e. including the package name)
+         * @param crsTransformationAdapterClassName the full class name (i.e. including the namespace)
          *      of a class which must implement the interface CrsTransformationAdapter
          * @return an instance if it could be created but otherwise an exception      
          *)

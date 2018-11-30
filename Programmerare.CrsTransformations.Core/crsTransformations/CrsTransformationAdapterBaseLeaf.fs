@@ -1,22 +1,20 @@
 namespace Programmerare.CrsTransformations
-
 open System.Collections.Generic
 open Programmerare.CrsTransformations.Coordinate
 open Programmerare.CrsTransformations.Identifier
+(*
+Copyright (c) Tomas Johansson , http://programmerare.com
+The code in the "Core" project is licensed with MIT.
+Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+Please find more information in the license file at the root directory of each subproject
+(e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
+*)
 
 (*
  * Base class for the 'leaf' adapters.
- * @see CrsTransformationAdapterBase
- * @see CrsTransformationAdapter
- *
- * @author Tomas Johansson ( http://programmerare.com )
- * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
- * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
- * Please find more information in the license file at the root directory of each subproject
- * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
- *)
+*)
 [<AbstractClass>]
-type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
+type CrsTransformationAdapterBaseLeaf() =
     class
         inherit CrsTransformationAdapterBase()
 
@@ -25,6 +23,22 @@ type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
         override this._TransformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
             try
                 let outputCoordinate = this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+                // TODO implement a check with things as below to see if it was a failure
+                // (if the above invoked implementation method would return things as below
+                // instead of throwing exception... but this is probably not the best place 
+                // but rather in a general way to apply the validation also 
+                // in one place for all the leafs i.e. the hook method 
+                // above can be invkoked indirectly without executing through 
+                // this code and therefore it should be placed somewhere else)
+                //if true then
+                //    //java.lang.Double.isNaN(outputCoordinate.yNorthingLatitude)
+                //    //||
+                //    //java.lang.Double.isNaN(outputCoordinate.xEastingLongitude)
+                // .NET :
+                //System.Double.IsInfinity
+                //System.Double.IsNaN
+                //System.Double.IsNegativeInfinity
+                //System.Double.IsPositiveInfinity
                 CrsTransformationResult(
                     inputCoordinate,
                     outputCoordinate,
@@ -45,51 +59,6 @@ type CrsTransformationAdapterBaseLeaf() = // CrsTransformationAdapterBase() =
                         this,
                         CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(new List<CrsTransformationResult>())
                     )
-
-                //if true then
-                //    //java.lang.Double.isNaN(outputCoordinate.yNorthingLatitude)
-                //    //||
-                //    //java.lang.Double.isNaN(outputCoordinate.xEastingLongitude)
-                // .NET :
-                //System.Double.IsInfinity
-                //System.Double.IsNaN
-                //System.Double.IsNegativeInfinity
-                //System.Double.IsPositiveInfinity
-                    
-                //    return CrsTransformationResult._createCrsTransformationResult(
-                //        inputCoordinate,
-                //        null,
-                //        exception = null, 
-                //        isSuccess = false,
-                //        crsTransformationAdapterResultSource = this
-                //    )
-                //}
-                //else {
-                //    return CrsTransformationResult._createCrsTransformationResult(
-                //        inputCoordinate,
-                //        outputCoordinate,
-                //        exception = null,
-                //        isSuccess = outputCoordinate != null,
-                //        crsTransformationAdapterResultSource = this
-
-            //catch (e: Throwable) {
-            //    return CrsTransformationResult._createCrsTransformationResult(
-            //        inputCoordinate,
-            //        null,
-            //        exception = e,
-            //        isSuccess = false,
-            //        crsTransformationAdapterResultSource = this
-            //    )
-            //}
-        
-
-        //override this._GetTransformationAdapterChildren(): List<CrsTransformationAdapter> {
-        //    return listOf<CrsTransformationAdapter>()
-        //}
-
-        //override final fun isComposite(): Boolean {
-        //    return false
-        //}
 
         override this.AdapteeType =
             // Should be overridden by subclasses

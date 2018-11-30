@@ -1,35 +1,16 @@
 namespace Programmerare.CrsTransformations.Identifier
-
 open System
-
-// TODO: rewrite comments below for .NET ...
-
 (*
- * From Java code this will look like a class 'CrsIdentifierFactory'
+Copyright (c) Tomas Johansson , http://programmerare.com
+The code in the "Core" project is licensed with MIT.
+Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
+Please find more information in the license file at the root directory of each subproject
+(e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
+
+ * From C# code this module will look like a static class 'CrsIdentifierFactory'
  * with public static factory methods.
- * The Java class name: Programmerare.CrsTransformations.Identifier.CrsIdentifierFactory  
- * 
- * From Kotlin code the methods are available as package level functions
- * and each function can be imported as if it would be a class, for example like this:  
- *  import Programmerare.CrsTransformations.Identifier.createFromEpsgNumber
- *
- * @author Tomas Johansson ( http://programmerare.com )
- * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
- * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
- * Please find more information in the license file at the root directory of each subproject
- * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
+ * The C# class name: Programmerare.CrsTransformations.Identifier.CrsIdentifierFactory
  *)
-
-
-// The reason for having CrsIdentifier and this CrsIdentifierFactory
-// in a package of its own is to avoid "polluting" the base
-// package from lots of package level function defined in this file
-// when using Kotlin code.
-// (when using Java we do not see that problem but rather a class
-//   CrsIdentifierFactory with all these function as static method in that class)
-
-// TODO: rewrite comments above for .NET ...
-
 module CrsIdentifierFactory =
 
     // The crsCode string will become trimmed, and if it is
@@ -46,7 +27,6 @@ module CrsIdentifierFactory =
         epsgNumber
 
     (*
-     * TODO: rewrite comments below for .NET ...
      * @param crsCode a string which should begin with "EPSG:4326" 
      *  (although it is case insensitive and it is also acceptable 
      *   with leading white spaces and e.g. " ePsG:4326" but 
@@ -74,12 +54,9 @@ module CrsIdentifierFactory =
         CrsIdentifier._internalCrsFactory(crsIdentifierCode, isEpsgCode, epsgNumber)
 
     (*
-     * TODO: rewrite comments below for .NET ...
      * Creates a CrsIdentifier from a positive integer.
-     * The only validation constraints are that the integer must be positive (and not null).
-     * An exception is thrown if the input number is null or zero or negative.
-     * The reason to allow null in the Kotlin method signature is to provide java clients
-     * with better error messages and "IllegalArgumentException" instead of "NullPointerException" 
+     * The only validation constraint is that the integer must be positive.
+     * An exception is thrown if the input number is negative.
      * @param epsgNumber an EPSG number, 
      *      for example 4326 for the frequently used coordinate reference system WGS84. 
      *)
