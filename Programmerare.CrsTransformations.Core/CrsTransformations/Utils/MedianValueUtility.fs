@@ -1,21 +1,16 @@
-package com.programmerare.crsTransformations.utils
+namespace Programmerare.CrsTransformations.Utils
+open System.Collections.Generic
+module MedianValueUtility =
+    let GetMedianValue(values: List<double>): double =
+        values.Sort()
+        let middle = values.Count / 2
+        if (values.Count % 2 = 1) then
+            values.[middle]
+        else
+            (values.[middle-1] + values.[middle]) / 2.0
 
-/**
- * @author Tomas Johansson ( http://programmerare.com )
- * The code in the "crs-transformation-adapter-core" project is licensed with MIT.
- * Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
- * Please find more information in the license file at the root directory of each subproject
- * (e.g. the subprojects "crs-transformation-adapter-impl-geotools" , "crs-transformation-adapter-impl-proj4j" and so on)
- */
-internal object MedianValueUtility {
-    @JvmStatic
-    fun getMedianValue(values: kotlin.collections.List<Double>): Double {
-        val sortedDescending = values.sortedDescending()
-        val middle = sortedDescending.size / 2
-        return if (sortedDescending.size % 2 == 1) {
-            sortedDescending.get(middle)
-        } else {
-            return (sortedDescending.get(middle-1) + sortedDescending.get(middle)) / 2;
-        }
-    }
-}
+// TODO: improve this median currently O(n log n) instead of O(n)
+// https://stackoverflow.com/questions/4140719/calculate-median-in-c-sharp
+// https://github.com/mathnet/mathnet-numerics/blob/master/src/Numerics/Statistics/ArrayStatistics.cs
+// the current below implementation is based on the Kotlin 
+// implementation Programmerare.CrsTransformations.Core\crsTransformations\utils\MedianValueUtility.kt

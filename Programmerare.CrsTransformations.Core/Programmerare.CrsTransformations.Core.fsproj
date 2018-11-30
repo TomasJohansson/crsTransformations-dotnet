@@ -23,6 +23,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="CrsTransformations\Utils\MedianValueUtility.fs" />
     <Compile Include="CrsTransformations\Identifier\CrsIdentifier.fs" />
     <Compile Include="CrsTransformations\Identifier\CrsIdentifierFactory.fs" />
     <Compile Include="CrsTransformations\Coordinate\CrsCoordinate.fs" />
@@ -45,10 +46,6 @@
 
   <ItemGroup>
     <PackageReference Update="FSharp.Core" Version="4.5.4" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="CrsTransformations\Utils\" />
   </ItemGroup>
 
 </Project>

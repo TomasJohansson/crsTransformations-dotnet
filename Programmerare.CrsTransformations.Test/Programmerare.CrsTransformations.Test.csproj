@@ -41,6 +41,7 @@
     <Compile Include="CrsTransformations\Implementations\MightyLittleGeodesyTest.cs" />
     <Compile Include="CrsTransformations\Implementations\ProjNet4GeoAPITest.cs" />
     <Compile Include="CrsTransformations\Implementations\SridReaderTest.cs" />
+    <Compile Include="CrsTransformations\Utils\MedianValueUtilityTest.cs" />
     <Compile Include="TestData\CoordinateTestDataGeneratedFromEpsgDatabaseTest.cs" />
     <Compile Include="TestData\CoordinateTestDataGeneratedFromEpsgDatabaseTest2.cs" />
     <Compile Include="TestData\DifferenceWhenComparingCoordinateValues.cs" />
@@ -73,10 +74,6 @@
     <ProjectReference Include="..\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.fsproj" />
     <ProjectReference Include="..\Programmerare.CrsTransformations.Constants\Programmerare.CrsTransformations.Constants.fsproj" />
     <ProjectReference Include="..\Programmerare.CrsTransformations.Core\Programmerare.CrsTransformations.Core.fsproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="CrsTransformations\Utils\" />
   </ItemGroup>
 
 </Project>

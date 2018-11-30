@@ -4,7 +4,7 @@ open System.Linq
 open System.Collections.Generic
 open Programmerare.CrsTransformations.Coordinate
 open Programmerare.CrsTransformations.Identifier
-
+open Programmerare.CrsTransformations.Utils
 (*
 Copyright (c) Tomas Johansson , http://programmerare.com
 The code in the "Core" project is licensed with MIT.
@@ -430,23 +430,6 @@ and CrsTransformationResultStatistic private
         results: IList<CrsTransformationResult>
     ) =
 
-    let getMedianValue(values: List<double>) = 
-        //val lon = MedianValueUtility.getMedianValue(_longitudesLazyLoaded)
-        //val lat = MedianValueUtility.getMedianValue(_latitudesLazyLoaded)
-        //val coord = createFromXEastingLongitudeAndYNorthingLatitude(lon, lat, _sucessfulCoordinatesLazyLoaded.get(0).crsIdentifier)
-        //coord
-        // TODO: improve this median currently O(n log n) instead of O(n)
-        // https://stackoverflow.com/questions/4140719/calculate-median-in-c-sharp
-        // https://github.com/mathnet/mathnet-numerics/blob/master/src/Numerics/Statistics/ArrayStatistics.cs
-        // the current below implementation is based on the Kotlin 
-        // implementation Programmerare.CrsTransformations.Core\crsTransformations\utils\MedianValueUtility.kt
-        values.Sort()
-        let middle = values.Count / 2
-        if (values.Count % 2 = 1) then
-            values.[middle]
-        else
-            (values.[middle-1] + values.[middle]) / 2.0
-        
     let getMaxDiff(values: List<double>) = 
         if (values.Count < 2) then
             0.0
@@ -485,8 +468,8 @@ and CrsTransformationResultStatistic private
 
     let _coordinateMedianLazyLoaded  =
         lazy (
-            let medianLat = getMedianValue(_latitudesLazyLoaded.Force())
-            let medianLon = getMedianValue(_longitudesLazyLoaded.Force())
+            let medianLat = MedianValueUtility.GetMedianValue(_latitudesLazyLoaded.Force())
+            let medianLon = MedianValueUtility.GetMedianValue(_longitudesLazyLoaded.Force())
             let coords = _successfulCoordinatesLazyLoaded.Force()
             if(coords.Count < 1) then
                 invalidOp "No successful result and therefore no median available"
