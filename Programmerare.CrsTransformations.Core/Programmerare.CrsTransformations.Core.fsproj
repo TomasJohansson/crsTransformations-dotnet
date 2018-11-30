@@ -32,7 +32,7 @@
     <Compile Include="CrsTransformations\CrsTransformationAdapterBase.fs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterBaseLeaf.fs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterLeafFactory.fs" />
-    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategy.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\ICompositeStrategy.fs" />
     <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyBase.fs" />
     <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyForFirstSuccess.fs" />
     <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyForMedianValue.fs" />
