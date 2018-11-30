@@ -468,11 +468,11 @@ and CrsTransformationResultStatistic private
 
     let _coordinateMedianLazyLoaded  =
         lazy (
-            let medianLat = MedianValueUtility.GetMedianValue(_latitudesLazyLoaded.Force())
-            let medianLon = MedianValueUtility.GetMedianValue(_longitudesLazyLoaded.Force())
             let coords = _successfulCoordinatesLazyLoaded.Force()
             if(coords.Count < 1) then
                 invalidOp "No successful result and therefore no median available"
+            let medianLat = MedianValueUtility.GetMedianValue(_latitudesLazyLoaded.Force())
+            let medianLon = MedianValueUtility.GetMedianValue(_longitudesLazyLoaded.Force())
             let crs = coords.[0].CrsIdentifier // all should have the same CRS which is here assumed to work properly i.e. not validated here
             CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude
                 (
@@ -484,11 +484,11 @@ and CrsTransformationResultStatistic private
 
     let _coordinateAverageLazyLoaded =
         lazy (
-            let avgLat = _latitudesLazyLoaded.Force().Average()
-            let avgLon = _longitudesLazyLoaded.Force().Average()
             let coords = _successfulCoordinatesLazyLoaded.Force()
             if(coords.Count < 1) then
                 invalidOp "No successful result and therefore no average available"
+            let avgLat = _latitudesLazyLoaded.Force().Average()
+            let avgLon = _longitudesLazyLoaded.Force().Average()
             let crs = coords.[0].CrsIdentifier
             // All result coordinates should have the same CRS
             // Theoretically they might have different which then would be a bug 
