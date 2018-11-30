@@ -39,7 +39,7 @@ type CrsTransformationAdapterBaseLeaf() =
                 //System.Double.IsNaN
                 //System.Double.IsNegativeInfinity
                 //System.Double.IsPositiveInfinity
-                CrsTransformationResult(
+                CrsTransformationResult._CreateCrsTransformationResult(
                     inputCoordinate,
                     outputCoordinate,
                     null,
@@ -51,7 +51,7 @@ type CrsTransformationAdapterBaseLeaf() =
                 // | :? System.Exception as exc -> 
                 // alternative to the above:
                 | exc -> 
-                    CrsTransformationResult(
+                    CrsTransformationResult._CreateCrsTransformationResult(
                         inputCoordinate,
                         null,
                         exc,

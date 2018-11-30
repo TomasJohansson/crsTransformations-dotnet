@@ -194,7 +194,7 @@ type CrsTransformationAdapterBase
                     // | :? System.Exception as exc -> 
                     // alternative to the above:
                     | exc -> 
-                        CrsTransformationResult(
+                        CrsTransformationResult._CreateCrsTransformationResult(
                             inputCoordinate,
                             null,
                             exc,
@@ -213,7 +213,7 @@ type CrsTransformationAdapterBase
                     // | :? System.Exception as exc -> 
                     // alternative to the above:
                     | exc -> 
-                        CrsTransformationResult(
+                        CrsTransformationResult._CreateCrsTransformationResult(
                             inputCoordinate,
                             null,
                             exc,

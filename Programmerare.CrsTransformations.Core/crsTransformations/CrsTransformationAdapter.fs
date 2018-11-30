@@ -4,6 +4,7 @@ open System.Linq
 open System.Collections.Generic
 open Programmerare.CrsTransformations.Coordinate
 open Programmerare.CrsTransformations.Identifier
+
 (*
 Copyright (c) Tomas Johansson , http://programmerare.com
 The code in the "Core" project is licensed with MIT.
@@ -67,6 +68,7 @@ If you use a method returning the result object then you should
 check for failures with 'TransformationResult.isSuccess'.
 *)
 [<AllowNullLiteral>] // C# interoperability
+
 type ICrsTransformationAdapter =
     interface
         // -------------------------------------------------
@@ -183,7 +185,7 @@ type ICrsTransformationAdapter =
 ///  However, to make it possible for the types to refer to each other
 ///  they have been put here in the same file 
 ///  and therefore uses the keyword "and" as below instead of "type"
-and CrsTransformationResult // TODO maybe make a private constructor
+and CrsTransformationResult private
     (
         inputCoordinate: CrsCoordinate,
         outputCoordinate: CrsCoordinate, //[<Optional; DefaultParameterValue(null:CrsCoordinate)>] outputCoordinate: CrsCoordinate,
@@ -378,8 +380,15 @@ and CrsTransformationResult // TODO maybe make a private constructor
 
         (*
          This method is not intended for public use from client code.
+         It is "internal" but but to make it available from the test project, the following 
+         have been added to the project file:
+          <ItemGroup>
+            <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+              <_Parameter1>Programmerare.CrsTransformations.Test</_Parameter1>
+            </AssemblyAttribute>
+          </ItemGroup>
         *)
-        static member _CreateCrsTransformationResult
+        static member internal _CreateCrsTransformationResult
             (
                 inputCoordinate: CrsCoordinate,
                 outputCoordinate: CrsCoordinate,

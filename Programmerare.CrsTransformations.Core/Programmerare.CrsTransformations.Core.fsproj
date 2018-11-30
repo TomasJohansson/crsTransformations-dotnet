@@ -5,6 +5,20 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+      <_Parameter1>Programmerare.CrsTransformations.Test</_Parameter1>
+    </AssemblyAttribute>
+    <!--
+    The purpose of the above is to make "internal" methods available for the test project.
+    https://stackoverflow.com/questions/42810705/visual-studio-2017-new-csproj-internalsvisibleto
+    https://stackoverflow.com/questions/15440935/how-to-test-internal-class-library
+    alternative:
+    open System.Runtime.CompilerServices
+    [<assembly: InternalsVisibleTo("Programmerare.CrsTransformations.Test")>]
+    -->
+  </ItemGroup>
+  
+  <ItemGroup>
     <EmbeddedResource Remove="CrsTransformations\**" />
   </ItemGroup>
 

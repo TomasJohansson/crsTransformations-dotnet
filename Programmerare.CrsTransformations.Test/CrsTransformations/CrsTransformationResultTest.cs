@@ -176,5 +176,20 @@ public class CrsTransformationResultTest : CrsTransformationResultTestBase {
         base.assertCrsTransformationResultStatistic(crsTransformationResultStatistic);
     }
 
+    // [Test] Not intended for test execution, just want to verify compilation, see comment in the method
+    public void internalMethodShouldBeAvailableFromTestProject() {
+        CrsTransformationResult._CreateCrsTransformationResult(null,null,null,true,null,null);
+        // The above "internal" factory method works from this test project 
+            // because of this configuration of the proj file in the F# core project:
+              //<ItemGroup>
+              //  <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+              //    <_Parameter1>Programmerare.CrsTransformations.Test</_Parameter1>
+              //  </AssemblyAttribute>
+              //</ItemGroup>
+        // Note that another test project have been created 
+        // without the above kind of configuration and from 
+        // there the internal method does indeed (as expected) not work
+        // i.e. the code does not even compile if trying to use it.
+    }
 }
 }
