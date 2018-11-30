@@ -53,6 +53,7 @@ Please find more information in the license file at the root directory of each s
  * Otherwise you may find it more convenient to use factory method versions
  * with integer or string as the last parameter.
 *)
+[<AbstractClass; Sealed>]
 type CrsCoordinateFactory =
 
     // TODO: try to eliminate frequent usage of the factory 

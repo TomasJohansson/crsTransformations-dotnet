@@ -10,6 +10,7 @@ Please find more information in the license file at the root directory of each s
 
  * Factory methods creating 'Composite' implementations of the adapter interface.
 *)
+[<AbstractClass; Sealed>]
 type CrsTransformationAdapterCompositeFactory =
 
     static member private throwExceptionIfNoKnownInstancesAreAvailable
