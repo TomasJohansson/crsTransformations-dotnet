@@ -43,7 +43,7 @@ module CrsTransformationAdapterLeafFactory =
         let GetClassNamesForAllKnownImplementations() = 
             classNamesForAllKnownImplementations.ToList() :> IList<string>
 
-        let private assembliesWithAdapterImplementations: Lazy<IList<Assembly>> =
+        let private assembliesWithAdapterImplementationsLazyLoaded: Lazy<IList<Assembly>> =
             lazy (
                 let assemblies = List<Assembly>()
                 for assemblyName in assemblyNamesForAllKnownImplementations do
@@ -56,10 +56,10 @@ module CrsTransformationAdapterLeafFactory =
                 assemblies :> IList<Assembly>
             )
 
-        let private typesWithAdapterImplementations: Lazy<IList<Type>> =
+        let private typesWithAdapterImplementationsLazyLoaded: Lazy<IList<Type>> =
             lazy (
                 let types = new List<Type>()
-                let assemblies = assembliesWithAdapterImplementations.Force()
+                let assemblies = assembliesWithAdapterImplementationsLazyLoaded.Force()
                 for className in classNamesForAllKnownImplementations do
                     let mutable theType: Type = null
                     for assembly in assemblies do
@@ -74,7 +74,7 @@ module CrsTransformationAdapterLeafFactory =
             )
 
         let private GetTypesWithAdapterImplementations(): IList<Type> =
-            typesWithAdapterImplementations.Force()
+            typesWithAdapterImplementationsLazyLoaded.Force()
 
         let private GetTypeInstanceForClassName(className: string): Type =
             let theTypes = GetTypesWithAdapterImplementations()
@@ -102,7 +102,7 @@ module CrsTransformationAdapterLeafFactory =
                     let message = "Failed to instantiate a class with the name '" + crsTransformationAdapterClassName + "' . The parameter must be the name of an available class which implements the interface '" + nameOfInterfaceThatShouldBeImplemented + "'"
                     invalidArg "crsTransformationAdapterClassName" message
 
-        let private instancesOfAllKnownAvailableImplementations: Lazy<List<ICrsTransformationAdapter>> = 
+        let private instancesOfAllKnownAvailableImplementationsLazyLoaded: Lazy<List<ICrsTransformationAdapter>> = 
             lazy (
                 let list = new List<ICrsTransformationAdapter>()
                 for className in classNamesForAllKnownImplementations do
@@ -115,7 +115,7 @@ module CrsTransformationAdapterLeafFactory =
         *      of the adapter interface, which are available at the class path.
         *)    
         let GetInstancesOfAllKnownAvailableImplementations() = 
-            instancesOfAllKnownAvailableImplementations.Force() :> IList<ICrsTransformationAdapter>
+            instancesOfAllKnownAvailableImplementationsLazyLoaded.Force() :> IList<ICrsTransformationAdapter>
 
         (*
          * @param the full class name (i.e. including the package name)
@@ -123,6 +123,6 @@ module CrsTransformationAdapterLeafFactory =
          * @return true if it possible to create an instance from the input string 
          *)
         let IsCrsTransformationAdapter(crsTransformationAdapterClassName: string): bool = 
-            instancesOfAllKnownAvailableImplementations.Force().Exists(
+            instancesOfAllKnownAvailableImplementationsLazyLoaded.Force().Exists(
                 fun i -> i.GetType().FullName.Equals(crsTransformationAdapterClassName)
             )
