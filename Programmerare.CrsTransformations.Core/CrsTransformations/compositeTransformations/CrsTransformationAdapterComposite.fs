@@ -17,7 +17,7 @@ Please find more information in the license file at the root directory of each s
  * @see CompositeStrategy
  * 
 *)
-type CrsTransformationAdapterComposite internal
+type CrsTransformationAdapterComposite private
     (
     (*
      * Interface for calculating the resulting coordinate in different ways, 
@@ -29,7 +29,7 @@ type CrsTransformationAdapterComposite internal
     class
         inherit CrsTransformationAdapterBase()
 
-        member this._GetCompositeStrategy() = compositeStrategy
+        member internal this._GetCompositeStrategy() = compositeStrategy
 
         override this._TransformToCoordinateHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsCoordinate =
             let transformResult = this._TransformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
@@ -62,7 +62,7 @@ type CrsTransformationAdapterComposite internal
         override this.AdapteeType : CrsTransformationAdapteeType =
             this._GetCompositeStrategy()._GetAdapteeType()
 
-        static member _CreateCrsTransformationAdapterComposite
+        static member internal _CreateCrsTransformationAdapterComposite
             (
                 compositeStrategy: ICompositeStrategy
             ): CrsTransformationAdapterComposite =

@@ -10,7 +10,7 @@ Other subprojects may be released with other licenses e.g. LGPL or Apache Licens
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 *)
-type CompositeStrategyForMedianValue internal
+type internal CompositeStrategyForMedianValue private
     (
         crsTransformationAdapters : IList<ICrsTransformationAdapter>
     ) =
@@ -46,7 +46,7 @@ type CompositeStrategyForMedianValue internal
         * This method is not intended for public use,
         * but instead the factory class should be used.
         *)
-        static member _CreateCompositeStrategyForMedianValue
+        static member internal _CreateCompositeStrategyForMedianValue
             (
                 adapters: IList<ICrsTransformationAdapter>
             ) =

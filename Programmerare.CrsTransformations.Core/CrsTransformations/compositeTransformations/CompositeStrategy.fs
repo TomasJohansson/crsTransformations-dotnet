@@ -14,7 +14,7 @@ Please find more information in the license file at the root directory of each s
  * TODO maybe use "internal" instead
  *
  *)
-type ICompositeStrategy =
+type internal ICompositeStrategy =
     interface
 
         (*

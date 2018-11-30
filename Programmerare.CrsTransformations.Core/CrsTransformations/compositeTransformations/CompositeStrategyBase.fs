@@ -11,7 +11,7 @@ Please find more information in the license file at the root directory of each s
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
  *)
 [<AbstractClass>]
-type CompositeStrategyBase internal
+type internal CompositeStrategyBase internal
     (
         crsTransformationAdapters : IList<ICrsTransformationAdapter>
     ) =

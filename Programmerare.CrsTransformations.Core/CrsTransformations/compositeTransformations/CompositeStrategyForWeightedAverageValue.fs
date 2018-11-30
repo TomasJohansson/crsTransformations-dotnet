@@ -11,7 +11,7 @@ Other subprojects may be released with other licenses e.g. LGPL or Apache Licens
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 *)
-type CompositeStrategyForWeightedAverageValue internal
+type internal CompositeStrategyForWeightedAverageValue private
     (
         crsTransformationAdapters : IList<ICrsTransformationAdapter>,
         weights: IDictionary<string, double>
@@ -87,7 +87,7 @@ type CompositeStrategyForWeightedAverageValue internal
             override this._GetAdapteeType() : CrsTransformationAdapteeType =
                 CrsTransformationAdapteeType.COMPOSITE_WEIGHTED_AVERAGE
 
-        static member _CreateCompositeStrategyForWeightedAverageValue
+        static member internal _CreateCompositeStrategyForWeightedAverageValue
             (
                 weightedCrsTransformationAdapters: IList<CrsTransformationAdapterWeight>
             ): CompositeStrategyForWeightedAverageValue =

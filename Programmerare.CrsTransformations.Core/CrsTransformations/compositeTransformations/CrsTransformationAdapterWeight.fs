@@ -20,7 +20,7 @@ Please find more information in the license file at the root directory of each s
  * @param crsTransformationAdapter an object implementing the interface CrsTransformationAdapter
  * @param weight the relative weight value to assign for the adapter specified by the adapter parameter
 *)
-type CrsTransformationAdapterWeight internal
+type CrsTransformationAdapterWeight private
     (
         crsTransformationAdapter: ICrsTransformationAdapter,
         weight: double
