@@ -301,8 +301,7 @@ and CrsTransformationResult private
             if(this.CrsTransformationAdapterResultSource.IsComposite) then
                 crsTransformationResultStatistic
             else
-                let list = new List<CrsTransformationResult>()
-                list.Add(this)
+                let list = new List<CrsTransformationResult>([this]) // alternative: new ResizeArray
                 CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(list)
 
             // From the Kotlin project's implementation:
