@@ -1,0 +1,7 @@
+This adapter library for "MightyLittleGeodesy" is licensed in the same way as the adaptee library itself.
+
+This means that the license is MIT.
+
+"MightyLittleGeodesy is licensed under the MIT License"
+https://github.com/bjornsallarp/MightyLittleGeodesy
+https://www.nuget.org/packages/MightyLittleGeodesy/

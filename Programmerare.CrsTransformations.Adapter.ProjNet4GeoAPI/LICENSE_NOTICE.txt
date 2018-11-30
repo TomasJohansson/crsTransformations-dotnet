@@ -1,0 +1,8 @@
+This adapter library for "ProjNet4GeoAPI" is licensed in the same way as the adaptee library itself.
+
+This means that the license is GNU Lesser General Public License v2.1.
+
+https://github.com/NetTopologySuite/ProjNet4GeoAPI/blob/develop/LICENSE
+https://raw.githubusercontent.com/NetTopologySuite/ProjNet4GeoAPI/master/LICENSE
+https://github.com/NetTopologySuite/ProjNet4GeoAPI
+https://www.nuget.org/packages/ProjNet4GeoAPI
