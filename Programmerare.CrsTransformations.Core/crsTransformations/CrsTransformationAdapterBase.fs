@@ -72,11 +72,6 @@ type CrsTransformationAdapterBase
 
         abstract _TransformHook : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
 
-        // TODO remove the below...? seems to be unused
-        static member private classNamePrefix = "CrsTransformationAdapter"
-        // if the above string would change because of class renamings
-        // then it will be detected by a failing test
-
         abstract member AdapteeType : CrsTransformationAdapteeType
         default this.AdapteeType = CrsTransformationAdapteeType.UNSPECIFIED
 
