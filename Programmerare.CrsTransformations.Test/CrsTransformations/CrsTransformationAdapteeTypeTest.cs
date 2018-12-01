@@ -53,18 +53,16 @@ class CrsTransformationAdapteeTypeTest {
         );
     }
 
-    private void verifyExpectedEnum(
+    private void verifyExpectedEnumWhenNotRepresentingThirdPartLibrary(
         CrsTransformationAdapterBase crsTransformationAdapter,
         CrsTransformationAdapteeType expectedAdaptee
     ) {
         verifyExpectedEnumAndAssemblyVersion(
             crsTransformationAdapter,
-            defaultFileInfoVersion,
+            FileInfoVersion.FileInfoVersionNOTrepresentingThirdPartLibrary,
             expectedAdaptee
         );
     }
-
-    private FileInfoVersion defaultFileInfoVersion = new FileInfoVersion("", -1L, "");
 
     private void verifyExpectedEnumAndAssemblyVersion(
         CrsTransformationAdapterBase crsTransformationAdapter,
@@ -94,7 +92,7 @@ class CrsTransformationAdapteeTypeTest {
 
     [Test]
     public void testCompositeAverage() {
-        verifyExpectedEnum(
+        verifyExpectedEnumWhenNotRepresentingThirdPartLibrary(
             CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(),
             CrsTransformationAdapteeType.COMPOSITE_AVERAGE
         );
@@ -102,7 +100,7 @@ class CrsTransformationAdapteeTypeTest {
 
     [Test]
     public void testCompositeMedian() {
-        verifyExpectedEnum(
+        verifyExpectedEnumWhenNotRepresentingThirdPartLibrary(
             CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(),
             CrsTransformationAdapteeType.COMPOSITE_MEDIAN
         );
@@ -110,7 +108,7 @@ class CrsTransformationAdapteeTypeTest {
 
     [Test]
     public void testCompositeFirstSuccess() {
-        verifyExpectedEnum(
+        verifyExpectedEnumWhenNotRepresentingThirdPartLibrary(
             CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(),
             CrsTransformationAdapteeType.COMPOSITE_FIRST_SUCCESS
         );
@@ -118,7 +116,7 @@ class CrsTransformationAdapteeTypeTest {
 
     [Test]
     public void testCompositeWeightedAverage() {
-        verifyExpectedEnum(
+        verifyExpectedEnumWhenNotRepresentingThirdPartLibrary(
             CrsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
                 CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
                 CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),

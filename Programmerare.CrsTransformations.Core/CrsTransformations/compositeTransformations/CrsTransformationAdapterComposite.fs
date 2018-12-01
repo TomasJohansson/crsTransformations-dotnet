@@ -36,7 +36,7 @@ type CrsTransformationAdapterComposite private
 
         // Not really applicable for composites, so instead just use 
         // a "default" object without filename and version
-        member private this._GetFileInfoVersionForComposites() = FileInfoVersion.DefaultFileInfoVersion
+        member private this._GetFileInfoVersionForComposites() = FileInfoVersion.FileInfoVersionNOTrepresentingThirdPartLibrary
             
         member internal this._GetCompositeStrategy() = compositeStrategy
 

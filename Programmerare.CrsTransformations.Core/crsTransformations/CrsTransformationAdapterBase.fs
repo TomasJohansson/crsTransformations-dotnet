@@ -35,7 +35,7 @@ type FileInfoVersion internal
         member internal this.FileName = fileName
         member internal this.FileSize = fileSize
         member internal this.Version = version
-        static member internal DefaultFileInfoVersion = FileInfoVersion("", -1L, "")
+        static member internal FileInfoVersionNOTrepresentingThirdPartLibrary = FileInfoVersion("", -1L, "")
 
         (*
          Helper method intended to be used from implementing adapters 
@@ -74,7 +74,7 @@ type FileInfoVersion internal
                     )
             else
                 // TODO: maybe create some "unrecognized" instance instead of the below
-                FileInfoVersion.DefaultFileInfoVersion
+                FileInfoVersion.FileInfoVersionNOTrepresentingThirdPartLibrary
     end
 // ----------------------------------------------------
 (*
