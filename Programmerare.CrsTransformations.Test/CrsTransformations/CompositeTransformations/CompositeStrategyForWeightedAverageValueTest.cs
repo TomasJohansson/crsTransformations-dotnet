@@ -7,6 +7,7 @@ using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 
+
 namespace Programmerare.CrsTransformations.CompositeTransformations 
 {
 public class CompositeStrategyForWeightedAverageValueTest : CompositeStrategyTestBase {
@@ -123,86 +124,86 @@ public class CompositeStrategyForWeightedAverageValueTest : CompositeStrategyTes
         return CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude( latitudeWeightedSum/totWeights, longitutdeWeightedSum/totWeights, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
     }
 
-    /*
-    // The below methods is currently disabled since the strategy was made more hidden
-    // i.e. more difficult to instantiate and thus also more difficult from test code ...
-    @Test
-    void createCompositeStrategyForWeightedAverageValue_whenAllWeightsArePositive__shouldNotThrowException() {
-        final List<CrsTransformationAdapterWeight> weightedCrsTransformationAdapters =
-            Arrays.asList(
-                CrsTransformationAdapterWeight.createFromInstance(
-                    new CrsTransformationAdapterGeoPackageNGA(),
+
+    [Test]
+    public void CreateCompositeStrategyForWeightedAverageValue_whenAllWeightsArePositive__shouldNotThrowException() {
+        List<CrsTransformationAdapterWeight> weightedCrsTransformationAdapters =
+            new List<CrsTransformationAdapterWeight>{
+                CrsTransformationAdapterWeight.CreateFromInstance(
+                    new CrsTransformationAdapterMightyLittleGeodesy(),
                     1 // null is not possible (compiling error) which is good !
                 )
-            );
+            };
         CompositeStrategyForWeightedAverageValue compositeStrategyForWeightedAverageValue =
-                CompositeStrategyForWeightedAverageValue._createCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters);
+                CompositeStrategyForWeightedAverageValue._CreateCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters);
+        // (the above method is "internal" in the F# project but still available from here 
+        //  because of "InternalsVisibleTo" configuration in the .fsproj file)
         // The main test of this test method is that the above create method does not throw an exception
-        assertNotNull(compositeStrategyForWeightedAverageValue);
+        Assert.IsNotNull(compositeStrategyForWeightedAverageValue);
     }
 
-    @Test    
-    void calculateAggregatedResultTest() {
+    [Test]
+    public void calculateAggregatedResultTest() {
         // TODO refactor this too long test method
-        final CrsTransformationAdapter crsTransformationAdapterResultSource = new CrsTransformationAdapterGeoPackageNGA();
-        final List<CrsTransformationAdapterWeight> crsTransformationAdapterWeights = Arrays.asList(
-            CrsTransformationAdapterWeight.createFromInstance(
+        ICrsTransformationAdapter crsTransformationAdapterResultSource = new CrsTransformationAdapterMightyLittleGeodesy();
+        List<CrsTransformationAdapterWeight> crsTransformationAdapterWeights = new List<CrsTransformationAdapterWeight>{
+            CrsTransformationAdapterWeight.CreateFromInstance(
                 crsTransformationAdapterResultSource,
                 1
             )
-        );
+        };
 
-        final CrsCoordinate coordinate = CrsCoordinateFactory.latLon(59,18);
-        final CrsTransformationResult crsTransformationResult = new CrsTransformationResult(
+        List<CrsTransformationResult> listOfSubresultsForStatisticsTest = new List<CrsTransformationResult>();
+
+        CrsCoordinate coordinate = CrsCoordinateFactory.LatLon(59,18);
+        CrsTransformationResult crsTransformationResult = new CrsTransformationResult(
             coordinate, // inputCoordinate irrelevant in this test so okay to use the same as the output
             coordinate, // outputCoordinate
             null, // exception
             true, // isSuccess
             crsTransformationAdapterResultSource,
-            new ArrayList<CrsTransformationResult>(), // transformationResultChildren
-            null // _nullableCrsTransformationResultStatistic
+            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(listOfSubresultsForStatisticsTest)
         );
 
-        final CompositeStrategy compositeStrategyForWeightedAverageValue = CompositeStrategyForWeightedAverageValue._createCompositeStrategyForWeightedAverageValue(crsTransformationAdapterWeights);
-        // 
+        // The below type ICompositeStrategy is "internal" in the F# project but still available from here 
+        //  because of "InternalsVisibleTo" configuration in the .fsproj file.
+        ICompositeStrategy compositeStrategyForWeightedAverageValue = CompositeStrategyForWeightedAverageValue._CreateCompositeStrategyForWeightedAverageValue(crsTransformationAdapterWeights);
         // the above composite was created with only one leaf in the list 
         // i.e. the object crsTransformationAdapterResultSource which is also used below    
                 
-        CrsTransformationResult crsTransformationResult1 = compositeStrategyForWeightedAverageValue._calculateAggregatedResult(
-            Arrays.asList(crsTransformationResult), // allResults
+        CrsTransformationResult crsTransformationResult1 = compositeStrategyForWeightedAverageValue._CalculateAggregatedResult(
+            new List<CrsTransformationResult>{crsTransformationResult}, // allResults
             coordinate,
-            coordinate.getCrsIdentifier(), //  crsIdentifierForOutputCoordinateSystem
+            coordinate.CrsIdentifier, //  crsIdentifier for OutputCoordinateSystem
             crsTransformationAdapterResultSource
         );
-        assertNotNull(crsTransformationResult1);
-        assertTrue(crsTransformationResult1.isSuccess());
-        assertEquals(coordinate, crsTransformationResult1.getOutputCoordinate());
+        Assert.IsNotNull(crsTransformationResult1);
+        Assert.IsTrue(crsTransformationResult1.isSuccess);
+        Assert.AreEqual(coordinate, crsTransformationResult1.OutputCoordinate);
 
-        final CrsTransformationAdapter crsTransformationAdapterNotInTheComposite = new CrsTransformationAdapterGooberCTL();
-        final CrsTransformationResult crsTransformationResultProblem = new CrsTransformationResult(
+        ICrsTransformationAdapter crsTransformationAdapterNotInTheComposite = new CrsTransformationAdapterDotSpatial();
+        CrsTransformationResult crsTransformationResultProblem = new CrsTransformationResult(
             coordinate, // inputCoordinate irrelevant in this test so okay to use the same as the output
             coordinate, // outputCoordinate
             null, // exception
             true, // isSuccess
             crsTransformationAdapterNotInTheComposite, // crsTransformationAdapterResultSource,
-            new ArrayList<CrsTransformationResult>(), // transformationResultChildren
-            null // _nullableCrsTransformationResultStatistic
+            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(listOfSubresultsForStatisticsTest)
         );
-        
-        assertThrows(
-            RuntimeException.class,
-            () -> {
-                compositeStrategyForWeightedAverageValue._calculateAggregatedResult(
-                    Arrays.asList(crsTransformationResultProblem), // allResults
+
+        InvalidOperationException exception = Assert.Throws<InvalidOperationException>( () => {
+            compositeStrategyForWeightedAverageValue._CalculateAggregatedResult(
+                    new List<CrsTransformationResult>{crsTransformationResultProblem}, // allResults
                     coordinate,
-                    coordinate.getCrsIdentifier(), //  crsIdentifierForOutputCoordinateSystem
+                    coordinate.CrsIdentifier, //  crsIdentifier for OutputCoordinateSystem
                     crsTransformationAdapterNotInTheComposite // SHOULD CAUSE EXCEPTION !
-                );
+                );            
             },
             "The result adapter was not part of the weighted average composite adapter"
-        );        
+        );
+
 
     }
-    */
+
 }
 }
