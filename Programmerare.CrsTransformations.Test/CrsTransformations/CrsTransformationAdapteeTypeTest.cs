@@ -11,13 +11,13 @@ namespace Programmerare.CrsTransformations
 class CrsTransformationAdapteeTypeTest {
     
     [Test]
-    public void ProjNet4GeoAPIAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+    public void ProjNet4GeoAPIAdapter_shouldMatchExpectedEnumAndAssemblyNameWithVersion() {
         var expectedFileInfoVersion = new FileInfoVersion(
             fileName: "projnet.dll",
             fileSize: 102912L, // netstandard2.0
             version: "1.4.1"
         );
-        verifyExpectedEnumAndJarfileVersion(
+        verifyExpectedEnumAndAssemblyVersion(
             new CrsTransformationAdapterProjNet4GeoAPI(),
             expectedFileInfoVersion,
             CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1
@@ -25,13 +25,13 @@ class CrsTransformationAdapteeTypeTest {
     }
     
     [Test]
-    public void DotSpatialAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+    public void DotSpatialAdapter_shouldMatchExpectedEnumAndAssemblyNameWithVersion() {
         var expectedFileInfoVersion = new FileInfoVersion(
             fileName: "dotspatial.projections.dll",
             fileSize: 1538048L,
             version: "2.0.0-rc1"
         );
-        verifyExpectedEnumAndJarfileVersion(
+        verifyExpectedEnumAndAssemblyVersion(
             new CrsTransformationAdapterDotSpatial(),
             expectedFileInfoVersion,
             CrsTransformationAdapteeType.LEAF_DOT_SPATIAL_2_0_0_RC1
@@ -40,13 +40,13 @@ class CrsTransformationAdapteeTypeTest {
 
 
     [Test]
-    public void MightyLittleGeodesyAdapter_shouldMatchExpectedEnumAndJarfileNameWithVersion() {
+    public void MightyLittleGeodesyAdapter_shouldMatchExpectedEnumAndAssemblyNameWithVersion() {
         FileInfoVersion expectedFileInfoVersion = new FileInfoVersion(
             fileName: "mightylittlegeodesy.dll", // .nuget\packages\mightylittlegeodesy\1.0.1\lib\net45
             fileSize: 15872L, // net45 version
             version: "1.0.1"
         );
-        verifyExpectedEnumAndJarfileVersion(
+        verifyExpectedEnumAndAssemblyVersion(
             new CrsTransformationAdapterMightyLittleGeodesy(),
             expectedFileInfoVersion,
             CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1
@@ -57,7 +57,7 @@ class CrsTransformationAdapteeTypeTest {
         CrsTransformationAdapterBase crsTransformationAdapter,
         CrsTransformationAdapteeType expectedAdaptee
     ) {
-        verifyExpectedEnumAndJarfileVersion(
+        verifyExpectedEnumAndAssemblyVersion(
             crsTransformationAdapter,
             defaultFileInfoVersion,
             expectedAdaptee
@@ -66,7 +66,7 @@ class CrsTransformationAdapteeTypeTest {
 
     private FileInfoVersion defaultFileInfoVersion = new FileInfoVersion("", -1L, "");
 
-    private void verifyExpectedEnumAndJarfileVersion(
+    private void verifyExpectedEnumAndAssemblyVersion(
         CrsTransformationAdapterBase crsTransformationAdapter,
         FileInfoVersion expectedFileInfoVersion,
         CrsTransformationAdapteeType expectedEnumWithMatchingNameInlcudingVersionNumber
