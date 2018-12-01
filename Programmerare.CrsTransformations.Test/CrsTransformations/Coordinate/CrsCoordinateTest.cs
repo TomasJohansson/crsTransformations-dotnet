@@ -1,11 +1,12 @@
-namespace Programmerare.CrsTransformations.Coordinate {
-
 using Programmerare.CrsTransformations.Identifier;
 using NUnit.Framework;
 using System;
-    using System.Collections.Generic;
+using System.Collections.Generic;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 
-    [TestFixture]
+namespace Programmerare.CrsTransformations.Coordinate {
+
+[TestFixture]
 class CrsCoordinateTest {
     private const string EpsgPrefix = "EPSG:";
     
@@ -13,26 +14,23 @@ class CrsCoordinateTest {
     private const double xLongitude = 12.34;
     private const double yLatitude = 56.67;
 
-    // TODO: include the constants class which currently is still located 
-    // in a directory not included in the Visual Studio Solution
-    // ( JVM_project_to_become_ported_to_dotnet\crs-transformation-constants  ) 
-    private const int epsgNumber = 3006;//EpsgNumber.SWEDEN__SWEREF99_TM__3006;
-    private const int epsgNumberWgs84 = 4326; //EpsgNumber.WORLD__WGS_84__4326,
+    private const int epsgNumberSweref99 = EpsgNumber.SWEDEN__SWEREF99_TM__3006;
+    private const int epsgNumberWgs84 = EpsgNumber.WORLD__WGS_84__4326;
 
-    private const string epsgCode = "EPSG:3006";//EpsgPrefix + epsgNumber;// EpsgCode._3006__SWEREF99_TM__SWEDEN;
+    private readonly static string epsgCode = EpsgPrefix + epsgNumberSweref99;
 
     [Test]
     public void coordinateProperties_shouldHaveValuesEqualtToFactoryMethodsParameters() {
-        CrsCoordinate coordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumber);
+        CrsCoordinate coordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumberSweref99);
         Assert.AreEqual(xLongitude, coordinate.XEastingLongitude, deltaTolerance);
         Assert.AreEqual(yLatitude, coordinate.YNorthingLatitude, deltaTolerance);
-        Assert.AreEqual(epsgNumber, coordinate.CrsIdentifier.EpsgNumber);
+        Assert.AreEqual(epsgNumberSweref99, coordinate.CrsIdentifier.EpsgNumber);
     }
 
     [Test]
     public void coordinates_shouldBeEqual_whenUsingIntegerEpsgNumberAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
-        CrsCoordinate coordinate1 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumber);
-        CrsCoordinate coordinate2 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgNumber);
+        CrsCoordinate coordinate1 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumberSweref99);
+        CrsCoordinate coordinate2 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgNumberSweref99);
         AssertEqualCoordinates(coordinate1, coordinate2);
     }
 
@@ -126,38 +124,38 @@ class CrsCoordinateTest {
 
     [Test]
     public void coordinates_shouldBeEqual_whenCreatedWithTheSameValuesButDifferentFactoryMethods() {
-        CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumber);
-        string epsgCode = EpsgPrefix + epsgNumber;
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberSweref99);
+        string epsgCode = EpsgPrefix + epsgNumberSweref99;
         
-        CrsCoordinate expectedCoordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumber);
+        CrsCoordinate expectedCoordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumberSweref99);
         // all should be equal to each other, so one of them was chosen above 
         // as the "expected" and then the others are compared with it in the below assertions
 
         // -----------------------------------------------------------------------
         // the last parameter (epsgNumber) is an integer in the first below assertions:
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.LonLat(xLongitude, yLatitude, epsgNumber)
+            CrsCoordinateFactory.LonLat(xLongitude, yLatitude, epsgNumberSweref99)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.XY(xLongitude, yLatitude, epsgNumber)
+            CrsCoordinateFactory.XY(xLongitude, yLatitude, epsgNumberSweref99)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.EastingNorthing(xLongitude, yLatitude, epsgNumber)
+            CrsCoordinateFactory.EastingNorthing(xLongitude, yLatitude, epsgNumberSweref99)
         );
 
         // the below four assertions are using x/y values in the opposite order 
         // compared to the above three assertions
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgNumber)
+            CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgNumberSweref99)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.LatLon(yLatitude, xLongitude, epsgNumber)
+            CrsCoordinateFactory.LatLon(yLatitude, xLongitude, epsgNumberSweref99)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.YX(yLatitude, xLongitude, epsgNumber)
+            CrsCoordinateFactory.YX(yLatitude, xLongitude, epsgNumberSweref99)
         );
         AssertEqualCoordinates(expectedCoordinate,
-            CrsCoordinateFactory.NorthingEasting(yLatitude, xLongitude, epsgNumber)
+            CrsCoordinateFactory.NorthingEasting(yLatitude, xLongitude, epsgNumberSweref99)
         );
 
         // -----------------------------------------------------------------------
@@ -323,10 +321,10 @@ class CrsCoordinateTest {
                 foreach(double unvalidNumber in unvalidNumbers) {
                     ArgumentException exception = Assert.Throws<ArgumentException>( () => {
                         if(useUnvalidNumberAsFirstParameter) {
-                            factoryMethod(unvalidNumber, 50.0, epsgNumber);
+                            factoryMethod(unvalidNumber, 50.0, epsgNumberSweref99);
                         }
                         else {
-                            factoryMethod(50.0, unvalidNumber, epsgNumber);
+                            factoryMethod(50.0, unvalidNumber, epsgNumberSweref99);
                         }
                     });
                     // F# may throw something like this: invalidArg "Coordinate not valid: NaN"
