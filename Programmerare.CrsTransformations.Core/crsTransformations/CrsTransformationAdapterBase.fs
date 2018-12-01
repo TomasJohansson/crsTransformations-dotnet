@@ -176,32 +176,30 @@ type CrsTransformationAdapterBase
             if not(isValid) then
                 failwith ("Coordinate not valid: " + crsCoordinate.ToString())
 
+        member private this._TransformToCoordinate(inputCoordinate, crsIdentifier) = 
+            TrowExceptionIfCoordinateIsNull(inputCoordinate)
+            let coord = transformToCoordinateStrategy(inputCoordinate, crsIdentifier)
+            this.ValidateCoordinate(coord)
+            coord
+
         interface ICrsTransformationAdapter with
             member this.GetTransformationAdapterChildren() =  this.GetTransformationAdapterChildren()
                 
             // -------------------------------------------------
+
             // The three below methods returning a coordinate object
             // are all final (i.e. not overrideable) and invokes
             // a so called "strategy" function (named so because of the design pattern Strategy)
             // which is passed as a constructor parameter.
 
             member this.TransformToCoordinate(inputCoordinate, crsCode) =
-                TrowExceptionIfCoordinateIsNull(inputCoordinate)
-                let coord = transformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
-                this.ValidateCoordinate(coord)
-                coord
+                this._TransformToCoordinate(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
 
             member this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
-                TrowExceptionIfCoordinateIsNull(inputCoordinate)
-                let coord = transformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
-                this.ValidateCoordinate(coord)
-                coord
+                this._TransformToCoordinate(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
 
             member this.TransformToCoordinate(inputCoordinate, crsIdentifier) = 
-                TrowExceptionIfCoordinateIsNull(inputCoordinate)
-                let coord = transformToCoordinateStrategy(inputCoordinate, crsIdentifier)
-                this.ValidateCoordinate(coord)
-                coord
+                this._TransformToCoordinate(inputCoordinate, crsIdentifier)
             // -------------------------------------------------
 
             // -------------------------------------------------
