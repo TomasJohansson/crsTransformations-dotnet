@@ -20,13 +20,22 @@ type CrsTransformationAdapterBaseLeaf
         
         // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
         transformToCoordinateHookLeaf : CrsCoordinate * CrsIdentifier -> CrsCoordinate
-    ) =
+    ) as this =
     class
-        inherit CrsTransformationAdapterBase(functionReturningFileInfoVersion)
+        inherit CrsTransformationAdapterBase
+            (
+                functionReturningFileInfoVersion ,
+
+                // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
+                transformToCoordinateHookLeaf  ,
+
+                // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
+                fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem) 
+            )
 
         //abstract _TransformToCoordinateHookLeaf : CrsCoordinate * CrsIdentifier -> CrsCoordinate
 
-        override this._TransformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
+        member private this._TransformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
             try
                 // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
                 let outputCoordinate = transformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem)

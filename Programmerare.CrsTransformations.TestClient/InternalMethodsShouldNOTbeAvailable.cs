@@ -28,10 +28,12 @@ namespace Programmerare.CrsTransformations.TestClient
               //</ItemGroup>
 
             
-            CrsTransformationAdapterBase c;
-            // the below method was previously exposed
+            CrsTransformationAdapterBase c = null;
+            // the below methods was previously exposed
             // but should NOT be so anymore
             //c._GetFileInfoVersion();
+            //var res = c._TransformHook(null, null);
+            //var coord = c._TransformToCoordinateHook(null, null);
 
             CrsTransformationAdapterBaseLeaf cc = null;
             // the below method was previously exposed

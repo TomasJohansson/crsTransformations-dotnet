@@ -88,7 +88,11 @@ type FileInfoVersion
 [<AbstractClass>]
 type CrsTransformationAdapterBase
     (
-        functionReturningFileInfoVersion: unit -> FileInfoVersion
+        functionReturningFileInfoVersion: unit -> FileInfoVersion,
+
+        transformToCoordinateHook : CrsCoordinate * CrsIdentifier -> CrsCoordinate ,
+
+        transformHook : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
     ) =
     class
 
@@ -108,9 +112,8 @@ type CrsTransformationAdapterBase
          *)
         // TODO: try making this method "internal" ... ? 
         // since "protected" can not currently be used in F# ...
-        abstract _TransformToCoordinateHook : CrsCoordinate * CrsIdentifier -> CrsCoordinate
-
-        abstract _TransformHook : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
+        //abstract _TransformToCoordinateHook : CrsCoordinate * CrsIdentifier -> CrsCoordinate
+        //abstract _TransformHook : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
 
         abstract member AdapteeType : CrsTransformationAdapteeType
         default this.AdapteeType = CrsTransformationAdapteeType.UNSPECIFIED
@@ -177,27 +180,27 @@ type CrsTransformationAdapterBase
 
             member this.TransformToCoordinate(inputCoordinate, crsCode) =
                 TrowExceptionIfCoordinateIsNull(inputCoordinate)
-                this._TransformToCoordinateHook(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
+                transformToCoordinateHook(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
 
             member this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
                 TrowExceptionIfCoordinateIsNull(inputCoordinate)
-                this._TransformToCoordinateHook(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
+                transformToCoordinateHook(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
 
             member this.TransformToCoordinate(inputCoordinate, crsIdentifier) = 
                 TrowExceptionIfCoordinateIsNull(inputCoordinate)
-                this._TransformToCoordinateHook(inputCoordinate, crsIdentifier)
+                transformToCoordinateHook(inputCoordinate, crsIdentifier)
             // -------------------------------------------------
 
             // -------------------------------------------------
             member this.Transform(inputCoordinate, crsIdentifier) = 
-                this._TransformHook(inputCoordinate, crsIdentifier)
+                transformHook(inputCoordinate, crsIdentifier)
 
             member this.Transform(inputCoordinate, crsCode) =
                 try
                     let crs = CrsIdentifierFactory.CreateFromCrsCode(crsCode)
                     // it is the row above which might throw an exception
                     // but the row below should not through an exception
-                    this._TransformHook(inputCoordinate, crs)
+                    transformHook(inputCoordinate, crs)
                 with
                     // | :? System.Exception as exc -> 
                     // alternative to the above:
@@ -216,7 +219,7 @@ type CrsTransformationAdapterBase
                     let crs = CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
                     // it is the row above which might throw an exception
                     // but the row below should not through an exception
-                    this._TransformHook(inputCoordinate, crs)
+                    transformHook(inputCoordinate, crs)
                 with
                     // | :? System.Exception as exc -> 
                     // alternative to the above:

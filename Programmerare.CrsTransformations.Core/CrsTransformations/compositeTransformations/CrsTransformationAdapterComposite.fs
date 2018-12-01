@@ -27,23 +27,31 @@ type CrsTransformationAdapterComposite private
     ) as this =
 
     class
-        inherit CrsTransformationAdapterBase(fun () -> this._GetFileInfoVersionForComposites())
+        inherit CrsTransformationAdapterBase
+            (
+                ( fun () -> this._GetFileInfoVersionForComposites() ) ,
+
+                // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
+                ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem) ),
+
+                // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
+                ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
+            )
 
         // Not really applicable for composites, so instead just use 
         // a "default" object without filename and version
         member private this._GetFileInfoVersionForComposites() = FileInfoVersion.DefaultFileInfoVersion
             
-
         member internal this._GetCompositeStrategy() = compositeStrategy
 
-        override this._TransformToCoordinateHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsCoordinate =
+        member private this._TransformToCoordinateHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsCoordinate =
             let transformResult = this._TransformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
             if(transformResult.IsSuccess) then
                 transformResult.OutputCoordinate
             else
                 failwith "Transformation failed"
 
-        override this._TransformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
+        member private this._TransformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
             let allCrsTransformationAdapters = this._GetCompositeStrategy()._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
             let list = new List<CrsTransformationResult>()
             let mutable shouldContinue = true

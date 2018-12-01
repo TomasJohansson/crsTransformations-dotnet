@@ -139,7 +139,9 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
                 // this should not occur. validation should be thrown earlier
                 invalidOp "Unsupported transformation"
 
-        override this._TransformToCoordinateHook(inputCoordinate, crsIdentifier) = 
+        member private this._TransformToCoordinateHook(inputCoordinate, crsIdentifier) = 
+            // TODO after some refactoring one of this methods should now be possible to remove
+            // i.e. either remove _TransformToCoordinateHook or _TransformToCoordinateHookLeaf
             this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifier)
 
         override this.AdapteeType =
