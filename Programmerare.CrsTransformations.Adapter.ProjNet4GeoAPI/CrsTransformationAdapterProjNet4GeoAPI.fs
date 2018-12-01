@@ -19,7 +19,7 @@ type CrsTransformationAdapterProjNet4GeoAPI() as this =
         inherit CrsTransformationAdapterBaseLeaf
             ( 
                  ( fun () -> this._GetFileInfoVersion() ),
-                 ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
+                 ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
             )
 
         let mutable _crsCachingStrategy: CrsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
@@ -64,7 +64,7 @@ type CrsTransformationAdapterProjNet4GeoAPI() as this =
         
         // The kind of class at the above URL has now been implemented in this F# project
 
-        member private this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
+        member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             let css = 
                 new CoordinateSystemServices
                     (
@@ -90,11 +90,6 @@ type CrsTransformationAdapterProjNet4GeoAPI() as this =
                     result.[1],
                     crsIdentifierForOutputCoordinateSystem
                 )
-
-        member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifier) = 
-            // TODO after some refactoring one of this methods should now be possible to remove
-            // i.e. either remove _TransformToCoordinateStrategy or _TransformToCoordinateStrategyLeaf
-            this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifier)
 
         override this.AdapteeType =
             CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1

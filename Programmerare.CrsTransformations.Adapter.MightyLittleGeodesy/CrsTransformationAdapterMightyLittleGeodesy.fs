@@ -24,7 +24,7 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
         inherit CrsTransformationAdapterBaseLeaf
             ( 
                 ( fun () -> this._GetFileInfoVersion() ),
-                ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
+                ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
             )
 
         static let WGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(4326)
@@ -87,7 +87,7 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
                 invalidArg "crsIdentifierForOutputCoordinateSystem" ("crsIdentifier not supported: " + o.ToString())
             
 
-        member private this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
+        member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             this.ThrowArgumentExceptionIfUnvalidCoordinateOrCrs(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
 
             let epsgNumberForInputCoordinateSystem = inputCoordinate.CrsIdentifier.EpsgNumber
@@ -128,18 +128,13 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
                 || // transform between different RT90 systems
                 (this.isRT90(input) && this.isRT90(output))
             then            
-                // first transform to WGS84
-                let wgs84Coordinate = this._TransformToCoordinateStrategyLeaf(inputCoordinate, WGS84)
-                // then transform from WGS84
-                this._TransformToCoordinateStrategyLeaf(wgs84Coordinate, crsIdentifierForOutputCoordinateSystem)
+                // first transform to WGS84 (recursive call to this method)
+                let wgs84Coordinate = this._TransformToCoordinateStrategy(inputCoordinate, WGS84)
+                // then transform from WGS84 (recursive call to this method)
+                this._TransformToCoordinateStrategy(wgs84Coordinate, crsIdentifierForOutputCoordinateSystem)
             else
                 // this should not occur. validation should be thrown earlier
                 invalidOp "Unsupported transformation"
-
-        member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifier) = 
-            // TODO after some refactoring one of this methods should now be possible to remove
-            // i.e. either remove _TransformToCoordinateStrategy or _TransformToCoordinateStrategyLeaf
-            this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifier)
 
         override this.AdapteeType =
             CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1

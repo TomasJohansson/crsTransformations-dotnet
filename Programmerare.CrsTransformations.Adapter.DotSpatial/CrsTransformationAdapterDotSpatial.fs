@@ -14,10 +14,10 @@ type CrsTransformationAdapterDotSpatial() as this =
         inherit CrsTransformationAdapterBaseLeaf
             ( 
                  ( fun () -> this._GetFileInfoVersion() ),
-                 ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
+                 ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
             )
 
-        member private this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
+        member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             let projInfoSourceCrs = ProjectionInfo.FromEpsgCode(inputCoordinate.CrsIdentifier.EpsgNumber);
             let projInfoTargetCrs = ProjectionInfo.FromEpsgCode(crsIdentifierForOutputCoordinateSystem.EpsgNumber);
 
@@ -30,11 +30,6 @@ type CrsTransformationAdapterDotSpatial() as this =
                     xy.[1],
                     crsIdentifierForOutputCoordinateSystem
                 )
-
-        member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifier) = 
-            // TODO after some refactoring one of this methods should now be possible to remove
-            // i.e. either remove _TransformToCoordinateStrategy or _TransformToCoordinateStrategyLeaf
-            this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifier)
 
         override this.AdapteeType =
             CrsTransformationAdapteeType.LEAF_DOT_SPATIAL_2_0_0_RC1
