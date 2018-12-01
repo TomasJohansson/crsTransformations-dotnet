@@ -124,6 +124,17 @@ type CrsCoordinate private
             yNorthingLatitude: double,
             crsIdentifier: CrsIdentifier
         ) =
+        let mutable isValidX = true
+        let mutable isValidY = true
+        if(Double.IsNaN(xEastingLongitude)) then isValidX <- false
+        elif(Double.IsNaN(yNorthingLatitude)) then isValidY <- false
+        elif(Double.IsInfinity(xEastingLongitude)) then isValidX <- false
+        elif(Double.IsInfinity(yNorthingLatitude)) then isValidY <- false
+        //above IsInfinity checks both IsNegativeInfinity and IsPositiveInfinity
+        if not(isValidX) then
+            invalidArg "xEastingLongitude" ("Coordinate not valid: " + xEastingLongitude.ToString())
+        if not(isValidY) then
+            invalidArg "yNorthingLatitude" ("Coordinate not valid: " + yNorthingLatitude.ToString())
         CrsCoordinate( // private constructor
             xEastingLongitude,
             yNorthingLatitude,

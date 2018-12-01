@@ -156,25 +156,12 @@ type CrsTransformationAdapterBase
         // as a constructor parameter.
 
         member internal this.ValidateCoordinate(crsCoordinate: CrsCoordinate) = 
-            // TODO add some tests for this validation
-            // but actually I think the validation should become moved into
-            // the creation of the coordinate i.e. throw exception already 
-            // at creation with these kind of values,
-            // and then the test should be in a class testing 
-            // CrsCoordinate or CrsCoordinateFactory
             if isNull crsCoordinate then
                 nullArg "crsCoordinate"
-            let mutable isValid = true
-            if(Double.IsInfinity(crsCoordinate.X)) then isValid <- false
-            elif(Double.IsInfinity(crsCoordinate.Y)) then isValid <- false
-            elif(Double.IsNaN(crsCoordinate.X)) then isValid <- false
-            elif(Double.IsNaN(crsCoordinate.Y)) then isValid <- false
-            elif(Double.IsNegativeInfinity(crsCoordinate.X)) then isValid <- false
-            elif(Double.IsNegativeInfinity(crsCoordinate.Y)) then isValid <- false
-            elif(Double.IsPositiveInfinity(crsCoordinate.X)) then isValid <- false
-            elif(Double.IsPositiveInfinity(crsCoordinate.Y)) then isValid <- false
-            if not(isValid) then
-                failwith ("Coordinate not valid: " + crsCoordinate.ToString())
+            // Most of the other validation has been moved into the 
+            // creation of the coordinate i.e. it should not even be possible
+            // to create a coordinate instance with some of the coordinate pair value
+            // being e.g. "double.NaN" so therefore no more such validation here
 
         member private this._TransformToCoordinate(inputCoordinate, crsIdentifier) = 
             TrowExceptionIfCoordinateIsNull(inputCoordinate)

@@ -3,8 +3,9 @@ namespace Programmerare.CrsTransformations.Coordinate {
 using Programmerare.CrsTransformations.Identifier;
 using NUnit.Framework;
 using System;
+    using System.Collections.Generic;
 
-[TestFixture]
+    [TestFixture]
 class CrsCoordinateTest {
     private const string EpsgPrefix = "EPSG:";
     
@@ -279,7 +280,7 @@ class CrsCoordinateTest {
 
     private void AssertExceptionMessageForIllegalArgumentException(
         ArgumentException exception, 
-        string suffixWithNameOfParameter
+        string partOfExceptionMessage
     ) {
         Assert.NotNull(exception);
         string actualEceptionMessage = exception.Message;
@@ -289,7 +290,58 @@ class CrsCoordinateTest {
         //string expectedEceptionMessagePart2 = "parameter " + suffixWithNameOfParameter;
         //Assert.That(exception.Message, Does.Contain(expectedEceptionMessagePart1));
         //Assert.That(exception.Message, Does.Contain(expectedEceptionMessagePart2));
-        Assert.That(exception.Message, Does.Contain(suffixWithNameOfParameter));
+        Assert.That(exception.Message, Does.Contain(partOfExceptionMessage));
     }
+
+    [Test]
+    public void CreateCoordinate_shouldThrowException_whenXorYIsNotValidNumber()
+    {
+        // The iteration of three lists in this method
+        // is an alternative to implementing 
+        // 48 methods with lots of duplication !
+        // ( 3 * 2 * 8 = 48 )
+        var unvalidNumbers = new List<double> {
+            double.NaN, 
+            double.PositiveInfinity, 
+            double.NegativeInfinity
+        };
+        var unvalidNumberShouldBeUsedAsFirstParameter = new List<bool> {
+            true, false
+        };
+        var factoryMethods = new List<Func<double, double, int, CrsCoordinate>>{
+            CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude,
+            CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude,
+            CrsCoordinateFactory.XY,
+            CrsCoordinateFactory.YX,
+            CrsCoordinateFactory.EastingNorthing,
+            CrsCoordinateFactory.NorthingEasting,
+            CrsCoordinateFactory.LonLat,
+            CrsCoordinateFactory.LatLon
+        };
+        foreach(var factoryMethod in factoryMethods) {
+            foreach(bool useUnvalidNumberAsFirstParameter in unvalidNumberShouldBeUsedAsFirstParameter) {
+                foreach(double unvalidNumber in unvalidNumbers) {
+                    ArgumentException exception = Assert.Throws<ArgumentException>( () => {
+                        if(useUnvalidNumberAsFirstParameter) {
+                            factoryMethod(unvalidNumber, 50.0, epsgNumber);
+                        }
+                        else {
+                            factoryMethod(50.0, unvalidNumber, epsgNumber);
+                        }
+                    });
+                    // F# may throw something like this: invalidArg "Coordinate not valid: NaN"
+                    // and below we test that the message at least contain the substring "NaN"
+                    string partOfTheExpectedExceptionMessage = unvalidNumber.ToString();
+                    // for example, the above string may be "NaN" and then we want that string to occur
+                    // in the exception message
+                    AssertExceptionMessageForIllegalArgumentException(
+                        exception, 
+                        partOfTheExpectedExceptionMessage
+                    );
+                }
+            }
+        }
+    }
+
 } // class ends
 } // namespace ends
