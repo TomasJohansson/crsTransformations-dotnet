@@ -2,10 +2,6 @@ using System;
 using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 
-// TODO: refactor the methods in this test class 
-// regarding duplicated code for construction 
-// of result within Assert.Throws 
-
 namespace Programmerare.CrsTransformations
 {
 public class CrsTransformationResultTest : CrsTransformationResultTestBase {
@@ -20,28 +16,48 @@ public class CrsTransformationResultTest : CrsTransformationResultTestBase {
         outputCoordinate = inputCoordinate;
     }
 
-    [Test]
-    public void transformResult_shouldNotReturnSuccess_whenSuccessParameterIsFalse() {
-        transformResultWithSuccessFalse = CrsTransformationResult._CreateCrsTransformationResult(
+    // Lots of method in this test class creates a 
+    // CrsTransformationResult with three of the six 
+    // parameters being exactly the same.
+    // For that reason this helper method is used,
+    // i.e. to not duplicate the three 
+    // parameters almost always being the same.
+    private CrsTransformationResult CreateCrsTransformationResult(
+        //CrsCoordinate inputCoordinate: ,
+        CrsCoordinate outputCoordinate,
+        Exception exceptionOrNull,
+        bool isSuccess
+        //crsTransformationAdapterResultSource: ICrsTransformationAdapter,
+        //nullableCrsTransformationResultStatistic: CrsTransformationResultStatistic// = null
+    ) {
+        var transformResult = CrsTransformationResult._CreateCrsTransformationResult(
             inputCoordinate,
-            null,
-            null,
-            false, // parameter success = false !
+            outputCoordinate,
+            exceptionOrNull,
+            isSuccess,
             base.compositeAdapterForResultTest,
             CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(base.listOfSubresultsForStatisticsTest)
+        );
+        return transformResult;
+    }
+
+
+    [Test]
+    public void transformResult_shouldNotReturnSuccess_whenSuccessParameterIsFalse() {
+        transformResultWithSuccessFalse = CreateCrsTransformationResult(
+            null,
+            null,
+            false // parameter success = false !
         );
         Assert.IsFalse(transformResultWithSuccessFalse.IsSuccess); // because of success parameter false
     }
 
     [Test]
     public void transformResult_shouldReturnSuccess_whenSuccessParameterIsTrue() {
-        transformResultWithSuccessFalse = CrsTransformationResult._CreateCrsTransformationResult(
-            inputCoordinate,
+        transformResultWithSuccessFalse = CreateCrsTransformationResult(
             outputCoordinate,
             null,
-            true,
-            base.compositeAdapterForResultTest,
-            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(base.listOfSubresultsForStatisticsTest)
+            true
         );
         Assert.IsTrue(transformResultWithSuccessFalse.IsSuccess);
     }
@@ -51,13 +67,10 @@ public class CrsTransformationResultTest : CrsTransformationResultTestBase {
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             {
                 //"unvalid TransformResult object construction should throw exception when success false is combined with output coordinate not being null",
-                CrsTransformationResult._CreateCrsTransformationResult(
-                    inputCoordinate, 
+                CreateCrsTransformationResult(
                     outputCoordinate, // not null (which it should be when success false as below)
                     null,
-                    false,
-                    base.compositeAdapterForResultTest,
-                    CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(base.listOfSubresultsForStatisticsTest)
+                    false
                 );           
             },
             "unvalid TransformResult object construction should throw exception when success false is combined with output coordinate not being null"
@@ -69,13 +82,10 @@ public class CrsTransformationResultTest : CrsTransformationResultTestBase {
         CrsCoordinate outputCoordinateNull = null;
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             {
-                CrsTransformationResult._CreateCrsTransformationResult(
-                    inputCoordinate,
+                CreateCrsTransformationResult(
                     outputCoordinateNull, // outputCoordinate = null, then success should be false !
                     null,
-                    true,
-                    base.compositeAdapterForResultTest,
-                    CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(base.listOfSubresultsForStatisticsTest)
+                    true
                 );
             },
             "unvalid TransformResult object construction should throw exception when success true is combined with null as output coordinate"
@@ -89,14 +99,11 @@ public class CrsTransformationResultTest : CrsTransformationResultTestBase {
         Assert.IsNotNull(outputCoordinateNotNull); // just to assert what the name claims i.e. not null
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             {
-                CrsTransformationResult._CreateCrsTransformationResult(
-                    inputCoordinate,
+                CreateCrsTransformationResult(
                     outputCoordinateNotNull,
                     // when there is an exception as below then the above coordinate SHOULD BE null !
                     someException,
-                    false,
-                    base.compositeAdapterForResultTest,
-                    CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(base.listOfSubresultsForStatisticsTest)
+                    false
                 );
             },
             "unvalid TransformResult object construction should throw exception when an exception parameter is combined with non-null as output coordinate"
@@ -110,31 +117,26 @@ public class CrsTransformationResultTest : CrsTransformationResultTestBase {
         CrsCoordinate outputCoordinateNull = null;
         ArgumentException exception = Assert.Throws<ArgumentException>(() =>
             {
-                CrsTransformationResult._CreateCrsTransformationResult(
-                inputCoordinate,
-                outputCoordinateNull,
-                someException,
-                // when there is an exception as above then the below success SHOULD BE false !
-                true,
-                base.compositeAdapterForResultTest,
-                CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(base.listOfSubresultsForStatisticsTest)
-            );
+                CreateCrsTransformationResult(
+                    outputCoordinateNull,
+                    someException,
+                    // when there is an exception as above then the below success SHOULD BE false !
+                    true
+                );
             },
             "unvalid TransformResult object construction should throw exception when an exception parameter is combined with success true"
         );
 
     }
 
+
     [Test]
     public void transformResult_shouldThrowException_whenTryingToGetCoordinateWhenSuccessIsFalse() {
         outputCoordinate = null;
-        transformResultWithSuccessFalse = CrsTransformationResult._CreateCrsTransformationResult(
-            inputCoordinate,
+        transformResultWithSuccessFalse = CreateCrsTransformationResult(
             outputCoordinate,
             null,
-            false,
-            base.compositeAdapterForResultTest,
-            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(base.listOfSubresultsForStatisticsTest)
+            false
         );
         InvalidOperationException e = Assert.Throws<InvalidOperationException>(() =>
             {
@@ -162,13 +164,6 @@ public class CrsTransformationResultTest : CrsTransformationResultTestBase {
             null,
             true,
             base.compositeAdapterForResultTest,
-
-            //base.listOfSubresultsForStatisticsTest,
-            //nullTransformationResultStatistic
-            // the above parameter with the statictics object is null 
-            // i.e. it is not precalculated but will become created
-            // (which this test method is testing further down below)                
-
             CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(base.listOfSubresultsForStatisticsTest)
         );
         CrsTransformationResultStatistic crsTransformationResultStatistic = transformResult.CrsTransformationResultStatistic;
