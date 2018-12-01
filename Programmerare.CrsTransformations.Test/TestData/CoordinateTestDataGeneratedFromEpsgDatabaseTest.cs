@@ -359,9 +359,9 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         string fileNameSuffixExcludingExtension
     ) {
         Console.WriteLine("-------------------------------");
-        Console.WriteLine("testResults for " + testResult.adapter.GetType().Name);
-        Console.WriteLine("seconds: " + testResult.totalNumberOfSecondsForAllTransformations);
-        IList<TestResultItem> testResultItems = testResult.testResultItems;
+        Console.WriteLine("testResults for " + testResult.Adapter.GetType().Name);
+        Console.WriteLine("seconds: " + testResult.TotalNumberOfSecondsForAllTransformations);
+        IList<TestResultItem> testResultItems = testResult.TestResultItems;
         int countOfFailures = 0;
         int countOfSuccess = 0;
         bool isSuccess;
@@ -390,7 +390,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         Console.WriteLine("countOfFailures: " + countOfFailures);
         Console.WriteLine("-------------------------------");
 
-        FileInfo file = GetFileForRegressionResults(testResult.adapter, fileNameSuffixExcludingExtension);
+        FileInfo file = GetFileForRegressionResults(testResult.Adapter, fileNameSuffixExcludingExtension);
         if (shouldCreateNewRegressionFile) {
             CreateNewRegressionFile(file, linesWithCurrentResults);
         }
@@ -479,7 +479,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     ///     ProjNet4GeoAPI_version_1.4.1.csv
     ///     MightyLittleGeodesy_version_1.0.1.csv
     /// In the latter case, the file parameter names does not make as much sense.
-    /// (TODO: rename the parameters, but then also rename other 
+    /// (TODO: rename the parameters, but then also rename other  
     ///     similarly named variables within the method)
     /// </summary>
     /// <param name="fileWithLatestResults"></param>
