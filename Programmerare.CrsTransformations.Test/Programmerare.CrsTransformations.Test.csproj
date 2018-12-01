@@ -34,6 +34,7 @@
     <Compile Include="CrsTransformations\CrsTransformationResultTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationResultTestBase.cs" />
     <Compile Include="CrsTransformations\CrsTransformationTestBase.cs" />
+    <Compile Include="CrsTransformations\FileInfoVersionTest.cs" />
     <Compile Include="CrsTransformations\Identifier\CrsIdentifierTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterLeafFactoryTest.cs" />
     <Compile Include="CrsTransformations\Implementations\DotSpatialTest.cs" />

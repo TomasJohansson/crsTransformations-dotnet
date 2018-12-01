@@ -35,6 +35,7 @@ type FileInfoVersion internal
         member internal this.FileName = fileName
         member internal this.FileSize = fileSize
         member internal this.Version = version
+        
         static member internal FileInfoVersionNOTrepresentingThirdPartLibrary = FileInfoVersion("", -1L, "")
 
         member internal this.IsRepresentingThirdPartLibrary() = 
@@ -86,8 +87,7 @@ type FileInfoVersion internal
                     regExpMatch.Groups.[1].Value
                     )
             else
-                // TODO: maybe create some "unrecognized" instance instead of the below
-                FileInfoVersion.FileInfoVersionNOTrepresentingThirdPartLibrary
+                failwith ("The 'FileInfoVersion' parts could not be extracted from the string " + inputString + " which was retrieved using the type " + someTypeInTheThidPartAdapteeLibrary.GetType().FullName)
     end
 // ----------------------------------------------------
 (*
