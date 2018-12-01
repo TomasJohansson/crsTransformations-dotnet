@@ -14,13 +14,10 @@ type CrsTransformationAdapterDotSpatial() as this =
         inherit CrsTransformationAdapterBaseLeaf
             ( 
                  ( fun () -> this._GetFileInfoVersion() ),
-
-                 // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
-                 ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
+                 ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
             )
 
-        // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
-        member private this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
+        member private this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             let projInfoSourceCrs = ProjectionInfo.FromEpsgCode(inputCoordinate.CrsIdentifier.EpsgNumber);
             let projInfoTargetCrs = ProjectionInfo.FromEpsgCode(crsIdentifierForOutputCoordinateSystem.EpsgNumber);
 
@@ -34,10 +31,10 @@ type CrsTransformationAdapterDotSpatial() as this =
                     crsIdentifierForOutputCoordinateSystem
                 )
 
-        member private this._TransformToCoordinateHook(inputCoordinate, crsIdentifier) = 
+        member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifier) = 
             // TODO after some refactoring one of this methods should now be possible to remove
-            // i.e. either remove _TransformToCoordinateHook or _TransformToCoordinateHookLeaf
-            this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifier)
+            // i.e. either remove _TransformToCoordinateStrategy or _TransformToCoordinateStrategyLeaf
+            this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifier)
 
         override this.AdapteeType =
             CrsTransformationAdapteeType.LEAF_DOT_SPATIAL_2_0_0_RC1

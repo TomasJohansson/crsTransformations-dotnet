@@ -24,9 +24,7 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
         inherit CrsTransformationAdapterBaseLeaf
             ( 
                 ( fun () -> this._GetFileInfoVersion() ),
-
-                // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
-                ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
+                ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
             )
 
         static let WGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(4326)
@@ -89,8 +87,7 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
                 invalidArg "crsIdentifierForOutputCoordinateSystem" ("crsIdentifier not supported: " + o.ToString())
             
 
-        // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
-        member private this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
+        member private this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             this.ThrowArgumentExceptionIfUnvalidCoordinateOrCrs(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
 
             let epsgNumberForInputCoordinateSystem = inputCoordinate.CrsIdentifier.EpsgNumber
@@ -132,17 +129,17 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
                 (this.isRT90(input) && this.isRT90(output))
             then            
                 // first transform to WGS84
-                let wgs84Coordinate = this._TransformToCoordinateHookLeaf(inputCoordinate, WGS84)
+                let wgs84Coordinate = this._TransformToCoordinateStrategyLeaf(inputCoordinate, WGS84)
                 // then transform from WGS84
-                this._TransformToCoordinateHookLeaf(wgs84Coordinate, crsIdentifierForOutputCoordinateSystem)
+                this._TransformToCoordinateStrategyLeaf(wgs84Coordinate, crsIdentifierForOutputCoordinateSystem)
             else
                 // this should not occur. validation should be thrown earlier
                 invalidOp "Unsupported transformation"
 
-        member private this._TransformToCoordinateHook(inputCoordinate, crsIdentifier) = 
+        member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifier) = 
             // TODO after some refactoring one of this methods should now be possible to remove
-            // i.e. either remove _TransformToCoordinateHook or _TransformToCoordinateHookLeaf
-            this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifier)
+            // i.e. either remove _TransformToCoordinateStrategy or _TransformToCoordinateStrategyLeaf
+            this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifier)
 
         override this.AdapteeType =
             CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1

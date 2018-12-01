@@ -19,9 +19,7 @@ type CrsTransformationAdapterProjNet4GeoAPI() as this =
         inherit CrsTransformationAdapterBaseLeaf
             ( 
                  ( fun () -> this._GetFileInfoVersion() ),
-
-                 // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
-                 ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
+                 ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
             )
 
         let mutable _crsCachingStrategy: CrsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
@@ -66,8 +64,7 @@ type CrsTransformationAdapterProjNet4GeoAPI() as this =
         
         // The kind of class at the above URL has now been implemented in this F# project
 
-        // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
-        member private this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
+        member private this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             let css = 
                 new CoordinateSystemServices
                     (
@@ -94,10 +91,10 @@ type CrsTransformationAdapterProjNet4GeoAPI() as this =
                     crsIdentifierForOutputCoordinateSystem
                 )
 
-        member private this._TransformToCoordinateHook(inputCoordinate, crsIdentifier) = 
+        member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifier) = 
             // TODO after some refactoring one of this methods should now be possible to remove
-            // i.e. either remove _TransformToCoordinateHook or _TransformToCoordinateHookLeaf
-            this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifier)
+            // i.e. either remove _TransformToCoordinateStrategy or _TransformToCoordinateStrategyLeaf
+            this._TransformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifier)
 
         override this.AdapteeType =
             CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1

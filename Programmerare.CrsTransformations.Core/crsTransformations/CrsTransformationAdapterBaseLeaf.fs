@@ -17,34 +17,25 @@ Please find more information in the license file at the root directory of each s
 type CrsTransformationAdapterBaseLeaf
     (
         functionReturningFileInfoVersion: unit -> FileInfoVersion,
-        
-        // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
-        transformToCoordinateHookLeaf : CrsCoordinate * CrsIdentifier -> CrsCoordinate
+        transformToCoordinateStrategyLeaf : CrsCoordinate * CrsIdentifier -> CrsCoordinate
     ) as this =
     class
         inherit CrsTransformationAdapterBase
             (
                 functionReturningFileInfoVersion ,
-
-                // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
-                transformToCoordinateHookLeaf  ,
-
-                // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
-                fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem) 
+                transformToCoordinateStrategyLeaf  ,
+                fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) 
             )
 
-        //abstract _TransformToCoordinateHookLeaf : CrsCoordinate * CrsIdentifier -> CrsCoordinate
-
-        member private this._TransformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
+        member private this._TransformStrategy(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
             try
-                // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
-                let outputCoordinate = transformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+                let outputCoordinate = transformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
                 // TODO implement a check with things as below to see if it was a failure
                 // (if the above invoked implementation method would return things as below
                 // instead of throwing exception... but this is probably not the best place 
                 // but rather in a general way to apply the validation also 
-                // in one place for all the leafs i.e. the hook method 
-                // above can be invkoked indirectly without executing through 
+                // in one place for all the leafs i.e. the strategy method 
+                // above can be invoked indirectly without executing through 
                 // this code and therefore it should be placed somewhere else)
                 //if true then
                 //    //java.lang.Double.isNaN(outputCoordinate.yNorthingLatitude)

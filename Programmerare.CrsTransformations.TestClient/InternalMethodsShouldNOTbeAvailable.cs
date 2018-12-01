@@ -34,6 +34,13 @@ namespace Programmerare.CrsTransformations.TestClient
             //c._GetFileInfoVersion();
             //var res = c._TransformHook(null, null);
             //var coord = c._TransformToCoordinateHook(null, null);
+            // Actually the above methods have now been renamed 
+            // to "Strategy" instead of "Hook" because of the 
+            // design pattern being used now after some refactoring 
+            // that prevented exposing of methods considering 
+            // the fact that "protected" can not be used in F#
+            // and "internal" was not appropriate since 
+            // other assemblies are implemening the base type.
 
             CrsTransformationAdapterBaseLeaf cc = null;
             // the below method was previously exposed

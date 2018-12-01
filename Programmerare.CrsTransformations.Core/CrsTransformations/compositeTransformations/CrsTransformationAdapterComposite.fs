@@ -30,12 +30,8 @@ type CrsTransformationAdapterComposite private
         inherit CrsTransformationAdapterBase
             (
                 ( fun () -> this._GetFileInfoVersionForComposites() ) ,
-
-                // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
-                ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem) ),
-
-                // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
-                ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
+                ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) ),
+                ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
             )
 
         // Not really applicable for composites, so instead just use 
@@ -44,14 +40,14 @@ type CrsTransformationAdapterComposite private
             
         member internal this._GetCompositeStrategy() = compositeStrategy
 
-        member private this._TransformToCoordinateHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsCoordinate =
-            let transformResult = this._TransformHook(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+        member private this._TransformToCoordinateStrategy(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsCoordinate =
+            let transformResult = this._TransformStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
             if(transformResult.IsSuccess) then
                 transformResult.OutputCoordinate
             else
                 failwith "Transformation failed"
 
-        member private this._TransformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
+        member private this._TransformStrategy(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
             let allCrsTransformationAdapters = this._GetCompositeStrategy()._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
             let list = new List<CrsTransformationResult>()
             let mutable shouldContinue = true
@@ -82,23 +78,23 @@ type CrsTransformationAdapterComposite private
                 CrsTransformationAdapterComposite(compositeStrategy)
 
         member this.TransformToCoordinate(inputCoordinate, crsCode) =
-            this._TransformToCoordinateHook(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
+            this._TransformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
 
         member this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
-            this._TransformToCoordinateHook(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
+            this._TransformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
 
         member this.TransformToCoordinate(inputCoordinate, crsIdentifier) = 
-            this._TransformToCoordinateHook(inputCoordinate, crsIdentifier)
+            this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifier)
 
 
         member this.Transform(inputCoordinate, crsCode) =
-            this._TransformHook(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
+            this._TransformStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
 
         member this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
-            this._TransformHook(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
+            this._TransformStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
 
         member this.Transform(inputCoordinate, crsIdentifier) = 
-            this._TransformHook(inputCoordinate, crsIdentifier)
+            this._TransformStrategy(inputCoordinate, crsIdentifier)
                 
 
         interface ICrsTransformationAdapter with

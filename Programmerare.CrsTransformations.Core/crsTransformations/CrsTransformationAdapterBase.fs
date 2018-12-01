@@ -89,10 +89,8 @@ type FileInfoVersion
 type CrsTransformationAdapterBase
     (
         functionReturningFileInfoVersion: unit -> FileInfoVersion,
-
-        transformToCoordinateHook : CrsCoordinate * CrsIdentifier -> CrsCoordinate ,
-
-        transformHook : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
+        transformToCoordinateStrategy : CrsCoordinate * CrsIdentifier -> CrsCoordinate ,
+        transformStrategy : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
     ) =
     class
 
@@ -103,17 +101,6 @@ type CrsTransformationAdapterBase
             // "Value cannot be null. Parameter name: inputCoordinate"
             // instead of the following which otherwise might occur later:
             // "Object reference not set to an instance of an object"
-
-        (*
-         * Transforms a coordinate to another coordinate reference system.  
-         * 
-         * This is a "hook" method (as it is named in the design pattern Template Method)   
-         * which must be implemented by subclasses.
-         *)
-        // TODO: try making this method "internal" ... ? 
-        // since "protected" can not currently be used in F# ...
-        //abstract _TransformToCoordinateHook : CrsCoordinate * CrsIdentifier -> CrsCoordinate
-        //abstract _TransformHook : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
 
         abstract member AdapteeType : CrsTransformationAdapteeType
         default this.AdapteeType = CrsTransformationAdapteeType.UNSPECIFIED
@@ -175,32 +162,32 @@ type CrsTransformationAdapterBase
             // -------------------------------------------------
             // The three below methods returning a coordinate object
             // are all final (i.e. not overrideable) and invokes
-            // a so called "hook" method (named so in the Template Method pattern)
-            // which is an abstract method that must be implemented in a subclass.
+            // a so called "strategy" function (named so because of the design pattern Strategy)
+            // which is passed as a constructor parameter.
 
             member this.TransformToCoordinate(inputCoordinate, crsCode) =
                 TrowExceptionIfCoordinateIsNull(inputCoordinate)
-                transformToCoordinateHook(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
+                transformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
 
             member this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
                 TrowExceptionIfCoordinateIsNull(inputCoordinate)
-                transformToCoordinateHook(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
+                transformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
 
             member this.TransformToCoordinate(inputCoordinate, crsIdentifier) = 
                 TrowExceptionIfCoordinateIsNull(inputCoordinate)
-                transformToCoordinateHook(inputCoordinate, crsIdentifier)
+                transformToCoordinateStrategy(inputCoordinate, crsIdentifier)
             // -------------------------------------------------
 
             // -------------------------------------------------
             member this.Transform(inputCoordinate, crsIdentifier) = 
-                transformHook(inputCoordinate, crsIdentifier)
+                transformStrategy(inputCoordinate, crsIdentifier)
 
             member this.Transform(inputCoordinate, crsCode) =
                 try
                     let crs = CrsIdentifierFactory.CreateFromCrsCode(crsCode)
                     // it is the row above which might throw an exception
                     // but the row below should not through an exception
-                    transformHook(inputCoordinate, crs)
+                    transformStrategy(inputCoordinate, crs)
                 with
                     // | :? System.Exception as exc -> 
                     // alternative to the above:
@@ -219,7 +206,7 @@ type CrsTransformationAdapterBase
                     let crs = CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
                     // it is the row above which might throw an exception
                     // but the row below should not through an exception
-                    transformHook(inputCoordinate, crs)
+                    transformStrategy(inputCoordinate, crs)
                 with
                     // | :? System.Exception as exc -> 
                     // alternative to the above:
