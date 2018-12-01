@@ -41,6 +41,7 @@ namespace Programmerare.CrsTransformations.TestData
  */
 
 [TestFixture]
+[Category(TestCategory.SideEffectFileCreation)]
 [Category(TestCategory.SideEffectPrintingConsoleOutput)]
 [Ignore("Not real tests but a method in this class can be executed if you temporary disable this 'Ignore'")]
 // You may want to temporary change the above line if you want to run the "tests"
@@ -472,50 +473,47 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     /// (i.e. produced by different versions)
     /// In other words, if there would be (but currently not) a version 1.4.2 of ProjNet4GeoAPI,
     /// then the following two files would be compared:
-    ///     ProjNet4GeoAPI_version_1.4.2.csv (in the parameter "fileWithLatestResults")
-    ///     ProjNet4GeoAPI_version_1.4.1.csv (in the parameter "fileWithSecondLatestResults")
-    /// However, the method actually can be used for comparing versions from 
+    ///     ProjNet4GeoAPI_version_1.4.2.csv (in the parameter "file1")
+    ///     ProjNet4GeoAPI_version_1.4.1.csv (in the parameter "file2")
+    /// The method can also be used for comparing versions from 
     /// different adapters e.g. comparing these two files:
     ///     ProjNet4GeoAPI_version_1.4.1.csv
     ///     MightyLittleGeodesy_version_1.0.1.csv
-    /// In the latter case, the file parameter names does not make as much sense.
-    /// (TODO: rename the parameters, but then also rename other  
-    ///     similarly named variables within the method)
     /// </summary>
-    /// <param name="fileWithLatestResults"></param>
-    /// <param name="fileWithSecondLatestResults"></param>
+    /// <param name="file1"></param>
+    /// <param name="file2"></param>
     /// <param name="deltaValueForDifferencesToIgnore"></param>
     /// <param name="shouldAlsoDisplayDifferencesWhenValueIsMissing"></param>
     private void CompareWithRegressionFileContent(
-        FileInfo fileWithLatestResults,
-        FileInfo fileWithSecondLatestResults,
+        FileInfo file1,
+        FileInfo file2,
         double deltaValueForDifferencesToIgnore, // if negative value then show ANY difference
         bool shouldAlsoDisplayDifferencesWhenValueIsMissing
     ) {
         bool shouldShowALLdifferences = deltaValueForDifferencesToIgnore < 0;
         Console.WriteLine("-------------------------------------------------");
-        Console.WriteLine("Will now compare the files " + fileWithLatestResults.Name + " and " + fileWithSecondLatestResults.Name);
-        IList<string> linesWithLatestResults = GetAllLinesFromTextFileUTF8(fileWithLatestResults);
-        IList<string> linesWithSecondLatestResults = GetAllLinesFromTextFileUTF8(fileWithSecondLatestResults);
+        Console.WriteLine("Will now compare the files " + file1.Name + " and " + file2.Name);
+        IList<string> linesFromFile1 = GetAllLinesFromTextFileUTF8(file1);
+        IList<string> linesFromFile2 = GetAllLinesFromTextFileUTF8(file2);
 
-        Console.WriteLine("number of rows: " + linesWithLatestResults.Count);
-        // assertEquals(linesWithLatestResults.size(), linesWithSecondLatestResults.size(), "Not even the same number of results as previously");
-        if(linesWithLatestResults.Count != linesWithSecondLatestResults.Count) {
-            Console.WriteLine("Not even the same number of results as previously: " + linesWithLatestResults.Count + " vs " + linesWithSecondLatestResults.Count);
+        Console.WriteLine("number of rows: " + linesFromFile1.Count);
+        //Assert.AreEqual(linesFromFile1.Count, linesFromFile2.Count, "Not even the same number of results in the two files");
+        if(linesFromFile1.Count != linesFromFile2.Count) {
+            Console.WriteLine("Not even the same number of results in the two files: " + linesFromFile1.Count + " vs " + linesFromFile2.Count);
         }
-        int numberOfRowsToIiterate = linesWithLatestResults.Count;
+        int numberOfRowsToIiterate = linesFromFile1.Count;
         for (int i = 0; i < numberOfRowsToIiterate; i++) {
-            //assertEquals(linesWithLatestResults.get(i), linesWithSecondLatestResults.get(i));
-            if(!linesWithLatestResults[i].Equals(linesWithSecondLatestResults[i])) {
+            //Assert.AreEqual(linesFromFile1[i], linesFromFile2[i]);
+            if(!linesFromFile1[i].Equals(linesFromFile2[i])) {
                 if(shouldShowALLdifferences) {
                     Console.WriteLine("Diff lines:");
-                    Console.WriteLine(linesWithLatestResults[i]);
-                    Console.WriteLine(linesWithSecondLatestResults[i]);
+                    Console.WriteLine(linesFromFile1[i]);
+                    Console.WriteLine(linesFromFile2[i]);
                 }
                 else {
                     ShowDifferenceIfSignificant(
-                        linesWithLatestResults[i],
-                        linesWithSecondLatestResults[i],
+                        linesFromFile1[i],
+                        linesFromFile2[i],
                         deltaValueForDifferencesToIgnore,
                         shouldAlsoDisplayDifferencesWhenValueIsMissing
                     );
