@@ -155,6 +155,26 @@ type CrsTransformationAdapterBase
         // subclasses (in other assemblies) can pass the function 
         // as a constructor parameter.
 
+        member internal this.ValidateCoordinate(crsCoordinate: CrsCoordinate) = 
+            // TODO add some tests for this validation
+            // but actually I think the validation should become moved into
+            // the creation of the coordinate i.e. throw exception already 
+            // at creation with these kind of values,
+            // and then the test should be in a class testing 
+            // CrsCoordinate or CrsCoordinateFactory
+            if isNull crsCoordinate then
+                nullArg "crsCoordinate"
+            let mutable isValid = true
+            if(Double.IsInfinity(crsCoordinate.X)) then isValid <- false
+            elif(Double.IsInfinity(crsCoordinate.Y)) then isValid <- false
+            elif(Double.IsNaN(crsCoordinate.X)) then isValid <- false
+            elif(Double.IsNaN(crsCoordinate.Y)) then isValid <- false
+            elif(Double.IsNegativeInfinity(crsCoordinate.X)) then isValid <- false
+            elif(Double.IsNegativeInfinity(crsCoordinate.Y)) then isValid <- false
+            elif(Double.IsPositiveInfinity(crsCoordinate.X)) then isValid <- false
+            elif(Double.IsPositiveInfinity(crsCoordinate.Y)) then isValid <- false
+            if not(isValid) then
+                failwith ("Coordinate not valid: " + crsCoordinate.ToString())
 
         interface ICrsTransformationAdapter with
             member this.GetTransformationAdapterChildren() =  this.GetTransformationAdapterChildren()
@@ -167,15 +187,21 @@ type CrsTransformationAdapterBase
 
             member this.TransformToCoordinate(inputCoordinate, crsCode) =
                 TrowExceptionIfCoordinateIsNull(inputCoordinate)
-                transformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
+                let coord = transformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
+                this.ValidateCoordinate(coord)
+                coord
 
             member this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
                 TrowExceptionIfCoordinateIsNull(inputCoordinate)
-                transformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
+                let coord = transformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
+                this.ValidateCoordinate(coord)
+                coord
 
             member this.TransformToCoordinate(inputCoordinate, crsIdentifier) = 
                 TrowExceptionIfCoordinateIsNull(inputCoordinate)
-                transformToCoordinateStrategy(inputCoordinate, crsIdentifier)
+                let coord = transformToCoordinateStrategy(inputCoordinate, crsIdentifier)
+                this.ValidateCoordinate(coord)
+                coord
             // -------------------------------------------------
 
             // -------------------------------------------------

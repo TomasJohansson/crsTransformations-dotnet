@@ -30,22 +30,7 @@ type CrsTransformationAdapterBaseLeaf
         member private this._TransformStrategy(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
             try
                 let outputCoordinate = transformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
-                // TODO implement a check with things as below to see if it was a failure
-                // (if the above invoked implementation method would return things as below
-                // instead of throwing exception... but this is probably not the best place 
-                // but rather in a general way to apply the validation also 
-                // in one place for all the leafs i.e. the strategy method 
-                // above can be invoked indirectly without executing through 
-                // this code and therefore it should be placed somewhere else)
-                //if true then
-                //    //java.lang.Double.isNaN(outputCoordinate.yNorthingLatitude)
-                //    //||
-                //    //java.lang.Double.isNaN(outputCoordinate.xEastingLongitude)
-                // .NET :
-                //System.Double.IsInfinity
-                //System.Double.IsNaN
-                //System.Double.IsNegativeInfinity
-                //System.Double.IsPositiveInfinity
+                base.ValidateCoordinate(outputCoordinate)
                 CrsTransformationResult._CreateCrsTransformationResult(
                     inputCoordinate,
                     outputCoordinate,
