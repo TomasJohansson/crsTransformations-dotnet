@@ -16,16 +16,20 @@ Please find more information in the license file at the root directory of each s
 [<AbstractClass>]
 type CrsTransformationAdapterBaseLeaf
     (
-        functionReturningFileInfoVersion: unit -> FileInfoVersion
+        functionReturningFileInfoVersion: unit -> FileInfoVersion,
+        
+        // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
+        transformToCoordinateHookLeaf : CrsCoordinate * CrsIdentifier -> CrsCoordinate
     ) =
     class
         inherit CrsTransformationAdapterBase(functionReturningFileInfoVersion)
 
-        abstract _TransformToCoordinateHookLeaf : CrsCoordinate * CrsIdentifier -> CrsCoordinate
+        //abstract _TransformToCoordinateHookLeaf : CrsCoordinate * CrsIdentifier -> CrsCoordinate
 
         override this._TransformHook(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
             try
-                let outputCoordinate = this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+                // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
+                let outputCoordinate = transformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
                 // TODO implement a check with things as below to see if it was a failure
                 // (if the above invoked implementation method would return things as below
                 // instead of throwing exception... but this is probably not the best place 

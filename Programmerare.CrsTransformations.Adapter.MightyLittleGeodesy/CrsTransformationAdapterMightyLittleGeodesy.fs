@@ -21,7 +21,13 @@ Please find more information in the license file at the root directory of each s
  *)
 type CrsTransformationAdapterMightyLittleGeodesy() as this =
     class
-        inherit CrsTransformationAdapterBaseLeaf(fun () -> this._GetFileInfoVersion())
+        inherit CrsTransformationAdapterBaseLeaf
+            ( 
+                ( fun () -> this._GetFileInfoVersion() ),
+
+                // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
+                ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
+            )
 
         static let WGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(4326)
         static let rt90Projections: Dictionary<int, RT90Position.RT90Projection> = new Dictionary<int, RT90Position.RT90Projection>()
@@ -83,7 +89,8 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
                 invalidArg "crsIdentifierForOutputCoordinateSystem" ("crsIdentifier not supported: " + o.ToString())
             
 
-        override this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
+        // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
+        member private this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             this.ThrowArgumentExceptionIfUnvalidCoordinateOrCrs(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
 
             let epsgNumberForInputCoordinateSystem = inputCoordinate.CrsIdentifier.EpsgNumber

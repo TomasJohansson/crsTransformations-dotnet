@@ -11,9 +11,16 @@ Please find more information in the license file at the root directory of each s
 *)
 type CrsTransformationAdapterDotSpatial() as this =
     class
-        inherit CrsTransformationAdapterBaseLeaf(fun () -> this._GetFileInfoVersion())
+        inherit CrsTransformationAdapterBaseLeaf
+            ( 
+                 ( fun () -> this._GetFileInfoVersion() ),
 
-        override this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
+                 // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
+                 ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
+            )
+
+        // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
+        member private this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             let projInfoSourceCrs = ProjectionInfo.FromEpsgCode(inputCoordinate.CrsIdentifier.EpsgNumber);
             let projInfoTargetCrs = ProjectionInfo.FromEpsgCode(crsIdentifierForOutputCoordinateSystem.EpsgNumber);
 

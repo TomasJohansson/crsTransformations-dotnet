@@ -16,7 +16,13 @@ Please find more information in the license file at the root directory of each s
 *)
 type CrsTransformationAdapterProjNet4GeoAPI() as this =
     class
-        inherit CrsTransformationAdapterBaseLeaf(fun () -> this._GetFileInfoVersion())
+        inherit CrsTransformationAdapterBaseLeaf
+            ( 
+                 ( fun () -> this._GetFileInfoVersion() ),
+
+                 // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
+                 ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
+            )
 
         let mutable _crsCachingStrategy: CrsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
         
@@ -60,7 +66,8 @@ type CrsTransformationAdapterProjNet4GeoAPI() as this =
         
         // The kind of class at the above URL has now been implemented in this F# project
 
-        override this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
+        // TODO rename the below "hook" (template method pattern) to "strategy" after the refactoring
+        member private this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             let css = 
                 new CoordinateSystemServices
                     (

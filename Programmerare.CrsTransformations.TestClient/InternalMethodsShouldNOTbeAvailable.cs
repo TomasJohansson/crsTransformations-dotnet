@@ -32,6 +32,11 @@ namespace Programmerare.CrsTransformations.TestClient
             // the below method was previously exposed
             // but should NOT be so anymore
             //c._GetFileInfoVersion();
+
+            CrsTransformationAdapterBaseLeaf cc = null;
+            // the below method was previously exposed
+            // but should NOT be so anymore i.e. should no longer even be possible to compile:
+            //var coordinate = cc._TransformToCoordinateHookLeaf(null, null);
         }
     }
 }
