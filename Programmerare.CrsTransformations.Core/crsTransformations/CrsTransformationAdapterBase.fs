@@ -25,31 +25,26 @@ There are TWO types in this file:
 // upgraded version (of some NuGet package or an adaptee library)
 // i.e. to help remembering to update the enum value 
 // defining which adaptee library version is used
-// TODO maybe use [<AllowNullLiteral>] at FileInfoVersion instead for C# interoperability
-type FileInfoVersion
+type FileInfoVersion internal
     (
         fileName: string,
         fileSize: int64,
         version: string
     ) = 
     class
-        member this.FileName = fileName
-        member this.FileSize = fileSize
-        member this.Version = version
-        // TODO maybe use [<AllowNullLiteral>] at FileInfoVersion declaration 
-        // i.e. use null instead of the below values 
-        // for C# interoperability, i.e. like this:
-        // let defaultFileInfoVersion: FileInfoVersion = null
-        static member DefaultFileInfoVersion = FileInfoVersion("", -1L, "")
+        member internal this.FileName = fileName
+        member internal this.FileSize = fileSize
+        member internal this.Version = version
+        static member internal DefaultFileInfoVersion = FileInfoVersion("", -1L, "")
 
         (*
          Helper method intended to be used from implementing adapters 
          when implementing a method that should return the name
          of a DLL file (and the version information extracted from the path) 
          file belonging to an adaptee library.
-             This helper method is NOT intended for
-             client code.
-             Therefore it is named with "_" as prefix.
+             This helper method is NOT intended for  client code
+             but it needs to be public since it used by 
+             adapter implementations in other assemblies.
         *)
         static member GetFileInfoVersionHelper
             (
@@ -78,6 +73,7 @@ type FileInfoVersion
                     regExpMatch.Groups.[1].Value
                     )
             else
+                // TODO: maybe create some "unrecognized" instance instead of the below
                 FileInfoVersion.DefaultFileInfoVersion
     end
 // ----------------------------------------------------
