@@ -1,4 +1,5 @@
 using System;
+using MathNet.Numerics.Statistics; // for calculation of Median value
 using System.Linq;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -41,17 +42,21 @@ namespace Programmerare.CrsTransformations.CompositeTransformations
     private CrsCoordinate calculateMedianCoordinate(List<CrsCoordinate> coordinateResultsForTheDifferentImplementations) {
         var latitudes = coordinateResultsForTheDifferentImplementations.Select(c => c.Latitude).ToList();
         var longitudes = coordinateResultsForTheDifferentImplementations.Select(c => c.Longitude).ToList();
-        // TODO maybe use the below library for finding the median
-        // (not that the performance is important for the small number of values that will be used,
-        //  but it would be appropriate to use different implementations in test code and the tested code,
-        //  i.e. the below MedianValueUtility is also used by the tested code ...)
+        // An external package is used not because the performance is important 
+        // but it is appropriate to use different implementations in test code and the tested code,
+        // i.e. the tested code does NOT have this dependency to MathNet.Numerics
         // https://github.com/mathnet/mathnet-numerics
-        double medianLongitude = MedianValueUtility.Median(longitudes);
-        double medianLatitude = MedianValueUtility.Median(latitudes);
+        // The below method "Median" is an extension method in namespace "MathNet.Numerics.Statistics" , https://github.com/mathnet/mathnet-numerics , https://www.nuget.org/packages/MathNet.Numerics/
+        double medianLongitude = longitudes.Median();
+        double medianLatitude = latitudes.Median();
+        
+        ;
         return CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(medianLongitude, medianLatitude, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
     }
 
 }
+/*
+Now using MathNet.Numerics instead of the below code
 public static class MedianValueUtility
 {
     // https://stackoverflow.com/questions/4140719/calculate-median-in-c-sharp
@@ -129,4 +134,5 @@ public static class MedianValueUtility
     }
 //----------------------------------------------------------------
 }
+*/
 }
