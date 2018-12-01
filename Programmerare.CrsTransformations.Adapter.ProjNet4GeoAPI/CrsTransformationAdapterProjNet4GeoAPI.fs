@@ -14,9 +14,9 @@ Other subprojects may be released with other licenses e.g. LGPL or Apache Licens
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 *)
-type CrsTransformationAdapterProjNet4GeoAPI() =
+type CrsTransformationAdapterProjNet4GeoAPI() as this =
     class
-        inherit CrsTransformationAdapterBaseLeaf()
+        inherit CrsTransformationAdapterBaseLeaf(fun () -> this._GetFileInfoVersion())
 
         let mutable _crsCachingStrategy: CrsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
         
@@ -102,8 +102,8 @@ type CrsTransformationAdapterProjNet4GeoAPI() =
         // suffix of the type name
         override this.ShortNameOfImplementation = "ProjNet4GeoAPI"
 
-        override this._GetFileInfoVersion() =
-            base._GetFileInfoVersionHelper(typeof<CoordinateSystemFactory>)
+        member private this._GetFileInfoVersion() =
+            FileInfoVersion.GetFileInfoVersionHelper(typeof<CoordinateSystemFactory>)
 
         member this.SetSridReader(sridReader: SridReader) = 
             _sridReader <- sridReader

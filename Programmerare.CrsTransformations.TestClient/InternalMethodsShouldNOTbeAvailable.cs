@@ -26,6 +26,12 @@ namespace Programmerare.CrsTransformations.TestClient
               //    <_Parameter1>Programmerare.CrsTransformations.Test</_Parameter1>
               //  </AssemblyAttribute>
               //</ItemGroup>
+
+            
+            CrsTransformationAdapterBase c;
+            // the below method was previously exposed
+            // but should NOT be so anymore
+            //c._GetFileInfoVersion();
         }
     }
 }

@@ -9,9 +9,9 @@ Other subprojects may be released with other licenses e.g. LGPL or Apache Licens
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 *)
-type CrsTransformationAdapterDotSpatial() =
+type CrsTransformationAdapterDotSpatial() as this =
     class
-        inherit CrsTransformationAdapterBaseLeaf()
+        inherit CrsTransformationAdapterBaseLeaf(fun () -> this._GetFileInfoVersion())
 
         override this._TransformToCoordinateHookLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             let projInfoSourceCrs = ProjectionInfo.FromEpsgCode(inputCoordinate.CrsIdentifier.EpsgNumber);
@@ -42,8 +42,8 @@ type CrsTransformationAdapterDotSpatial() =
         // suffix of the type name
         override this.ShortNameOfImplementation = "DotSpatial"
 
-        override this._GetFileInfoVersion() =
-            base._GetFileInfoVersionHelper(typeof<ProjectionInfo>)
+        member private this._GetFileInfoVersion() =
+            FileInfoVersion.GetFileInfoVersionHelper(typeof<ProjectionInfo>)
 
     end
 

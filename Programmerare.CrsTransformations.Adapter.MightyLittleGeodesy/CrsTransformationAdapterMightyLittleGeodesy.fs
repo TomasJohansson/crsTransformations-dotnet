@@ -19,9 +19,9 @@ Please find more information in the license file at the root directory of each s
  * @see Programmerare.CrsTransformations.CrsTransformationAdapter
  *
  *)
-type CrsTransformationAdapterMightyLittleGeodesy() =
+type CrsTransformationAdapterMightyLittleGeodesy() as this =
     class
-        inherit CrsTransformationAdapterBaseLeaf()
+        inherit CrsTransformationAdapterBaseLeaf(fun () -> this._GetFileInfoVersion())
 
         static let WGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(4326)
         static let rt90Projections: Dictionary<int, RT90Position.RT90Projection> = new Dictionary<int, RT90Position.RT90Projection>()
@@ -147,8 +147,8 @@ type CrsTransformationAdapterMightyLittleGeodesy() =
         // suffix of the type name
         override this.ShortNameOfImplementation = "MightyLittleGeodesy"
 
-        override this._GetFileInfoVersion() =
-            base._GetFileInfoVersionHelper(typeof<RT90Position>)
+        member private this._GetFileInfoVersion() =
+            FileInfoVersion.GetFileInfoVersionHelper(typeof<RT90Position>)
 
     end
 (*

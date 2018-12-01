@@ -14,9 +14,12 @@ Please find more information in the license file at the root directory of each s
  * Base class for the 'leaf' adapters.
 *)
 [<AbstractClass>]
-type CrsTransformationAdapterBaseLeaf() =
+type CrsTransformationAdapterBaseLeaf
+    (
+        functionReturningFileInfoVersion: unit -> FileInfoVersion
+    ) =
     class
-        inherit CrsTransformationAdapterBase()
+        inherit CrsTransformationAdapterBase(functionReturningFileInfoVersion)
 
         abstract _TransformToCoordinateHookLeaf : CrsCoordinate * CrsIdentifier -> CrsCoordinate
 

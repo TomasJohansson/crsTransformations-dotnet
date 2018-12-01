@@ -5,6 +5,8 @@ open System.Text.RegularExpressions
 open System.Collections.Generic
 open Programmerare.CrsTransformations.Coordinate
 open Programmerare.CrsTransformations.Identifier
+open System.Diagnostics
+
 (*
 Copyright (c) Tomas Johansson , http://programmerare.com
 The code in the "Core" project is licensed with MIT.
@@ -34,6 +36,49 @@ type FileInfoVersion
         member this.FileName = fileName
         member this.FileSize = fileSize
         member this.Version = version
+        // TODO maybe use [<AllowNullLiteral>] at FileInfoVersion declaration 
+        // i.e. use null instead of the below values 
+        // for C# interoperability, i.e. like this:
+        // let defaultFileInfoVersion: FileInfoVersion = null
+        static member DefaultFileInfoVersion = FileInfoVersion("", -1L, "")
+
+        (*
+         Helper method intended to be used from implementing adapters 
+         when implementing a method that should return the name
+         of a DLL file (and the version information extracted from the path) 
+         file belonging to an adaptee library.
+             This helper method is NOT intended for
+             client code.
+             Therefore it is named with "_" as prefix.
+        *)
+        static member GetFileInfoVersionHelper
+            (
+                someTypeInTheThidPartAdapteeLibrary: Type
+            ) =
+            let assembly = someTypeInTheThidPartAdapteeLibrary.Assembly
+            let codeBase = assembly.CodeBase
+            let file = FileInfo(assembly.Location)
+            // AssemblyQualifiedName is something like this: 
+            // "MightyLittleGeodesy.Positions.RT90Position, MightyLittleGeodesy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
+            // but the version number 1.0.0.0 is not what I want which is 1.0.1 
+            // which can be extracted from the path below
+            // the code base will be some path like:
+            // "...nuget/packages/mightylittlegeodesy/1.0.1/lib/net45/MightyLittleGeodesy.dll"
+            // version between some slashes in the below regexp: 
+            // e.g. "2.0.0-rc1" or "1.0.1"
+            let inputString = codeBase.ToLower().Replace('\\','/')
+            // printfn "GetFileInfoVersionHelper inputString: %s" inputString
+            let regExp = new Regex("^.*\\/(.{0,10}?[\\d\\.]{3,9}.{0,10}?)\\/.*\\/(.+)$")
+            let regExpMatch = regExp.Match(inputString)
+            if regExpMatch.Success then
+                FileInfoVersion
+                    (
+                    regExpMatch.Groups.[2].Value,
+                    file.Length,
+                    regExpMatch.Groups.[1].Value
+                    )
+            else
+                FileInfoVersion.DefaultFileInfoVersion
     end
 // ----------------------------------------------------
 (*
@@ -43,14 +88,9 @@ type FileInfoVersion
 [<AbstractClass>]
 type CrsTransformationAdapterBase
     (
+        functionReturningFileInfoVersion: unit -> FileInfoVersion
     ) =
     class
-
-        // TODO maybe use [<AllowNullLiteral>] at FileInfoVersion declaration 
-        // i.e. use null instead of the below values 
-        // for C# interoperability, i.e. like this:
-        // let defaultFileInfoVersion: FileInfoVersion = null
-        let defaultFileInfoVersion = FileInfoVersion("", -1L, "")
 
         let TrowExceptionIfCoordinateIsNull(inputCoordinate) : unit = 
             if isNull inputCoordinate then
@@ -111,47 +151,20 @@ type CrsTransformationAdapterBase
                 and the version number "1.0.1" and both these components can be put into 
                 a FileInfoVersion instance
             *)
-        abstract member _GetFileInfoVersion : unit -> FileInfoVersion
-        default this._GetFileInfoVersion() = defaultFileInfoVersion
-        
-        (*
-         Helper method intended to be used from subclasses
-         when implementing the method that should return the name
-         of a DLL file (and the version information extracted from the path) 
-         file belonging to an adaptee library.
-             This helper method is NOT intended for
-             client code.
-             Therefore it is named with "_" as prefix.
-             TODO maybe try to make it "internal" instead
-        *)
-        member this._GetFileInfoVersionHelper
-            (
-                someTypeInTheThidPartAdapteeLibrary: Type
-            ) =
-            let assembly = someTypeInTheThidPartAdapteeLibrary.Assembly
-            let codeBase = assembly.CodeBase
-            let file = FileInfo(assembly.Location)
-            // AssemblyQualifiedName is something like this: 
-            // "MightyLittleGeodesy.Positions.RT90Position, MightyLittleGeodesy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-            // but the version number 1.0.0.0 is not what I want which is 1.0.1 
-            // which can be extracted from the path below
-            // the code base will be some path like:
-            // "...nuget/packages/mightylittlegeodesy/1.0.1/lib/net45/MightyLittleGeodesy.dll"
-            // version between some slashes in the below regexp: 
-            // e.g. "2.0.0-rc1" or "1.0.1"
-            let inputString = codeBase.ToLower().Replace('\\','/')
-            // printfn "GetFileInfoVersionHelper inputString: %s" inputString
-            let regExp = new Regex("^.*\\/(.{0,10}?[\\d\\.]{3,9}.{0,10}?)\\/.*\\/(.+)$")
-            let regExpMatch = regExp.Match(inputString)
-            if regExpMatch.Success then
-                FileInfoVersion
-                    (
-                    regExpMatch.Groups.[2].Value,
-                    file.Length,
-                    regExpMatch.Groups.[1].Value
-                    )
-            else
-                defaultFileInfoVersion
+        member internal this._GetFileInfoVersion() : FileInfoVersion = 
+            functionReturningFileInfoVersion()
+        // Previously, the above method was exposed as public 
+        // by being defined as abstract as below:
+        // (and it should not be "abstract internal" since the access have to 
+        //  be the same as the type, and the type should be inherited 
+        //  by implementations in other assemblies)
+        //abstract member _GetFileInfoVersion : unit -> FileInfoVersion
+        //default this._GetFileInfoVersion() = defaultFileInfoVersion
+        // However, to avoid exposing the above method as public
+        // it is not "internal" instead, and the implementing 
+        // subclasses (in other assemblies) can pass the function 
+        // as a constructor parameter.
+
 
         interface ICrsTransformationAdapter with
             member this.GetTransformationAdapterChildren() =  this.GetTransformationAdapterChildren()

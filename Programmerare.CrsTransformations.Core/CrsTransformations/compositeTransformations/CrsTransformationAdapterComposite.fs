@@ -24,10 +24,15 @@ type CrsTransformationAdapterComposite private
      * e.g. one stratefy implementation calculates the median and another the average.
      *)        
     compositeStrategy: ICompositeStrategy
-    ) =
+    ) as this =
 
     class
-        inherit CrsTransformationAdapterBase()
+        inherit CrsTransformationAdapterBase(fun () -> this._GetFileInfoVersionForComposites())
+
+        // Not really applicable for composites, so instead just use 
+        // a "default" object without filename and version
+        member private this._GetFileInfoVersionForComposites() = FileInfoVersion.DefaultFileInfoVersion
+            
 
         member internal this._GetCompositeStrategy() = compositeStrategy
 
