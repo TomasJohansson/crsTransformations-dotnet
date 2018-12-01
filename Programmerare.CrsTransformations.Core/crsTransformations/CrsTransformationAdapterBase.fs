@@ -37,6 +37,19 @@ type FileInfoVersion internal
         member internal this.Version = version
         static member internal FileInfoVersionNOTrepresentingThirdPartLibrary = FileInfoVersion("", -1L, "")
 
+        member internal this.IsRepresentingThirdPartLibrary() = 
+            let f = FileInfoVersion.FileInfoVersionNOTrepresentingThirdPartLibrary
+            if (
+                f.FileName.Equals(this.FileName)
+                &&
+                f.Version.Equals(this.Version)
+                &&
+                f.FileSize = this.FileSize
+            ) then
+                false
+            else
+                true
+
         (*
          Helper method intended to be used from implementing adapters 
          when implementing a method that should return the name

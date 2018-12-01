@@ -74,7 +74,7 @@ class CrsTransformationAdapteeTypeTest {
             crsTransformationAdapter.AdapteeType
         );
         FileInfoVersion fileInfoVersion = crsTransformationAdapter._GetFileInfoVersion();
-        if(expectedFileInfoVersion.FileSize > 0) {
+        if(expectedFileInfoVersion.IsRepresentingThirdPartLibrary()) {
             Assert.That(
                 fileInfoVersion.FileName, Does.EndWith(expectedFileInfoVersion.FileName),
                 "Likely failure reason: You have upgraded a version. If so, then upgrade both the enum value and the filename"
