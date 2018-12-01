@@ -67,9 +67,6 @@ type CrsCoordinateFactory =
             yNorthingLatitude: double,
             crsIdentifier: CrsIdentifier
         ) : CrsCoordinate =
-        if isNull crsIdentifier then
-            nullArg "crsIdentifier"
-        // TODO move the above validation into the below method
         CrsCoordinate._internalXYfactory(
             xEastingLongitude,
             yNorthingLatitude,

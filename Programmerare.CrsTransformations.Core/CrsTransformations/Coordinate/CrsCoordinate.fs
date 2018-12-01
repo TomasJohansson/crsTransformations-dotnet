@@ -118,12 +118,14 @@ type CrsCoordinate private
     * NOT indended for public use.
     * Please instead use the factory class CrsCoordinateFactory.
     *)
-    static member _internalXYfactory
+    static member internal _internalXYfactory
         (
             xEastingLongitude: double,
             yNorthingLatitude: double,
             crsIdentifier: CrsIdentifier
         ) =
+        if isNull crsIdentifier then
+            nullArg "crsIdentifier"
         let mutable isValidX = true
         let mutable isValidY = true
         if(Double.IsNaN(xEastingLongitude)) then isValidX <- false
