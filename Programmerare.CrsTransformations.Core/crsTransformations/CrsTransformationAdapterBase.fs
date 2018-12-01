@@ -169,6 +169,39 @@ type CrsTransformationAdapterBase
             this.ValidateCoordinate(coord)
             coord
 
+        member private this._Transform
+            (
+                inputCoordinate: CrsCoordinate, 
+                functionCreatingCrsIdentifier: unit -> CrsIdentifier
+            ) =
+            // The Transform methods should never throw an exception
+            // but the methods 
+            // 'CrsIdentifierFactory.CreateFromCrsCode'
+            // and
+            // 'CrsIdentifierFactory.CreateFromEpsgNumber'
+            // (which are used from the Transform methods in this class )
+            // might throw an exception, but to reduce duplication 
+            // of exception handling, we are using a function parameter
+            // which is invoked here, i.e. in one place we use the 
+            // try/with statement instead of duplicating it twice
+            try
+                let crsIdentifier = functionCreatingCrsIdentifier() // invoking either CrsIdentifierFactory.CreateFromCrsCode or CrsIdentifierFactory.CreateFromEpsgNumber
+                // it is the row above which might throw an exception
+                // but the row below should not through an exception
+                transformStrategy(inputCoordinate, crsIdentifier)
+            with
+                // | :? System.Exception as exc -> 
+                // alternative to the above:
+                | exc -> 
+                    CrsTransformationResult._CreateCrsTransformationResult(
+                        inputCoordinate,
+                        null,
+                        exc,
+                        false,
+                        this,
+                        CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(new List<CrsTransformationResult>())
+                    )
+            
         interface ICrsTransformationAdapter with
             member this.GetTransformationAdapterChildren() =  this.GetTransformationAdapterChildren()
                 
@@ -194,43 +227,20 @@ type CrsTransformationAdapterBase
                 transformStrategy(inputCoordinate, crsIdentifier)
 
             member this.Transform(inputCoordinate, crsCode) =
-                try
-                    let crs = CrsIdentifierFactory.CreateFromCrsCode(crsCode)
-                    // it is the row above which might throw an exception
-                    // but the row below should not through an exception
-                    transformStrategy(inputCoordinate, crs)
-                with
-                    // | :? System.Exception as exc -> 
-                    // alternative to the above:
-                    | exc -> 
-                        CrsTransformationResult._CreateCrsTransformationResult(
-                            inputCoordinate,
-                            null,
-                            exc,
-                            false,
-                            this,
-                            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(new List<CrsTransformationResult>())
-                        )
-            // TODO refactor the try/with code duplicated above/below 
+                // see the comment in below method '_Transform'
+                this._Transform
+                    (
+                        inputCoordinate, 
+                        fun () -> CrsIdentifierFactory.CreateFromCrsCode(crsCode)
+                    )
+            
             member this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
-                try
-                    let crs = CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
-                    // it is the row above which might throw an exception
-                    // but the row below should not through an exception
-                    transformStrategy(inputCoordinate, crs)
-                with
-                    // | :? System.Exception as exc -> 
-                    // alternative to the above:
-                    | exc -> 
-                        CrsTransformationResult._CreateCrsTransformationResult(
-                            inputCoordinate,
-                            null,
-                            exc,
-                            false,
-                            this,
-                            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(new List<CrsTransformationResult>())
-                        )
-
+                // see the comment in below method '_Transform'
+                this._Transform
+                    (
+                        inputCoordinate, 
+                        fun () -> CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
+                    )
             // -------------------------------------------------
 
             member this.LongNameOfImplementation = this.LongNameOfImplementation
