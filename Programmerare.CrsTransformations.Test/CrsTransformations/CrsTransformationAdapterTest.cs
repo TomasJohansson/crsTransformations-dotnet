@@ -16,6 +16,19 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
 
     // the keyword "base" is not needed but is still used in this test class 
     // to make it obvious that some variables ar defined and populated in a base class
+    
+    private string unvalidCrsCode;
+    private CrsCoordinate validInputCoordinate;
+
+    [SetUp]
+    public void SetUpCrsTransformationAdapterTest() {
+        unvalidCrsCode = "This string is NOT a correct crs/EPSG code";
+        validInputCoordinate = CrsCoordinateFactory.LatLon(
+            60.0, // ok wgs84 latitude
+            20.0, // ok wgs84 longitude
+            epsgNumberForWgs84 // OK
+        );
+    }
 
     [Test]
     public void theBaseClass_shouldHaveCreatedThreeLeafAndFourCompositeImplementations() {
@@ -87,7 +100,7 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
         CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.LatLon(
             60.0, // ok wgs84 latitude
             20.0, // ok wgs84 longitude
-            "This string is NOT a correct crs/EPSG code"
+            unvalidCrsCode
         );
         transform_shouldReturnSuccessFalseButNotThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
     }
@@ -137,7 +150,7 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
         CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.LatLon(
             60.0, // ok wgs84 latitude
             20.0, // ok wgs84 longitude
-            "This string is NOT a correct crs/EPSG code"
+            unvalidCrsCode
         );
         transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
     }
@@ -173,13 +186,6 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
 
     [Test]
     public void TransformToCoordinate_shouldThrowException_whenTargetCrsIsNotValid() {
-        CrsCoordinate validInputCoordinate = CrsCoordinateFactory.LatLon(
-            60.0, // ok wgs84 latitude
-            20.0, // ok wgs84 longitude
-            epsgNumberForWgs84 // OK
-        );
-        string unvalidCrsCode = "This string is NOT a correct crs/EPSG code";
-        // TODO refactor the above two variables to a setup method
         foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
             Assert.That(
                 () => crsTransformationAdapter.TransformToCoordinate(
@@ -195,16 +201,10 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
             );
         }
     }
-    
+
     [Test]
     public void Transform_shouldNotThrowException_whenTargetCrsIsNotValid() {
-        CrsCoordinate validInputCoordinate = CrsCoordinateFactory.LatLon(
-            60.0, // ok wgs84 latitude
-            20.0, // ok wgs84 longitude
-            epsgNumberForWgs84 // OK
-        );
-        string unvalidCrsCode = "This string is NOT a correct crs/EPSG code";
-        // TODO refactor the above two variables to a setup method
+
 
         foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
             var res = crsTransformationAdapter.Transform(
