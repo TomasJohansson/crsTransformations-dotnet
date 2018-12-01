@@ -170,7 +170,55 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
             );
         }
     }
+
+    [Test]
+    public void TransformToCoordinate_shouldThrowException_whenTargetCrsIsNotValid() {
+        CrsCoordinate validInputCoordinate = CrsCoordinateFactory.LatLon(
+            60.0, // ok wgs84 latitude
+            20.0, // ok wgs84 longitude
+            epsgNumberForWgs84 // OK
+        );
+        string unvalidCrsCode = "This string is NOT a correct crs/EPSG code";
+        // TODO refactor the above two variables to a setup method
+        foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
+            Assert.That(
+                () => crsTransformationAdapter.TransformToCoordinate(
+                    validInputCoordinate,
+                    unvalidCrsCode
+                ),
+                Throws.Exception
+                    // testing that the thrown exception type is one of the following:
+                    .TypeOf<ArgumentOutOfRangeException>().Or
+                    .TypeOf<NotSupportedException>().Or
+                    .TypeOf<ArgumentException>().Or
+                    .TypeOf<Exception>()
+            );
+        }
+    }
     
+    [Test]
+    public void Transform_shouldNotThrowException_whenTargetCrsIsNotValid() {
+        CrsCoordinate validInputCoordinate = CrsCoordinateFactory.LatLon(
+            60.0, // ok wgs84 latitude
+            20.0, // ok wgs84 longitude
+            epsgNumberForWgs84 // OK
+        );
+        string unvalidCrsCode = "This string is NOT a correct crs/EPSG code";
+        // TODO refactor the above two variables to a setup method
+
+        foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
+            var res = crsTransformationAdapter.Transform(
+                validInputCoordinate,
+                unvalidCrsCode
+            );
+            // The main part of the test (as in the test method name)
+            // is that the above Transform method should NOT 
+            // throw an exception but since we have got a result 
+            // we can also verify that the transformation was a failure:
+            Assert.IsFalse(res.isSuccess);
+        }
+    }
+        
     [Test]
     public void getLongNameOfImplementation_shouldReturnFullClassNameIncludingPackageName() {
         // Of course fragile, but the class/package name will not change
