@@ -155,7 +155,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
         CrsTransformationResult result = crsTransformationAdapterComposite.Transform(input, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         Assert.IsNotNull(result);
         Assert.IsTrue(result.IsSuccess);
-        const int numberOfImplementations = 3; // TODO: reuse constant defined in some other class...
+        const int numberOfImplementations = CrsTransformationAdapterTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
         Assert.AreEqual(numberOfImplementations, result.GetTransformationResultChildren().Count);
         CrsTransformationResultStatistic crsTransformationResultStatistic = result.CrsTransformationResultStatistic;
         Assert.IsNotNull(crsTransformationResultStatistic);

@@ -12,7 +12,7 @@ using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 [TestFixture]
 public class CrsTransformationAdapterLeafFactoryTest {
 
-    public const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = 3;
+    private const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = CrsTransformationAdapterTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
 
     private static IList<string> actualClassNamesForAllKnownImplementations;
     

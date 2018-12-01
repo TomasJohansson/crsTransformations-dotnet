@@ -12,15 +12,15 @@ namespace Programmerare.CrsTransformations
 {
 public class CrsTransformationAdapterTest : CrsTransformationTestBase {
 	
-	private const int NUMBER_OF_LEAF_IMPLEMENTATIONS = 3;
-	// TODO the above is defined in some other place too.. find it and remove duplication ....
+	public const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = 3;
+	// TODO the above is defined in some other place too.. find it and remove duplication .... 
 
     // the keyword "base" is not needed but is still used in this test class 
     // to make it obvious that some variables ar defined and populated in a base class
 
     [Test]
     public void theBaseClass_shouldHaveCreatedThreeLeafAndFourCompositeImplementations() {
-        int expectedNumberOfLeafs = NUMBER_OF_LEAF_IMPLEMENTATIONS;
+        int expectedNumberOfLeafs = EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
         int expectedNumberOfComposites = 4; // will not change often and if/when changed then will be easy to fix
         Assert.AreEqual(expectedNumberOfLeafs, base.crsTransformationAdapterLeafImplementations.Count);
         Assert.AreEqual(expectedNumberOfComposites, base.crsTransformationAdapterCompositeImplementations.Count);
@@ -238,7 +238,7 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
         int expectedNumberOfChildrenForTheComposites = base.crsTransformationAdapterLeafImplementations.Count;
         Assert.That(
             //"Has the number of leaf implementations been reduced?",
-            expectedNumberOfChildrenForTheComposites, Is.GreaterThanOrEqualTo(NUMBER_OF_LEAF_IMPLEMENTATIONS)
+            expectedNumberOfChildrenForTheComposites, Is.GreaterThanOrEqualTo(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS)
         ); 
         foreach (ICrsTransformationAdapter compositeAdapter in base.crsTransformationAdapterCompositeImplementations) {
             Assert.AreEqual(
@@ -273,7 +273,7 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
         crsTransformationAdapterImplementationsExpectingOneResult.AddRange(base.crsTransformationAdapterLeafImplementations);
         crsTransformationAdapterImplementationsExpectingOneResult.Add(CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess());
         Assert.AreEqual(
-			NUMBER_OF_LEAF_IMPLEMENTATIONS + 1,  // 3 leafs plus 1 
+			EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS + 1,  // 3 leafs plus 1 
 			crsTransformationAdapterImplementationsExpectingOneResult.Count
 		);
         
@@ -313,8 +313,8 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
         // the below value is the max difference when comparing the five leaf implementations 
         double actualMaxDiffXorY = 0.0032574664801359177;
        
-        int criteriaNumberOfResultsSuccess = NUMBER_OF_LEAF_IMPLEMENTATIONS; // all 5 should succeed
-        int criteriaNumberOfResultsFailure = NUMBER_OF_LEAF_IMPLEMENTATIONS + 1; // 6 implementations can not succeed since there are not so many implementations
+        int criteriaNumberOfResultsSuccess = EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS; // all 5 should succeed
+        int criteriaNumberOfResultsFailure = EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS + 1; // 6 implementations can not succeed since there are not so many implementations
         double criteriaMaxDiffFailure = actualMaxDiffXorY - 0.0001; // a little too small requirement for max difference
         double criteriaMaxDiffSuccess  = actualMaxDiffXorY + 0.0001; // should result in success since the actual number is smaller 
 
