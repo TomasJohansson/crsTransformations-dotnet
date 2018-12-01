@@ -42,6 +42,9 @@ namespace Programmerare.CrsTransformations.CompositeTransformations
         var latitudes = coordinateResultsForTheDifferentImplementations.Select(c => c.Latitude).ToList();
         var longitudes = coordinateResultsForTheDifferentImplementations.Select(c => c.Longitude).ToList();
         // TODO maybe use the below library for finding the median
+        // (not that the performance is important for the small number of values that will be used,
+        //  but it would be appropriate to use different implementations in test code and the tested code,
+        //  i.e. the below MedianValueUtility is also used by the tested code ...)
         // https://github.com/mathnet/mathnet-numerics
         double medianLongitude = MedianValueUtility.Median(longitudes);
         double medianLatitude = MedianValueUtility.Median(latitudes);

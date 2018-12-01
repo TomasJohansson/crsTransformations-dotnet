@@ -10,20 +10,18 @@ namespace Programmerare.CrsTransformations.TestData
 // from the "Group By" dropdown
 // (first little button in Test Explorer) 
 
-// TODO: rewrite below Java/JVM comments for C#/.NET
-
 /**
- * Some of the code which is executable through JUnit are not actually
+ * Some of the code which is executable through NUnit are not actually
  * tests in the normal sense i.e. invoking assertions,
  * but rather is used a way of running code as an alternative to a main method.
  * The above comment is mostly applicable for the class
  * CoordinateTestDataGeneratedFromEpsgDatabaseTest
  * which does some output to the console or creating output files.
- * The class also might be labeled as Disabled to avoid it from being
+ * The class might also be labeled as Disabled to avoid it from being
  * run too often.
  * Those "tests" should mainly be used when having upgraded some of the third
  * part libraries with new implementations, for trying to detect differences
- * compare to the coordinate calculated with previous versions.
+ * compared to the coordinates calculated with previous versions.
  * Those "tests" may also be used for trying to find significant differerences
  * between different libraries for certain EPSG codes in the big input file
  * with lots of EPSG code coordinates.
@@ -45,8 +43,5 @@ public class TestCategory {
      * Used for a method which can take more than one minute (and potentiall much more than one minute)
      */
     public const string SlowTest = "SlowTest";
-    // To run all tests excluding tests labeled with @Tag("SlowTest") or @Tag(TestCategory.SideEffectFileCreation)
-    // as below, in IntelliJ IDEA:
-    // Run --> Edit configuration --> Junit --> Test kind --> Tags --> Tag expression: !SlowTest
 }
 }

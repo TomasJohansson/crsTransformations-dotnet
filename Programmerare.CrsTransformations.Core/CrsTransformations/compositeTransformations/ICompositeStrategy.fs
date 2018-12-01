@@ -9,11 +9,7 @@ The code in the "Core" project is licensed with MIT.
 Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
-
- * The methods are not intended for public use from client code.
- * TODO maybe use "internal" instead
- *
- *)
+*)
 type internal ICompositeStrategy =
     interface
 

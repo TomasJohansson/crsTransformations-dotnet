@@ -4,7 +4,7 @@ namespace Programmerare.CrsTransformations.TestData
 {
 
 public class TestResult {
-    // TODO: getters instead of public fields below ...
+    // TODO change the public fields to properties  
     public ICrsTransformationAdapter adapter;
     public long totalNumberOfSecondsForAllTransformations;
     public IList<TestResultItem> testResultItems;

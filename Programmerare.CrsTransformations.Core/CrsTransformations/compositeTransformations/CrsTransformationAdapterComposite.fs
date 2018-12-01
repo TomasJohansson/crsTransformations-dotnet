@@ -45,6 +45,7 @@ type CrsTransformationAdapterComposite private
             if(transformResult.IsSuccess) then
                 transformResult.OutputCoordinate
             else
+                // TODO try to include som exception message from at least some of the leafs if available
                 failwith "Transformation failed"
 
         member private this._TransformStrategy(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
@@ -96,7 +97,6 @@ type CrsTransformationAdapterComposite private
         member this.Transform(inputCoordinate, crsIdentifier) = 
             this._TransformStrategy(inputCoordinate, crsIdentifier)
                 
-
         interface ICrsTransformationAdapter with
             override this.GetTransformationAdapterChildren() =  this.GetTransformationAdapterChildren()
 

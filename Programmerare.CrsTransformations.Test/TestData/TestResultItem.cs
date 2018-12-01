@@ -65,9 +65,11 @@ public class TestResultItem {
     }
 
     public bool IsSuccessfulTransformationFromWGS84() {
+        // the code below would be improved by also verifying that 
+        // the values in string variables are doubles since
+        // they may otherwise throw an exception when trying to parse as double
         if(IsNullOrEmpty(epsgTargetSourceX)) return false;
         if(IsNullOrEmpty(epsgTargetSourceY)) return false;
-        // TODO: to improve this we should also verify that the values are doubles
         return true;
     }
 
@@ -77,9 +79,11 @@ public class TestResultItem {
     }
 
     public bool IsSuccessfulTransformationBackToWGS84() {
+        // the code below would be improved by also verifying that 
+        // the values in string variables are doubles since
+        // they may otherwise throw an exception when trying to parse as double
         if(IsNullOrEmpty(wgs84targetX)) return false;
         if(IsNullOrEmpty(wgs84targetY)) return false;
-        // TODO: to improve this method, it should also be verified that the values are doubles
         return true;
     }
 
@@ -87,8 +91,10 @@ public class TestResultItem {
         if(!IsSuccessfulTransformationBackToWGS84()) {
             return null;
         }
-        // TODO: to improve this method, it should also be verified that the values are doubles
-        // (now exceptions might be thrown below)
+        // this code would be improved by also verifying that 
+        // the values in string variables are doubles since
+        // they may otherwise throw an exception when 
+        // below trying to parse as double
         double lat = Double.Parse(wgs84targetY);
         double lon = Double.Parse(wgs84targetX);
         return CrsCoordinateFactory.LatLon(lat, lon);
@@ -138,7 +144,7 @@ public class TestResultItem {
     private bool IsValueExistingAndDouble(string value) {
         if (value == null) return false;
         if (value.Trim().Equals("")) return false;
-        // TODO improve the code below, maybe with a regular expression instead,
+        // this code might be improved with a regular expression instead
         // see the documentation of Java's 'Double.valueOf(String)'
         try {
             Double.Parse(value);

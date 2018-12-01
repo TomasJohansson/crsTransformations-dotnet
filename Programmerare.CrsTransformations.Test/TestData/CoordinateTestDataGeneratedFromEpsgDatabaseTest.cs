@@ -120,10 +120,6 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             "_version_2.0.0_rc1"  // LEAF_DOT_SPATIAL_2_0_0_RC1
             // File created: "resources/regression_results/DotSpatial_version_2.0.0_rc1.csv
         );
-        // TODO: compute standard deviations for the results e.g.
-        // the deviations from the original coordinate when transforming back and forth,
-        // and also compare them with each other and caluclate the standard deviation
-        // from the median value ...
     }
 
     [Test]

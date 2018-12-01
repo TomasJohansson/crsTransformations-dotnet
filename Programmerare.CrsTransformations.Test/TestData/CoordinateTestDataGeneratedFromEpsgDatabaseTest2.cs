@@ -12,8 +12,9 @@ namespace Programmerare.CrsTransformations.TestData
 
 [Ignore("Not real tests but a method in this class can be executed if you temporary disable this 'Ignore'")]
 // You may want to temporary change the above line iftestf you want to run the "tests"
-[TestFixture]
-public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformationTestBase { // TODO better class name
+[TestFixture] 
+// a better class name would be desirable...
+public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformationTestBase {
 
     private const double deltaDiff = 0.0001; // fairly large value to only find the large differences (potential large problems/bugs)
     // when the delta value above is 0.01 then about 80 EPSG codes are found i.e. there
@@ -74,13 +75,6 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
         IList<CrsTransformationResult> transformResultsWithLargeDifferences = new List<CrsTransformationResult>();
 
         CrsIdentifier wgs84 = CrsIdentifierFactory.CreateFromEpsgNumber(EpsgNumber.WORLD__WGS_84__4326);
-
-        // TODO for .NET :
-        //PrintStream nullStream = getNullStreamToAvoidOutputFromSystemOutAndSystemErr();
-        // System.setOut/System.setErr will be used with the above but later restore with the two below
-        //PrintStream outStream = System.out;
-        //PrintStream errStream = System.err;
-        //long startTime = System.nanoTime();
         
         var stopWatch = new Stopwatch();
         stopWatch.Start();
@@ -92,18 +86,12 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
 
         WriteLine("number of rows to iterate: " + coordinatesFromGeneratedCsvFile.Count);
         for (int i = 0; i <coordinatesFromGeneratedCsvFile.Count ; i++) {
-                //System.setOut(outStream);
-                //System.setErr(errStream);
                 if (manyWillBeIterated && (i % 100 == 0)) {
                     //WriteLine("number of rows iterated so far: " + i);
                     totalNumberOfSeconds = (int)stopWatch.Elapsed.TotalSeconds;
                     //WriteLine("Number of seconds so far: " + totalNumberOfSeconds);
                     // if (i > 50) break;
                 }
-                // now tries to avoid lots of output from the implementations (third part libraries used)
-                //System.setOut(nullStream);
-                //System.setErr(nullStream);
-
                 EpsgCrsAndAreaCodeWithCoordinates epsgCrsAndAreaCodeWithCoordinates = coordinatesFromGeneratedCsvFile[i];
             if(
                 epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode < minEpsgCrsCode
@@ -141,8 +129,6 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
                 }
             }
         }
-        //System.setOut(outStream);
-        //System.setErr(errStream);
         WriteLine("Number of iterated rows/coordinates: " + coordinatesFromGeneratedCsvFile.Count);
 
         WriteLine("Number of results with 'large' differences: " + transformResultsWithLargeDifferences.Count);
@@ -177,18 +163,6 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
         Assert.AreEqual(numberOfImplementations, crsTransformationResultStatistic.NumberOfPotentiallySuccesfulResults);
         Assert.That(crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude, Is.LessThan(0.001));
     }
-
-    // TODO maybe for .NET if something similar is needed :
-    //private PrintStream getNullStreamToAvoidOutputFromSystemOutAndSystemErr() {
-    //    final PrintStream nullStream = new PrintStream(new OutputStream() {
-    //        @Override
-    //        public void write(int b) throws IOException {
-    //            // do NOTHING here !
-    //        }
-    //    });
-    //    return nullStream;
-    //}
-
     //---------------------------------------------------------------
     // Resulting output from the below method:
     //---------------------

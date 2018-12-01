@@ -89,7 +89,16 @@ type FileInfoVersion
 type CrsTransformationAdapterBase
     (
         functionReturningFileInfoVersion: unit -> FileInfoVersion,
+
+        // Might throw an exception, i.e. it is okay if function implementations 
+        // throw an exception when they can not return a valid coordinate
         transformToCoordinateStrategy : CrsCoordinate * CrsIdentifier -> CrsCoordinate ,
+
+        // Should never throw an exception (if doing so, then consider it as a bug), 
+        // i.e. it is NOT okay if a function implementation throw an exception, 
+        // but instead it should return a result object with success property being false,
+        // and potentially the result object might contain an exception object
+        // which can be retrieved when it is desirable to try to get information about the problem.
         transformStrategy : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
     ) =
     class
@@ -250,7 +259,5 @@ type CrsTransformationAdapterBase
             member this.AdapteeType = this.AdapteeType
 
             member this.IsComposite = this.IsComposite
-
-
 
     end

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Programmerare.CrsTransformations.TestData
 {
-// TODO: figure out a better class name
+// a better class name would be desirable (and then change it in the Kotlin project too)
 class ResultAggregator {
 
     private IList<FileWithRows> listOfFileWithRows = new List<FileWithRows>();
