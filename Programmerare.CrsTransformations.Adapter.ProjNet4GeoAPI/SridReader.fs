@@ -19,10 +19,13 @@ type EmbeddedResourceFileWithCRSdefinitions =
     //3022;PROJCS["RT90 0 gon",GEOGCS["RT90",DATUM["Rikets_koordinatsystem_1990",SPHEROID["Bessel 1841",6377397.155,299.1528128,AUTHORITY["EPSG","7004"]],TOWGS84[414.1,41.3,603.1,-0.855,2.141,-7.023,0],AUTHORITY["EPSG","6124"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4124"]],UNIT["metre",1,AUTHORITY["EPSG","9001"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",18.05827777777778],PARAMETER["scale_factor",1],PARAMETER["false_easting",1500000],PARAMETER["false_northing",0],AUTHORITY["EPSG","3022"],AXIS["X",NORTH],AXIS["Y",EAST]]
     //3023;PROJCS["RT90 2.5 gon O",GEOGCS["RT90",DATUM["Rikets_koordinatsystem_1990",SPHEROID["Bessel 1841",6377397.155,299.1528128,AUTHORITY["EPSG","7004"]],TOWGS84[414.1,41.3,603.1,-0.855,2.141,-7.023,0],AUTHORITY["EPSG","6124"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4124"]],UNIT["metre",1,AUTHORITY["EPSG","9001"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",20.30827777777778],PARAMETER["scale_factor",1],PARAMETER["false_easting",1500000],PARAMETER["false_northing",0],AUTHORITY["EPSG","3023"],AXIS["X",NORTH],AXIS["Y",EAST]]
     //3024;PROJCS["RT90 5 gon O",GEOGCS["RT90",DATUM["Rikets_koordinatsystem_1990",SPHEROID["Bessel 1841",6377397.155,299.1528128,AUTHORITY["EPSG","7004"]],TOWGS84[414.1,41.3,603.1,-0.855,2.141,-7.023,0],AUTHORITY["EPSG","6124"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.0174532925199433,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4124"]],UNIT["metre",1,AUTHORITY["EPSG","9001"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",22.55827777777778],PARAMETER["scale_factor",1],PARAMETER["false_easting",1500000],PARAMETER["false_northing",0],AUTHORITY["EPSG","3024"],AXIS["X",NORTH],AXIS["Y",EAST]]
-    // The above five rows have been copied from the following file:
-    // SharpMap/SpatialRefSys.xml
-    // ( TODO use the link to github and maybe also the git commit id to specify the version of the source )
-    | STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml = 20
+    // The above five rows have been copied from the file below into a small CSV file embedded as resource.
+    // SharpMap's SpatialRefSys.xml :
+    // https://github.com/SharpMap/SharpMap/blob/Branches/1.0/SharpMap/SpatialRefSys.xml
+    // Jul 20, 2015    
+    // git commit 5fd5d7e7aaa641bc291ebe7b5a56d62970c0fdb4 :
+    // https://github.com/SharpMap/SharpMap/commit/5fd5d7e7aaa641bc291ebe7b5a56d62970c0fdb4
+    | SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml = 20
 
 
 type SridReader private
@@ -80,14 +83,13 @@ type SridReader private
     // https://github.com/NetTopologySuite/ProjNet4GeoAPI/blob/develop/ProjNet.Tests/SRID.csv
     // (the file version dated "Jul 5, 2013" i.e. git commit c7a8b0c72d55ab64e26d40632abe2c85c2ff92df )
 
-    static member private nameOfEmbeddedResourceFileAdjustedWithSharpMap_SpatialRefSys_xml = "SRID_ShippedWithProjNet4GeoAPI_1_4_1_butUsing_SharpMap_SpatialRefSys_forSwedishRT90.csv"
+    static member private nameOfEmbeddedResourceFileWithSixSwedishRT90crsDefinitionsCopiedFromSharpMapSpatialRefSysXml = "SRID_SixSwedishCrsRT90_copiedFrom_SharpMapSpatialRefSysXml.csv"
 
-    // TODO: override the six RT90 CRS in some better way than (as below currently) bundling 
-    // two files with 1.5 MB each with the only modifications being those six rows in the csv file
     static member private GetNameOfEmbeddedResourceFile(embeddedResourceFileWithCRSdefinition) = 
-        // if this will grow then create a hashtable lookup instead of if statements
-        if embeddedResourceFileWithCRSdefinition = EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml then
-            SridReader.nameOfEmbeddedResourceFileAdjustedWithSharpMap_SpatialRefSys_xml
+        // if this code below will grow (i.e. if more small embedded resource files will be added) 
+        // then create a hashtable lookup instead of adding more if statements
+        if embeddedResourceFileWithCRSdefinition = EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml then
+            SridReader.nameOfEmbeddedResourceFileWithSixSwedishRT90crsDefinitionsCopiedFromSharpMapSpatialRefSysXml
         else
             SridReader.nameOfEmbeddedResourceFileDefaultShippedWithProjNet4GeoAPI_1_4_1
 

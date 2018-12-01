@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="SRID_ShippedWithProjNet4GeoAPI_1_4_1_butUsing_SharpMap_SpatialRefSys_forSwedishRT90.csv" />
+    <EmbeddedResource Include="SRID_SixSwedishCrsRT90_copiedFrom_SharpMapSpatialRefSysXml.csv" />
     <EmbeddedResource Include="SRID_ShippedWithProjNet4GeoAPI_1_4_1.csv" />
     <Compile Include="CrsCachingStrategy.fs" />
     <Compile Include="SridReader.fs" />

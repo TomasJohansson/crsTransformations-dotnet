@@ -29,7 +29,7 @@ type CrsTransformationAdapterProjNet4GeoAPI() as this =
         let mutable _sridReader = 
             let list = new ResizeArray<EmbeddedResourceFileWithCRSdefinitions>([
                     EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI
-                    EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml
+                    EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml
                 ]
             )
             SridReader(list)
