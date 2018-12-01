@@ -13,7 +13,6 @@ namespace Programmerare.CrsTransformations
 public class CrsTransformationAdapterTest : CrsTransformationTestBase {
 	
 	public const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = 3;
-	// TODO the above is defined in some other place too.. find it and remove duplication .... 
 
     // the keyword "base" is not needed but is still used in this test class 
     // to make it obvious that some variables ar defined and populated in a base class
@@ -111,27 +110,27 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
             }
         }        
     }
-// These two test below could not be used since all implementations are 
-// not throwing exceptions for unreasonable coordinate values    
-//    @Test
-//    void transformToCoordinate_shouldThrowException_whenLongitudeIsNotValid() {
-//        CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
-//            60.0, // ok wgs84 latitude
-//            -9999999999.0, // NOT ok wgs84 longitude
-//            epsgNumberForWgs84
-//        );
-//        transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
-//    }
-//
-//    @Test
-//    void transformToCoordinate_shouldThrowException_whenLatitudeIsNotValid() {
-//        CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.latLon(
-//            -9999999999.0, // NOT ok wgs84 latitude
-//            20.0, // ok wgs84 longitude
-//            epsgNumberForWgs84
-//        );
-//        transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
-//    }
+
+    // These two test below could not be used since all implementations are 
+    // not throwing exceptions for unreasonable coordinate values    
+    //[Test]
+    //public void TransformToCoordinate_shouldThrowException_whenLongitudeIsNotValid() {
+    //    CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.LatLon(
+    //        60.0, // ok wgs84 latitude
+    //        -9999999999.0, // NOT ok wgs84 longitude
+    //        epsgNumberForWgs84
+    //    );
+    //    transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
+    //}
+    //[Test]
+    //public void TransformToCoordinate_shouldThrowException_whenLatitudeIsNotValid() {
+    //    CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.LatLon(
+    //        -9999999999.0, // NOT ok wgs84 latitude
+    //        20.0, // ok wgs84 longitude
+    //        epsgNumberForWgs84
+    //    );
+    //    transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
+    //}
 
     [Test]
     public void transformToCoordinate_shouldThrowException_whenCrsCodeIsNotValid() {
@@ -143,33 +142,34 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
         transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(unvalidInputCoordinate);
     }
 
-    private static List<String> classNamesForExpectedPotentialExceptionsWhenIncorrectEPSGcode =
-			// TODO: these below were implemented for the Java adapeters ...
-            new List<string>{
-                //IllegalArgumentException.class.getName(), // Goober implementation throws this
-                "org.opengis.referencing.NoSuchAuthorityCodeException",
-                "org.osgeo.proj4j.UnknownAuthorityCodeException",
-                "org.cts.crs.CRSException",
-                "mil.nga.sf.util.SFException"
-                //RuntimeException.class.getName() // composite throws this
-            };
-    
     private void transformToCoordinate_shouldThrowException_whenCoordinateIsNotValid(
         CrsCoordinate unvalidInputCoordinate
     ) {
-			// TODO implement below for .NET
         foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
-            //Exception exception = assertThrows(
-            //    Exception.class,
-            //    () -> crsTransformationAdapter.transformToCoordinate(unvalidInputCoordinate, base.epsgNumberForSweref99TM),
-            //    () -> "Exception was not thrown but SHOULD have been thrown for implementation " + crsTransformationAdapter.getAdapteeType() + " and coordinate " + unvalidInputCoordinate 
+            //Exception exception = Assert.Throws<Exception>( () => {
+            //    crsTransformationAdapter.TransformToCoordinate(unvalidInputCoordinate, base.epsgNumberForSweref99TM);
+            //}
+            //,
+            //"Exception was not thrown but SHOULD have been thrown for implementation " + crsTransformationAdapter.AdapteeType + " and coordinate " + unvalidInputCoordinate 
             //);
+                
+            // The above 'Assert.Throws' test for a specific exception type 
+            // while the code below (with 'Assert.That' and then Assert.That' works for any exception
 
-            //bool isExpectedException = classNamesForExpectedPotentialExceptionsWhenIncorrectEPSGcode.stream().anyMatch(it -> it.equals(exception.getClass().getName()));
-            //Assert.IsTrue(isExpectedException, () -> "Unexpected exception: " + exception.getClass().getName() + " for adapter " + crsTransformationAdapter.getAdapteeType());
+            Assert.That(
+                () => crsTransformationAdapter.TransformToCoordinate(
+                    unvalidInputCoordinate, 
+                    base.epsgNumberForSweref99TM
+                ),
+                Throws.Exception
+                    // testing that the thrown exception type is one of the following:
+                    .TypeOf<ArgumentOutOfRangeException>().Or
+                    .TypeOf<NotSupportedException>().Or
+                    .TypeOf<ArgumentException>().Or
+                    .TypeOf<Exception>()
+            );
         }
     }
-    
     
     [Test]
     public void getLongNameOfImplementation_shouldReturnFullClassNameIncludingPackageName() {
