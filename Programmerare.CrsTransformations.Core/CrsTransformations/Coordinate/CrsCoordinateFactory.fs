@@ -54,14 +54,19 @@ Please find more information in the license file at the root directory of each s
  * with integer or string as the last parameter.
 *)
 [<AbstractClass; Sealed>]
-type CrsCoordinateFactory =
+type CrsCoordinateFactory private() =
 
-    // TODO: try to eliminate frequent usage of the factory 
-    // classname in the below F# code e.g. try to use 
-    // something like "using static" in C#
+
+    (*
+     * WGS84 is probably the most common coordinate reference system,
+     * the coordinates typically used with GPS.
+     * Therefore it is default for the factory methods not specifying
+     * the coordinate reference system.
+     *)
+    static let COORDINATE_REFERENCE_SYSTEM_WGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(4326)
 
     // -------------------------------------------------------------------------
-    static member private _CreateXYcrs
+    static let _CreateXYcrs
         (
             xEastingLongitude: double,
             yNorthingLatitude: double,
@@ -73,25 +78,25 @@ type CrsCoordinateFactory =
             crsIdentifier
         )
 
-    static member private _CreateXYint
+    static let _CreateXYint
         (
             xEastingLongitude: double,
             yNorthingLatitude: double,
             epsgNumber: int
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             xEastingLongitude,
             yNorthingLatitude,
             CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumber)
         )
 
-    static member private _CreateXYstring
+    static let _CreateXYstring
         (
             xEastingLongitude: double,
             yNorthingLatitude: double,
             crsCode: string
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             xEastingLongitude,
             yNorthingLatitude,
             CrsIdentifierFactory.CreateFromCrsCode(crsCode)
@@ -105,7 +110,7 @@ type CrsCoordinateFactory =
             yNorthingLatitude: double,
             crsIdentifier: CrsIdentifier
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             xEastingLongitude,
             yNorthingLatitude,
             crsIdentifier
@@ -121,7 +126,7 @@ type CrsCoordinateFactory =
             y: double,
             crsIdentifier: CrsIdentifier
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             x,
             y,
             crsIdentifier
@@ -136,7 +141,7 @@ type CrsCoordinateFactory =
             northing: double,
             crsIdentifier: CrsIdentifier
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             easting,
             northing,
             crsIdentifier
@@ -151,7 +156,7 @@ type CrsCoordinateFactory =
             latitude: double,
             crsIdentifier: CrsIdentifier
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             longitude,
             latitude,
             crsIdentifier
@@ -165,7 +170,7 @@ type CrsCoordinateFactory =
             yNorthingLatitude: double,
             epsgNumber: int
         ) =
-        CrsCoordinateFactory._CreateXYint(
+        _CreateXYint(
             xEastingLongitude,
             yNorthingLatitude,
             epsgNumber
@@ -180,7 +185,7 @@ type CrsCoordinateFactory =
             y: double,
             epsgNumber: int
         ) =
-        CrsCoordinateFactory._CreateXYint(
+        _CreateXYint(
             x,
             y,
             epsgNumber
@@ -196,7 +201,7 @@ type CrsCoordinateFactory =
             northing: double,
             epsgNumber: int
         ) =
-        CrsCoordinateFactory._CreateXYint(
+        _CreateXYint(
             easting,
             northing,
             epsgNumber
@@ -212,7 +217,7 @@ type CrsCoordinateFactory =
             latitude: double,
             epsgNumber: int
         ) =
-        CrsCoordinateFactory._CreateXYint(
+        _CreateXYint(
             longitude,
             latitude,
             epsgNumber
@@ -231,7 +236,7 @@ type CrsCoordinateFactory =
             xEastingLongitude: double,
             epsgNumber: int
         ) =
-        CrsCoordinateFactory._CreateXYint(
+        _CreateXYint(
             xEastingLongitude,
             yNorthingLatitude,
             epsgNumber
@@ -247,7 +252,7 @@ type CrsCoordinateFactory =
             x: double,
             epsgNumber: int
         ) =
-        CrsCoordinateFactory._CreateXYint(
+        _CreateXYint(
             x,
             y,
             epsgNumber
@@ -262,7 +267,7 @@ type CrsCoordinateFactory =
             easting: double,
             epsgNumber: int
         ) =
-        CrsCoordinateFactory._CreateXYint(
+        _CreateXYint(
             easting,
             northing,
             epsgNumber
@@ -278,7 +283,7 @@ type CrsCoordinateFactory =
             longitude: double,
             epsgNumber: int
         ) =
-        CrsCoordinateFactory._CreateXYint(
+        _CreateXYint(
             longitude,
             latitude,
             epsgNumber
@@ -296,7 +301,7 @@ type CrsCoordinateFactory =
             yNorthingLatitude: double,
             crsCode: string
         ) =
-        CrsCoordinateFactory._CreateXYstring(
+        _CreateXYstring(
             xEastingLongitude,
             yNorthingLatitude,
             crsCode
@@ -312,7 +317,7 @@ type CrsCoordinateFactory =
             y: double,
             crsCode: string
         ) =
-        CrsCoordinateFactory._CreateXYstring(
+        _CreateXYstring(
             x,
             y,
             crsCode
@@ -328,7 +333,7 @@ type CrsCoordinateFactory =
             northing: double,
             crsCode: string
         ) =
-        CrsCoordinateFactory._CreateXYstring(
+        _CreateXYstring(
             easting,
             northing,
             crsCode
@@ -345,7 +350,7 @@ type CrsCoordinateFactory =
             latitude: double,
             crsCode: string
         ) =
-        CrsCoordinateFactory._CreateXYstring(
+        _CreateXYstring(
             longitude,
             latitude,
             crsCode
@@ -366,7 +371,7 @@ type CrsCoordinateFactory =
             xEastingLongitude: double,
             crsCode: string
         ) =
-        CrsCoordinateFactory._CreateXYstring(
+        _CreateXYstring(
             xEastingLongitude,
             yNorthingLatitude,
             crsCode
@@ -381,7 +386,7 @@ type CrsCoordinateFactory =
             x: double,
             crsCode: string
         ) =
-        CrsCoordinateFactory._CreateXYstring(
+        _CreateXYstring(
             x,
             y,
             crsCode
@@ -397,7 +402,7 @@ type CrsCoordinateFactory =
             easting: double,
             crsCode: string
         ) =
-        CrsCoordinateFactory._CreateXYstring(
+        _CreateXYstring(
             easting,
             northing,
             crsCode
@@ -414,7 +419,7 @@ type CrsCoordinateFactory =
             longitude: double,
             crsCode: string
         ) =
-        CrsCoordinateFactory._CreateXYstring(
+        _CreateXYstring(
             longitude,
             latitude,
             crsCode
@@ -433,7 +438,7 @@ type CrsCoordinateFactory =
             xEastingLongitude: double,
             crsIdentifier: CrsIdentifier
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             xEastingLongitude,
             yNorthingLatitude,
             crsIdentifier
@@ -449,7 +454,7 @@ type CrsCoordinateFactory =
             x: double,
             crsIdentifier: CrsIdentifier
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             x,
             y,
             crsIdentifier
@@ -465,7 +470,7 @@ type CrsCoordinateFactory =
             easting: double,
             crsIdentifier: CrsIdentifier
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             easting,
             northing,
             crsIdentifier
@@ -481,21 +486,12 @@ type CrsCoordinateFactory =
             longitude: double,
             crsIdentifier: CrsIdentifier
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             longitude,
             latitude,
             crsIdentifier
         )
 // -------------------------------------------------------------------------
-
-
-    (*
-     * WGS84 is probably the most common coordinate reference system,
-     * the coordinates typically used with GPS.
-     * Therefore it is default for the factory methods not specifying
-     * the coordinate reference system.
-     *)
-    static member private COORDINATE_REFERENCE_SYSTEM_WGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(4326)
 
     (*
      * The "GPS coordinate system" WGS84 is assumed when using this factory method.
@@ -505,10 +501,10 @@ type CrsCoordinateFactory =
             longitude: double,
             latitude: double
         ) = 
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             longitude,
             latitude,
-            CrsCoordinateFactory.COORDINATE_REFERENCE_SYSTEM_WGS84
+            COORDINATE_REFERENCE_SYSTEM_WGS84
         )
 
     (*
@@ -519,10 +515,10 @@ type CrsCoordinateFactory =
             longitude: double,
             latitude: double
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             longitude,
             latitude,
-            CrsCoordinateFactory.COORDINATE_REFERENCE_SYSTEM_WGS84
+            COORDINATE_REFERENCE_SYSTEM_WGS84
         )
 
 
@@ -534,10 +530,10 @@ type CrsCoordinateFactory =
             latitude: double,
             longitude: double
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             longitude,
             latitude,
-            CrsCoordinateFactory.COORDINATE_REFERENCE_SYSTEM_WGS84
+            COORDINATE_REFERENCE_SYSTEM_WGS84
         )
 
 
@@ -549,10 +545,10 @@ type CrsCoordinateFactory =
             latitude: double,
             longitude: double
         ) =
-        CrsCoordinateFactory._CreateXYcrs(
+        _CreateXYcrs(
             longitude,
             latitude,
-            CrsCoordinateFactory.COORDINATE_REFERENCE_SYSTEM_WGS84
+            COORDINATE_REFERENCE_SYSTEM_WGS84
         )
 
 // -------------------------------------------------------------------------
