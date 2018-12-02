@@ -452,6 +452,30 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
         Assert.AreEqual(transformResult.OutputCoordinate, crsTransformationResultStatistic.CoordinateAverage);
         Assert.AreEqual(transformResult.OutputCoordinate, crsTransformationResultStatistic.CoordinateMedian);
     }
+
+    [Test]
+    public void TransformToCoordinate_shouldBePossibleToInvokeAndProduceTheSameResult_WhenTheInstanceIsTypedWithTheClassOrTheInterfaceSubTypes() {
+        // Before the git commit when this test method 
+        // and this comment was added, only the a4 object
+        // below could invoke the method 'TransformToCoordinate'.
+        // (because of F# explicit interfaces)
+        // The other objects a1-a3 now also can invoke
+        // the same method because of the "implicit interfaces"
+        // implemtation which was added in the same git commit as 
+        // this comment and test method
+        CrsTransformationAdapterMightyLittleGeodesy a1 = new CrsTransformationAdapterMightyLittleGeodesy();
+        CrsTransformationAdapterBaseLeaf a2 = a1;
+        CrsTransformationAdapterBase a3     = a1;
+        ICrsTransformationAdapter a4        = a1;
+        CrsCoordinate c1, c2, c3, c4;
+        c1 = a1.TransformToCoordinate(validInputCoordinate, epsgNumberForSweref99TM);
+        c2 = a2.TransformToCoordinate(validInputCoordinate, epsgNumberForSweref99TM);
+        c3 = a3.TransformToCoordinate(validInputCoordinate, epsgNumberForSweref99TM);
+        c4 = a4.TransformToCoordinate(validInputCoordinate, epsgNumberForSweref99TM);
+        Assert.AreEqual(c1, c2);
+        Assert.AreEqual(c1, c3);
+        Assert.AreEqual(c1, c4);
+    }
     
 }
 }

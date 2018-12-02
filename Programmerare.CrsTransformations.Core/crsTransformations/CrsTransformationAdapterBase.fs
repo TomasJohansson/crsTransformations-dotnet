@@ -135,6 +135,41 @@ type CrsTransformationAdapterBase
         abstract member GetTransformationAdapterChildren : unit -> IList<ICrsTransformationAdapter>
         default this.GetTransformationAdapterChildren() = raise (System.NotImplementedException())
 
+        abstract member TransformToCoordinate : CrsCoordinate * int -> CrsCoordinate
+        default this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem: int) = 
+            this._TransformToCoordinate(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
+
+        abstract member TransformToCoordinate : CrsCoordinate * string -> CrsCoordinate
+        default this.TransformToCoordinate(inputCoordinate, crsCode: string) =
+            this._TransformToCoordinate(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
+
+        abstract member TransformToCoordinate : CrsCoordinate * CrsIdentifier -> CrsCoordinate
+        default this.TransformToCoordinate(inputCoordinate, crsIdentifier: CrsIdentifier) = 
+            this._TransformToCoordinate(inputCoordinate, crsIdentifier)
+
+        abstract member Transform : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
+        default this.Transform(inputCoordinate, crsIdentifier: CrsIdentifier) = 
+            transformStrategy(inputCoordinate, crsIdentifier)
+
+        abstract member Transform : CrsCoordinate * int -> CrsTransformationResult
+        default this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem: int) = 
+            // see the comment in below method '_Transform'
+            this._Transform
+                (
+                    inputCoordinate, 
+                    fun () -> CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
+                )
+
+        abstract member Transform : CrsCoordinate * string -> CrsTransformationResult
+        default this.Transform(inputCoordinate, crsCode: string) =
+            // see the comment in below method '_Transform'
+            this._Transform
+                (
+                    inputCoordinate, 
+                    fun () -> CrsIdentifierFactory.CreateFromCrsCode(crsCode)
+                )
+
+
         // The purpose of the method below is to use it in test code
         // for detecting upgrades to a new version (and then update the above method returned enum value)
         // Future failure will be a reminder to update a corresponding enum value.
@@ -220,6 +255,15 @@ type CrsTransformationAdapterBase
                         CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(new List<CrsTransformationResult>())
                     )
             
+        // F# implements explicit interfaces as below
+        // but to make those methods also available through 
+        // subtypes/classes, the above code makes it possible
+        // i.e. the above "implicit interface" abstract methods 
+        // can define a default implementation which is called 
+        // from the explicit interface implementation below 
+        // to get the same behaviour regardless how the methods
+        // are invoked i.e. if they are invoked through an 
+        // interface typed object or through some subtype.
         interface ICrsTransformationAdapter with
             member this.GetTransformationAdapterChildren() =  this.GetTransformationAdapterChildren()
                 
@@ -230,35 +274,25 @@ type CrsTransformationAdapterBase
             // a so called "strategy" function (named so because of the design pattern Strategy)
             // which is passed as a constructor parameter.
 
-            member this.TransformToCoordinate(inputCoordinate, crsCode) =
-                this._TransformToCoordinate(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
+            member this.TransformToCoordinate(inputCoordinate, crsCode: string) =
+                this.TransformToCoordinate(inputCoordinate, crsCode)
 
-            member this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
-                this._TransformToCoordinate(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
+            member this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem: int) = 
+                this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem)
 
-            member this.TransformToCoordinate(inputCoordinate, crsIdentifier) = 
-                this._TransformToCoordinate(inputCoordinate, crsIdentifier)
+            member this.TransformToCoordinate(inputCoordinate, crsIdentifier: CrsIdentifier) = 
+                this.TransformToCoordinate(inputCoordinate, crsIdentifier)
             // -------------------------------------------------
 
             // -------------------------------------------------
-            member this.Transform(inputCoordinate, crsIdentifier) = 
-                transformStrategy(inputCoordinate, crsIdentifier)
+            member this.Transform(inputCoordinate, crsIdentifier: CrsIdentifier) = 
+                this.Transform(inputCoordinate, crsIdentifier)
 
-            member this.Transform(inputCoordinate, crsCode) =
-                // see the comment in below method '_Transform'
-                this._Transform
-                    (
-                        inputCoordinate, 
-                        fun () -> CrsIdentifierFactory.CreateFromCrsCode(crsCode)
-                    )
+            member this.Transform(inputCoordinate, crsCode: string) =
+                this.Transform(inputCoordinate, crsCode)
             
-            member this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
-                // see the comment in below method '_Transform'
-                this._Transform
-                    (
-                        inputCoordinate, 
-                        fun () -> CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem)
-                    )
+            member this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem: int) = 
+                this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem)
             // -------------------------------------------------
 
             member this.LongNameOfImplementation = this.LongNameOfImplementation

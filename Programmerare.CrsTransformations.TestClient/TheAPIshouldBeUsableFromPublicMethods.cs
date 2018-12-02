@@ -159,6 +159,36 @@ namespace Programmerare.CrsTransformations.TestClient {
             maxDifferenceForYNorthingLatitude = crsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude;
         }
 
+        private void crsTransformationAdapterSubtypesCode() {
+            // The below used code is implemented with F#
+            // which normally uses explicit interfaces.
+            // The F# code requires some additional coding 
+            // to make the implicit interfaces work as below
+            // i.e. the methods can be invoked not only with 
+            // an interface typed object but also with 
+            // an object typed with some subtype (class)
+
+            var c = new CrsTransformationAdapterDotSpatial();
+            CrsTransformationAdapterBase b = c;
+            CrsTransformationAdapterBaseLeaf l = c;
+            c.Transform(null, 123);
+            c.TransformToCoordinate(null, 123);
+            b.Transform(null, 123);
+            b.TransformToCoordinate(null, 123);
+            l.Transform(null, 123);
+            l.TransformToCoordinate(null, 123);
+
+            // Previously (before the git commit when this comment was added)
+            // the above methods could not be compiled i.e. 
+            // the Transform methods were only available 
+            // when assigning the subtypes to the interface
+            // i.e. the code below worked before but not 
+            // the transform method calls above before these lines with comments
+            ICrsTransformationAdapter i = c;
+            i.Transform(null, 123);
+            i.TransformToCoordinate(null, 123);
+        }
+
         private CrsIdentifier crsIdentifier;
         private CrsCoordinate crsCoordinate;
         private double xEastingLongitude, yNorthingLatitude, maxDifferenceForXEastingLongitude, maxDifferenceForYNorthingLatitude;
