@@ -20,26 +20,10 @@ Please find more information in the license file at the root directory of each s
  * 
  * Instead the users can choose which implementation(s) to use with NuGet dependencies.
  *)
-[<Sealed>]
-type CrsTransformationAdapterLeafFactory private
+[<AbstractClass>]
+type CrsTransformationAdapterLeafFactory internal
     (
-        // TODO change the current implementation (with one class) 
-        // into three classes: one abstract defining the four public methods (and with factory method)
-        // and two subclasses with implementations, one using the 
-        // provided implementation instances, and one using reflection
-        // to instantiate classes with the current hardcoded strings
-
-
-        // use parameter instances, or/and maybe also class names,
-        // as an alternative to only being able to use those types with currently hardcoded names in the strings below
-        //optionalListOfCrsTransformationAdapters: IList<ICrsTransformationAdapter>
     ) = 
-
-        //let isConstructorNonEmptyList: bool = 
-        //    (not(isNull optionalListOfCrsTransformationAdapters))
-        //    && 
-        //    (optionalListOfCrsTransformationAdapters.Count > 0)
-
         // The hardcoded strings below will NOT change often 
         // and if they do then it should be detected by failing 
         // tests in the C# class CrsTransformationAdapterLeafFactoryTest
@@ -148,18 +132,26 @@ type CrsTransformationAdapterLeafFactory private
         member x.GetClassNamesForAllKnownImplementations() = 
             classNamesForAllKnownImplementations.ToList() :> IList<string>
 
-        //new () = 
-        //    (
-        //        // The below constructor should be C# friendly 
-        //        // i.e. use types such as IList which can be null
-        //        // so null is used below (as alternative to empty list) 
-        //        // as a signal that the defaukt (hardcoded) implementations 
-        //        // should be used instead of using a list specified by the user.
-        //        CrsTransformationAdapterLeafFactory(null)
-        //    )
         static member Create() =
-            // TODO change this to create an instance of a subclass
-            CrsTransformationAdapterLeafFactory()
-            // and add the method below to create from another subclass
-        //static member Create(optionalListOfCrsTransformationAdapters: IList<ICrsTransformationAdapter>) =
-            
+            // TODO better names than suffix 1 and 2
+            CrsTransformationAdapterLeafFactory1()
+        static member Create(listOfCrsTransformationAdapters: IList<ICrsTransformationAdapter>) =
+            CrsTransformationAdapterLeafFactory2(listOfCrsTransformationAdapters)
+// --------------------------------------------------------------
+and CrsTransformationAdapterLeafFactory1 internal
+    (
+    ) = 
+    class
+        inherit CrsTransformationAdapterLeafFactory()
+        // TODO move the existing implementation here
+    end
+// --------------------------------------------------------------
+and CrsTransformationAdapterLeafFactory2 internal
+    (
+        listOfCrsTransformationAdapters: IList<ICrsTransformationAdapter>
+    ) = 
+    class
+        inherit CrsTransformationAdapterLeafFactory()
+        // TODO add new implementation herer
+    end
+// --------------------------------------------------------------
