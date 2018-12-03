@@ -20,7 +20,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
     
     [SetUp]
     public void SetUp() {
-        crsTransformationAdapterLeafFactory = new CrsTransformationAdapterLeafFactory();
+        crsTransformationAdapterLeafFactory = CrsTransformationAdapterLeafFactory.Create();
         actualClassNamesForAllKnownImplementations = new List<string> {
 			typeof(CrsTransformationAdapterDotSpatial).FullName,
 			typeof(CrsTransformationAdapterProjNet4GeoAPI).FullName,

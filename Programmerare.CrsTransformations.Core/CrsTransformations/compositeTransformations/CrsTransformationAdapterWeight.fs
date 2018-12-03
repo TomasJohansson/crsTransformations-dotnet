@@ -26,7 +26,7 @@ type CrsTransformationAdapterWeight private
         weight: double
     ) =
 
-    static let crsTransformationAdapterLeafFactory = CrsTransformationAdapterLeafFactory()
+    static let crsTransformationAdapterLeafFactory = CrsTransformationAdapterLeafFactory.Create()
 
     do
         if isNull crsTransformationAdapter then

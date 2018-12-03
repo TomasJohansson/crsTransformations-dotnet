@@ -16,7 +16,7 @@ type CrsTransformationAdapterCompositeFactory
         listToUseForFactoryMethodsWithoutParameters: IList<ICrsTransformationAdapter>
     ) =
 
-    static let crsTransformationAdapterLeafFactory = CrsTransformationAdapterLeafFactory()
+    static let crsTransformationAdapterLeafFactory = CrsTransformationAdapterLeafFactory.Create()
 
     static let ThrowExceptionIfNoKnownInstancesAreAvailable
         (
