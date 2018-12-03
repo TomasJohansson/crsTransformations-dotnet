@@ -21,7 +21,11 @@ Please find more information in the license file at the root directory of each s
  * Instead the users can choose which implementation(s) to use with NuGet dependencies.
  *)
 [<Sealed>]
-type CrsTransformationAdapterLeafFactory() = 
+type CrsTransformationAdapterLeafFactory
+    (
+        // TODO use parameter instances, or/and maybe also class names,
+        // as an alternative to only being able to use those types with currently hardcoded names in the strings below
+    ) = 
 
         // The hardcoded strings below will NOT change often 
         // and if they do then it should be detected by failing 
@@ -87,7 +91,7 @@ type CrsTransformationAdapterLeafFactory() =
          *      of a class which must implement the interface CrsTransformationAdapter
          * @return an instance if it could be created but otherwise an exception      
          *)
-        static member CreateCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
+        static member private _CreateCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
             try
                 let theType = GetTypeInstanceForClassName(crsTransformationAdapterClassName)
                 if isNull theType then
@@ -100,33 +104,33 @@ type CrsTransformationAdapterLeafFactory() =
                     let message = "Failed to instantiate a class with the name '" + crsTransformationAdapterClassName + "' . The parameter must be the name of an available class which implements the interface '" + nameOfInterfaceThatShouldBeImplemented + "'"
                     invalidArg "crsTransformationAdapterClassName" message
 
-        static member instancesOfAllKnownAvailableImplementationsLazyLoaded: Lazy<List<ICrsTransformationAdapter>> = 
+        static member private instancesOfAllKnownAvailableImplementationsLazyLoaded: Lazy<List<ICrsTransformationAdapter>> = 
             lazy (
                 let list = new List<ICrsTransformationAdapter>()
                 for className in classNamesForAllKnownImplementations do
-                    list.Add(CrsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(className))
+                    list.Add(CrsTransformationAdapterLeafFactory._CreateCrsTransformationAdapter(className))
                 list
             )
-            
-        //public
+
+        member x.CreateCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
+            CrsTransformationAdapterLeafFactory._CreateCrsTransformationAdapter(crsTransformationAdapterClassName)
+
         (*
         * @return a list of instances for all known leaf implementations 
         *      of the adapter interface, which are available at the class path.
         *)    
-        static member GetInstancesOfAllKnownAvailableImplementations() = 
+        member x.GetInstancesOfAllKnownAvailableImplementations() = 
             CrsTransformationAdapterLeafFactory.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force() :> IList<ICrsTransformationAdapter>
 
-        //public
         (*
          * @param the full class name (i.e. including the package name)
          *      of a class which must implement the interface ICrsTransformationAdapter
          * @return true if it possible to create an instance from the input string 
          *)
-        static member IsCrsTransformationAdapter(crsTransformationAdapterClassName: string): bool = 
+        member x.IsCrsTransformationAdapter(crsTransformationAdapterClassName: string): bool = 
             CrsTransformationAdapterLeafFactory.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force().Exists(
                 fun i -> i.GetType().FullName.Equals(crsTransformationAdapterClassName)
             )
 
-        // public 
-        static member GetClassNamesForAllKnownImplementations() = 
+        member x.GetClassNamesForAllKnownImplementations() = 
             classNamesForAllKnownImplementations.ToList() :> IList<string>

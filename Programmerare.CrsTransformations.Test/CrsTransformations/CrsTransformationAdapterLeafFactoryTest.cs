@@ -12,12 +12,15 @@ using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 [TestFixture]
 public class CrsTransformationAdapterLeafFactoryTest {
 
+    private CrsTransformationAdapterLeafFactory crsTransformationAdapterLeafFactory;
+
     private const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = CrsTransformationAdapterTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
 
     private static IList<string> actualClassNamesForAllKnownImplementations;
     
     [SetUp]
     public void SetUp() {
+        crsTransformationAdapterLeafFactory = new CrsTransformationAdapterLeafFactory();
         actualClassNamesForAllKnownImplementations = new List<string> {
 			typeof(CrsTransformationAdapterDotSpatial).FullName,
 			typeof(CrsTransformationAdapterProjNet4GeoAPI).FullName,
@@ -29,7 +32,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
     public void createCrsTransformationAdapter_shouldThrowException_whenTheParameterIsNotNameOfClassImplementingTheExpectedInterface() {
         string incorrectClassName = "abc";
         ArgumentException exception = Assert.Throws<ArgumentException>(() => {
-            CrsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(incorrectClassName);
+            crsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(incorrectClassName);
         });
 
         string nameOfInterfaceThatShouldBeImplemented = typeof(ICrsTransformationAdapter).FullName;
@@ -55,7 +58,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
         foreach (string stringNotBeingClassNameForAnyAdapter in stringsNotBeingClassNameForAnyAdapter)
         {
             Assert.IsFalse(
-                CrsTransformationAdapterLeafFactory.IsCrsTransformationAdapter(stringNotBeingClassNameForAnyAdapter),
+                crsTransformationAdapterLeafFactory.IsCrsTransformationAdapter(stringNotBeingClassNameForAnyAdapter),
                 "Should not have been recognized as adapter : " + stringNotBeingClassNameForAnyAdapter
             );
         }
@@ -64,11 +67,11 @@ public class CrsTransformationAdapterLeafFactoryTest {
     [Test]
     public void listOfHardcodedClassnames_shouldBeCrsTransformationAdapters()
     {
-        IList<string> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.GetClassNamesForAllKnownImplementations();
+        IList<string> hardcodedClassNamesForAllKnownImplementations = crsTransformationAdapterLeafFactory.GetClassNamesForAllKnownImplementations();
         foreach (string hardcodedClassNameForKnownImplementation in hardcodedClassNamesForAllKnownImplementations)
         {
             Assert.IsTrue(
-                CrsTransformationAdapterLeafFactory.IsCrsTransformationAdapter(hardcodedClassNameForKnownImplementation),
+                crsTransformationAdapterLeafFactory.IsCrsTransformationAdapter(hardcodedClassNameForKnownImplementation),
                 "Name of failing class: " + hardcodedClassNameForKnownImplementation
             );
         }
@@ -77,10 +80,10 @@ public class CrsTransformationAdapterLeafFactoryTest {
     [Test]
     public void listOfHardcodedClassnames_shouldBeCreateableAsNonNullCrsTransformationAdapters()
     {
-        IList<String> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.GetClassNamesForAllKnownImplementations();
+        IList<String> hardcodedClassNamesForAllKnownImplementations = crsTransformationAdapterLeafFactory.GetClassNamesForAllKnownImplementations();
         foreach (string hardcodedClassNameForKnownImplementation in hardcodedClassNamesForAllKnownImplementations)
         {
-            ICrsTransformationAdapter crsTransformationAdapter = CrsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(hardcodedClassNameForKnownImplementation);
+            ICrsTransformationAdapter crsTransformationAdapter = crsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(hardcodedClassNameForKnownImplementation);
 			VerifyThatTheCreatedAdapterIsRealObject(crsTransformationAdapter);
 			Assert.That(actualClassNamesForAllKnownImplementations, Contains.Item(crsTransformationAdapter.LongNameOfImplementation));
         }
@@ -99,7 +102,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
     [Test]
     public void listOfKnownInstances_shouldOnlyContainNonNullObjectsAndTheNumberOfItemsShouldBeAtLeastFive()
     {
-        IList<ICrsTransformationAdapter> list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations();
+        IList<ICrsTransformationAdapter> list = crsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations();
         Assert.That(list.Count, Is.GreaterThanOrEqualTo(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS));
         foreach (ICrsTransformationAdapter crsTransformationAdapter in list)
         {
@@ -110,7 +113,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
     [Test]
     public void listOfHardcodedClassnames_shouldCorrespondToActualClassNames()
     {
-        IList<string> hardcodedClassNamesForAllKnownImplementations = CrsTransformationAdapterLeafFactory.GetClassNamesForAllKnownImplementations();
+        IList<string> hardcodedClassNamesForAllKnownImplementations = crsTransformationAdapterLeafFactory.GetClassNamesForAllKnownImplementations();
         Assert.AreEqual(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, hardcodedClassNamesForAllKnownImplementations.Count);
         Assert.AreEqual(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, actualClassNamesForAllKnownImplementations.Count);
 

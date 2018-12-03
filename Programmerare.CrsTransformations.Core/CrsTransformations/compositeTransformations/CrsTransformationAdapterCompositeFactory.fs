@@ -16,6 +16,8 @@ type CrsTransformationAdapterCompositeFactory
         listToUseForFactoryMethodsWithoutParameters: IList<ICrsTransformationAdapter>
     ) =
 
+    static let crsTransformationAdapterLeafFactory = CrsTransformationAdapterLeafFactory()
+
     static let ThrowExceptionIfNoKnownInstancesAreAvailable
         (
             adapters: IList<ICrsTransformationAdapter>
@@ -25,7 +27,7 @@ type CrsTransformationAdapterCompositeFactory
 
     static let _instancesOfAllKnownAvailableImplementationsLazyLoaded: Lazy<IList<ICrsTransformationAdapter>> =
         lazy (
-            let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
+            let list = crsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
             ThrowExceptionIfNoKnownInstancesAreAvailable(list)            
             list
         )
