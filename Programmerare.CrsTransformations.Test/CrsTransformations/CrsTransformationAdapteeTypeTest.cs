@@ -9,7 +9,14 @@ namespace Programmerare.CrsTransformations
 {
 [TestFixture]
 class CrsTransformationAdapteeTypeTest {
-    
+
+    private CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
+
+    [SetUp]
+    public void SetUp() {
+        crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+    }
+
     [Test]
     public void ProjNet4GeoAPIAdapter_shouldMatchExpectedEnumAndAssemblyNameWithVersion() {
         var expectedFileInfoVersion = new FileInfoVersion(
@@ -93,7 +100,7 @@ class CrsTransformationAdapteeTypeTest {
     [Test]
     public void testCompositeAverage() {
         verifyExpectedEnumWhenNotRepresentingThirdPartLibrary(
-            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(),
+            crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(),
             CrsTransformationAdapteeType.COMPOSITE_AVERAGE
         );
     }
@@ -101,7 +108,7 @@ class CrsTransformationAdapteeTypeTest {
     [Test]
     public void testCompositeMedian() {
         verifyExpectedEnumWhenNotRepresentingThirdPartLibrary(
-            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(),
+            crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(),
             CrsTransformationAdapteeType.COMPOSITE_MEDIAN
         );
     }
@@ -109,7 +116,7 @@ class CrsTransformationAdapteeTypeTest {
     [Test]
     public void testCompositeFirstSuccess() {
         verifyExpectedEnumWhenNotRepresentingThirdPartLibrary(
-            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(),
+            crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(),
             CrsTransformationAdapteeType.COMPOSITE_FIRST_SUCCESS
         );
     }
@@ -117,7 +124,7 @@ class CrsTransformationAdapteeTypeTest {
     [Test]
     public void testCompositeWeightedAverage() {
         verifyExpectedEnumWhenNotRepresentingThirdPartLibrary(
-            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
+            crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
                 CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
                 CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
                 CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)

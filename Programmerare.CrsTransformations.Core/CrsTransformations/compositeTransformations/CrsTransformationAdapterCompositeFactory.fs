@@ -10,10 +10,13 @@ Please find more information in the license file at the root directory of each s
 
  * Factory methods creating 'Composite' implementations of the adapter interface.
 *)
-[<AbstractClass; Sealed>]
-type CrsTransformationAdapterCompositeFactory =
+[<Sealed>]
+type CrsTransformationAdapterCompositeFactory
+    (
+        listToUseForFactoryMethodsWithoutParameters: IList<ICrsTransformationAdapter>
+    ) =
 
-    static member private throwExceptionIfNoKnownInstancesAreAvailable
+    static let ThrowExceptionIfNoKnownInstancesAreAvailable
         (
             adapters: IList<ICrsTransformationAdapter>
         ) : unit =
@@ -30,10 +33,10 @@ type CrsTransformationAdapterCompositeFactory =
      * through the overloaded method with the same name but receiving a list parameter. 
      * @see createCrsTransformationMedian
      *)
-    static member CreateCrsTransformationMedian(): CrsTransformationAdapterComposite =
-        let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
-        CrsTransformationAdapterCompositeFactory.throwExceptionIfNoKnownInstancesAreAvailable list
-        CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian list
+    member this.CreateCrsTransformationMedian(): CrsTransformationAdapterComposite =
+        //let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
+        //this.throwExceptionIfNoKnownInstancesAreAvailable list
+        this.CreateCrsTransformationMedian listToUseForFactoryMethodsWithoutParameters
 
     (*
      * Creates a 'composite' implementation by passing 
@@ -46,7 +49,7 @@ type CrsTransformationAdapterCompositeFactory =
      *      the list could be composites i.e. you might try to nest 
      *      composites with composites (but it is not obvious why anyone would want to do that)
      *)    
-    static member CreateCrsTransformationMedian(list: IList<ICrsTransformationAdapter>): CrsTransformationAdapterComposite =
+    member private this.CreateCrsTransformationMedian(list: IList<ICrsTransformationAdapter>): CrsTransformationAdapterComposite =
         CrsTransformationAdapterComposite._CreateCrsTransformationAdapterComposite
             (
                 CompositeStrategyForMedianValue._CreateCompositeStrategyForMedianValue
@@ -65,17 +68,17 @@ type CrsTransformationAdapterCompositeFactory =
      * The only difference is that the average will be returned instead of the median.
      * @see createCrsTransformationMedian 
      *)
-    static member CreateCrsTransformationAverage(): CrsTransformationAdapterComposite =
-        let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
-        CrsTransformationAdapterCompositeFactory.throwExceptionIfNoKnownInstancesAreAvailable list
-        CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage list
+    member this.CreateCrsTransformationAverage(): CrsTransformationAdapterComposite =
+        //let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
+        //this.throwExceptionIfNoKnownInstancesAreAvailable list
+        this.CreateCrsTransformationAverage listToUseForFactoryMethodsWithoutParameters
 
     (*
      * Please see the documentation for the factory methods creating a median composite.
      * The only difference is that the average will be returned instead of the median.
      * @see createCrsTransformationMedian
      *)    
-    static member CreateCrsTransformationAverage(list: IList<ICrsTransformationAdapter>): CrsTransformationAdapterComposite =
+    member private this.CreateCrsTransformationAverage(list: IList<ICrsTransformationAdapter>): CrsTransformationAdapterComposite =
         CrsTransformationAdapterComposite._CreateCrsTransformationAdapterComposite
             (
                 CompositeStrategyForAverageValue._CreateCompositeStrategyForAverageValue
@@ -92,10 +95,10 @@ type CrsTransformationAdapterCompositeFactory =
      * Please see documentation for the overloaded method.
      * @see createCrsTransformationFirstSuccess
      *)    
-    static member CreateCrsTransformationFirstSuccess(): CrsTransformationAdapterComposite =
-        let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
-        CrsTransformationAdapterCompositeFactory.throwExceptionIfNoKnownInstancesAreAvailable list
-        CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess list
+    member this.CreateCrsTransformationFirstSuccess(): CrsTransformationAdapterComposite =
+        //let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
+        //this.throwExceptionIfNoKnownInstancesAreAvailable list
+        this.CreateCrsTransformationFirstSuccess listToUseForFactoryMethodsWithoutParameters
 
     (*
      * Please also see the documentation for the factory methods creating a median composite.
@@ -104,7 +107,7 @@ type CrsTransformationAdapterCompositeFactory =
      * leaf implementation until a succesful result has been found.
      * @see createCrsTransformationMedian
      *)    
-    static member CreateCrsTransformationFirstSuccess(list: IList<ICrsTransformationAdapter>): CrsTransformationAdapterComposite =
+    member private this.CreateCrsTransformationFirstSuccess(list: IList<ICrsTransformationAdapter>): CrsTransformationAdapterComposite =
         CrsTransformationAdapterComposite._CreateCrsTransformationAdapterComposite
             (
                 CompositeStrategyForFirstSuccess._CreateCompositeStrategyForFirstSuccess
@@ -124,7 +127,7 @@ type CrsTransformationAdapterCompositeFactory =
      * @see createCrsTransformationAverage
      * @see CrsTransformationAdapterWeight
      *)
-    static member CreateCrsTransformationWeightedAverage
+    member this.CreateCrsTransformationWeightedAverage
         (
             weightedCrsTransformationAdapters: IList<CrsTransformationAdapterWeight>
         ): CrsTransformationAdapterComposite =
@@ -132,3 +135,27 @@ type CrsTransformationAdapterCompositeFactory =
                 (
                     CompositeStrategyForWeightedAverageValue._CreateCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters)
                 )
+
+    new () = 
+        (
+            // TODO implement this in a better way to 
+            // only use the below list if needed i.e. 
+            // if/when a factory method without parameters are being used
+            let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
+            ThrowExceptionIfNoKnownInstancesAreAvailable(list)
+            CrsTransformationAdapterCompositeFactory(list)
+
+            // Another feature to maybe implement:
+            // Configuration paramters e.g. dictionary 
+            // with strings and e.g. using the "ShortName" as prefix 
+            // for the adapter it should apply to.
+            // Example:
+            // "ProjNet4GeoAPI.CrsCachingStrategy" = "NO_CACHING"
+            // which should be the same as explicitly 
+            // creating a CrsTransformationAdapterProjNet4GeoAPI
+            // and then invoke:
+            // adapter.SetCrsCachingStrategy(CrsCachingStrategy.NO_CACHING)
+            // and then pass it as one of the adapters in the list
+            // to the constructory receiving a list
+
+        )

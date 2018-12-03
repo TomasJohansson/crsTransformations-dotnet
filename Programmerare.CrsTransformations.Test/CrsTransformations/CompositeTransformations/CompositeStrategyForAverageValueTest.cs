@@ -17,7 +17,8 @@ public class CompositeStrategyForAverageValueTest : CompositeStrategyTestBase {
             base.allCoordinateResultsForTheDifferentImplementations
         );
 
-        ICrsTransformationAdapter averageCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(
+        var crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        ICrsTransformationAdapter averageCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(
             allAdapters
         );
         CrsTransformationResult averageResult = averageCompositeAdapter.Transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);

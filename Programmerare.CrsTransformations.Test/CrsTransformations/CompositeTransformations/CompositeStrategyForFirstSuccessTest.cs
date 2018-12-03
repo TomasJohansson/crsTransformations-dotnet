@@ -8,7 +8,8 @@ public class CompositeStrategyForFirstSuccessTest : CompositeStrategyTestBase {
 
     [Test]
     public void transform_shouldReturnFirstResult_whenUsingFirstSuccessCompositeAdapter() {
-        ICrsTransformationAdapter firstSuccessCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(
+        var crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        ICrsTransformationAdapter firstSuccessCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(
             // note that DotSpatial should be the first item in the below list defined in the baseclass,
             // and therefore DotSpatial should be the implementation providing the result
             base.allAdapters

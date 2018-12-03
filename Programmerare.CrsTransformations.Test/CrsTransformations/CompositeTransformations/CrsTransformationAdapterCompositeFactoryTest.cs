@@ -12,21 +12,29 @@ public class CrsTransformationAdapterCompositeFactoryTest {
 
     private const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = CrsTransformationAdapterTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
 
+    CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
+
+    [SetUp]
+    public void SetUp() {
+        crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+    }
+
+
     [Test]
     public void createCrsTransformationAverage_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
-        CrsTransformationAdapterComposite crsTransformationAverage = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
+        CrsTransformationAdapterComposite crsTransformationAverage = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
         assertCompositeNotNullAndAggregatesManyImplementations(crsTransformationAverage);
     }
 
     [Test]
     public void createCrsTransformationMedian_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
-        CrsTransformationAdapterComposite crsTransformationMedian = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
+        CrsTransformationAdapterComposite crsTransformationMedian = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
         assertCompositeNotNullAndAggregatesManyImplementations(crsTransformationMedian);
     }
 
     [Test]
     public void createCrsTransformationFirstSuccess_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
-        CrsTransformationAdapterComposite crsTransformationFirstSuccess = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
+        CrsTransformationAdapterComposite crsTransformationFirstSuccess = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
         assertCompositeNotNullAndAggregatesManyImplementations(crsTransformationFirstSuccess);
     }
 
@@ -42,21 +50,21 @@ public class CrsTransformationAdapterCompositeFactoryTest {
     public void createCrsTransformationAverage_shouldThrowException_whenInstantiatingWithEmptyList()
     {
         helper_shouldThrowException_whenInstantiatingWithEmptyList(
-            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage
+            crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage
         );
     }
 
     [Test]
     public void createCrsTransformationMedian_shouldThrowException_whenInstantiatingWithEmptyList() {
         helper_shouldThrowException_whenInstantiatingWithEmptyList(
-            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian
+            crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian
         );
     }
 
     [Test]
     public void createCrsTransformationFirstSuccess_shouldThrowException_whenInstantiatingWithEmptyList() {
         helper_shouldThrowException_whenInstantiatingWithEmptyList(
-            CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess
+            crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess
         );
     }
 

@@ -13,7 +13,8 @@ public class CrsTransformationAdapterCompositeTest {
 
     [Test]
     public void isReliableTest() {
-        CrsTransformationAdapterComposite crsTransformationComposite = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
+        var crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        CrsTransformationAdapterComposite crsTransformationComposite = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
         var children = crsTransformationComposite.GetTransformationAdapterChildren();
         Assert.AreEqual(3, children.Count);
 

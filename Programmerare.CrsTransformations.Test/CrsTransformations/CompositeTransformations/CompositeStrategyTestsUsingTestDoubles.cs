@@ -20,8 +20,11 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     private Mock<ICrsTransformationAdapter> mock1, mock2, mock3, mock4, mock5;
 
+    private CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
+
     [SetUp]
     public void SetUp() {
+        crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
         double[] outputLatitudes = {
             59.1,
             59.2,
@@ -130,7 +133,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     [Test]
     public void transformToCoordinate_shouldReturnAverageResult_whenUsingAverageCompositeAdapter() {
-        CrsTransformationAdapterComposite averageCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(allLeafAdapters);
+        CrsTransformationAdapterComposite averageCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(allLeafAdapters);
         CrsCoordinate resultCoordinate = averageCompositeAdapter.TransformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         Assert.IsNotNull(resultCoordinate);
 
@@ -153,7 +156,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     [Test]
     public void transformToCoordinate_shouldReturnMedianResult_whenUsingMedianCompositeAdapter() {
-        CrsTransformationAdapterComposite medianCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(allLeafAdapters);
+        CrsTransformationAdapterComposite medianCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(allLeafAdapters);
         CrsCoordinate resultCoordinate = medianCompositeAdapter.TransformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         Assert.IsNotNull(resultCoordinate);
 
@@ -176,7 +179,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     [Test]
     public void transformToCoordinate_shouldReturnFirstResult_whenUsingFirstSuccessCompositeAdapter() {
-        CrsTransformationAdapterComposite firstSuccessCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(allLeafAdapters);
+        CrsTransformationAdapterComposite firstSuccessCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(allLeafAdapters);
         CrsCoordinate resultCoordinate = firstSuccessCompositeAdapter.TransformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         Assert.IsNotNull(resultCoordinate);
 
@@ -230,7 +233,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             CrsTransformationAdapterWeight.CreateFromInstance(leafAdapterImplementation_5, weights[4])
         };
 
-        CrsTransformationAdapterComposite weightedAverageCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weightedAdapters);
+        CrsTransformationAdapterComposite weightedAverageCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weightedAdapters);
         CrsCoordinate result = weightedAverageCompositeAdapter.TransformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         Assert.IsNotNull(result);
 

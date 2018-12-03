@@ -256,7 +256,7 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
 
         // The above tests are for the "Leaf" implementations.
         // Below is a "Composite" created
-        CrsTransformationAdapterComposite compositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
+        CrsTransformationAdapterComposite compositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
         // The class name for the above adapter is "CrsTransformationAdapterComposite"
         // and the prefix part "CrsTransformationAdapter" is removed from the name
         // to get the short implementation i.e. just "Composite"
@@ -319,7 +319,7 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
 
         List<ICrsTransformationAdapter> crsTransformationAdapterImplementationsExpectingOneResult = new List<ICrsTransformationAdapter>();
         crsTransformationAdapterImplementationsExpectingOneResult.AddRange(base.crsTransformationAdapterLeafImplementations);
-        crsTransformationAdapterImplementationsExpectingOneResult.Add(CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess());
+        crsTransformationAdapterImplementationsExpectingOneResult.Add(crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess());
         Assert.AreEqual(
 			EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS + 1,  // 3 leafs plus 1 
 			crsTransformationAdapterImplementationsExpectingOneResult.Count

@@ -16,7 +16,8 @@ namespace Programmerare.CrsTransformations.CompositeTransformations
     public void transform_shouldReturnMedianResult_whenUsingMedianCompositeAdapter() {
         CrsCoordinate expectedCoordinateWithMedianLatitudeAndLongitude = calculateMedianCoordinate(base.allCoordinateResultsForTheDifferentImplementations);
 
-        ICrsTransformationAdapter medianCompositeAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(
+        var crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        ICrsTransformationAdapter medianCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(
             allAdapters
         );
         CrsTransformationResult medianResult = medianCompositeAdapter.Transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);

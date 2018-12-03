@@ -41,7 +41,8 @@ public abstract class CrsTransformationResultTestBase {
         CrsCoordinate outputCoordinate3 = CrsCoordinateFactory.LatLon(lat3, lon3);
         CrsCoordinate outputCoordinate4 = CrsCoordinateFactory.LatLon(lat4, lon4);
 
-        compositeAdapterForResultTest = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
+        var crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        compositeAdapterForResultTest = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
         inputCoordinateNotUsedInStatisticsTest = CrsCoordinateFactory.LatLon(0.0, 0.0); // input, not used here in this test
         outputCoordinateNotUsedInStatisticsTest = inputCoordinateNotUsedInStatisticsTest;
 

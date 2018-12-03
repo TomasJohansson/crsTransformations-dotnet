@@ -92,19 +92,21 @@ namespace Programmerare.CrsTransformations.TestClient {
             crsTransformationAdapter = new CrsTransformationAdapterProjNet4GeoAPI();
             crsTransformationAdapter = new CrsTransformationAdapterMightyLittleGeodesy();
             
+            crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
             // Three factory methods for 'composite' adapters
             // (trying to create them all with reflection, and thus no parameter)
-            crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
-            crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
-            crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
+            crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
+            crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
+            crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
 
             // a list used as parameter for the below 'Composite' adapters:
             IList<ICrsTransformationAdapter> crsTransformationAdapters = new List<ICrsTransformationAdapter>{crsTransformationAdapter};
             // Three factory methods for 'composite' adapters
             // (with the specified leaf adapters in a list parameter)
-            crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(crsTransformationAdapters);
-            crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(crsTransformationAdapters);
-            crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(crsTransformationAdapters);
+            crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory(crsTransformationAdapters);
+            crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
+            crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
+            crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
 
             // leaf adapters (used below for creating a composite with weighted average):
             var crsTransformationAdapterDotSpatial = new CrsTransformationAdapterDotSpatial();
@@ -115,7 +117,7 @@ namespace Programmerare.CrsTransformations.TestClient {
 
             // Now creating the composite with weighted average, using the above two
             // leaf adapters, using two different create methods:
-            crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight> {
+            crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight> {
                 CrsTransformationAdapterWeight.CreateFromInstance(crsTransformationAdapterProjNet4GeoAPI, 1.0),
                 CrsTransformationAdapterWeight.CreateFromStringWithFullClassNameForImplementation(fullClassNameForImplementation, 2.0)
             });
@@ -206,5 +208,6 @@ namespace Programmerare.CrsTransformations.TestClient {
         private CrsTransformationResultStatistic crsTransformationResultStatistic;
         private IList<CrsTransformationResult> crsTransformationResults;
         private int numberOfPotentiallySuccesfulResults;
+        private CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
     }
 }
