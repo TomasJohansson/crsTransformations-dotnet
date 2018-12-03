@@ -22,7 +22,20 @@ type CrsTransformationAdapterCompositeFactory
         ) : unit =
         if (adapters.Count < 1) then
             failwith "No known CRS transformation implementation was found"
-        
+
+    static let _instancesOfAllKnownAvailableImplementationsLazyLoaded: Lazy<IList<ICrsTransformationAdapter>> =
+        lazy (
+            let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
+            ThrowExceptionIfNoKnownInstancesAreAvailable(list)            
+            list
+        )
+
+    let functionReturningListToUseForFactoryMethodsWithoutParameters: unit -> IList<ICrsTransformationAdapter> = 
+        if(isNull listToUseForFactoryMethodsWithoutParameters || listToUseForFactoryMethodsWithoutParameters.Count = 0) then
+            fun () -> _instancesOfAllKnownAvailableImplementationsLazyLoaded.Force()
+        else
+            fun () -> listToUseForFactoryMethodsWithoutParameters
+
     // ----------------------------------------------
     // Two Median factory methods:
 
@@ -34,9 +47,7 @@ type CrsTransformationAdapterCompositeFactory
      * @see createCrsTransformationMedian
      *)
     member this.CreateCrsTransformationMedian(): CrsTransformationAdapterComposite =
-        //let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
-        //this.throwExceptionIfNoKnownInstancesAreAvailable list
-        this.CreateCrsTransformationMedian listToUseForFactoryMethodsWithoutParameters
+        this.CreateCrsTransformationMedian (functionReturningListToUseForFactoryMethodsWithoutParameters())
 
     (*
      * Creates a 'composite' implementation by passing 
@@ -69,9 +80,7 @@ type CrsTransformationAdapterCompositeFactory
      * @see createCrsTransformationMedian 
      *)
     member this.CreateCrsTransformationAverage(): CrsTransformationAdapterComposite =
-        //let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
-        //this.throwExceptionIfNoKnownInstancesAreAvailable list
-        this.CreateCrsTransformationAverage listToUseForFactoryMethodsWithoutParameters
+        this.CreateCrsTransformationAverage (functionReturningListToUseForFactoryMethodsWithoutParameters())
 
     (*
      * Please see the documentation for the factory methods creating a median composite.
@@ -96,9 +105,7 @@ type CrsTransformationAdapterCompositeFactory
      * @see createCrsTransformationFirstSuccess
      *)    
     member this.CreateCrsTransformationFirstSuccess(): CrsTransformationAdapterComposite =
-        //let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
-        //this.throwExceptionIfNoKnownInstancesAreAvailable list
-        this.CreateCrsTransformationFirstSuccess listToUseForFactoryMethodsWithoutParameters
+        this.CreateCrsTransformationFirstSuccess (functionReturningListToUseForFactoryMethodsWithoutParameters())
 
     (*
      * Please also see the documentation for the factory methods creating a median composite.
@@ -138,12 +145,12 @@ type CrsTransformationAdapterCompositeFactory
 
     new () = 
         (
-            // TODO implement this in a better way to 
-            // only use the below list if needed i.e. 
-            // if/when a factory method without parameters are being used
-            let list = CrsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
-            ThrowExceptionIfNoKnownInstancesAreAvailable(list)
-            CrsTransformationAdapterCompositeFactory(list)
+            // The below constructor should be C# friendly 
+            // i.e. use types such as IList which can be null
+            // so null is used below (as alternative to empty list) 
+            // as a signal that all available implementatiosn should be used
+            // instead of using a list specified by the user.
+            CrsTransformationAdapterCompositeFactory(null)
 
             // Another feature to maybe implement:
             // Configuration paramters e.g. dictionary 
