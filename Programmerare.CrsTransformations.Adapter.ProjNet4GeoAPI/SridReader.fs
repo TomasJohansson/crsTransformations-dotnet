@@ -2,6 +2,7 @@
 
 open System.IO
 open System.Text
+open System.Linq
 open System.Collections.Generic
 open ProjNet.Converters.WellKnownText
 open GeoAPI.CoordinateSystems
@@ -30,7 +31,8 @@ type EmbeddedResourceFileWithCRSdefinitions =
 
 type SridReader private
     (
-        functionReadingFromResourceFileOrExternalFilePath: int -> IDictionary<int, ICoordinateSystem>
+        functionReadingFromResourceFileOrExternalFilePath: int -> IDictionary<int, ICoordinateSystem>,
+        stringForEqualityComparison: string
     ) =
 
     let GetSomeTypeInTheAssembly() = 
@@ -77,6 +79,26 @@ type SridReader private
                         // we were only looking for a specific number so no need to keep iterating
                         valid <- false
         coordinateSystemsWithKeyEpsgNumber :> IDictionary<int, ICoordinateSystem>        
+
+    // This is an "internal" method (for testing purposes).
+    // The method may return for example a string like this:
+    //  (depending on which of the two current constructors are used, i.e. file path or enum specifying a list of embedded resources files to use)
+    //      "file:C:\temp\file1.csv"
+    //      "embedded:STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI,SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml"
+    // The exact format should not be used for anything else 
+    // than the Equals and HashCode methods.
+    // Therefore, the prefixes "file:" and "embedded:" can be considered as 
+    // arbitrary just like the separator "," between potentially multiple names of enum values.
+    member internal this._GetStringForEqualityComparison() =
+        stringForEqualityComparison
+
+    override this.GetHashCode() =
+        stringForEqualityComparison.GetHashCode()
+            
+    override this.Equals(o) =
+        match o with
+        | :? SridReader as s -> s._GetStringForEqualityComparison() = stringForEqualityComparison
+        | _ -> false
 
     static member private nameOfEmbeddedResourceFileDefaultShippedWithProjNet4GeoAPI_1_4_1 = "SRID_ShippedWithProjNet4GeoAPI_1_4_1.csv"
     // the above file was downloaded from here:
@@ -175,7 +197,8 @@ type SridReader private
     new (pathToCsvFile: string) as this = 
         (
             let fkn: int -> IDictionary<int, ICoordinateSystem> = fun (id) -> this.GetSRIDsFromCsvFile(id, pathToCsvFile)
-            SridReader(fkn)
+            let stringForEqualityComparison = "file:" + pathToCsvFile
+            SridReader(fkn, stringForEqualityComparison)
         )
 
     new (
@@ -193,5 +216,6 @@ type SridReader private
         ) as this = 
         (
             let fkn: int -> IDictionary<int, ICoordinateSystem> = fun (id) -> this.GetSRIDsFromEmbeddedResourceFiles(id, orderedEmbeddedResourceFileWithCRSdefinitions)
-            SridReader(fkn)
+            let stringForEqualityComparison = "embedded:" + orderedEmbeddedResourceFileWithCRSdefinitions.Select(fun e -> e.ToString()).Aggregate(fun i j -> i + "," + j)
+            SridReader(fkn, stringForEqualityComparison)
         )

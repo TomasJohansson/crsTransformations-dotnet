@@ -9,6 +9,22 @@ namespace Programmerare.CrsTransformations.Test.Implementations
     [TestFixture]
     class SridReaderTest
     {
+        // The purpose of the below five fields is to use them 
+        // in test methods for Equals and HashCode
+        private SridReader readerForFilePath1, readerForFilePath2;
+        private SridReader readerForEmbeddedResource1, readerForEmbeddedResource2, readerForEmbeddedResource3;
+
+        [SetUp]
+        public void SetUp()
+        {
+            // These files (path 1 and 2 below) do not have to exist regarding the tests they are used.
+            readerForFilePath1 = new SridReader(@"C:\temp\file1.csv");
+            readerForFilePath2 = new SridReader(@"C:\temp\file2.csv");
+            readerForEmbeddedResource1 = new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI});
+            readerForEmbeddedResource2 = new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml});
+            readerForEmbeddedResource3 = new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI, EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml});
+        }
+
         [Test]
         public void WORLD__WGS_84__4326()
         {
@@ -91,6 +107,52 @@ namespace Programmerare.CrsTransformations.Test.Implementations
                 crs.WKT, 
                 Does.StartWith(expectedInitialPartOfWellKnownTextString)
             );
+        }
+
+        [Test]
+        public void Equals_ShouldReturnTrue_WhenTheSameFilePathOrTheSameListOfAssemblyResources() {
+            Assert.AreEqual(readerForFilePath1, readerForFilePath1);
+            Assert.AreEqual(readerForFilePath2, readerForFilePath2);
+            Assert.AreEqual(readerForEmbeddedResource1, readerForEmbeddedResource1);
+            Assert.AreEqual(readerForEmbeddedResource2, readerForEmbeddedResource2);
+            Assert.AreEqual(readerForEmbeddedResource3, readerForEmbeddedResource3);
+
+            Assert.AreNotEqual(readerForFilePath1, readerForFilePath2);
+            Assert.AreNotEqual(readerForFilePath1, readerForEmbeddedResource1);
+            Assert.AreNotEqual(readerForEmbeddedResource1, readerForEmbeddedResource2);
+            Assert.AreNotEqual(readerForEmbeddedResource1, readerForEmbeddedResource3);
+            Assert.AreNotEqual(readerForEmbeddedResource2, readerForEmbeddedResource3);
+        }
+
+        [Test]
+        public void NotEquals_ShouldReturnTrue_WhenDifferentFilePathOrNotTheSameListOfAssemblyResources() {
+            Assert.AreNotEqual(readerForFilePath1, readerForFilePath2);
+            Assert.AreNotEqual(readerForFilePath1, readerForEmbeddedResource1);
+            Assert.AreNotEqual(readerForEmbeddedResource1, readerForEmbeddedResource2);
+            Assert.AreNotEqual(readerForEmbeddedResource1, readerForEmbeddedResource3);
+            Assert.AreNotEqual(readerForEmbeddedResource2, readerForEmbeddedResource3);
+        }
+
+        [Test]
+        public void GetHashCode_ShouldReturnTrue_WhenTheSameFilePathOrTheSameListOfAssemblyResources() {
+            Assert.AreEqual(readerForFilePath1.GetHashCode(), readerForFilePath1.GetHashCode());
+            Assert.AreEqual(readerForFilePath2.GetHashCode(), readerForFilePath2.GetHashCode());
+            Assert.AreEqual(readerForEmbeddedResource1.GetHashCode(), readerForEmbeddedResource1.GetHashCode());
+            Assert.AreEqual(readerForEmbeddedResource2.GetHashCode(), readerForEmbeddedResource2.GetHashCode());
+            Assert.AreEqual(readerForEmbeddedResource3.GetHashCode(), readerForEmbeddedResource3.GetHashCode());
+        }
+
+        [Test]
+        public void GetStringForEqualityComparison_ShouldReturnStringWithPathOrEnumValuesForThePredefinedEmbeddedResources() {
+            // This method is a bit fragile and it is not really essential to 
+            // do regressing testing for this code but it may be somewhat interesting to 
+            // see that the generated strings (used in Equals and HashCode)
+            // seem properly implemented i.e. that they return a string (as below) in such a way that 
+            // different file paths or different list of embedded resource files return different values
+            Assert.AreEqual(@"file:C:\temp\file1.csv", readerForFilePath1._GetStringForEqualityComparison());
+            Assert.AreEqual("embedded:STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI", readerForEmbeddedResource1._GetStringForEqualityComparison());
+            Assert.AreEqual("embedded:SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml", readerForEmbeddedResource2._GetStringForEqualityComparison());
+            Assert.AreEqual("embedded:STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI,SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml", readerForEmbeddedResource3._GetStringForEqualityComparison());
         }
     }
 }
