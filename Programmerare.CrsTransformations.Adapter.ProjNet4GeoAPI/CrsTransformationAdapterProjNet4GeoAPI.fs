@@ -14,7 +14,11 @@ Other subprojects may be released with other licenses e.g. LGPL or Apache Licens
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 *)
-type CrsTransformationAdapterProjNet4GeoAPI() as this =
+type CrsTransformationAdapterProjNet4GeoAPI
+    (
+        crsCachingStrategy: CrsCachingStrategy,
+        sridReader: SridReader
+    ) as this =
     class
         inherit CrsTransformationAdapterBaseLeaf
             ( 
@@ -22,17 +26,22 @@ type CrsTransformationAdapterProjNet4GeoAPI() as this =
                  ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
             )
 
-        let mutable _crsCachingStrategy: CrsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
-        
-        let mutable _cachedCoordinateSystem: IDictionary<int, ICoordinateSystem> = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
-        
-        let mutable _sridReader = 
+        static let _defaultCrsCachingStrategy: CrsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
+
+        static let _defaultSridReader =
             let list = new ResizeArray<EmbeddedResourceFileWithCRSdefinitions>([
                     EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI
                     EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml
                 ]
             )
             SridReader(list)
+
+        let _crsCachingStrategy: CrsCachingStrategy = crsCachingStrategy
+        
+        let _sridReader = sridReader
+
+        // this private field is only internally mutable i.e. can not be changed through some public setter
+        let mutable _cachedCoordinateSystem: IDictionary<int, ICoordinateSystem> = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
 
         let GetCSbyID(epsgNumber) = 
             let mutable crs: ICoordinateSystem = null
@@ -106,24 +115,24 @@ type CrsTransformationAdapterProjNet4GeoAPI() as this =
         member private this._GetFileInfoVersion() =
             FileInfoVersion.GetFileInfoVersionHelper(typeof<CoordinateSystemFactory>)
 
-        member this.SetSridReader(sridReader: SridReader) = 
-            _sridReader <- sridReader
+        //member this.SetSridReader(sridReader: SridReader) = 
+        //    _sridReader <- sridReader
 
-        member this.SetCrsCachingStrategy(crsCachingStrategy: CrsCachingStrategy) = 
-            if (
-                    crsCachingStrategy = CrsCachingStrategy.NO_CACHING
-                    ||
-                    (
-                        _crsCachingStrategy <> CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
-                        &&
-                        crsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
-                        // if it changed to looking up everything 
-                        // from something else then now reset the hashtable below
-                        // since the lookup method first check the hash table 
-                    )
-                ) then
-                _cachedCoordinateSystem <- Dictionary<int, ICoordinateSystem>()
-            _crsCachingStrategy <- crsCachingStrategy
+        //member this.SetCrsCachingStrategy(crsCachingStrategy: CrsCachingStrategy) = 
+        //    if (
+        //            crsCachingStrategy = CrsCachingStrategy.NO_CACHING
+        //            ||
+        //            (
+        //                _crsCachingStrategy <> CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
+        //                &&
+        //                crsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
+        //                // if it changed to looking up everything 
+        //                // from something else then now reset the hashtable below
+        //                // since the lookup method first check the hash table 
+        //            )
+        //        ) then
+        //        _cachedCoordinateSystem <- Dictionary<int, ICoordinateSystem>()
+        //    _crsCachingStrategy <- crsCachingStrategy
 
         member this.GetCrsCachingStrategy() = 
             _crsCachingStrategy
@@ -131,6 +140,21 @@ type CrsTransformationAdapterProjNet4GeoAPI() as this =
         // mainly for testing purpose:
         member this.IsEpsgCached(epsgNumber) : bool =     
             _cachedCoordinateSystem.ContainsKey(epsgNumber)
+
+        new () = // as this = 
+            (
+                CrsTransformationAdapterProjNet4GeoAPI(_defaultCrsCachingStrategy, _defaultSridReader)
+            )
+
+        new (sridReader) =
+            (
+                CrsTransformationAdapterProjNet4GeoAPI(_defaultCrsCachingStrategy, sridReader)
+            )
+
+        new (crsCachingStrategy) =
+            (
+                CrsTransformationAdapterProjNet4GeoAPI(crsCachingStrategy, _defaultSridReader)
+            )
     end
 (*
 https://github.com/NetTopologySuite/ProjNet4GeoAPI

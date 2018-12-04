@@ -14,6 +14,8 @@ namespace Programmerare.CrsTransformations.Test.Implementations
                 new CrsTransformationAdapterProjNet4GeoAPI(),
                 CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1,
 
+                // TODO retwrite the below comments ... and make sure they are still applicable ...
+
                 // The implementation ProjNet4GeoAPI
                 // is currently (version 1.4.1) 
                 // producing bad results when transforming 
@@ -61,21 +63,10 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             cacheTestInputCoordinateWgs84 = CrsCoordinateFactory.LatLon(60, 18);
             
             cacheTestTransformationAdapterProjNet4GeoAPI = new CrsTransformationAdapterProjNet4GeoAPI();
-            cacheTestTransformationAdapter = cacheTestTransformationAdapterProjNet4GeoAPI;
-            // TODO: (regarding the above two typed variables) 
-            // Deal with implicit versus explicit interfaces.
-            // Currently:
-                // These method exists:
-                //      cacheTestTransformationAdapter.Transform
-                //      cacheTestTransformationAdapterProjNet4GeoAPI.SetCrsCachingStrategy
-                // These method do NOT exist:
-                //      cacheTestTransformationAdapterProjNet4GeoAPI.Transform
-                //      cacheTestTransformationAdapter.SetCrsCachingStrategy
         }
 
         private CrsCoordinate cacheTestInputCoordinateWgs84;
         private int cacheTestForOutputEpsgNumberNotExisting;
-        private ICrsTransformationAdapter cacheTestTransformationAdapter;
         private CrsTransformationAdapterProjNet4GeoAPI cacheTestTransformationAdapterProjNet4GeoAPI;
 
         [Test]
@@ -97,9 +88,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         [Test]
         public void TestBehaviourWhenNoCachingIsChosen()
         {
-            cacheTestTransformationAdapterProjNet4GeoAPI.SetCrsCachingStrategy(
-                CrsCachingStrategy.NO_CACHING
-            );            
+            cacheTestTransformationAdapterProjNet4GeoAPI  = new CrsTransformationAdapterProjNet4GeoAPI(CrsCachingStrategy.NO_CACHING);
             Assert.IsFalse(
                 cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                     cacheTestForOutputEpsgNumberNotExisting
@@ -114,13 +103,13 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             // The transform method below may potentially trigger 
             // the used epsg code (the second parameter) to become cached
             // (but that behaviour depends on the caching strategy)
-            cacheTestTransformationAdapter.Transform(
+            cacheTestTransformationAdapterProjNet4GeoAPI.Transform(
                 cacheTestInputCoordinateWgs84, 
                 cacheTestForOutputEpsgNumberNotExisting
             );
             // The above output CRS was a non-existing EPSG number
             // but below is an existing EPSG number used.
-            cacheTestTransformationAdapter.Transform(
+            cacheTestTransformationAdapterProjNet4GeoAPI.Transform(
                 cacheTestInputCoordinateWgs84, 
                 EpsgNumber.SWEDEN__SWEREF99_TM__3006
             );
@@ -142,31 +131,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             CrsCachingStrategy crsCachingStrategy
         )
         {
-            // First we initialize with "NO_CACHING" but later in the method 
-            // we will set the strategy which was parameter to the method
-            cacheTestTransformationAdapterProjNet4GeoAPI.SetCrsCachingStrategy(
-                CrsCachingStrategy.NO_CACHING
-            );
-            Assert.IsFalse(
-                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
-                    cacheTestForOutputEpsgNumberNotExisting
-                )
-            );
-            cacheTestTransformationAdapter.Transform(
-                cacheTestInputCoordinateWgs84, 
-                cacheTestForOutputEpsgNumberNotExisting
-            );
-            Assert.IsFalse(
-                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
-                    cacheTestForOutputEpsgNumberNotExisting
-                )
-            );
-            
-            cacheTestTransformationAdapterProjNet4GeoAPI.SetCrsCachingStrategy(
-                crsCachingStrategy
-            );
-
-            // still false (since it will not be cached until looked up again)
+            cacheTestTransformationAdapterProjNet4GeoAPI  = new CrsTransformationAdapterProjNet4GeoAPI(crsCachingStrategy);
             Assert.IsFalse(
                 cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
                     cacheTestForOutputEpsgNumberNotExisting
@@ -175,14 +140,15 @@ namespace Programmerare.CrsTransformations.Test.Implementations
 
             // The transform method below may potentially trigger 
             // the used epsg code (the second parameter) to become cached
-            // (but that behaviour depends on the caching strategy)
-            cacheTestTransformationAdapter.Transform(
+            // (but that behaviour depends on the caching strategy 
+            //  i.e. it must not be NO_CACHING)
+            cacheTestTransformationAdapterProjNet4GeoAPI.Transform(
                 cacheTestInputCoordinateWgs84, 
                 cacheTestForOutputEpsgNumberNotExisting
             );
 
-            // But this time it should be true since the caching was changed above 
-            // and indeed the lookup is cached even though it is a non-existin
+            // It should be true below.
+            // Indeed the lookup is cached even though it is a non-existin
             // EPSG number (i.e. "null" is cached)
             // since you do likely not want to read the file 
             // many times (if you have specified that you want caching)
@@ -213,7 +179,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
                 );
                 // but after a transformation below it should be cached
                 
-                cacheTestTransformationAdapter.Transform(
+                cacheTestTransformationAdapterProjNet4GeoAPI.Transform(
                     cacheTestInputCoordinateWgs84, 
                     EpsgNumber.SWEDEN__SWEREF99_TM__3006
                 );
