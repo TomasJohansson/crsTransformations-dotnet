@@ -16,6 +16,8 @@ type CrsTransformationAdapterCompositeFactory
         listToUseForFactoryMethodsWithoutParameters: IList<ICrsTransformationAdapter>
     ) =
 
+    // TODO refactor the below by using a parameter instance of the leaf factory 
+    // instead of instantiating it with one of its two factory methods
     static let crsTransformationAdapterLeafFactory = CrsTransformationAdapterLeafFactory.Create()
 
     static let ThrowExceptionIfNoKnownInstancesAreAvailable

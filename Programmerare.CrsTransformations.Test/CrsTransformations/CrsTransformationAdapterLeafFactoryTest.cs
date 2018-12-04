@@ -39,7 +39,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
         Assert.IsNotNull(exception);
         string exceptionMessage = exception.Message;
         Assert.That(exceptionMessage, Does.Contain(nameOfInterfaceThatShouldBeImplemented));
-        Assert.That(exceptionMessage, Does.StartWith("Failed to instantiate")); // Fragile but the message string will not change often and if it does change then it will be very easy to modify the string here
+        Assert.That(exceptionMessage, Does.StartWith("Failed to return an instance")); // Fragile but the message string will not change often and if it does change then it will be very easy to modify the string here
     }
 
     [Test]
@@ -125,5 +125,61 @@ public class CrsTransformationAdapterLeafFactoryTest {
         {
             Assert.That(actualClassNamesForAllKnownImplementations, Contains.Item(hardcodedClassNamesForAllKnownImplementation));
         }
+    }
+
+    // 
+    [Test]
+    public void TODO_refactor_this_test_method()
+    {
+        // TODO refactor this long test method into smaller methods
+        var list = new List<ICrsTransformationAdapter>{
+            new CrsTransformationAdapterDotSpatial(),
+            new CrsTransformationAdapterProjNet4GeoAPI()
+        };
+        var factoryWithOnlyTwoLeafs = CrsTransformationAdapterLeafFactory.Create(list);
+        var allInstances = factoryWithOnlyTwoLeafs.GetInstancesOfAllKnownAvailableImplementations();
+        Assert.That(
+            // only two above, but currently there are three
+            // as the default, therefore the below "LessThan"
+            allInstances.Count,
+            Is.LessThan(crsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations().Count)
+        );
+        Assert.AreEqual(2, allInstances.Count);
+        Assert.That(allInstances, Does.Contain(list[0]));
+        Assert.That(allInstances, Does.Contain(list[1]));
+        //Assert.That(allInstances, Does.Not.Contain(classNameMightyLittleGeodesy));
+
+
+        string classNameDotSpatial = typeof(CrsTransformationAdapterDotSpatial).FullName;
+        string classNameProjNet4GeoAPI = typeof(CrsTransformationAdapterProjNet4GeoAPI).FullName;
+        string classNameMightyLittleGeodesy = typeof(CrsTransformationAdapterMightyLittleGeodesy).FullName;
+        IList<string> allClassNames = factoryWithOnlyTwoLeafs.GetClassNamesForAllKnownImplementations();
+        Assert.AreEqual(2, allClassNames.Count);
+        Assert.That(allClassNames, Does.Contain(classNameDotSpatial));
+        Assert.That(allClassNames, Does.Contain(classNameProjNet4GeoAPI));
+        Assert.That(allClassNames, Does.Not.Contain(classNameMightyLittleGeodesy));
+
+        Assert.IsTrue(
+            factoryWithOnlyTwoLeafs.IsCrsTransformationAdapter(
+                classNameDotSpatial
+            )
+        );
+        Assert.IsTrue(
+            factoryWithOnlyTwoLeafs.IsCrsTransformationAdapter(
+                classNameProjNet4GeoAPI
+            )
+        );
+        Assert.IsFalse(
+            factoryWithOnlyTwoLeafs.IsCrsTransformationAdapter(
+                classNameMightyLittleGeodesy
+            )
+        );
+        Assert.IsTrue(
+            crsTransformationAdapterLeafFactory.IsCrsTransformationAdapter(
+                classNameMightyLittleGeodesy
+            )
+        );
+
+
     }
 }

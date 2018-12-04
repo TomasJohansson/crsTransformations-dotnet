@@ -32,6 +32,11 @@ type CrsTransformationAdapterLeafFactory internal
 
         abstract member CreateCrsTransformationAdapter : string -> ICrsTransformationAdapter // string=crsTransformationAdapterClassName
 
+        static member internal ThrowExceptionWhenAdapterInstanceCouldNotBeReturned(crsTransformationAdapterClassName: string) = 
+            let nameOfInterfaceThatShouldBeImplemented = typeof<ICrsTransformationAdapter>.FullName
+            let message = "Failed to return an instance of a class with the name '" + crsTransformationAdapterClassName + "' . The parameter must be the name of an available class which implements the interface '" + nameOfInterfaceThatShouldBeImplemented + "'"
+            invalidArg "crsTransformationAdapterClassName" message
+
         static member Create() =
             // TODO better names than suffix 1 and 2
             CrsTransformationAdapterLeafFactory1()
@@ -117,9 +122,7 @@ and CrsTransformationAdapterLeafFactory1 internal
                 instance :?> ICrsTransformationAdapter
             with
                 | exc -> 
-                    let nameOfInterfaceThatShouldBeImplemented = typeof<ICrsTransformationAdapter>.FullName
-                    let message = "Failed to instantiate a class with the name '" + crsTransformationAdapterClassName + "' . The parameter must be the name of an available class which implements the interface '" + nameOfInterfaceThatShouldBeImplemented + "'"
-                    invalidArg "crsTransformationAdapterClassName" message
+                    CrsTransformationAdapterLeafFactory.ThrowExceptionWhenAdapterInstanceCouldNotBeReturned(crsTransformationAdapterClassName)
 
         static member private instancesOfAllKnownAvailableImplementationsLazyLoaded: Lazy<List<ICrsTransformationAdapter>> = 
             lazy (
@@ -160,17 +163,32 @@ and CrsTransformationAdapterLeafFactory2 internal
     ) = 
     class
         inherit CrsTransformationAdapterLeafFactory()
-        // TODO add new implementation here
 
+        let _classNamesForAllImplementationsLazyLoaded: Lazy<IList<string>> =
+            lazy (
+                let list =  listOfCrsTransformationAdapters.Select(
+                                fun a -> a.GetType().FullName
+                            ).ToList()
+                list :> IList<string>
+            )
+
+        // TODO rename the method in the base class since "Create"
+        // indicates a NEW instance, so something like "Get" 
+        // might be a more general and better semantic  
+        // which is also applicable for this implementation
         override x.CreateCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
-            failwith "Not yet implemented"
+            let adapterInstance = listOfCrsTransformationAdapters.First(fun a -> a.GetType().FullName.Equals(crsTransformationAdapterClassName))
+            if(not(isNull adapterInstance)) then
+                adapterInstance
+            else
+                CrsTransformationAdapterLeafFactory.ThrowExceptionWhenAdapterInstanceCouldNotBeReturned(crsTransformationAdapterClassName)
 
         (*
         * @return a list of instances for all known leaf implementations 
         *      of the adapter interface, which are available at the class path.
         *)    
         override x.GetInstancesOfAllKnownAvailableImplementations() = 
-            failwith "Not yet implemented"
+            listOfCrsTransformationAdapters
 
         (*
          * @param the full class name (i.e. including the package name)
@@ -178,9 +196,13 @@ and CrsTransformationAdapterLeafFactory2 internal
          * @return true if it possible to create an instance from the input string 
          *)
         override x.IsCrsTransformationAdapter(crsTransformationAdapterClassName: string): bool = 
-            failwith "Not yet implemented"
+            let adapterInstance = listOfCrsTransformationAdapters.FirstOrDefault(fun a -> a.GetType().FullName.Equals(crsTransformationAdapterClassName))
+            // TODO refactor the above (duplicated row in this class)
+            not(isNull adapterInstance)
 
+        // TODO rename the method in the base class since "Known"
+        // is not very appropriate semantic for this implementation
         override x.GetClassNamesForAllKnownImplementations() = 
-            failwith "Not yet implemented"
+            _classNamesForAllImplementationsLazyLoaded.Force()
     end
 // --------------------------------------------------------------
