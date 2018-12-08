@@ -21,6 +21,9 @@ type internal CompositeStrategyForWeightedAverageValue private
     class
         inherit CompositeStrategyBase(crsTransformationAdapters)
 
+        [<Literal>]  // the actual value below is fairly arbitrary
+        static let SMALL_DELTA_VALUE_FOR_EQUAL_COMPARISON_OF_WEIGHT_VALUES = 0.0000000001
+        
         do
             if isNull crsTransformationAdapters then
                 nullArg "crsTransformationAdapters"
@@ -44,7 +47,7 @@ type internal CompositeStrategyForWeightedAverageValue private
                         let thisValue = this._GetWeights().[thatWeight.Key]
                         let thatValue = thatWeight.Value
                         let diff = Math.Abs(thisValue-thatValue)
-                        if(diff > 0.0001) then // TODO constant and maybe change appropriate delta value ?
+                        if(diff > SMALL_DELTA_VALUE_FOR_EQUAL_COMPARISON_OF_WEIGHT_VALUES) then
                             areEqual <- false
                     else
                         areEqual <- false
