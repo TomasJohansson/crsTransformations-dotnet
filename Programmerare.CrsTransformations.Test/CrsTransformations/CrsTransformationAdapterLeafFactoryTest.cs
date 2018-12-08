@@ -43,10 +43,10 @@ public class CrsTransformationAdapterLeafFactoryTest {
     }
 
     [Test]
-    public void CreateCrsTransformationAdapter_ShouldThrowException_WhenTheParameterIsNotNameOfClassImplementingTheExpectedInterface() {
+    public void GetCrsTransformationAdapter_ShouldThrowException_WhenTheParameterIsNotNameOfClassImplementingTheExpectedInterface() {
         string incorrectClassName = "abc";
         ArgumentException exception = Assert.Throws<ArgumentException>(() => {
-            crsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(incorrectClassName);
+            crsTransformationAdapterLeafFactory.GetCrsTransformationAdapter(incorrectClassName);
         });
 
         string nameOfInterfaceThatShouldBeImplemented = typeof(ICrsTransformationAdapter).FullName;
@@ -87,7 +87,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
 
     [Test]
     public void ListOfHardcodedClassnames_ShouldBeCrsTransformationAdapters() {
-        IList<string> hardcodedClassNamesForAllKnownImplementations = crsTransformationAdapterLeafFactory.GetClassNamesForAllKnownImplementations();
+        IList<string> hardcodedClassNamesForAllKnownImplementations = crsTransformationAdapterLeafFactory.GetClassNamesForAllImplementations();
         foreach (string hardcodedClassNameForKnownImplementation in hardcodedClassNamesForAllKnownImplementations) {
             Assert.IsTrue(
                 crsTransformationAdapterLeafFactory.IsCrsTransformationAdapter(
@@ -101,9 +101,9 @@ public class CrsTransformationAdapterLeafFactoryTest {
 
     [Test]
     public void ListOfHardcodedClassnames_ShouldBeCreateableAsNonNullCrsTransformationAdapters() {
-        IList<String> hardcodedClassNamesForAllKnownImplementations = crsTransformationAdapterLeafFactory.GetClassNamesForAllKnownImplementations();
+        IList<String> hardcodedClassNamesForAllKnownImplementations = crsTransformationAdapterLeafFactory.GetClassNamesForAllImplementations();
         foreach (string hardcodedClassNameForKnownImplementation in hardcodedClassNamesForAllKnownImplementations) {
-            ICrsTransformationAdapter crsTransformationAdapter = crsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(
+            ICrsTransformationAdapter crsTransformationAdapter = crsTransformationAdapterLeafFactory.GetCrsTransformationAdapter(
                 hardcodedClassNameForKnownImplementation
             );
 			VerifyThatTheCreatedAdapterIsRealObject(crsTransformationAdapter);
@@ -129,7 +129,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
 
     [Test]
     public void ListOfKnownInstances_ShouldOnlyContainNonNullObjectsAndShouldContainAtLeastACertainNumberOfItems() {
-        IList<ICrsTransformationAdapter> list = crsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations();
+        IList<ICrsTransformationAdapter> list = crsTransformationAdapterLeafFactory.GetInstancesOfAllImplementations();
         Assert.That(
             list.Count, 
             Is.GreaterThanOrEqualTo(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS)
@@ -141,7 +141,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
 
     [Test]
     public void ListOfHardcodedClassnames_ShouldCorrespondToActualClassNames() {
-        IList<string> hardcodedClassNamesForAllKnownImplementations = crsTransformationAdapterLeafFactory.GetClassNamesForAllKnownImplementations();
+        IList<string> hardcodedClassNamesForAllKnownImplementations = crsTransformationAdapterLeafFactory.GetClassNamesForAllImplementations();
         Assert.AreEqual(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, hardcodedClassNamesForAllKnownImplementations.Count);
         Assert.AreEqual(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, actualClassNamesForAllKnownImplementations.Count);
 
@@ -161,7 +161,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
 
     [Test]
     public void FactoryWithOnlyTwoLeafs_ShouldOnlyContainClassesDotSpatialAndProjNet4GeoAPI() {
-        IList<string> allClassNames = factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet4GeoAPI.GetClassNamesForAllKnownImplementations();
+        IList<string> allClassNames = factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet4GeoAPI.GetClassNamesForAllImplementations();
         Assert.AreEqual(2, allClassNames.Count);
         Assert.That(allClassNames, Does.Contain(classNameDotSpatial));
         Assert.That(allClassNames, Does.Contain(classNameProjNet4GeoAPI));
@@ -171,7 +171,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
 
     [Test]
     public void FactoryWithOnlyTwoLeafs_ShouldOnlyContainInstancesOfDotSpatialAndProjNet4GeoAPI() {
-        IList<ICrsTransformationAdapter> allAdapters = factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet4GeoAPI.GetInstancesOfAllKnownAvailableImplementations();
+        IList<ICrsTransformationAdapter> allAdapters = factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet4GeoAPI.GetInstancesOfAllImplementations();
         Assert.AreEqual(2, allAdapters.Count);
         Assert.That(allAdapters, Does.Contain(new CrsTransformationAdapterDotSpatial()));
         Assert.That(allAdapters, Does.Contain(new CrsTransformationAdapterProjNet4GeoAPI()));

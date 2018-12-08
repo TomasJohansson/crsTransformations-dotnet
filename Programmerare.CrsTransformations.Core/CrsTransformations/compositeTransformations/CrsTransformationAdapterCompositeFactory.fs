@@ -29,7 +29,7 @@ type CrsTransformationAdapterCompositeFactory
 
     static let _instancesOfAllKnownAvailableImplementationsLazyLoaded: Lazy<IList<ICrsTransformationAdapter>> =
         lazy (
-            let list = crsTransformationAdapterLeafFactory.GetInstancesOfAllKnownAvailableImplementations()
+            let list = crsTransformationAdapterLeafFactory.GetInstancesOfAllImplementations()
             ThrowExceptionIfNoKnownInstancesAreAvailable(list)            
             list
         )

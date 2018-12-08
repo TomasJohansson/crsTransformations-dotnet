@@ -24,13 +24,13 @@ Please find more information in the license file at the root directory of each s
 type CrsTransformationAdapterLeafFactory internal
     (
     ) = 
-        abstract member GetClassNamesForAllKnownImplementations : unit -> IList<string>
+        abstract member GetClassNamesForAllImplementations : unit -> IList<string>
         
         abstract member IsCrsTransformationAdapter : string -> bool // string=crsTransformationAdapterClassName
 
-        abstract member GetInstancesOfAllKnownAvailableImplementations : unit -> IList<ICrsTransformationAdapter>
+        abstract member GetInstancesOfAllImplementations : unit -> IList<ICrsTransformationAdapter>
 
-        abstract member CreateCrsTransformationAdapter : string -> ICrsTransformationAdapter // string=crsTransformationAdapterClassName
+        abstract member GetCrsTransformationAdapter : string -> ICrsTransformationAdapter // string=crsTransformationAdapterClassName
 
         static member internal ThrowExceptionWhenAdapterInstanceCouldNotBeReturned(crsTransformationAdapterClassName: string) = 
             let nameOfInterfaceThatShouldBeImplemented = typeof<ICrsTransformationAdapter>.FullName
@@ -132,14 +132,14 @@ and CrsTransformationAdapterLeafFactory1 internal
                 list
             )
 
-        override x.CreateCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
+        override x.GetCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
             CrsTransformationAdapterLeafFactory1._CreateCrsTransformationAdapter(crsTransformationAdapterClassName)
 
         (*
         * @return a list of instances for all known leaf implementations 
         *      of the adapter interface, which are available at the class path.
         *)    
-        override x.GetInstancesOfAllKnownAvailableImplementations() = 
+        override x.GetInstancesOfAllImplementations() = 
             CrsTransformationAdapterLeafFactory1.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force() :> IList<ICrsTransformationAdapter>
 
         (*
@@ -152,7 +152,7 @@ and CrsTransformationAdapterLeafFactory1 internal
                 fun i -> i.GetType().FullName.Equals(crsTransformationAdapterClassName)
             )
 
-        override x.GetClassNamesForAllKnownImplementations() = 
+        override x.GetClassNamesForAllImplementations() = 
             classNamesForAllKnownImplementations.ToList() :> IList<string>
 
     end
@@ -172,11 +172,7 @@ and CrsTransformationAdapterLeafFactory2 internal
                 list :> IList<string>
             )
 
-        // TODO rename the method in the base class since "Create"
-        // indicates a NEW instance, so something like "Get" 
-        // might be a more general and better semantic  
-        // which is also applicable for this implementation
-        override x.CreateCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
+        override x.GetCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
             let adapterInstance = listOfCrsTransformationAdapters.First(fun a -> a.GetType().FullName.Equals(crsTransformationAdapterClassName))
             if(not(isNull adapterInstance)) then
                 adapterInstance
@@ -187,7 +183,8 @@ and CrsTransformationAdapterLeafFactory2 internal
         * @return a list of instances for all known leaf implementations 
         *      of the adapter interface, which are available at the class path.
         *)    
-        override x.GetInstancesOfAllKnownAvailableImplementations() = 
+        
+        override x.GetInstancesOfAllImplementations() = 
             listOfCrsTransformationAdapters
 
         (*
@@ -199,10 +196,8 @@ and CrsTransformationAdapterLeafFactory2 internal
             let adapterInstance = listOfCrsTransformationAdapters.FirstOrDefault(fun a -> a.GetType().FullName.Equals(crsTransformationAdapterClassName))
             // TODO refactor the above (duplicated row in this class)
             not(isNull adapterInstance)
-
-        // TODO rename the method in the base class since "Known"
-        // is not very appropriate semantic for this implementation
-        override x.GetClassNamesForAllKnownImplementations() = 
+            
+        override x.GetClassNamesForAllImplementations() = 
             _classNamesForAllImplementationsLazyLoaded.Force()
     end
 // --------------------------------------------------------------

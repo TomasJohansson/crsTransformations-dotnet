@@ -47,7 +47,7 @@ type CrsTransformationAdapterWeight private
             crsTransformationAdapterClassName: string,
             weight: double
         ): CrsTransformationAdapterWeight =
-        let crsTransformationAdapter = crsTransformationAdapterLeafFactory.CreateCrsTransformationAdapter(crsTransformationAdapterClassName)
+        let crsTransformationAdapter = crsTransformationAdapterLeafFactory.GetCrsTransformationAdapter(crsTransformationAdapterClassName)
         CrsTransformationAdapterWeight(crsTransformationAdapter, weight)
 
     (*
