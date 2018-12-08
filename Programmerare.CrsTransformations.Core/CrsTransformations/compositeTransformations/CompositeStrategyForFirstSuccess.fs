@@ -18,7 +18,7 @@ type internal CompositeStrategyForFirstSuccess private
     class
         inherit CompositeStrategyBase(crsTransformationAdapters)
 
-        override this._EqualsWhenTypeAndLeafCountHaveBeenChecked(compositeStrategy: CompositeStrategyBase) =
+        override this._EqualsWhenTypeAndSameLeafsHaveBeenChecked(compositeStrategy: CompositeStrategyBase) =
             let thisChildren = this._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked();
             let thatChildren = compositeStrategy._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked();
             let mutable i = 0

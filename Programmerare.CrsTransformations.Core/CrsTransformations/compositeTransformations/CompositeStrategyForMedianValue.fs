@@ -18,7 +18,7 @@ type internal CompositeStrategyForMedianValue private
     class
         inherit CompositeStrategyBase(crsTransformationAdapters)
 
-        override this._EqualsWhenTypeAndLeafCountHaveBeenChecked(compositeStrategy: CompositeStrategyBase) =
+        override this._EqualsWhenTypeAndSameLeafsHaveBeenChecked(compositeStrategy: CompositeStrategyBase) =
             // No further check is neeed than being the 
             // same type and the same leafs
             // (configured the same way, but that is generally checked in the base class)

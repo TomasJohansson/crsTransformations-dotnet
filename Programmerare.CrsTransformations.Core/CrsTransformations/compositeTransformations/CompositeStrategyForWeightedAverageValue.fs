@@ -34,7 +34,7 @@ type internal CompositeStrategyForWeightedAverageValue private
 
         member internal this._GetWeights() = weights
 
-        override this._EqualsWhenTypeAndLeafCountHaveBeenChecked(compositeStrategy: CompositeStrategyBase) =
+        override this._EqualsWhenTypeAndSameLeafsHaveBeenChecked(compositeStrategy: CompositeStrategyBase) =
             if(compositeStrategy :? CompositeStrategyForWeightedAverageValue) then
                 let that = compositeStrategy :?> CompositeStrategyForWeightedAverageValue
                 let thatWeights = that._GetWeights()

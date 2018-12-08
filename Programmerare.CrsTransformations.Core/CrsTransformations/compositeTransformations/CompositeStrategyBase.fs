@@ -39,7 +39,7 @@ type internal CompositeStrategyBase internal
         abstract member _GetAdapteeType : unit -> CrsTransformationAdapteeType
         default this._GetAdapteeType() = CrsTransformationAdapteeType.UNSPECIFIED_COMPOSITE
 
-        abstract member _EqualsWhenTypeAndLeafCountHaveBeenChecked : CompositeStrategyBase -> bool
+        abstract member _EqualsWhenTypeAndSameLeafsHaveBeenChecked : CompositeStrategyBase -> bool
 
         // precondition: the number of leafs must be the same
         member private this.AreLeafsEqual(that: CompositeStrategyBase) = 
@@ -71,8 +71,7 @@ type internal CompositeStrategyBase internal
                         // contain the same leafs, 
                         // and not only the same number of leafs.
                         // Therefore:
-                        // TODO rename the below method
-                        this._EqualsWhenTypeAndLeafCountHaveBeenChecked(that)
+                        this._EqualsWhenTypeAndSameLeafsHaveBeenChecked(that)
             else
                 false
 
