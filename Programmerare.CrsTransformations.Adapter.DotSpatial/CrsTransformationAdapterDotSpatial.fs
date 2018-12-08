@@ -17,6 +17,19 @@ type CrsTransformationAdapterDotSpatial() as this =
                  ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
             )
 
+        override this.Equals(o) =
+            // the base implementation will return true
+            // if the same type, and currently that is 
+            // ok for this subimplementation
+            // but the method is put here anyway with this comment 
+            // as a reminder that if thic class would become 
+            // configurable then update the implementation of this method 
+            // (for example as in the subclass 'CrsTransformationAdapterProjNet4GeoAPI')
+            base.Equals(o)
+
+        // added the below method to get rid of the warning
+        override this.GetHashCode() = base.GetHashCode()
+
         member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             let projInfoSourceCrs = ProjectionInfo.FromEpsgCode(inputCoordinate.CrsIdentifier.EpsgNumber);
             let projInfoTargetCrs = ProjectionInfo.FromEpsgCode(crsIdentifierForOutputCoordinateSystem.EpsgNumber);

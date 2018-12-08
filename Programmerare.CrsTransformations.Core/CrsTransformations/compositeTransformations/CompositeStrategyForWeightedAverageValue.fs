@@ -1,6 +1,7 @@
 namespace Programmerare.CrsTransformations.CompositeTransformations
 open System.Collections.Generic
 open System.Linq
+open System
 open Programmerare.CrsTransformations
 open Programmerare.CrsTransformations.Coordinate
 open Programmerare.CrsTransformations.Identifier
@@ -30,6 +31,32 @@ type internal CompositeStrategyForWeightedAverageValue private
             for crsTransformationAdapter in crsTransformationAdapters do
                 if not((weights.ContainsKey(crsTransformationAdapter.LongNameOfImplementation))) then
                     invalidArg "crsTransformationAdapters" ("No weight for adapter " + crsTransformationAdapter.LongNameOfImplementation)
+
+        member internal this._GetWeights() = weights
+
+        override this._EqualsWhenTypeAndLeafCountHaveBeenChecked(compositeStrategy: CompositeStrategyBase) =
+            // TODO: make sure that a composite can not be constructed with multiple 
+            // instances of the same Leaf. The below implementation 
+            // may rely on such behaviour
+            if(compositeStrategy :? CompositeStrategyForWeightedAverageValue) then
+                let that = compositeStrategy :?> CompositeStrategyForWeightedAverageValue
+                let thatWeights = that._GetWeights()
+                let mutable areEqual = true
+                for thatWeight in thatWeights do
+                    if(this._GetWeights().ContainsKey(thatWeight.Key)) then
+                        let thisValue = this._GetWeights().[thatWeight.Key]
+                        let thatValue = thatWeight.Value
+                        let diff = Math.Abs(thisValue-thatValue)
+                        if(diff > 0.0001) then // TODO constant and maybe change appropriate delta value ?
+                            areEqual <- false
+                    else
+                        areEqual <- false
+                areEqual
+            else
+                false
+
+        override this._GetAdapteeType() : CrsTransformationAdapteeType =
+            CrsTransformationAdapteeType.COMPOSITE_WEIGHTED_AVERAGE
 
         interface ICompositeStrategy with
 
@@ -84,8 +111,7 @@ type internal CompositeStrategyForWeightedAverageValue private
                                 nullableCrsTransformationResultStatistic = CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(allResults)
                             )
 
-            override this._GetAdapteeType() : CrsTransformationAdapteeType =
-                CrsTransformationAdapteeType.COMPOSITE_WEIGHTED_AVERAGE
+            override this._GetAdapteeType() : CrsTransformationAdapteeType = this._GetAdapteeType()
 
         static member internal _CreateCompositeStrategyForWeightedAverageValue
             (

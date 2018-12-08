@@ -28,6 +28,7 @@
     <Compile Include="CrsTransformations\CompositeTransformations\CrsTransformationAdapterWeightTest.cs" />
     <Compile Include="CrsTransformations\Coordinate\CrsCoordinateTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapteeTypeTest.cs" />
+    <Compile Include="CrsTransformations\CrsTransformationAdapterBaseTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterParameterizedTests.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationResultStatisticTest.cs" />

@@ -111,7 +111,6 @@ type CrsTransformationAdapterBase
         transformStrategy : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
     ) =
     class
-
         let TrowExceptionIfCoordinateIsNull(inputCoordinate) : unit = 
             if isNull inputCoordinate then
                 nullArg "inputCoordinate"
@@ -122,6 +121,15 @@ type CrsTransformationAdapterBase
 
         abstract member AdapteeType : CrsTransformationAdapteeType
         default this.AdapteeType = CrsTransformationAdapteeType.UNSPECIFIED
+
+        override this.GetHashCode() =
+            this.AdapteeType.GetHashCode()
+            
+        override this.Equals(o) =
+            if(isNull o) then
+                false
+            else
+                this.GetType().Equals(o.GetType())
 
         abstract member IsComposite : bool
         default this.IsComposite = raise (System.NotImplementedException())

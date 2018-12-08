@@ -73,6 +73,20 @@ type CrsTransformationAdapterProjNet4GeoAPI
         
         // The kind of class at the above URL has now been implemented in this F# project
 
+        member private this.GetSridReader() = _sridReader
+
+        override this.Equals(o) =
+            let areTheSameType = base.Equals(o)
+            if(areTheSameType && o :? CrsTransformationAdapterProjNet4GeoAPI) then
+                let c = o :?> CrsTransformationAdapterProjNet4GeoAPI
+                this.GetSridReader().Equals(c.GetSridReader())
+            else
+                false
+
+        // added the below method to get rid of the warning
+        override this.GetHashCode() = base.GetHashCode()
+            
+
         member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             let css = 
                 new CoordinateSystemServices

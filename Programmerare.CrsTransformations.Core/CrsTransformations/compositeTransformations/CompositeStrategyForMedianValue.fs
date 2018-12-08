@@ -18,6 +18,19 @@ type internal CompositeStrategyForMedianValue private
     class
         inherit CompositeStrategyBase(crsTransformationAdapters)
 
+        override this._EqualsWhenTypeAndLeafCountHaveBeenChecked(compositeStrategy: CompositeStrategyBase) =
+            // TODO: make sure that a composite can not be constructed with multiple 
+            // instances of the same Leaf. The below implementation 
+            // may rely on such behaviour
+
+            // No further check is neeed than being the 
+            // same type and the same number of leafs
+            // (configured the same way, but that is generally checked in the base class)
+            true 
+
+        override this._GetAdapteeType() : CrsTransformationAdapteeType =
+            CrsTransformationAdapteeType.COMPOSITE_MEDIAN
+
         interface ICompositeStrategy with
             override this._ShouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: CrsTransformationResult): bool = 
                 true
@@ -39,8 +52,7 @@ type internal CompositeStrategyForMedianValue private
                             fun (r: CrsTransformationResultStatistic) -> r.CoordinateMedian
                         )
 
-            override this._GetAdapteeType() : CrsTransformationAdapteeType =
-                CrsTransformationAdapteeType.COMPOSITE_MEDIAN
+            override this._GetAdapteeType() : CrsTransformationAdapteeType = this._GetAdapteeType()
 
         (*
         * This method is not intended for public use,

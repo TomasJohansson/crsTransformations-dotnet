@@ -34,6 +34,23 @@ type CrsTransformationAdapterComposite private
                 ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
             )
 
+        override this.Equals(o) =
+            let areTheSameType = base.Equals(o)
+            // Currently the above implementation/semantic may be correct
+            // but added a defensive type check below too
+            if(areTheSameType && o :? CrsTransformationAdapterComposite) then
+                let that = o :?> CrsTransformationAdapterComposite
+                this._GetCompositeStrategy().Equals(that._GetCompositeStrategy())
+            else
+                false
+
+        // Added the below method to get rid of the warning
+        // (and the performance should not be an issue since there are some very few 
+        //  implementations and does not make sense to use lots of instances of them
+        //  so it really should never be very "crowded" with lots of object 
+        //  within the same hash bucket i.e. with the same hash code)
+        override this.GetHashCode() = base.GetHashCode()
+
         // Not really applicable for composites, so instead just use 
         // a "default" object without filename and version
         member private this._GetFileInfoVersionForComposites() = FileInfoVersion.FileInfoVersionNOTrepresentingThirdPartLibrary

@@ -18,6 +18,24 @@ type internal CompositeStrategyForFirstSuccess private
     class
         inherit CompositeStrategyBase(crsTransformationAdapters)
 
+        override this._EqualsWhenTypeAndLeafCountHaveBeenChecked(compositeStrategy: CompositeStrategyBase) =
+            let thisChildren = this._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked();
+            let thatChildren = compositeStrategy._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked();
+            let mutable i = 0
+            let mutable areEqual = true
+            // The order of the leafs might be different
+            // and the order is relevant for "FirstSuccess"
+            while(i < thisChildren.Count) do
+                if(thisChildren.[i].Equals(thatChildren.[i])) then
+                    i <- i + 1
+                else
+                    areEqual <- false
+                    i <- thisChildren.Count // to stop the while-loop iteration
+            areEqual
+
+        override this._GetAdapteeType() : CrsTransformationAdapteeType =
+            CrsTransformationAdapteeType.COMPOSITE_FIRST_SUCCESS
+
         interface ICompositeStrategy with
             override this._ShouldContinueIterationOfAdaptersToInvoke(lastResultOrNullIfNoPrevious: CrsTransformationResult): bool = 
                 not(lastResultOrNullIfNoPrevious.IsSuccess)
@@ -50,8 +68,7 @@ type internal CompositeStrategyForFirstSuccess private
                         nullableCrsTransformationResultStatistic = CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(allResults)
                     )
 
-            override this._GetAdapteeType() : CrsTransformationAdapteeType =
-                CrsTransformationAdapteeType.COMPOSITE_FIRST_SUCCESS
+            override this._GetAdapteeType() : CrsTransformationAdapteeType = this._GetAdapteeType()
 
         (*
         * This method is not intended for public use, 
