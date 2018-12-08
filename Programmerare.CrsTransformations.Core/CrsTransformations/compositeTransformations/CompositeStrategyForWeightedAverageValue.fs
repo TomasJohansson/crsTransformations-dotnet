@@ -35,9 +35,6 @@ type internal CompositeStrategyForWeightedAverageValue private
         member internal this._GetWeights() = weights
 
         override this._EqualsWhenTypeAndLeafCountHaveBeenChecked(compositeStrategy: CompositeStrategyBase) =
-            // TODO: make sure that a composite can not be constructed with multiple 
-            // instances of the same Leaf. The below implementation 
-            // may rely on such behaviour
             if(compositeStrategy :? CompositeStrategyForWeightedAverageValue) then
                 let that = compositeStrategy :?> CompositeStrategyForWeightedAverageValue
                 let thatWeights = that._GetWeights()

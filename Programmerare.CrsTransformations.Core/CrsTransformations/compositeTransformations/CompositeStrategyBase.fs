@@ -20,10 +20,18 @@ type internal CompositeStrategyBase internal
     class
 
         do
+            let argumentName = "crsTransformationAdapters"
             if isNull crsTransformationAdapters then
-                nullArg "crsTransformationAdapters"
+                nullArg argumentName
             if crsTransformationAdapters.Count = 0 then
-                invalidArg "crsTransformationAdapters" "'Composite' adapter can not be created with an empty list of 'leaf' adapters"
+                invalidArg argumentName "'Composite' adapter can not be created with an empty list of 'leaf' adapters"
+            // Verify that there were not any duplicates 
+            // in the constructor parameter list:
+            let grouped = crsTransformationAdapters.GroupBy(fun a -> a.LongNameOfImplementation)
+            for group in grouped do
+                let countAdapter = group.Count()
+                if(countAdapter > 1) then
+                    invalidArg argumentName ("Duplicates not allowed in the parameter with a list of adapters but there were " + countAdapter.ToString() + " of the adapter " + group.Key)
 
         abstract member _GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked : unit -> IList<ICrsTransformationAdapter>
         default this._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked() = crsTransformationAdapters
@@ -59,6 +67,11 @@ type internal CompositeStrategyBase internal
                     if(not(this.AreLeafsEqual(that))) then
                         false
                     else
+                        // Now we know that "this" and "that"
+                        // contain the same leafs, 
+                        // and not only the same number of leafs.
+                        // Therefore:
+                        // TODO rename the below method
                         this._EqualsWhenTypeAndLeafCountHaveBeenChecked(that)
             else
                 false

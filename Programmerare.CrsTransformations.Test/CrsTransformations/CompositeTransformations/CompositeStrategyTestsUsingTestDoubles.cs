@@ -120,6 +120,12 @@ public class CompositeStrategyTestsUsingTestDoubles {
         mock4.Setup(leaf => leaf.Transform(inputCoordinateSweref99, crsIdentifierWGS84)).Returns(leafResult4);
         mock5.Setup(leaf => leaf.Transform(inputCoordinateSweref99, crsIdentifierWGS84)).Returns(leafResult5);
 
+        mock1.Setup(leaf => leaf.LongNameOfImplementation).Returns("1");
+        mock2.Setup(leaf => leaf.LongNameOfImplementation).Returns("2");
+        mock3.Setup(leaf => leaf.LongNameOfImplementation).Returns("3");
+        mock4.Setup(leaf => leaf.LongNameOfImplementation).Returns("4");
+        mock5.Setup(leaf => leaf.LongNameOfImplementation).Returns("5");
+
         allLeafAdapters = new List<ICrsTransformationAdapter>{
             leafAdapterImplementation_1,
             leafAdapterImplementation_2,
@@ -204,12 +210,6 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     [Test]
     public void transformToCoordinate_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapter() {
-        mock1.Setup(leaf => leaf.LongNameOfImplementation).Returns("1");
-        mock2.Setup(leaf => leaf.LongNameOfImplementation).Returns("2");
-        mock3.Setup(leaf => leaf.LongNameOfImplementation).Returns("3");
-        mock4.Setup(leaf => leaf.LongNameOfImplementation).Returns("4");
-        mock5.Setup(leaf => leaf.LongNameOfImplementation).Returns("5");
-
         double[] weights = {1,2,4,5,9};
         double totWeights = 0;
         double totLats = 0;

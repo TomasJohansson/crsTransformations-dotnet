@@ -6,17 +6,43 @@ using System.Collections.Generic;
 using Programmerare.CrsTransformations;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Identifier;
+using Programmerare.CrsTransformations.Adapter.DotSpatial;
+using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 
 [TestFixture]
 public class CrsTransformationAdapterCompositeFactoryTest {
 
     private const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = CrsTransformationAdapterTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
 
-    CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
+    private IList<ICrsTransformationAdapter> listOfAdaptersWithOneDuplicated;
+    private IList<CrsTransformationAdapterWeight> listOfWeightsWithOneDuplicated;
+
+    private CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
 
     [SetUp]
     public void SetUp() {
         crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+
+        var dotSpatial = new CrsTransformationAdapterDotSpatial();
+        var projNet4GeoAPI = new CrsTransformationAdapterProjNet4GeoAPI();
+        var mightyLittleGeodesy = new CrsTransformationAdapterMightyLittleGeodesy();
+        listOfAdaptersWithOneDuplicated = new List<ICrsTransformationAdapter>{
+            dotSpatial,
+            projNet4GeoAPI,
+            mightyLittleGeodesy,
+            // Duplicate added below !
+            new CrsTransformationAdapterDotSpatial()
+        };
+
+        listOfWeightsWithOneDuplicated = new List<CrsTransformationAdapterWeight>{
+            CrsTransformationAdapterWeight.CreateFromInstance(dotSpatial, 1.0),
+            CrsTransformationAdapterWeight.CreateFromInstance(projNet4GeoAPI, 2.0),
+            CrsTransformationAdapterWeight.CreateFromInstance(mightyLittleGeodesy, 3.0),
+            // Duplicate added below !
+            // (Duplicate regarding the class, the weight value is not relevant)
+            CrsTransformationAdapterWeight.CreateFromInstance(dotSpatial, 4.0)
+        };
     }
 
 
@@ -82,6 +108,39 @@ public class CrsTransformationAdapterCompositeFactoryTest {
         // At least it should contain the word "empty" (is the assumption in the below test)
         Assert.That(exception.Message, Does.Contain("empty"));
     }
+
+    [Test]
+    public void CompositeFactory_ShouldThrowException_WhenDuplicateInListAndCreatingCompositeAverage() {
+        ArgumentException exception = Assert.Throws<ArgumentException>(() => {
+            crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(listOfAdaptersWithOneDuplicated);
+        });        
+    }
+
+    [Test]
+    public void CompositeFactory_ShouldThrowException_WhenDuplicateInListAndCreatingCompositeMedian() {
+        ArgumentException exception = Assert.Throws<ArgumentException>(() => {
+            crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(listOfAdaptersWithOneDuplicated);
+        });        
+    }
+
+    [Test]
+    public void CompositeFactory_ShouldThrowException_WhenDuplicateInListAndCreatingCompositeFirstSuccess() {
+        ArgumentException exception = Assert.Throws<ArgumentException>(() => {
+            crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(listOfAdaptersWithOneDuplicated);
+        });        
+    }
+
+    [Test]
+    public void CompositeFactory_ShouldThrowException_WhenDuplicateInListAndCreatingCompositeWeightedAverage() {
+        ArgumentException exception = Assert.Throws<ArgumentException>(() => {
+            crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(listOfWeightsWithOneDuplicated);
+        });        
+    }
+
+        //
+
+
+
 
 } // class ends
 } // namespace ends

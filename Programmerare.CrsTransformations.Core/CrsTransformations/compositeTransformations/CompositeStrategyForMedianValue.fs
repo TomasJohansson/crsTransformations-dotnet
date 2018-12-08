@@ -19,12 +19,8 @@ type internal CompositeStrategyForMedianValue private
         inherit CompositeStrategyBase(crsTransformationAdapters)
 
         override this._EqualsWhenTypeAndLeafCountHaveBeenChecked(compositeStrategy: CompositeStrategyBase) =
-            // TODO: make sure that a composite can not be constructed with multiple 
-            // instances of the same Leaf. The below implementation 
-            // may rely on such behaviour
-
             // No further check is neeed than being the 
-            // same type and the same number of leafs
+            // same type and the same leafs
             // (configured the same way, but that is generally checked in the base class)
             true 
 
