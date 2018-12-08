@@ -38,12 +38,11 @@ type CrsTransformationAdapterLeafFactory internal
             invalidArg "crsTransformationAdapterClassName" message
 
         static member Create() =
-            // TODO better names than suffix 1 and 2
-            CrsTransformationAdapterLeafFactory1()
+            CrsTransformationAdapterLeafFactoryWithHardcodedImplementations()
         static member Create(listOfCrsTransformationAdapters: IList<ICrsTransformationAdapter>) =
-            CrsTransformationAdapterLeafFactory2(listOfCrsTransformationAdapters)
+            CrsTransformationAdapterLeafFactoryWithConfiguredImplementations(listOfCrsTransformationAdapters)
 // --------------------------------------------------------------
-and CrsTransformationAdapterLeafFactory1 internal
+and CrsTransformationAdapterLeafFactoryWithHardcodedImplementations internal
     (
     ) = 
     class
@@ -128,19 +127,19 @@ and CrsTransformationAdapterLeafFactory1 internal
             lazy (
                 let list = new List<ICrsTransformationAdapter>()
                 for className in classNamesForAllKnownImplementations do
-                    list.Add(CrsTransformationAdapterLeafFactory1._CreateCrsTransformationAdapter(className))
+                    list.Add(CrsTransformationAdapterLeafFactoryWithHardcodedImplementations._CreateCrsTransformationAdapter(className))
                 list
             )
 
         override x.GetCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
-            CrsTransformationAdapterLeafFactory1._CreateCrsTransformationAdapter(crsTransformationAdapterClassName)
+            CrsTransformationAdapterLeafFactoryWithHardcodedImplementations._CreateCrsTransformationAdapter(crsTransformationAdapterClassName)
 
         (*
         * @return a list of instances for all known leaf implementations 
         *      of the adapter interface, which are available at the class path.
         *)    
         override x.GetInstancesOfAllImplementations() = 
-            CrsTransformationAdapterLeafFactory1.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force() :> IList<ICrsTransformationAdapter>
+            CrsTransformationAdapterLeafFactoryWithHardcodedImplementations.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force() :> IList<ICrsTransformationAdapter>
 
         (*
          * @param the full class name (i.e. including the package name)
@@ -148,7 +147,7 @@ and CrsTransformationAdapterLeafFactory1 internal
          * @return true if it possible to create an instance from the input string 
          *)
         override x.IsCrsTransformationAdapter(crsTransformationAdapterClassName: string): bool = 
-            CrsTransformationAdapterLeafFactory1.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force().Exists(
+            CrsTransformationAdapterLeafFactoryWithHardcodedImplementations.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force().Exists(
                 fun i -> i.GetType().FullName.Equals(crsTransformationAdapterClassName)
             )
 
@@ -157,7 +156,7 @@ and CrsTransformationAdapterLeafFactory1 internal
 
     end
 // --------------------------------------------------------------
-and CrsTransformationAdapterLeafFactory2 internal
+and CrsTransformationAdapterLeafFactoryWithConfiguredImplementations internal
     (
         listOfCrsTransformationAdapters: IList<ICrsTransformationAdapter>
     ) = 
