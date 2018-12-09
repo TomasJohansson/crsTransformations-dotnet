@@ -2,6 +2,11 @@
 
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <AssemblyName>Programmerare.CrsTransformations.Adapter.DotSpatial</AssemblyName>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DocumentationFile>.\bin\Programmerare.CrsTransformations.Adapter.DotSpatial.xml</DocumentationFile>
   </PropertyGroup>
 
   <ItemGroup>
