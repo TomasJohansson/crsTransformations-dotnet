@@ -27,11 +27,11 @@ type internal CompositeStrategyBase internal
                 invalidArg argumentName "'Composite' adapter can not be created with an empty list of 'leaf' adapters"
             // Verify that there were not any duplicates 
             // in the constructor parameter list:
-            let grouped = crsTransformationAdapters.GroupBy(fun a -> a.LongNameOfImplementation)
+            let grouped = crsTransformationAdapters.GroupBy(fun a -> a.AdapteeType)
             for group in grouped do
                 let countAdapter = group.Count()
                 if(countAdapter > 1) then
-                    invalidArg argumentName ("Duplicates not allowed in the parameter with a list of adapters but there were " + countAdapter.ToString() + " of the adapter " + group.Key)
+                    invalidArg argumentName ("Duplicates not allowed in the parameter with a list of adapters but there were " + countAdapter.ToString() + " of the adapter " + group.Key.ToString())
 
         abstract member _GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked : unit -> IList<ICrsTransformationAdapter>
         default this._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked() = crsTransformationAdapters

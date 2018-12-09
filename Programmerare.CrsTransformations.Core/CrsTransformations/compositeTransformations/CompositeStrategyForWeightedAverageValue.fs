@@ -15,7 +15,7 @@ Please find more information in the license file at the root directory of each s
 type internal CompositeStrategyForWeightedAverageValue private
     (
         crsTransformationAdapters : IList<ICrsTransformationAdapter>,
-        weights: IDictionary<string, double>
+        weights: IDictionary<CrsTransformationAdapteeType, double>
     ) =
 
     class
@@ -32,7 +32,7 @@ type internal CompositeStrategyForWeightedAverageValue private
             if crsTransformationAdapters.Count <> weights.Count then
                 invalidArg "crsTransformationAdapters" "The number of adapters must be the same as the number of weights"
             for crsTransformationAdapter in crsTransformationAdapters do
-                if not((weights.ContainsKey(crsTransformationAdapter.LongNameOfImplementation))) then
+                if not((weights.ContainsKey(crsTransformationAdapter.AdapteeType))) then
                     invalidArg "crsTransformationAdapters" ("No weight for adapter " + crsTransformationAdapter.LongNameOfImplementation)
 
         member internal this._GetWeights() = weights
@@ -76,8 +76,8 @@ type internal CompositeStrategyForWeightedAverageValue private
                     let mutable weightSum = 0.0
                     for res in allResults do
                         if res.IsSuccess then
-                            let weight = if weights.ContainsKey(res.CrsTransformationAdapterResultSource.LongNameOfImplementation) then 
-                                            weights.[res.CrsTransformationAdapterResultSource.LongNameOfImplementation] 
+                            let weight = if weights.ContainsKey(res.CrsTransformationAdapterResultSource.AdapteeType) then 
+                                            weights.[res.CrsTransformationAdapterResultSource.AdapteeType] 
                                          else 
                                             -1.0
                             if weight < 0.0 then
@@ -118,12 +118,12 @@ type internal CompositeStrategyForWeightedAverageValue private
                 weightedCrsTransformationAdapters: IList<CrsTransformationAdapterWeight>
             ): CompositeStrategyForWeightedAverageValue =
                 let adapters = weightedCrsTransformationAdapters.Select(fun it -> it.CrsTransformationAdapter).ToList()
-                let map = Dictionary<string, double>()
+                let map = Dictionary<CrsTransformationAdapteeType, double>()
                 for fw in weightedCrsTransformationAdapters do
                     //  no need to check for negative weight values here since it 
                     // should be enforced already at construction with an exception being thrown
                     // if the below weight value would be non-positive 
-                    map.Add(fw.CrsTransformationAdapter.LongNameOfImplementation, fw.Weight);
+                    map.Add(fw.CrsTransformationAdapter.AdapteeType, fw.Weight);
                 CompositeStrategyForWeightedAverageValue(adapters, map)
 
     end

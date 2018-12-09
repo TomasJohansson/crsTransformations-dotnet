@@ -5,6 +5,9 @@ using Programmerare.CrsTransformations;
 using Programmerare.CrsTransformations.Coordinate;
 using NUnit.Framework;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
+using Programmerare.CrsTransformations.Adapter.DotSpatial;
+using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
+using System.Collections.Generic;
 
 [TestFixture]
 public class CrsTransformationAdapterCompositeTest {
@@ -43,6 +46,69 @@ public class CrsTransformationAdapterCompositeTest {
 
         // assertFalse below since trying to require too small maxdiff
         Assert.IsFalse(resultWhenTransformingToSwedishCRS.IsReliable(actualNumberOfResults, actualMaxDiffXorY - 0.00000000001));
+    }
+
+    [Test]
+    public void TransformToCoordinateWithComposite_ShouldAggregateAsExpected_WhenTheLeafsAreAlsoCompositesAndNestedAtManyLevels() {
+        // The method first creates two composites (average and success)
+        // and then uses those two composites as leafs for a 
+        // weighted average composite, which in 
+        // turn is then used as a leaf within 
+        // the final median composite (together with a "normal leaf" i.e. DotSpatial implementation)
+        var crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
+        var compositeAverage = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
+        var compositeFirstSuccess = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
+        var weightsForCompositeLeafs = new List<CrsTransformationAdapterWeight>{
+            CrsTransformationAdapterWeight.CreateFromInstance(
+                compositeAverage,
+                1.0 // weight
+            ),
+            CrsTransformationAdapterWeight.CreateFromInstance(
+                compositeFirstSuccess,
+                2.0 // weight
+            )
+        };
+        CrsTransformationAdapterComposite weightedCompositeAdapterWithOtherCompositesAsLeafs = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(
+            weightsForCompositeLeafs
+        );
+        var normalLeafDotSpatialAdapter = new CrsTransformationAdapterDotSpatial();        
+        var adaptersForMedian = new List<ICrsTransformationAdapter>{
+            weightedCompositeAdapterWithOtherCompositesAsLeafs,
+            normalLeafDotSpatialAdapter
+        };
+        var compositeMedian = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(
+            adaptersForMedian
+        );
+        // Now the "complex" composite (nested at two lelvels, with composites as leafs)
+        // has been conctructed. 
+        // Now create a coordinate:
+        var inputCoordinate = CrsCoordinateFactory.LatLon(60.0, 20.0);
+        // Now use the above "complex" composite to transform the coordinate:
+        var coordinateResultMedianWithNestedComposite = compositeMedian.TransformToCoordinate(
+            inputCoordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006
+        );
+
+        // Now use some leaf (not using DotSpatial as above)        
+        // to also make the same Transform, to use it 
+        // in the result comparison
+        var mightyLittleGeodesyAdapter = new CrsTransformationAdapterMightyLittleGeodesy();        
+        var coordinateResultMightyLittleGeodesyAdapter = mightyLittleGeodesyAdapter.TransformToCoordinate(
+            inputCoordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006
+        );
+        // The difference should not be very large, and the delta
+        // value below is one decimeter
+        const double deltaValueForAssertions = 0.1;
+
+        Assert.AreEqual(
+            coordinateResultMightyLittleGeodesyAdapter.X, 
+            coordinateResultMedianWithNestedComposite.X,
+            deltaValueForAssertions
+        );
+        Assert.AreEqual(
+            coordinateResultMightyLittleGeodesyAdapter.Y, 
+            coordinateResultMedianWithNestedComposite.Y,
+            deltaValueForAssertions
+        );
     }
 }
 }
