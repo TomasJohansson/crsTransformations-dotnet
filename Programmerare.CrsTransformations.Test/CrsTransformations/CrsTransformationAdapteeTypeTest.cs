@@ -14,7 +14,7 @@ class CrsTransformationAdapteeTypeTest {
 
     [SetUp]
     public void SetUp() {
-        crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
     }
 
     [Test]

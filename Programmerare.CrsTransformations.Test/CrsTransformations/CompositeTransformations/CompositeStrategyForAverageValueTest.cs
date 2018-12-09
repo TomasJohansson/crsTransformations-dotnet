@@ -17,7 +17,7 @@ public class CompositeStrategyForAverageValueTest : CompositeStrategyTestBase {
             base.allCoordinateResultsForTheDifferentImplementations
         );
 
-        var crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        var crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
         ICrsTransformationAdapter averageCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(
             allAdapters
         );

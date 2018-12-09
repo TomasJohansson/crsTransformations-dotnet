@@ -103,7 +103,7 @@ namespace Programmerare.CrsTransformations.TestClient {
             IList<ICrsTransformationAdapter> crsTransformationAdapters = new List<ICrsTransformationAdapter>{crsTransformationAdapter};
             // Three factory methods for 'composite' adapters
             // (with the specified leaf adapters in a list parameter)
-            crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory(crsTransformationAdapters);
+            crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create(crsTransformationAdapters);
             crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
             crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
             crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();

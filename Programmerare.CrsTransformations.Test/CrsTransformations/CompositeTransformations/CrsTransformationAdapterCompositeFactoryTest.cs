@@ -22,7 +22,7 @@ public class CrsTransformationAdapterCompositeFactoryTest {
 
     [SetUp]
     public void SetUp() {
-        crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
 
         var dotSpatial = new CrsTransformationAdapterDotSpatial();
         var projNet4GeoAPI = new CrsTransformationAdapterProjNet4GeoAPI();

@@ -27,13 +27,13 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
             
 
             // Composite adapters:
-            crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory(
+            crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create(
                 new List<ICrsTransformationAdapter>{dotSpatial, mightyLittleGeodesy, projNet4GeoAPI}
             );
-            crsTransformationAdapterCompositeFactoryWithLeafsInReversedOrder = new CrsTransformationAdapterCompositeFactory(
+            crsTransformationAdapterCompositeFactoryWithLeafsInReversedOrder = CrsTransformationAdapterCompositeFactory.Create(
                 new List<ICrsTransformationAdapter>{projNet4GeoAPI, mightyLittleGeodesy, dotSpatial}
             );
-            crsTransformationAdapterCompositeFactoryWithOneLeafDifferentlyConfigured = new CrsTransformationAdapterCompositeFactory(
+            crsTransformationAdapterCompositeFactoryWithOneLeafDifferentlyConfigured = CrsTransformationAdapterCompositeFactory.Create(
                 new List<ICrsTransformationAdapter>{dotSpatial, mightyLittleGeodesy, projNet4GeoAPIWithDifferentConfiguration}
             );
 
@@ -177,7 +177,7 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
         public void CompositeAdapters_ShouldNotBeEqual_WhenDifferentNumberOfLeafs()
         {
             // Composite adapter factory with only two leafs:
-            var crsTransformationAdapterCompositeFactoryWithTwoLeafs = new CrsTransformationAdapterCompositeFactory(
+            var crsTransformationAdapterCompositeFactoryWithTwoLeafs = CrsTransformationAdapterCompositeFactory.Create(
                 new List<ICrsTransformationAdapter>{dotSpatial, projNet4GeoAPI}
             );
             

@@ -24,7 +24,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     [SetUp]
     public void SetUp() {
-        crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
         double[] outputLatitudes = {
             59.1,
             59.2,

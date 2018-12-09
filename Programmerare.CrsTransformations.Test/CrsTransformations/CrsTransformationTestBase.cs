@@ -22,7 +22,7 @@ public abstract class CrsTransformationTestBase {
 
     [SetUp]
     public void SetUp() {
-        crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
 
         crsTransformationAdapterLeafImplementations = new List<ICrsTransformationAdapter>{
             new CrsTransformationAdapterDotSpatial(),

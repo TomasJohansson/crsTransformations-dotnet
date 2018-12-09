@@ -11,7 +11,7 @@ Please find more information in the license file at the root directory of each s
  * Factory methods creating 'Composite' implementations of the adapter interface.
 *)
 [<Sealed>]
-type CrsTransformationAdapterCompositeFactory
+type CrsTransformationAdapterCompositeFactory private
     (
         listToUseForFactoryMethodsWithoutParameters: IList<ICrsTransformationAdapter>
     ) =
@@ -147,14 +147,6 @@ type CrsTransformationAdapterCompositeFactory
                     CompositeStrategyForWeightedAverageValue._CreateCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters)
                 )
 
-    new () = 
-        (
-            // The below constructor should be C# friendly 
-            // i.e. use types such as IList which can be null
-            // so null is used below (as alternative to empty list) 
-            // as a signal that all available implementatiosn should be used
-            // instead of using a list specified by the user.
-            CrsTransformationAdapterCompositeFactory(null)
 
             // Another feature to maybe implement:
             // Configuration paramters e.g. dictionary 
@@ -169,4 +161,16 @@ type CrsTransformationAdapterCompositeFactory
             // and then pass it as one of the adapters in the list
             // to the constructory receiving a list
 
-        )
+    static member Create
+        (
+            defaultListToUseForFactoryMethodsWithoutParameters: IList<ICrsTransformationAdapter>
+        ) =
+        CrsTransformationAdapterCompositeFactory(defaultListToUseForFactoryMethodsWithoutParameters)
+
+    static member Create() =
+        // The below constructor should be C# friendly 
+        // i.e. use types such as IList which can be null
+        // so null is used below (as alternative to empty list) 
+        // as a signal that all available implementatiosn should be used
+        // instead of using a list specified by the user.
+        CrsTransformationAdapterCompositeFactory(null)

@@ -35,7 +35,7 @@ public class CompositeStrategyForWeightedAverageValueTest : CompositeStrategyTes
             CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), weightForProjNet4GeoAPI),
             CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), weightForMightyLittleGeodesy)
         };
-        var crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        var crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
         CrsTransformationAdapterComposite adapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weights);
         assertWeightedAverageResult(adapter);
     }
@@ -55,7 +55,7 @@ public class CompositeStrategyForWeightedAverageValueTest : CompositeStrategyTes
         };
 
 
-        var crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        var crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
         CrsTransformationAdapterComposite weightedAverageCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weights);
         assertWeightedAverageResult(weightedAverageCompositeAdapter);
     }

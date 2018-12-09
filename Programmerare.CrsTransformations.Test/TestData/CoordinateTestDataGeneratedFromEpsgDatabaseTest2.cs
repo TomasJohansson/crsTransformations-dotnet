@@ -69,7 +69,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
             deltaDiffToUse = optionalDelta.Value;
         }
 
-        var crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+        var crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
         CrsTransformationAdapterComposite crsTransformationComposite = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
         verifyThreeImplementations(crsTransformationComposite); // to make sure that the above factory really creates an object which will use three implementations
 
