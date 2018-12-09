@@ -13,7 +13,7 @@ Please find more information in the license file at the root directory of each s
 [<Sealed>]
 type CrsTransformationAdapterCompositeFactory private
     (
-        listToUseForFactoryMethodsWithoutParameters: IList<ICrsTransformationAdapter>
+        defaultListToUseForFactoryMethodsWithoutParameters: IList<ICrsTransformationAdapter>
     ) =
 
     // TODO refactor the below by using a parameter instance of the leaf factory 
@@ -35,10 +35,10 @@ type CrsTransformationAdapterCompositeFactory private
         )
 
     let functionReturningListToUseForFactoryMethodsWithoutParameters: unit -> IList<ICrsTransformationAdapter> = 
-        if(isNull listToUseForFactoryMethodsWithoutParameters || listToUseForFactoryMethodsWithoutParameters.Count = 0) then
+        if(isNull defaultListToUseForFactoryMethodsWithoutParameters || defaultListToUseForFactoryMethodsWithoutParameters.Count = 0) then
             fun () -> _instancesOfAllKnownAvailableImplementationsLazyLoaded.Force()
         else
-            fun () -> listToUseForFactoryMethodsWithoutParameters
+            fun () -> defaultListToUseForFactoryMethodsWithoutParameters
 
     // ----------------------------------------------
     // Two Median factory methods:
