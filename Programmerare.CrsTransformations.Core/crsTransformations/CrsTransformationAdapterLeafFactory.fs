@@ -38,11 +38,11 @@ type CrsTransformationAdapterLeafFactory internal
             invalidArg "crsTransformationAdapterClassName" message
 
         static member Create() =
-            CrsTransformationAdapterLeafFactoryWithHardcodedImplementations()
+            CrsTransformationAdapterLeafFactoryWithHardcodedImplementations() :> CrsTransformationAdapterLeafFactory
         static member Create(listOfCrsTransformationAdapters: IList<ICrsTransformationAdapter>) =
-            CrsTransformationAdapterLeafFactoryWithConfiguredImplementations(listOfCrsTransformationAdapters)
+            CrsTransformationAdapterLeafFactoryWithConfiguredImplementations(listOfCrsTransformationAdapters) :> CrsTransformationAdapterLeafFactory
 // --------------------------------------------------------------
-and CrsTransformationAdapterLeafFactoryWithHardcodedImplementations internal
+and internal CrsTransformationAdapterLeafFactoryWithHardcodedImplementations internal
     (
     ) = 
     class
@@ -156,7 +156,7 @@ and CrsTransformationAdapterLeafFactoryWithHardcodedImplementations internal
 
     end
 // --------------------------------------------------------------
-and CrsTransformationAdapterLeafFactoryWithConfiguredImplementations internal
+and internal CrsTransformationAdapterLeafFactoryWithConfiguredImplementations internal
     (
         listOfCrsTransformationAdapters: IList<ICrsTransformationAdapter>
     ) = 

@@ -1,6 +1,7 @@
 ﻿using System;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations;
+using System.Collections.Generic;
 
 namespace Programmerare.CrsTransformations.TestClient
 {
@@ -46,6 +47,13 @@ namespace Programmerare.CrsTransformations.TestClient
             // the below method was previously exposed
             // but should NOT be so anymore i.e. should no longer even be possible to compile:
             //var coordinate = cc._TransformToCoordinateHookLeaf(null, null);
+
+            // The below types was previously exposed as result types for the Create methods
+            //CrsTransformationAdapterLeafFactoryWithHardcodedImplementations c1 = CrsTransformationAdapterLeafFactory.Create();
+            //CrsTransformationAdapterLeafFactoryWithConfiguredImplementations c2 = CrsTransformationAdapterLeafFactory.Create(new List<ICrsTransformationAdapter>());
+            // Now instead both types are instead only exposed through the base type as below
+            CrsTransformationAdapterLeafFactory c1 = CrsTransformationAdapterLeafFactory.Create();
+            CrsTransformationAdapterLeafFactory c2 = CrsTransformationAdapterLeafFactory.Create(new List<ICrsTransformationAdapter>());
         }
     }
 }
