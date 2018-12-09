@@ -13,12 +13,9 @@ Please find more information in the license file at the root directory of each s
 [<Sealed>]
 type CrsTransformationAdapterCompositeFactory private
     (
-        defaultListToUseForFactoryMethodsWithoutParameters: IList<ICrsTransformationAdapter>
+        defaultListToUseForFactoryMethodsWithoutParameters: IList<ICrsTransformationAdapter>,
+        crsTransformationAdapterLeafFactory: CrsTransformationAdapterLeafFactory
     ) =
-
-    // TODO refactor the below by using a parameter instance of the leaf factory 
-    // instead of instantiating it with one of its two factory methods
-    static let crsTransformationAdapterLeafFactory = CrsTransformationAdapterLeafFactory.Create()
 
     static let ThrowExceptionIfNoKnownInstancesAreAvailable
         (
@@ -27,7 +24,7 @@ type CrsTransformationAdapterCompositeFactory private
         if (adapters.Count < 1) then
             failwith "No known CRS transformation implementation was found"
 
-    static let _instancesOfAllKnownAvailableImplementationsLazyLoaded: Lazy<IList<ICrsTransformationAdapter>> =
+    let _instancesOfAllKnownAvailableImplementationsLazyLoaded: Lazy<IList<ICrsTransformationAdapter>> =
         lazy (
             let list = crsTransformationAdapterLeafFactory.GetInstancesOfAllImplementations()
             ThrowExceptionIfNoKnownInstancesAreAvailable(list)            
@@ -147,7 +144,6 @@ type CrsTransformationAdapterCompositeFactory private
                     CompositeStrategyForWeightedAverageValue._CreateCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters)
                 )
 
-
             // Another feature to maybe implement:
             // Configuration paramters e.g. dictionary 
             // with strings and e.g. using the "ShortName" as prefix 
@@ -165,12 +161,38 @@ type CrsTransformationAdapterCompositeFactory private
         (
             defaultListToUseForFactoryMethodsWithoutParameters: IList<ICrsTransformationAdapter>
         ) =
-        CrsTransformationAdapterCompositeFactory(defaultListToUseForFactoryMethodsWithoutParameters)
+        CrsTransformationAdapterCompositeFactory(
+            defaultListToUseForFactoryMethodsWithoutParameters, 
+            CrsTransformationAdapterLeafFactory.Create()
+        )
 
     static member Create() =
-        // The below constructor should be C# friendly 
+        // The constructor (used below with "null") 
+        // should be C# friendly 
         // i.e. use types such as IList which can be null
         // so null is used below (as alternative to empty list) 
         // as a signal that all available implementatiosn should be used
         // instead of using a list specified by the user.
-        CrsTransformationAdapterCompositeFactory(null)
+        CrsTransformationAdapterCompositeFactory(
+            null, 
+            CrsTransformationAdapterLeafFactory.Create()
+        )
+
+    static member Create
+        (
+            crsTransformationAdapterLeafFactory: CrsTransformationAdapterLeafFactory
+        ) =
+        CrsTransformationAdapterCompositeFactory(
+            null,
+            crsTransformationAdapterLeafFactory
+        )
+
+    static member Create
+        (
+            defaultListToUseForFactoryMethodsWithoutParameters: IList<ICrsTransformationAdapter>,
+            crsTransformationAdapterLeafFactory: CrsTransformationAdapterLeafFactory
+        ) =
+        CrsTransformationAdapterCompositeFactory(
+            defaultListToUseForFactoryMethodsWithoutParameters,
+            crsTransformationAdapterLeafFactory
+        )

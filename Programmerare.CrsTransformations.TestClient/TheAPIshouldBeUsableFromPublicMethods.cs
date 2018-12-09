@@ -92,7 +92,7 @@ namespace Programmerare.CrsTransformations.TestClient {
             crsTransformationAdapter = new CrsTransformationAdapterProjNet4GeoAPI();
             crsTransformationAdapter = new CrsTransformationAdapterMightyLittleGeodesy();
             
-            crsTransformationAdapterCompositeFactory = new CrsTransformationAdapterCompositeFactory();
+            crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
             // Three factory methods for 'composite' adapters
             // (trying to create them all with reflection, and thus no parameter)
             crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();

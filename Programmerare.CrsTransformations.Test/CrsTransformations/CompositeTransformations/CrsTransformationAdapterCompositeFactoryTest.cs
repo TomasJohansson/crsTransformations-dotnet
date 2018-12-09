@@ -15,10 +15,12 @@ public class CrsTransformationAdapterCompositeFactoryTest {
 
     private const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = CrsTransformationAdapterTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
 
-    private IList<ICrsTransformationAdapter> listOfAdaptersWithOneDuplicated;
+    private IList<ICrsTransformationAdapter> listOfAdaptersWithOneDuplicated, listOfTwoAdaptersWithoutDotSpatial;
     private IList<CrsTransformationAdapterWeight> listOfWeightsWithOneDuplicated;
+        
 
     private CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
+    private CrsTransformationAdapterCompositeFactory compositeFactoryConfiguredWithLeafFactoryOnlyCreatingDotSpatialImplementationAsDefault;
 
     [SetUp]
     public void SetUp() {
@@ -35,6 +37,11 @@ public class CrsTransformationAdapterCompositeFactoryTest {
             new CrsTransformationAdapterDotSpatial()
         };
 
+        listOfTwoAdaptersWithoutDotSpatial = new List<ICrsTransformationAdapter>{
+            projNet4GeoAPI,
+            mightyLittleGeodesy
+        };
+
         listOfWeightsWithOneDuplicated = new List<CrsTransformationAdapterWeight>{
             CrsTransformationAdapterWeight.CreateFromInstance(dotSpatial, 1.0),
             CrsTransformationAdapterWeight.CreateFromInstance(projNet4GeoAPI, 2.0),
@@ -43,6 +50,9 @@ public class CrsTransformationAdapterCompositeFactoryTest {
             // (Duplicate regarding the class, the weight value is not relevant)
             CrsTransformationAdapterWeight.CreateFromInstance(dotSpatial, 4.0)
         };
+
+        CrsTransformationAdapterLeafFactory leafFactoryOnlyCreatingDotSpatialImplementationAsDefault = CrsTransformationAdapterLeafFactory.Create(new List<ICrsTransformationAdapter>{dotSpatial});
+        compositeFactoryConfiguredWithLeafFactoryOnlyCreatingDotSpatialImplementationAsDefault = CrsTransformationAdapterCompositeFactory.Create(leafFactoryOnlyCreatingDotSpatialImplementationAsDefault);
     }
 
 
@@ -137,8 +147,51 @@ public class CrsTransformationAdapterCompositeFactoryTest {
         });        
     }
 
-        //
+    [Test]
+    public void CompositeFactoryParameterLessMethod_ShouldOnlyReturnLeafsItIsConfiguredToKnowAbout() {
+        var composite = compositeFactoryConfiguredWithLeafFactoryOnlyCreatingDotSpatialImplementationAsDefault.CreateCrsTransformationAverage();
+        var children = composite.GetTransformationAdapterChildren();
+        Assert.AreEqual(1, children.Count);
+        Assert.AreEqual(
+            typeof(CrsTransformationAdapterDotSpatial).FullName,
+            children[0].GetType().FullName
+        );
+    }
 
+    [Test]
+    public void CompositeFactoryWithParameter_ShouldReturnCompositesWithLeafsInParameterListRegardlessOfTheListUsedAsDefault() {
+        var composite = compositeFactoryConfiguredWithLeafFactoryOnlyCreatingDotSpatialImplementationAsDefault.CreateCrsTransformationAverage(
+            listOfTwoAdaptersWithoutDotSpatial
+        );
+        var children = composite.GetTransformationAdapterChildren();
+        Assert.AreEqual(2, children.Count);
+        var listWithTheTwoExpectedClassNames = new List<string>{
+            typeof(CrsTransformationAdapterProjNet4GeoAPI).FullName,
+            typeof(CrsTransformationAdapterMightyLittleGeodesy).FullName
+        };
+        string classForChild1 = children[0].GetType().FullName;
+        string classForChild2 = children[1].GetType().FullName;
+        // The below tests verifies that BOTH (i.e. one of each)
+        // above implementations are returned but is NOT 
+        // depending on the order since a list is created above 
+        // and then using 'Does.Contain below
+        Assert.That(
+            listWithTheTwoExpectedClassNames,
+            Does.Contain(classForChild1)
+        );
+        Assert.That(
+            listWithTheTwoExpectedClassNames,
+            Does.Contain(classForChild2)
+        );
+        // The below test is just for asserting that 
+        // we above did not get two of one and zero for the other 
+        // i.e. we want to assert DIFFERENT implementations
+        Assert.AreNotEqual(
+            classForChild1,
+            classForChild2
+        );
+
+    }
 
 
 
