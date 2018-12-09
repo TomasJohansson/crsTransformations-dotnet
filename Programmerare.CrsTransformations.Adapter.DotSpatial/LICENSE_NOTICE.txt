@@ -1,6 +1,6 @@
 This adapter library for "DotSpatial" is licensed in the same way as the adaptee library itself.
 
-This means that the license is Apache License Version 2.0.
+This means that the license is MIT.
 
 https://github.com/DotSpatial/DotSpatial/blob/master/LICENSE
 https://github.com/DotSpatial/DotSpatial
