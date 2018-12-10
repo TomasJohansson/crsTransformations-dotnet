@@ -149,7 +149,7 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
                 invalidOp "Unsupported transformation"
 
         override this.AdapteeType =
-            CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1
+            CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_1
 
         override this.LongNameOfImplementation = this.GetType().FullName
 

@@ -100,7 +100,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             testResultForMightyLittleGeodesy,
             DELTA_LIMIT_FOR_SUCCESS,
             shouldCreateNewRegressionFile,
-            "_version_1.0.1" // LEAF_SWEDISH_CRS_MLG_1_0_1
+            "_version_1.0.1" // LEAF_MIGHTY_LITTLE_GEODESY_1_0_1
             // File created: "resources/regression_results/MightyLittleGeodesy_version_1.0.1.csv
         );
     }

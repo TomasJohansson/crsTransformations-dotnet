@@ -177,7 +177,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
     //numberOfFailures: 3941
     //Number of seconds: 2
     //---------------------
-    //Result for adapter: LEAF_SWEDISH_CRS_MLG_1_0_1
+    //Result for adapter: LEAF_MIGHTY_LITTLE_GEODESY_1_0_1
     //numberOfSuccesses: 19
     //numberOfFailures: 6416
     //Number of seconds: 0

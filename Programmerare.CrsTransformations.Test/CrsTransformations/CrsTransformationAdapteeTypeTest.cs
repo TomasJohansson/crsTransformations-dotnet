@@ -56,7 +56,7 @@ class CrsTransformationAdapteeTypeTest {
         verifyExpectedEnumAndAssemblyVersion(
             new CrsTransformationAdapterMightyLittleGeodesy(),
             expectedFileInfoVersion,
-            CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1
+            CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_1
         );
     }
 

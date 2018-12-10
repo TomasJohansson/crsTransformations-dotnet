@@ -38,10 +38,9 @@ type CrsTransformationAdapteeType =  // F# enum
     *)
     | LEAF_DOT_SPATIAL_2_0_0_RC1 = 1200
 
+    
     (*
-     The abbreviation MLG = MightyLittleGeodesy
-     The purpose of using SWEDISH in the name is that 
-     the implementation only supports transformations 
+     The implementation supports only transformations 
      between the the global WGS84 CRS and the "two" (actually more, see below)
      Swedish coordinate reference systems SWEREF99 and RT90.
      SWEREF99 is the "new" offical CRS for Sweden while RT90 is the "old".
@@ -51,7 +50,7 @@ type CrsTransformationAdapteeType =  // F# enum
      NuGet version for the adaptee library "MightyLittleGeodesy":
      '<PackageReference Include="MightyLittleGeodesy" Version="1.0.1" />'
     *)
-    | LEAF_SWEDISH_CRS_MLG_1_0_1 = 1900
+    | LEAF_MIGHTY_LITTLE_GEODESY_1_0_1 = 1900
 
     (*
      The above "leafs" are the real "adaptees" and 

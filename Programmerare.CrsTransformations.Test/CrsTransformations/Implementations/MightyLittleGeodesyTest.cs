@@ -11,7 +11,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         {
             base.SetUpbase(
                 new CrsTransformationAdapterMightyLittleGeodesy(),
-                CrsTransformationAdapteeType.LEAF_SWEDISH_CRS_MLG_1_0_1,
+                CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_1,
                 0.5, // maxMeterDifferenceForSuccessfulTest
                 0.00001 // maxLatLongDifferenceForSuccessfulTest
             );
