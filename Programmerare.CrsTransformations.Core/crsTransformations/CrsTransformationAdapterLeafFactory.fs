@@ -112,46 +112,52 @@ and internal CrsTransformationAdapterLeafFactoryWithHardcodedImplementations int
          *      of a class which must implement the interface CrsTransformationAdapter
          * @return an instance if it could be created but otherwise an exception      
          *)
-        static member private _CreateCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
+        member private this._CreateCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
+            let theType = GetTypeInstanceForClassName(crsTransformationAdapterClassName)
+            if isNull theType then
+                CrsTransformationAdapterLeafFactory.ThrowExceptionWhenAdapterInstanceCouldNotBeReturned(crsTransformationAdapterClassName)
+            this._CreateInstanceOfType(theType)
+
+        member private this._CreateInstanceOfType(theType: Type): ICrsTransformationAdapter =
+            if isNull theType then
+                nullArg "theType"
             try
-                let theType = GetTypeInstanceForClassName(crsTransformationAdapterClassName)
-                if isNull theType then
-                    raise (Exception("The type could not be found: " + crsTransformationAdapterClassName))
                 let instance = Activator.CreateInstance(theType)
                 instance :?> ICrsTransformationAdapter
             with
                 | exc -> 
-                    CrsTransformationAdapterLeafFactory.ThrowExceptionWhenAdapterInstanceCouldNotBeReturned(crsTransformationAdapterClassName)
+                    CrsTransformationAdapterLeafFactory.ThrowExceptionWhenAdapterInstanceCouldNotBeReturned(theType.FullName)
 
-        static member private instancesOfAllKnownAvailableImplementationsLazyLoaded: Lazy<List<ICrsTransformationAdapter>> = 
+        member private this.instancesOfAllKnownAvailableImplementationsLazyLoaded: Lazy<List<ICrsTransformationAdapter>> = 
             lazy (
                 let list = new List<ICrsTransformationAdapter>()
-                for className in classNamesForAllKnownImplementations do
-                    list.Add(CrsTransformationAdapterLeafFactoryWithHardcodedImplementations._CreateCrsTransformationAdapter(className))
+                let theTypes = typesWithAdapterImplementationsLazyLoaded.Force()
+                for typeWithAdapterImplementation in theTypes do
+                    list.Add(this._CreateInstanceOfType(typeWithAdapterImplementation))
                 list
             )
 
-        override x.GetCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
-            CrsTransformationAdapterLeafFactoryWithHardcodedImplementations._CreateCrsTransformationAdapter(crsTransformationAdapterClassName)
+        override this.GetCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
+            this._CreateCrsTransformationAdapter(crsTransformationAdapterClassName)
 
         (*
         * @return a list of instances for all known leaf implementations 
         *      of the adapter interface, which are available at the class path.
         *)    
-        override x.GetInstancesOfAllImplementations() = 
-            CrsTransformationAdapterLeafFactoryWithHardcodedImplementations.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force() :> IList<ICrsTransformationAdapter>
+        override this.GetInstancesOfAllImplementations() = 
+            this.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force() :> IList<ICrsTransformationAdapter>
 
         (*
          * @param the full class name (i.e. including the package name)
          *      of a class which must implement the interface ICrsTransformationAdapter
          * @return true if it possible to create an instance from the input string 
          *)
-        override x.IsCrsTransformationAdapter(crsTransformationAdapterClassName: string): bool = 
-            CrsTransformationAdapterLeafFactoryWithHardcodedImplementations.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force().Exists(
+        override this.IsCrsTransformationAdapter(crsTransformationAdapterClassName: string): bool = 
+            this.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force().Exists(
                 fun i -> i.GetType().FullName.Equals(crsTransformationAdapterClassName)
             )
 
-        override x.GetClassNamesForAllImplementations() = 
+        override this.GetClassNamesForAllImplementations() = 
             classNamesForAllKnownImplementations.ToList() :> IList<string>
 
     end
