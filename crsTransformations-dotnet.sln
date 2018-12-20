@@ -9,8 +9,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Programmerare.CrsTransforma
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy", "Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy\Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy.fsproj", "{FBC8F5C4-8E55-4D56-9695-86E44D8BB996}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Programmerare.CrsTransformations.Constants", "Programmerare.CrsTransformations.Constants\Programmerare.CrsTransformations.Constants.fsproj", "{19C5A673-D7C9-49C0-ABE3-660483330B64}"
-EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Programmerare.CrsTransformations.Adapter.DotSpatial", "Programmerare.CrsTransformations.Adapter.DotSpatial\Programmerare.CrsTransformations.Adapter.DotSpatial.fsproj", "{4E256F4D-B3DC-436F-82AC-BC3A524C209F}"
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI", "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.fsproj", "{1B78D2D9-106B-4E1B-9CDC-7DCC5D98B515}"
@@ -18,6 +16,8 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Programmerare.CrsTransformations.TestClient", "Programmerare.CrsTransformations.TestClient\Programmerare.CrsTransformations.TestClient.csproj", "{6F4C3CBC-DE9E-4509-9D1C-43CC7F39AB79}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programmerare.CrsTransformations.TestWithoutDependeciesToAllAdapters", "Programmerare.CrsTransformations.TestWithoutDependeciesToAllAdapters\Programmerare.CrsTransformations.TestWithoutDependeciesToAllAdapters.csproj", "{108FB9D0-1302-4D83-BC32-43F05431369B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programmerare.CrsTransformations.Constants", "Programmerare.CrsTransformations.Constants\Programmerare.CrsTransformations.Constants.csproj", "{909C87C3-4B82-434A-8EE7-0D44C658172A}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -37,10 +37,6 @@ Global
 		{FBC8F5C4-8E55-4D56-9695-86E44D8BB996}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{FBC8F5C4-8E55-4D56-9695-86E44D8BB996}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{FBC8F5C4-8E55-4D56-9695-86E44D8BB996}.Release|Any CPU.Build.0 = Release|Any CPU
-		{19C5A673-D7C9-49C0-ABE3-660483330B64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{19C5A673-D7C9-49C0-ABE3-660483330B64}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{19C5A673-D7C9-49C0-ABE3-660483330B64}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{19C5A673-D7C9-49C0-ABE3-660483330B64}.Release|Any CPU.Build.0 = Release|Any CPU
 		{4E256F4D-B3DC-436F-82AC-BC3A524C209F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{4E256F4D-B3DC-436F-82AC-BC3A524C209F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4E256F4D-B3DC-436F-82AC-BC3A524C209F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -57,6 +53,10 @@ Global
 		{108FB9D0-1302-4D83-BC32-43F05431369B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{108FB9D0-1302-4D83-BC32-43F05431369B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{108FB9D0-1302-4D83-BC32-43F05431369B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{909C87C3-4B82-434A-8EE7-0D44C658172A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{909C87C3-4B82-434A-8EE7-0D44C658172A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{909C87C3-4B82-434A-8EE7-0D44C658172A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{909C87C3-4B82-434A-8EE7-0D44C658172A}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
