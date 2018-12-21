@@ -5,6 +5,10 @@
     <Version>9.5.4</Version>
   </PropertyGroup>
 
+  <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
+    <DocumentationFile>bin\$(Configuration)\$(TargetFramework)\$(AssemblyName).xml</DocumentationFile>
+  </PropertyGroup>
+
   <ItemGroup>
     <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_5_4\EpsgNumber.fs" />
   </ItemGroup>
