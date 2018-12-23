@@ -1,36 +1,39 @@
 namespace Programmerare.CrsTransformations.Identifier
+
 open System
+
 (*
 Copyright (c) Tomas Johansson , http://programmerare.com
 The code in the "Core" project is licensed with MIT.
 Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
+*)
 
-
- * An instance of this class is representing a coordinate reference system 
- * defined by its so called EPSG code.
- * Instances are created from factory methods with an EPSG code as the parameter.
- * The factory methods are available in a class named 'CrsIdentifierFactory'.
- * 
- * CRS = Coordinate Reference System (a.k.a. SRS = Spatial Reference System)  
- * 
- * https://en.wikipedia.org/wiki/Spatial_reference_system
- *
- * EPSG = European Petroleum Survey Group.  
- * 
- * EPSG was a scientific organization which created a widely used database
- * of Earth ellipsoids, geodetic datums, geographic and projected coordinate systems,
- * units of measurement, etc.  
- * 
- * https://en.wikipedia.org/wiki/International_Association_of_Oil_%26_Gas_Producers  
- * 
- * http://www.epsg-registry.org  
- * 
- * http://www.epsg.org  
- * 
- * http://epsg.io/
- *)
+///<summary>
+///<para>
+///An instance of this class is representing a coordinate reference system 
+///defined by its so called EPSG code.
+///Instances are created from factory methods with an EPSG code as the parameter.
+///The factory methods are available in a class named 'CrsIdentifierFactory'.
+///</para>
+///<para/>
+///<para>
+///CRS = Coordinate Reference System (a.k.a. SRS = Spatial Reference System) 
+///https://en.wikipedia.org/wiki/Spatial_reference_system
+///</para>
+///<para/>
+///<para>
+///EPSG = European Petroleum Survey Group.  
+///EPSG was a scientific organization which created a widely used database
+///of Earth ellipsoids, geodetic datums, geographic and projected coordinate systems,
+///units of measurement, etc.  
+///https://en.wikipedia.org/wiki/International_Association_of_Oil_%26_Gas_Producers  
+///http://www.epsg-registry.org  
+///http://www.epsg.org  
+///http://epsg.io/
+///</para>
+///</summary>
 [<AllowNullLiteral>] // C# interoperability
 type CrsIdentifier private 
     (
@@ -39,26 +42,26 @@ type CrsIdentifier private
         epsgNumber: int
     ) =
 
-    (*
-    * a code representing a coordinate reference system, 
-    * which should be a string beginning with "EPSG:" and 
-    * then an EPSG number such as '4326' i.e. the return string 
-    * should be something like "EPSG:4326" 
-    *)
+    ///<value>
+    ///a code representing a coordinate reference system, 
+    ///which should be a string beginning with "EPSG:" and 
+    ///then an EPSG number such as '4326' i.e. the return string 
+    ///should be something like "EPSG:4326" 
+    ///</value>
     member this.CrsCode = crsCode
 
-    (*
-     an EPSG number, for example 4326 for the frequently used coordinate reference system WGS84.
-    *)
+    ///<value>
+    ///an EPSG number, for example 4326 for the frequently used coordinate reference system WGS84.
+    ///</value>
     member this.EpsgNumber = epsgNumber
 
-    (*
-     true if the instance represents an EPSG code and false otherwise.
-     Normally the method should always be true since EPSG code are expected 
-     by the transform methods, and if this method would return false then 
-     there was some problem at the construction of the instance, e.g. 
-     trying to create the instance with a string not beginning with "EPSG:"
-    *)
+    ///<value>
+    ///true if the instance represents an EPSG code and false otherwise.
+    ///Normally the method should always be true since EPSG code are expected 
+    ///by the transform methods, and if this method would return false then 
+    ///there was some problem at the construction of the instance, e.g. 
+    ///trying to create the instance with a string not beginning with "EPSG:"
+    ///</value>
     member this.IsEpsgCode = isEpsgCode
     
     static member internal _internalCrsFactory

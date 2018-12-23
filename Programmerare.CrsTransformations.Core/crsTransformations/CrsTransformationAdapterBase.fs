@@ -1,4 +1,5 @@
 namespace Programmerare.CrsTransformations
+
 open System
 open System.IO
 open System.Text.RegularExpressions
@@ -20,11 +21,14 @@ There are TWO types in this file:
 *)
 
 // ----------------------------------------------------
-// This small class is used as return type for a method 
-// with the only purpose to be used in test code for detecting 
-// upgraded version (of some NuGet package or an adaptee library)
-// i.e. to help remembering to update the enum value 
-// defining which adaptee library version is used
+// 
+///<summary>
+///This small class is used as return type for a method 
+///with the only purpose to be used in test code for detecting 
+///upgraded version (of some NuGet package or an adaptee library)
+///i.e. to help remembering to update the enum value 
+///defining which adaptee library version is used
+///</summary>
 type FileInfoVersion internal
     (
         fileName: string,
@@ -41,6 +45,7 @@ type FileInfoVersion internal
         member internal this.IsRepresentingThirdPartLibrary() = 
             let f = FileInfoVersion.FileInfoVersionNOTrepresentingThirdPartLibrary
             if (
+                // TODO refactor the below code with an Equals method of the type FileInfoVersion
                 f.FileName.Equals(this.FileName)
                 &&
                 f.Version.Equals(this.Version)
@@ -51,15 +56,15 @@ type FileInfoVersion internal
             else
                 true
 
-        (*
-         Helper method intended to be used from implementing adapters 
-         when implementing a method that should return the name
-         of a DLL file (and the version information extracted from the path) 
-         file belonging to an adaptee library.
-             This helper method is NOT intended for  client code
-             but it needs to be public since it used by 
-             adapter implementations in other assemblies.
-        *)
+        ///<summary>
+        ///Helper method intended to be used from implementing adapters 
+        ///when implementing a method that should return the name
+        ///of a DLL file (and the version information extracted from the path) 
+        ///file belonging to an adaptee library.
+        ///    This helper method is NOT intended for  client code
+        ///    but it needs to be public since it used by 
+        ///    adapter implementations in other assemblies.
+        ///</summary>
         static member GetFileInfoVersionHelper
             (
                 someTypeInTheThidPartAdapteeLibrary: Type
@@ -90,10 +95,10 @@ type FileInfoVersion internal
                 failwith ("The 'FileInfoVersion' parts could not be extracted from the string " + inputString + " which was retrieved using the type " + someTypeInTheThidPartAdapteeLibrary.GetType().FullName)
     end
 // ----------------------------------------------------
-(*
- * The base class of the adapter interface implementing most of the 
- * transform methods as "final" i.e. NOT being declared as overrideable by using "abstract".
- *)
+///<summary>
+///The base class of the adapter interface implementing most of the 
+///transform methods as "final" i.e. NOT being declared as overrideable by using "abstract".
+///</summary>
 [<AbstractClass>]
 type CrsTransformationAdapterBase
     (

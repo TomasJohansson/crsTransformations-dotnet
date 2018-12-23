@@ -1,4 +1,5 @@
 namespace Programmerare.CrsTransformations
+
 open System
 open System.Collections.Generic
 open System.Reflection
@@ -9,27 +10,51 @@ The code in the "Core" project is licensed with MIT.
 Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
+*)
 
-
- * Factory used by 'composites' for creating 'leaf' implementations available in runtime.
- * 
- * The factory uses reflection code to instantiate the implementations from strings with full class names.  
- * 
- * The reason for these string based instantiations is that the core library avoids 
- * statically predefined enforced dependencies to all leaf adapter implementations.  
- * 
- * Instead the users can choose which implementation(s) to use with NuGet dependencies.
- *)
+///<summary>
+///<para>
+///Factory used by 'composites' for creating 'leaf' implementations available in runtime.
+///</para>
+///<para/>
+///<para>
+///The factory uses reflection code to instantiate the implementations from strings with full class names.  
+///</para>
+///<para/>
+///<para>
+///The reason for these string based instantiations is that the core library avoids 
+///statically predefined enforced dependencies to all leaf adapter implementations.  
+///</para>
+///<para/>
+///<para>
+///Instead the users can choose which implementation(s) to use with NuGet dependencies.
+///</para>
+///</summary>
 [<AbstractClass>]
 type CrsTransformationAdapterLeafFactory internal
     (
     ) = 
+        ///<returns>
+        ///List of all complete (i.e. including namespace) class names for all implementations of the interface ICrsTransformationAdapter.
+        ///</returns>
         abstract member GetClassNamesForAllImplementations : unit -> IList<string>
-        
+
+        ///<returns>
+        ///true if the string parameter is the full class name (including the namespace) for a class implementing the interface ICrsTransformationAdapter.
+        ///</returns>        
         abstract member IsCrsTransformationAdapter : string -> bool // string=crsTransformationAdapterClassName
 
+        ///<returns>
+        ///List with instaces of all implementations of the interface ICrsTransformationAdapter.
+        ///</returns>
         abstract member GetInstancesOfAllImplementations : unit -> IList<ICrsTransformationAdapter>
 
+        ///<returns>
+        ///An instance of the class specified with the string parameter if that class implements the interface ICrsTransformationAdapter.
+        ///</returns>        
+        ///<exception cref="System.ArgumentException">
+        ///Thrown if the string parameter is not specifying a class which implements the interface ICrsTransformationAdapter.
+        ///</exception>
         abstract member GetCrsTransformationAdapter : string -> ICrsTransformationAdapter // string=crsTransformationAdapterClassName
 
         static member internal ThrowExceptionWhenAdapterInstanceCouldNotBeReturned(crsTransformationAdapterClassName: string) = 
@@ -37,8 +62,15 @@ type CrsTransformationAdapterLeafFactory internal
             let message = "Failed to return an instance of a class with the name '" + crsTransformationAdapterClassName + "' . The parameter must be the name of an available class which implements the interface '" + nameOfInterfaceThatShouldBeImplemented + "'"
             invalidArg "crsTransformationAdapterClassName" message
 
+        ///<returns>
+        ///A factory that is capable of creating some known hardcoded implementations of the interface ICrsTransformationAdapter.
+        ///</returns>
         static member Create() =
             CrsTransformationAdapterLeafFactoryWithHardcodedImplementations() :> CrsTransformationAdapterLeafFactory
+
+        ///<returns>
+        ///A factory that is capable of creating those implementations of the interface ICrsTransformationAdapter which are provided in the method parameter list.
+        ///</returns>
         static member Create(listOfCrsTransformationAdapters: IList<ICrsTransformationAdapter>) =
             CrsTransformationAdapterLeafFactoryWithConfiguredImplementations(listOfCrsTransformationAdapters) :> CrsTransformationAdapterLeafFactory
 // --------------------------------------------------------------
@@ -107,11 +139,13 @@ and internal CrsTransformationAdapterLeafFactoryWithHardcodedImplementations int
                     theType <- oneType
             theType
 
-        (*
-         * @param crsTransformationAdapterClassName the full class name (i.e. including the namespace)
-         *      of a class which must implement the interface CrsTransformationAdapter
-         * @return an instance if it could be created but otherwise an exception      
-         *)
+        ///<param name="crsTransformationAdapterClassName">
+        ///the full class name (i.e. including the namespace)
+        ///of a class which must implement the interface CrsTransformationAdapter
+        ///</param>
+        ///<returns>
+        ///an instance if it could be created but otherwise an exception      
+        ///</returns>
         member private this._CreateCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
             let theType = GetTypeInstanceForClassName(crsTransformationAdapterClassName)
             if isNull theType then
@@ -140,18 +174,20 @@ and internal CrsTransformationAdapterLeafFactoryWithHardcodedImplementations int
         override this.GetCrsTransformationAdapter(crsTransformationAdapterClassName: string): ICrsTransformationAdapter =
             this._CreateCrsTransformationAdapter(crsTransformationAdapterClassName)
 
-        (*
-        * @return a list of instances for all known leaf implementations 
-        *      of the adapter interface, which are available at the class path.
-        *)    
+        ///<returns>
+        ///a list of instances for all known leaf implementations 
+        ///of the adapter interface, which are available at the class path.
+        ///</returns>
         override this.GetInstancesOfAllImplementations() = 
             this.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force() :> IList<ICrsTransformationAdapter>
 
-        (*
-         * @param the full class name (i.e. including the package name)
-         *      of a class which must implement the interface ICrsTransformationAdapter
-         * @return true if it possible to create an instance from the input string 
-         *)
+        ///<param name="crsTransformationAdapterClassName">
+        ///the full class name (i.e. including the package name)
+        ///of a class which must implement the interface ICrsTransformationAdapter
+        ///</param>
+        ///<returns>
+        ///true if it possible to create an instance from the input string 
+        ///</returns>
         override this.IsCrsTransformationAdapter(crsTransformationAdapterClassName: string): bool = 
             this.instancesOfAllKnownAvailableImplementationsLazyLoaded.Force().Exists(
                 fun i -> i.GetType().FullName.Equals(crsTransformationAdapterClassName)
@@ -184,19 +220,20 @@ and internal CrsTransformationAdapterLeafFactoryWithConfiguredImplementations in
             else
                 CrsTransformationAdapterLeafFactory.ThrowExceptionWhenAdapterInstanceCouldNotBeReturned(crsTransformationAdapterClassName)
 
-        (*
-        * @return a list of instances for all known leaf implementations 
-        *      of the adapter interface, which are available at the class path.
-        *)    
-        
+        ///<returns>
+        ///a list of instances for all known leaf implementations 
+        ///of the adapter interface, which are available at the class path.
+        ///</returns>        
         override x.GetInstancesOfAllImplementations() = 
             listOfCrsTransformationAdapters
 
-        (*
-         * @param the full class name (i.e. including the package name)
-         *      of a class which must implement the interface ICrsTransformationAdapter
-         * @return true if it possible to create an instance from the input string 
-         *)
+        ///<param name="crsTransformationAdapterClassName">
+        ///the full class name (i.e. including the package name)
+        ///of a class which must implement the interface ICrsTransformationAdapter
+        ///</param>>
+        ///<returns>
+        ///true if it possible to create an instance from the input string 
+        ///</returns>
         override x.IsCrsTransformationAdapter(crsTransformationAdapterClassName: string): bool = 
             let adapterInstance = listOfCrsTransformationAdapters.FirstOrDefault(fun a -> a.GetType().FullName.Equals(crsTransformationAdapterClassName))
             // TODO refactor the above (duplicated row in this class)

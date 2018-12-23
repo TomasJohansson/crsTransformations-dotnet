@@ -1,4 +1,5 @@
 namespace Programmerare.CrsTransformations
+
 open System.Collections.Generic
 open Programmerare.CrsTransformations.Coordinate
 open Programmerare.CrsTransformations.Identifier
@@ -10,9 +11,9 @@ Please find more information in the license file at the root directory of each s
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 *)
 
-(*
- * Base class for the 'leaf' adapters.
-*)
+///<summary>
+///Base class for the 'leaf' adapters.
+///</summary>
 [<AbstractClass>]
 type CrsTransformationAdapterBaseLeaf
     (

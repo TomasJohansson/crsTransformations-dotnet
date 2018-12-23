@@ -1,4 +1,5 @@
 namespace Programmerare.CrsTransformations.CompositeTransformations
+
 open System.Collections.Generic
 open Programmerare.CrsTransformations
 open Programmerare.CrsTransformations.Coordinate
@@ -9,19 +10,19 @@ The code in the "Core" project is licensed with MIT.
 Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
-
- * "Base class" for the 'composite' adapters.
-    (well actually it is THE class since it is not using inheritance 
-        but rather composition)
- * @see CrsTransformationAdapterBase
- * @see CompositeStrategy
- * 
 *)
+///<summary>
+///"Base class" for the 'composite' adapters.
+/// (well actually it is THE class since it is currently not using inheritance 
+///    but rather composition)
+/// TODO: use some inheritance also to make use of the method 'LongNameOfImplementation'
+///     ain a similar way as the Leafs i.e. let the property be different class names depending on the implementation
+///</summary>
 type CrsTransformationAdapterComposite private
     (
     (*
      * Interface for calculating the resulting coordinate in different ways, 
-     * e.g. one stratefy implementation calculates the median and another the average.
+     * e.g. one strategy implementation calculates the median and another the average.
      *)        
     compositeStrategy: ICompositeStrategy
     ) as this =

@@ -10,6 +10,11 @@ Other subprojects may be released with other licenses e.g. LGPL or Apache Licens
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 *)
+
+///<summary>
+///Interface defining methods used by 'CrsTransformationAdapterComposite'
+///for creating different kind of composite results of multiple CRS transformations.
+///</summary>
 type internal ICompositeStrategy =
     interface
 

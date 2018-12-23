@@ -1,4 +1,5 @@
 namespace Programmerare.CrsTransformations
+
 open System
 open System.Linq
 open System.Collections.Generic
@@ -11,8 +12,7 @@ The code in the "Core" project is licensed with MIT.
 Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
-*)
-(*
+
 IMPORTANT NOTE:
 There are THREE types in this file:
     - ICrsTransformationAdapter
@@ -33,40 +33,55 @@ That is the reason for having put them here in the same file
 i.e. having them here in the same file solves the problem 
 by doing that and by using the keyword "and" between the types.
 *)
+//--------------------------------------------------------
+//Type ICrsTransformationAdapter:
+//(the first of the three types in this file)
 
-(*
---------------------------------------------------------
-Type ICrsTransformationAdapter:
-(the first of the three types in this file)
-
-This adapter interface is the core type of this CRS transformation library.
-
-It defines six transform methods.
-
-Three of them will only return a coordinate with the result,
-while the other three will return a result object
-which also contains more information e.g. all the individual 'leaf'
-results if the implementing class was a 'composite'.  
-
-The difference between the three methods (returning the same type)
-is just the last parameter which is either an integer value
-with an EPSG code (e.g. 4326) or a string (an integer value but also with a "EPSG:"-prefix e.g. "EPSG:4326")
-or an instance of CrsIdentifier (which also is a representation of a CRS such as EPSG:4326).
-
-If a transform method without the CrsIdentifier parameter is used then
-the CrsIdentifier will be created by the other transform methods.
- 
-In other words, the methods with integer or string parameter are
-convenience methods. If you are going to do many transformations
-you may want to create the CrsIdentifier object once yourself
-and then use a transform method using it as a parameter.
-
-The methods 'transformToCoordinate' can throw exception when the transformation fails.
-The methods 'transform' should always return a result object rather than throwing an exception.
- 
-If you use a method returning the result object then you should
-check for failures with 'TransformationResult.isSuccess'.
-*)
+///<summary>
+///<para>
+///This adapter interface is the core type of this CRS transformation library.
+///</para>
+///<para/>
+///<para>
+///It defines six transform methods.
+///</para>
+///<para/>
+///<para>
+///Three of them will only return a coordinate with the result,
+///while the other three will return a result object
+///which also contains more information e.g. all the individual 'leaf'
+///results if the implementing class was a 'composite'.  
+///</para>
+///<para/>
+///<para>
+///The difference between the three methods (returning the same type)
+///is just the last parameter which is either an integer value
+///with an EPSG code (e.g. 4326) or a string (an integer value but also with a "EPSG:"-prefix e.g. "EPSG:4326")
+///or an instance of CrsIdentifier (which also is a representation of a CRS such as EPSG:4326).
+///</para>
+///<para/>
+///<para>
+///If a transform method without the CrsIdentifier parameter is used then
+///the CrsIdentifier will be created by the other transform methods.
+///</para>
+///<para/>
+///<para> 
+///In other words, the methods with integer or string parameter are
+///convenience methods. If you are going to do many transformations
+///you may want to create the CrsIdentifier object once yourself
+///and then use a transform method using it as a parameter.
+///</para>
+///<para/>
+///<para>
+///The methods 'TransformToCoordinate' can throw exception when the transformation fails.
+///The methods 'Transform' should always return a result object rather than throwing an exception.
+///</para>
+///<para/>
+///<para> 
+///If you use a method returning the result object then you should
+///check for failures with 'TransformationResult.IsSuccess'.
+///</para>
+///</summary>
 [<AllowNullLiteral>] // C# interoperability
 
 type ICrsTransformationAdapter =
@@ -74,89 +89,91 @@ type ICrsTransformationAdapter =
         // -------------------------------------------------
         // Below are the three methods returning a coordinate object:
 
-        (*
-         Transforms a coordinate to a coordinate
-         in another coordinate reference system if possible
-         but may throw an exception if the transformation fails.
-         The integer parameter is an EPSG number such as 4326 for the CRS 'WGS84'.
-        *)
+        ///<summary>
+        ///Transforms a coordinate to a coordinate
+        ///in another coordinate reference system if possible
+        ///but may throw an exception if the transformation fails.
+        ///The integer parameter is an EPSG number such as 4326 for the CRS 'WGS84'.
+        ///</summary>
         abstract member TransformToCoordinate : CrsCoordinate * int -> CrsCoordinate
 
-        (*
-         Transforms a coordinate to a coordinate
-         in another coordinate reference system if possible
-         but may throw an exception if the transformation fails.
-         The string parameter is an EPSG code such as "EPSG:4326" for the CRS 'WGS84'.
-        *)
+        ///<summary>
+        ///Transforms a coordinate to a coordinate
+        ///in another coordinate reference system if possible
+        ///but may throw an exception if the transformation fails.
+        ///The string parameter is an EPSG code such as "EPSG:4326" for the CRS 'WGS84'.
+        ///</summary>
         abstract member TransformToCoordinate : CrsCoordinate * string -> CrsCoordinate
 
-        (*
-         Transforms a coordinate to a coordinate
-         in another coordinate reference system if possible
-         but may throw an exception if the transformation fails.
-        *)
+        ///<summary>
+        ///Transforms a coordinate to a coordinate
+        ///in another coordinate reference system if possible
+        ///but may throw an exception if the transformation fails.
+        ///</summary>
         abstract member TransformToCoordinate : CrsCoordinate * CrsIdentifier -> CrsCoordinate
         
         // Above are the three methods returning a coordinate object.
         // -------------------------------------------------
         // Below are the three methods returning a transformation result object:
 
-        (*
-         Transforms a coordinate to another coordinate reference system.
-         The method should never throw an exception but instead one of the methods
-         in the result object should be used to check for failure.
-         The integer parameter is an EPSG number such as 4326 for the CRS 'WGS84'.
-        *)
+        ///<summary>
+        ///Transforms a coordinate to another coordinate reference system.
+        ///The method should never throw an exception but instead one of the methods
+        ///in the result object should be used to check for failure.
+        ///The integer parameter is an EPSG number such as 4326 for the CRS 'WGS84'.
+        ///</summary>
         abstract member Transform : CrsCoordinate * int -> CrsTransformationResult
 
-        (*
-         Transforms a coordinate to another coordinate reference system.
-         The method should never throw an exception but instead one of the methods
-         in the result object should be used to check for failure.
-         The string parameter is an EPSG code such as "EPSG:4326" for the CRS 'WGS84'.
-        *)
+        ///<summary>
+        ///Transforms a coordinate to another coordinate reference system.
+        ///The method should never throw an exception but instead one of the methods
+        ///in the result object should be used to check for failure.
+        ///The string parameter is an EPSG code such as "EPSG:4326" for the CRS 'WGS84'.
+        ///</summary>
         abstract member Transform : CrsCoordinate * string -> CrsTransformationResult
 
-        (*
-         Transforms a coordinate to another coordinate reference system.
-         The method should never throw an exception but instead one of the methods
-         in the result object should be used to check for failure.
-        *)
+        ///<summary>
+        ///Transforms a coordinate to another coordinate reference system.
+        ///The method should never throw an exception but instead one of the methods
+        ///in the result object should be used to check for failure.
+        ///</summary>
         abstract member Transform : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
 
         // Above are the three methods returning a transformation result object.
         // -------------------------------------------------
 
-        (*
-         Should normally simply return the full class name (including the package name), 
-         but when implementing test doubles (e.g. using the framework "Moq")
-         then the method should be implemented by defining different names
-         to simulate that different classes (implementations)
-         should have different weights.
-        *)
+        ///<value>
+        ///Should normally simply return the full class name (including the package name), 
+        ///but when implementing test doubles (e.g. using the framework "Moq")
+        ///then the method should be implemented by defining different names
+        ///to simulate that different classes (implementations)
+        ///should have different weights.
+        ///</value>
         abstract member LongNameOfImplementation : string
 
-        (*
-         Should return the unique suffix part of the class name
-         i.e. the class name without the prefix which is common
-         for all implementations.
-        *)
+        ///<value>
+        ///The unique suffix part of the class name
+        ///i.e. the class name without the prefix which is common
+        ///for all implementations.
+        ///</value>
         abstract member ShortNameOfImplementation : string
 
+        ///<summary>
         /// See documentation of <see cref="CrsTransformationAdapteeType"/>
+        ///</summary>
         abstract member AdapteeType : CrsTransformationAdapteeType
 
-        (*
-         returns    true if the implementation is a 'composite'
-                    but false if it is a 'leaf' implementation
-        *)
+        ///<value>
+        ///true if the implementation is a 'composite'
+        ///but false if it is a 'leaf' implementation
+        ///</value>
         abstract member IsComposite : bool
 
-        (*
-         returns  a list of children/leafs when the implementation
-                  is a 'composite'but if the implementation is a 'leaf'
-                  then an empty list should be returned.
-        *)
+        ///<returns>
+        ///a list of children/leafs when the implementation
+        ///is a 'composite'but if the implementation is a 'leaf'
+        ///then an empty list should be returned.
+        ///</returns>
         abstract member GetTransformationAdapterChildren : unit -> IList<ICrsTransformationAdapter>
 
     end
@@ -176,17 +193,25 @@ type ICrsTransformationAdapter =
 /// --------------------------------------------------------
 /// Type CrsTransformationResult:
 /// (the SECOND of the three types in this file)
-/// 
-///  This class is used as result type from three of the transform methods 
-///  of the adapter interface (i.e. the first type above in this file).
-///  
-///  Normally you define a class with "type" as below:
-///   "type CrsTransformationResult" (instead of "and CrsTransformationResult")
-///  However, to make it possible for the types to refer to each other
-///  they have been put here in the same file 
-///  and therefore uses the keyword "and" as below instead of "type"
+
+///<summary>
+///<para>
+///This class is used as result type from three of the transform methods 
+///of the adapter interface (i.e. the first type above in this file).
+///</para>
+///<para/>
+///<para>
+///Normally you define a class with "type" as below:
+///"type CrsTransformationResult" (instead of "and CrsTransformationResult")
+///However, to make it possible for the types to refer to each other
+///they have been put here in the same file 
+///and therefore uses the keyword "and" as below instead of "type"
+///</para>
+///</summary>
 and CrsTransformationResult private
     (
+        // https://stackoverflow.com/questions/15121814/documenting-f-code/15138597
+        // > "...there is no way of documenting the implicit constructor with an XML comment"
         inputCoordinate: CrsCoordinate,
         outputCoordinate: CrsCoordinate, //[<Optional; DefaultParameterValue(null:CrsCoordinate)>] outputCoordinate: CrsCoordinate,
         exceptionOrNull: Exception,
@@ -227,33 +252,36 @@ and CrsTransformationResult private
             //        }
             //    }
 
-
-        (*
-         The input coordinate used in the transform that return the result object.
-        *)        
+        ///<value>The input coordinate used in the transform that return the result object.</value>
         member this.InputCoordinate = inputCoordinate
 
-        (*
-         The coordinate which is the result from the transform.
-         
-         Precondition: Verify that the success property return true before using this accessor.
-         If it returns false, then an exception will be thrown.
-        
-         Depending on the adapter implementation, the output coordinate
-         can either be a direct result from one specific 'leaf' adaptee implementation
-         or it can be an aggregated result (i.e. median or average) from
-         a 'composite' implementation.
-        *)
+        ///<summary>
+        ///<para>
+        ///The coordinate which is the result from the transform.
+        ///</para>
+        ///<para/>
+        ///<para>
+        ///Precondition: Verify that the success property return true before using this accessor.
+        ///If it returns false, then an exception will be thrown.
+        ///</para>
+        ///<para/>
+        ///<para>
+        ///Depending on the adapter implementation, the output coordinate
+        ///can either be a direct result from one specific 'leaf' adaptee implementation
+        ///or it can be an aggregated result (i.e. median or average) from
+        ///a 'composite' implementation.
+        ///</para>
+        ///</summary>
         member this.OutputCoordinate 
             with get() = 
                 if(not(isSuccess)) then 
                     invalidOp "Pre-condition violated. Coordinate retrieval only allowed if result was success"
                 outputCoordinate
 
-        (*
-         Either null or an exception depending on whether or not
-         the transform resulted in an exception being thrown.
-        *)    
+        ///<summary>
+        ///Either null or an exception depending on whether or not
+        ///the transform resulted in an exception being thrown.
+        ///</summary>
         member this.Exception = exceptionOrNull
         // From the Kotlin project's implementation:
         //    private fun getExceptionIfNotNullButOtherwiseTryToGetExceptionsFromChildrenExceptionsIfExisting(exception: Throwable?): Throwable? {
@@ -275,28 +303,28 @@ and CrsTransformationResult private
         //        }
         //    }
 
-        (*
-         True if the transform was successful or false if it failed.
-         Note that "successful" does not necessarily mean that the
-         result is correct but an exception was not thrown
-         and the result was not "NaN" (Not a Number).
-        *)
+        ///<value>
+        ///True if the transform was successful or false if it failed.
+        ///Note that "successful" does not necessarily mean that the
+        ///result is correct but an exception was not thrown
+        ///and the result was not "NaN" (Not a Number).
+        ///</value>
         member this.IsSuccess = isSuccess
 
-        (*
-         returns CrsTransformationAdapter the adapter which created the result.
-          It may be useful when a composite adapter is returning a result aggregating many results
-          and you want to figure out which result originated from which leaf adapter implementation.
-        *)    
+        ///<value>
+        ///The adapter which created the result.
+        ///It may be useful when a composite adapter is returning a result aggregating many results
+        ///and you want to figure out which result originated from which leaf adapter implementation.
+        ///</value>
         member this.CrsTransformationAdapterResultSource = crsTransformationAdapterResultSource
 
-        (*
-         An object with conveniently available aggregating information about the
-         results for the different implementations, which is useful for composite implementations.
-         For a leaf implementation this method is not meaningful.
-         It is a convenience method in the sense that the information provided
-         can be calculated from client code by iterating the leafs/children of a composite.
-        *)
+        ///<value>
+        ///An object with conveniently available aggregating information about the
+        ///results for the different implementations, which is useful for composite implementations.
+        ///For a leaf implementation this method is not meaningful.
+        ///It is a convenience method in the sense that the information provided
+        ///can be calculated from client code by iterating the leafs/children of a composite.
+        ///</value>
         member this.CrsTransformationResultStatistic = 
             if(this.CrsTransformationAdapterResultSource.IsComposite) then
                 crsTransformationResultStatistic
@@ -327,42 +355,56 @@ and CrsTransformationResult private
         // but for composites it should all results 
         // but for a leaf the list below should be an empty list
 
-        (*
-         Empty list if the transform implementation is a concrete "Leaf"
-         implementation, but if it is a composite/aggregating implementation
-         then all the individual "leaf" results are returned in this list.
-        *)
+        ///<returns>
+        ///Empty list if the transform implementation is a concrete "Leaf"
+        ///implementation, but if it is a composite/aggregating implementation
+        ///then all the individual "leaf" results are returned in this list.
+        ///</returns>
         member this.GetTransformationResultChildren() = 
             if(this.CrsTransformationAdapterResultSource.IsComposite) then
                 crsTransformationResultStatistic.GetAllCrsTransformationResults()
             else
                 new List<CrsTransformationResult>() :> IList<CrsTransformationResult>
 
-        (*
-        * Convenience method intended for "Composite" implementations
-        * to easy check that more than one implementation (the specified min number)
-        * resulted in the same coordinate (within the specified delta value).
-        *
-        * If false is returned then you may choose to retrieve the 
-        * CrsTransformationResultStatistic object to find the details regarding the differences.
-        *
-        * The method is actually relevant to use only for aggregated transformations i.e. the "Composite" implementations.
-        *
-        * However, there is also a reasonable behaviour for the "Leaf" implementations
-        * regarding the number of results (always 1) and the "differences" in lat/long for the "different"
-        * implementations i.e. the "difference" should always be zero since there is only one implementation.
-        *
-        * In other words, the method is meaningful only for the "Composite" implementations
-        * but the "Leaf" implementations should not cause exception to be thrown when using
-        * the method but instead logically expected behaviour.
-        * @param minimumNumberOfSuccesfulResults specifies the minimum number of results for a results to be considered as reliable.
-        *      Currently there are three implementations (though one of them can only handle coordinate system used in Sweden)
-        *      so you will probably not want to use a value smaller than 4.
-        * @param maxDeltaValueForXLongitudeAndYLatitude specifies the maximum difference in either x/Long or y/Lat to be considered as reliable.
-        *      IMPORTANT note: the unit for the delta value is the unit of the output/result coordinate.
-        *      For example if you are using a projected coordinate system with x/Y values in meters then the value 1 (i.e. one meter)
-        *      is fairly small, but the value 1 would be very big for "GPS" (WGS84) latitude/longitude values.
-        *)
+        ///<summary>
+        ///<para>
+        ///Convenience method intended for "Composite" implementations
+        ///to easy check that more than one implementation (the specified min number)
+        ///resulted in the same coordinate (within the specified delta value).
+        ///</para>
+        ///<para/>
+        ///<para>
+        ///If false is returned then you may choose to retrieve the 
+        ///CrsTransformationResultStatistic object to find the details regarding the differences.
+        ///</para>
+        ///<para/>
+        ///<para>
+        ///The method is actually relevant to use only for aggregated transformations i.e. the "Composite" implementations.
+        ///</para>
+        ///<para/>
+        ///<para>
+        ///However, there is also a reasonable behaviour for the "Leaf" implementations
+        ///regarding the number of results (always 1) and the "differences" in lat/long for the "different"
+        ///implementations i.e. the "difference" should always be zero since there is only one implementation.
+        ///</para>
+        ///<para/>
+        ///<para>
+        ///In other words, the method is meaningful only for the "Composite" implementations
+        ///but the "Leaf" implementations should not cause exception to be thrown when using
+        ///the method but instead logically expected behaviour.
+        ///</para>
+        ///</summary>
+        ///<param name="minimumNumberOfSuccesfulResults">
+        ///The minimum number of results for a results to be considered as reliable.
+        ///Currently there are three implementations (though one of them can only handle coordinate system used in Sweden)
+        ///so you will probably not want to use a value smaller than 4.
+        ///</param>
+        ///<param name="maxDeltaValueForXLongitudeAndYLatitude">
+        ///The maximum difference in either x/Long or y/Lat to be considered as reliable. 
+        ///IMPORTANT note: the unit for the delta value is the unit of the output/result coordinate.
+        ///For example if you are using a projected coordinate system with x/Y values in meters then the value 1 (i.e. one meter)
+        ///is fairly small, but the value 1 would be very big for "GPS" (WGS84) latitude/longitude values.
+        ///</param>
         member this.IsReliable
             (
                 minimumNumberOfSuccesfulResults: int,
@@ -375,18 +417,21 @@ and CrsTransformationResult private
             let okX = maxX <= maxDeltaValueForXLongitudeAndYLatitude
             let okY = maxY <= maxDeltaValueForXLongitudeAndYLatitude
             okNumber && okX && okY
-    
 
-        (*
-         This method is not intended for public use from client code.
-         It is "internal" but but to make it available from the test project, the following 
-         have been added to the project file:
-          <ItemGroup>
-            <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-              <_Parameter1>Programmerare.CrsTransformations.Test</_Parameter1>
-            </AssemblyAttribute>
-          </ItemGroup>
-        *)
+        ///<summary>
+        ///This method is not intended for public use from client code.
+        ///It is "internal" but but to make it available from the test project, the following 
+        ///have been added to the project file:
+        ///<code>
+        ///<![CDATA[
+        ///  <ItemGroup>
+        ///    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+        ///      <_Parameter1>Programmerare.CrsTransformations.Test</_Parameter1>
+        ///    </AssemblyAttribute>
+        ///  </ItemGroup>
+        ///]]>
+        ///</code>
+        ///</summary>
         static member internal _CreateCrsTransformationResult
             (
                 inputCoordinate: CrsCoordinate,
@@ -421,10 +466,12 @@ and CrsTransformationResult private
 /// --------------------------------------------------------
 /// Type CrsTransformationResultStatistic:
 /// (the THIRD of the three types in this file)
-(*
- * Class providing conveniently available aggregated information from multiple results.
- *
- *)
+
+///<summary>
+///<para>
+///Class providing conveniently available aggregated information from multiple results.
+///</para>
+///</summary>
 and CrsTransformationResultStatistic private
     (
         results: IList<CrsTransformationResult>
@@ -509,67 +556,71 @@ and CrsTransformationResultStatistic private
     // ----------------------------------------------------------
     // Below: public methods/properties
 
+    ///<returns>
+    ///list of all transformation results
+    ///</returns>
     member this.GetAllCrsTransformationResults(): IList<CrsTransformationResult> = results
 
-    (*
-     * @return true if there is at least one succesful result but otherwise false.
-     *)
+    ///<value>
+    ///true if there is at least one succesful result but otherwise false.
+    ///</value>
     member this.IsStatisticsAvailable = this.NumberOfPotentiallySuccesfulResults > 0
 
-    (*
-     * the number of potentially succesful results.
-     * The semantic reason for using "potentially" is that there is 
-     * no guarantee that a result is correct since an implementation
-     * might choose to return some calculated coordinates 
-     * even though the target (or source) CRS is not intended 
-     * for the area. However, this property returns the number 
-     * of results with *NO OBVIOUS* problems e.g. thrown exception.
-     *)
+    ///<value>
+    ///The number of potentially succesful results.
+    ///The semantic reason for using "potentially" is that there is 
+    ///no guarantee that a result is correct since an implementation
+    ///might choose to return some calculated coordinates 
+    ///even though the target (or source) CRS is not intended 
+    ///for the area. However, this property returns the number 
+    ///of results with *NO OBVIOUS* problems e.g. thrown exception.
+    ///</value>
     member this.NumberOfPotentiallySuccesfulResults = _successfulCoordinatesLazyLoaded.Force().Count
 
-    (*
-     * Precondition: isStatisticsAvailable must return true
-     * @return a coordinate with the average X/Longitude and the average Y/Latitude
-     *)
+    ///<value>
+    ///a coordinate with the average X/Longitude and the average Y/Latitude
+    ///Precondition: IsStatisticsAvailable must return true
+    ///</value>
     member this.CoordinateAverage =
         throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
         _coordinateAverageLazyLoaded.Force()
     
-    (*
-     * Precondition: isStatisticsAvailable must return true
-     * @return a coordinate with the median X/Longitude and the median Y/Latitude
-     *)
+    ///<value>
+    ///a coordinate with the median X/Longitude and the median Y/Latitude
+    ///Precondition: isStatisticsAvailable must return true
+    ///</value>
     member this.CoordinateMedian =
         throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
         _coordinateMedianLazyLoaded.Force()
 
-    (*
-     * @return the maximal difference in Y/Latitude values
-     *      between the coordinate with the smallest and the largest Y/Latitude values.
-     *)
+    ///<value>
+    ///The maximal difference in Y/Latitude values
+    ///between the coordinate with the smallest and the largest Y/Latitude values.
+    ///</value>
     member this.MaxDifferenceForYNorthingLatitude =
         throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
         _maxDiffLatitudesLazyLoaded.Force() // F# Lazy loading: https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/lazy-computations
     
-    
-    (*
-     * @return the maximal difference in X/Longitude values
-     *      between the coordinate with the smallest and the largest X/Longitude values.
-     *)
+    ///<value>
+    ///The maximal difference in X/Longitude values
+    ///between the coordinate with the smallest and the largest X/Longitude values.
+    ///</value>
     member this.MaxDifferenceForXEastingLongitude =
         throwExceptionIfPreconditionViolated(this.IsStatisticsAvailable)
         _maxDiffLongitudesLazyLoaded.Force() // F# Lazy loading: https://docs.microsoft.com/en-us/dotnet/fsharp/language-reference/lazy-computations
 
-    (*
-    Factory method not intended to be used from client code.
-    Therefore it is "internal" but still available from test code 
-    because of the following configuration in the project file:
-    <ItemGroup>
-        <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
-            <_Parameter1>Programmerare.CrsTransformations.Test</_Parameter1>
-        </AssemblyAttribute>
-    </ItemGroup>
-     *)    
+    ///<summary>
+    ///Factory method not intended to be used from client code.
+    ///Therefore it is "internal" but still available from test code 
+    ///because of the following configuration in the project file:
+    ///<![CDATA[
+    ///<ItemGroup>
+    ///    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo">
+    ///        <_Parameter1>Programmerare.CrsTransformations.Test</_Parameter1>
+    ///    </AssemblyAttribute>
+    ///</ItemGroup>
+    ///]]>
+    ///</summary>
     static member internal _CreateCrsTransformationResultStatistic
         (
             results: IList<CrsTransformationResult>

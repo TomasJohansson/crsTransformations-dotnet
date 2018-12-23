@@ -1,25 +1,28 @@
 namespace Programmerare.CrsTransformations.CompositeTransformations
+
 open Programmerare.CrsTransformations
+
 (*
 Copyright (c) Tomas Johansson , http://programmerare.com
 The code in the "Core" project is licensed with MIT.
 Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
-
-
- * An instance of this class defines how much relative weight
- * a certain adapter implementation should have.
- * 
- * A list of these instances should be passed to the factory 
- * method for a composite object used for returning a weighted average 
- * of the longitude and latitude values originating from different leaf 
- * adapter implementations doing coordinate transformations.
-
- * @see CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage
- * @param crsTransformationAdapter an object implementing the interface CrsTransformationAdapter
- * @param weight the relative weight value to assign for the adapter specified by the adapter parameter
 *)
+
+///<summary>
+///<para>
+///An instance of this class defines how much relative weight
+///a certain adapter implementation should have.
+///</para>
+///<para/>
+///<para>
+///A list of these instances should be passed to the factory 
+///method for a composite object used for returning a weighted average 
+///of the longitude and latitude values originating from different leaf 
+///adapter implementations doing coordinate transformations.
+///</para>
+///</summary>
 type CrsTransformationAdapterWeight private
     (
         crsTransformationAdapter: ICrsTransformationAdapter,
@@ -37,11 +40,13 @@ type CrsTransformationAdapterWeight private
     member x.Weight = weight
     member x.CrsTransformationAdapter = crsTransformationAdapter
 
-    (*
-    * @param crsTransformationAdapterClassName the full class name (i.e. including the package name)
-    *  of a class which must implement the interface CrsTransformationAdapter
-    * @param weight the relative weight value to assign for the adapter specified by the string parameter 
-    *)
+    ///<param name="crsTransformationAdapterClassName">
+    ///crsTransformationAdapterClassName the full class name (i.e. including the package name)
+    ///of a class which must implement the interface CrsTransformationAdapter
+    ///</param>
+    ///<param name="weight">
+    ///the relative weight value to assign for the adapter specified by the string parameter 
+    ///</param>
     static member CreateFromStringWithFullClassNameForImplementation
         (
             crsTransformationAdapterClassName: string,
@@ -50,10 +55,12 @@ type CrsTransformationAdapterWeight private
         let crsTransformationAdapter = crsTransformationAdapterLeafFactory.GetCrsTransformationAdapter(crsTransformationAdapterClassName)
         CrsTransformationAdapterWeight(crsTransformationAdapter, weight)
 
-    (*
-    * @param crsTransformationAdapter an object implementing the interface CrsTransformationAdapter
-    * @param weight the relative weight value to assign for the adapter specified by the adapter parameter 
-    *)        
+    ///<param name="crsTransformationAdapter">
+    ///an object implementing the interface ICrsTransformationAdapter
+    ///</param>    
+    ///<param name="weight">
+    ///the relative weight value to assign for the adapter specified by the adapter parameter 
+    ///</param>
     static member CreateFromInstance
         (
             crsTransformationAdapter: ICrsTransformationAdapter,

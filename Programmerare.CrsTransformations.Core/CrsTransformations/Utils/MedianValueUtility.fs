@@ -1,5 +1,7 @@
 namespace Programmerare.CrsTransformations.Utils
+
 open System.Collections.Generic
+
 module MedianValueUtility =
     let GetMedianValue(values: List<double>): double =
         values.Sort()
@@ -16,5 +18,3 @@ module MedianValueUtility =
 // Therefore I consider an improvement of the above implementation as a YAGNI
 // https://stackoverflow.com/questions/4140719/calculate-median-in-c-sharp
 // https://github.com/mathnet/mathnet-numerics/blob/master/src/Numerics/Statistics/ArrayStatistics.cs
-// The current below implementation is based on the Kotlin 
-// implementation Programmerare.CrsTransformations.Core\crsTransformations\utils\MedianValueUtility.kt

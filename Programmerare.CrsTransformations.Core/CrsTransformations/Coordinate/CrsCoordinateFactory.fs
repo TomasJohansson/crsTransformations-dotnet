@@ -1,68 +1,65 @@
 namespace Programmerare.CrsTransformations.Coordinate
+
 open Programmerare.CrsTransformations.Identifier
+
 (*
 Copyright (c) Tomas Johansson , http://programmerare.com
 The code in the "Core" project is licensed with MIT.
 Other subprojects may be released with other licenses e.g. LGPL or Apache License 2.0.
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
-
- *
- * A coordinate is defined by three values:
- * 
- *      - X / Easting / Longitude
- *      
- *      - Y / Northing / Latitude
- *      
- *      - CRS (Coordinate Reference System) identifier with the EPSG code which defines the coordinate system
- *
- * 
- * Almost all factory methods takes the above three kind of parameters but in different order and with different names.
- * There are also a few methods without the last CRS parameter which then assumes WGS84 as the CRS.
- *
- * The names of the factory methods reflects the expected order of the first two parameters, for example the method
- * 
- *  "YX(y: double, x: double, epsgNumber: int)"
- *  
- *  versus the method
- *  
- *  "XY(x: double, y: double, epsgNumber: int)"
- *
- * 
- * The reason for all the different factory methods is that you may have preferences regarding using
- * short or long method names, and regarding the order of the x/Latitude and y/Longitude values.
- * Also, it may be convenient with different alternatives for the last parameter (e.g. string or integer as explained below).
- * 
- * The last parameter which specifies the CRS occurs with three different types:
- * 
- *      - integer: a number which is a so called EPSG code e.g. 4326 for the CRS WGS84
- *      
- *      - string: also an EPSG code but prefixed with "EPSG:" e.g. "EPSG:4326" for the CRS WGS84
- *      
- *      - CrsIdentifier: an object which will be the parameter to the transform method implementations,
- *                      and it provides easy accessors for either the above integer or the above string,
- *                      which is convenient since some adaptee implementations (i.e. third part libraries)
- *                      uses the integer number and some use the string with prefix "EPSG:"
- *                      
- *
- * Regarding the last parameter which specifies the CRS, if integer or string are used,
- * then the CrsIdentifier will be created internally.
- * Therefore, if multiple coordinates are to be created with the same CRS,
- * then you may prefer to use the object version i.e. create it once yourself,
- * instead of inmplicitly letting many instances becmoe created internally.
- * Otherwise you may find it more convenient to use factory method versions
- * with integer or string as the last parameter.
 *)
+
+///<summary>
+///<para>
+///Factory for creating instances of CrsCoordinate.
+///A coordinate is defined by three values:
+/// - X / Easting / Longitude
+/// - Y / Northing / Latitude
+/// - CRS (Coordinate Reference System) identifier with the EPSG code which defines the coordinate system
+///Almost all factory methods takes the above three kind of parameters but in different order and with different names.
+///There are also a few methods without the last CRS parameter which then assumes WGS84 as the CRS.
+///</para>
+///<para/>
+///<para>
+///The names of the factory methods reflects the expected order of the first two parameters, for example the method
+/// "YX(y: double, x: double, epsgNumber: int)"
+/// versus the method
+/// "XY(x: double, y: double, epsgNumber: int)"
+///</para>
+///<para/>
+///<para>
+///The reason for all the different factory methods is that you may have preferences regarding using
+///short or long method names, and regarding the order of the x/Latitude and y/Longitude values.
+///Also, it may be convenient with different alternatives for the last parameter (e.g. string or integer as explained below).
+///The last parameter which specifies the CRS occurs with three different types:
+/// - integer: a number which is a so called EPSG code e.g. 4326 for the CRS WGS84
+/// - string: also an EPSG code but prefixed with "EPSG:" e.g. "EPSG:4326" for the CRS WGS84
+/// - CrsIdentifier: an object which will be the parameter to the transform method implementations,
+///     and it provides easy accessors for either the above integer or the above string,
+///     which is convenient since some adaptee implementations (i.e. third part libraries)
+///     uses the integer number and some use the string with prefix "EPSG:"
+///</para>
+///<para/>
+///<para>
+///Regarding the last parameter which specifies the CRS, if integer or string are used,
+///then the CrsIdentifier will be created internally.
+///Therefore, if multiple coordinates are to be created with the same CRS,
+///then you may prefer to use the object version i.e. create it once yourself,
+///instead of inmplicitly letting many instances becmoe created internally.
+///Otherwise you may find it more convenient to use factory method versions
+///with integer or string as the last parameter.
+///</para>
+///</summary>
 [<AbstractClass; Sealed>]
 type CrsCoordinateFactory private() =
 
-
-    (*
-     * WGS84 is probably the most common coordinate reference system,
-     * the coordinates typically used with GPS.
-     * Therefore it is default for the factory methods not specifying
-     * the coordinate reference system.
-     *)
+    ///<summary>
+    ///WGS84 is probably the most common coordinate reference system,
+    ///the coordinates typically used with GPS.
+    ///Therefore it is default for the factory methods not specifying
+    ///the coordinate reference system.
+    ///</summary>
     static let COORDINATE_REFERENCE_SYSTEM_WGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(4326)
 
     // -------------------------------------------------------------------------
@@ -101,9 +98,7 @@ type CrsCoordinateFactory private() =
             yNorthingLatitude,
             CrsIdentifierFactory.CreateFromCrsCode(crsCode)
         )
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
+
     static member CreateFromXEastingLongitudeAndYNorthingLatitude
         (
             xEastingLongitude: double,
@@ -116,10 +111,6 @@ type CrsCoordinateFactory private() =
             crsIdentifier
         )
 
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member XY
         (
             x: double,
@@ -132,9 +123,6 @@ type CrsCoordinateFactory private() =
             crsIdentifier
         )
 
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member EastingNorthing
         (
             easting: double,
@@ -147,9 +135,6 @@ type CrsCoordinateFactory private() =
             crsIdentifier
         )
 
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member LonLat
         (
             longitude: double,
@@ -176,9 +161,6 @@ type CrsCoordinateFactory private() =
             epsgNumber
         )
 
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member XY
         (
             x: double,
@@ -192,9 +174,6 @@ type CrsCoordinateFactory private() =
         )
 
 
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member EastingNorthing
         (
             easting: double,
@@ -224,12 +203,6 @@ type CrsCoordinateFactory private() =
         )
 // -------------------------------------------------------------------------
 
-
-// -------------------------------------------------------------------------
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member CreateFromYNorthingLatitudeAndXEastingLongitude
         (
             yNorthingLatitude: double,
@@ -242,10 +215,6 @@ type CrsCoordinateFactory private() =
             epsgNumber
         )
 
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member YX
         (
             y: double,
@@ -258,9 +227,6 @@ type CrsCoordinateFactory private() =
             epsgNumber
         )
 
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member NorthingEasting
         (
             northing: double,
@@ -273,10 +239,6 @@ type CrsCoordinateFactory private() =
             epsgNumber
         )
 
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member LatLon
         (
             latitude: double,
@@ -290,11 +252,6 @@ type CrsCoordinateFactory private() =
         )
 // -------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member CreateFromXEastingLongitudeAndYNorthingLatitude
         (
             xEastingLongitude: double,
@@ -308,9 +265,6 @@ type CrsCoordinateFactory private() =
         )
 
 
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member XY
         (
             x: double,
@@ -323,10 +277,6 @@ type CrsCoordinateFactory private() =
             crsCode
         )
 
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member EastingNorthing
         (
             easting: double,
@@ -341,9 +291,6 @@ type CrsCoordinateFactory private() =
 
 
 
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member LonLat
         (
             longitude: double,
@@ -359,12 +306,6 @@ type CrsCoordinateFactory private() =
 
 // -------------------------------------------------------------------------
 
-
-// -------------------------------------------------------------------------
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member CreateFromYNorthingLatitudeAndXEastingLongitude
         (
             yNorthingLatitude: double,
@@ -377,9 +318,6 @@ type CrsCoordinateFactory private() =
             crsCode
         )
 
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member YX
         (
             y: double,
@@ -392,10 +330,6 @@ type CrsCoordinateFactory private() =
             crsCode
         )
 
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member NorthingEasting
         (
             northing: double,
@@ -408,11 +342,6 @@ type CrsCoordinateFactory private() =
             crsCode
         )
 
-
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member LatLon
         (
             latitude: double,
@@ -427,11 +356,6 @@ type CrsCoordinateFactory private() =
 
 // -------------------------------------------------------------------------
 
-// -------------------------------------------------------------------------
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member CreateFromYNorthingLatitudeAndXEastingLongitude
         (
             yNorthingLatitude: double,
@@ -444,10 +368,6 @@ type CrsCoordinateFactory private() =
             crsIdentifier
         )
 
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member YX
         (
             y: double,
@@ -460,10 +380,6 @@ type CrsCoordinateFactory private() =
             crsIdentifier
         )
 
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member NorthingEasting
         (
             northing: double,
@@ -477,9 +393,6 @@ type CrsCoordinateFactory private() =
         )
 
 
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member LatLon
         (
             latitude: double,
@@ -493,9 +406,9 @@ type CrsCoordinateFactory private() =
         )
 // -------------------------------------------------------------------------
 
-    (*
-     * The "GPS coordinate system" WGS84 is assumed when using this factory method.
-     *)
+    ///<summary>
+    ///The "GPS coordinate system" WGS84 is assumed when using this factory method.
+    ///</summary>
     static member CreateFromLongitudeLatitude
         (
             longitude: double,
@@ -507,9 +420,9 @@ type CrsCoordinateFactory private() =
             COORDINATE_REFERENCE_SYSTEM_WGS84
         )
 
-    (*
-     * The "GPS coordinate system" WGS84 is assumed when using this factory method.
-     *)
+    ///<summary>
+    ///The "GPS coordinate system" WGS84 is assumed when using this factory method.
+    ///</summary>
     static member LonLat
         (
             longitude: double,
@@ -522,9 +435,9 @@ type CrsCoordinateFactory private() =
         )
 
 
-    (*
-     * The "GPS coordinate system" WGS84 is assumed when using this factory method.
-     *)
+    ///<summary>
+    ///The "GPS coordinate system" WGS84 is assumed when using this factory method.
+    ///</summary>
     static member CreateFromLatitudeLongitude
         (
             latitude: double,
@@ -537,9 +450,9 @@ type CrsCoordinateFactory private() =
         )
 
 
-    (*
-     * The "GPS coordinate system" WGS84 is assumed when using this factory method.
-     *)
+    ///<summary>
+    ///The "GPS coordinate system" WGS84 is assumed when using this factory method.
+    ///</summary>
     static member LatLon
         (
             latitude: double,
@@ -550,5 +463,4 @@ type CrsCoordinateFactory private() =
             latitude,
             COORDINATE_REFERENCE_SYSTEM_WGS84
         )
-
 // -------------------------------------------------------------------------
