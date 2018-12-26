@@ -47,8 +47,6 @@ type CrsTransformationAdapterDotSpatial() as this =
         override this.AdapteeType =
             CrsTransformationAdapteeType.LEAF_DOT_SPATIAL_2_0_0_RC1
 
-        override this.LongNameOfImplementation = this.GetType().FullName
-
         // it is not a problem to hardcode the name below 
         // if the type name would become renamed since a 
         // renaming would then be detected by test code which 

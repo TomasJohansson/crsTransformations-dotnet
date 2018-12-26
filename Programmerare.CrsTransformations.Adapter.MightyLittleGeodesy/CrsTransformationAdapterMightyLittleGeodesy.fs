@@ -151,8 +151,6 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
         override this.AdapteeType =
             CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_1
 
-        override this.LongNameOfImplementation = this.GetType().FullName
-
         // it is not a problem to hardcode the name below 
         // if the type name would become renamed since a 
         // renaming would then be detected by test code which 

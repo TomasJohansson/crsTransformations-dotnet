@@ -139,8 +139,7 @@ type CrsTransformationAdapterBase
         abstract member IsComposite : bool
         default this.IsComposite = raise (System.NotImplementedException())
 
-        abstract member LongNameOfImplementation : string
-        default this.LongNameOfImplementation = raise (System.NotImplementedException())
+        member this.LongNameOfImplementation = this.GetType().FullName
 
         abstract member ShortNameOfImplementation : string
         default this.ShortNameOfImplementation = raise (System.NotImplementedException())

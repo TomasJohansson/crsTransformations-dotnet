@@ -81,10 +81,6 @@ type CrsTransformationAdapterComposite internal
         override this.IsComposite: bool = 
             true
 
-        // TODO: move the below implementation of "LongNameOfImplementation" into a base class
-        // (to avoid the duplication)
-        override this.LongNameOfImplementation = this.GetType().FullName
-
         override this.ShortNameOfImplementation : string = 
             let baseClassName = this.GetType().BaseType.Name
             let lengthOfClassNameSuffix = baseClassName.Length

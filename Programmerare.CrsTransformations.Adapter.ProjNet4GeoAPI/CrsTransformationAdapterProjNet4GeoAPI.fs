@@ -117,8 +117,6 @@ type CrsTransformationAdapterProjNet4GeoAPI
         override this.AdapteeType =
             CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1
 
-        override this.LongNameOfImplementation = this.GetType().FullName
-
         // it is not a problem to hardcode the name below 
         // if the type name would become renamed since a 
         // renaming would then be detected by test code which 
