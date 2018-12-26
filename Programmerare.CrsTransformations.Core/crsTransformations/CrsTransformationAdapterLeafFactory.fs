@@ -133,11 +133,7 @@ and internal CrsTransformationAdapterLeafFactoryWithHardcodedImplementations int
 
         static let GetTypeInstanceForClassName(className: string): Type =
             let theTypes = GetTypesWithAdapterImplementations()
-            let mutable theType: Type = null
-            for oneType in theTypes do
-                if oneType.FullName.Equals(className) then
-                    theType <- oneType
-            theType
+            theTypes.FirstOrDefault(fun t -> t.FullName.Equals(className))
 
         ///<param name="crsTransformationAdapterClassName">
         ///the full class name (i.e. including the namespace)
