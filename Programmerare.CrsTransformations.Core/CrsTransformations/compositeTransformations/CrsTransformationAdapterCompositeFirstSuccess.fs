@@ -10,7 +10,7 @@ type CrsTransformationAdapterCompositeFirstSuccess private
     class
         inherit CrsTransformationAdapterComposite
             (
-                CompositeStrategyForFirstSuccess._CreateCompositeStrategyForFirstSuccess(adapters)
+                CompositeStrategyFirstSuccess._CreateCompositeStrategyFirstSuccess(adapters)
             )
         static member Create
             (

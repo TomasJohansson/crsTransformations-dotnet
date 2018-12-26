@@ -2,18 +2,18 @@
 
 open System.Collections.Generic
 
-type CrsTransformationAdapterCompositeWeightedAverageValue private
+type CrsTransformationAdapterCompositeWeightedAverage private
     (
         weightedCrsTransformationAdapters: IList<CrsTransformationAdapterWeight>
     ) =
     class
         inherit CrsTransformationAdapterComposite
             (
-                CompositeStrategyForWeightedAverageValue._CreateCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters)
+                CompositeStrategyWeightedAverage._CreateCompositeStrategyWeightedAverage(weightedCrsTransformationAdapters)
             )
         static member Create
             (
                 weightedCrsTransformationAdapters: IList<CrsTransformationAdapterWeight>
             ) = 
-            CrsTransformationAdapterCompositeWeightedAverageValue(weightedCrsTransformationAdapters)
+            CrsTransformationAdapterCompositeWeightedAverage(weightedCrsTransformationAdapters)
     end

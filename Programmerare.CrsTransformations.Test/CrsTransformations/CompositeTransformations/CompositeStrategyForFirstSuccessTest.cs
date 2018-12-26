@@ -4,7 +4,7 @@ using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 
 namespace Programmerare.CrsTransformations.CompositeTransformations 
 {
-public class CompositeStrategyForFirstSuccessTest : CompositeStrategyTestBase {
+public class CompositeStrategyFirstSuccessTest : CompositeStrategyTestBase {
 
     [Test]
     public void transform_shouldReturnFirstResult_whenUsingFirstSuccessCompositeAdapter() {

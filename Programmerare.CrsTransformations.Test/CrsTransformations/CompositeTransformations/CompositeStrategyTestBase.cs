@@ -37,7 +37,7 @@ public abstract class CompositeStrategyTestBase {
 
         allAdapters = new List<ICrsTransformationAdapter>{
             // Regarding the order of the items in the list below:
-            // DotSpatial should be the first since it is assumed in the test by the subclass CompositeStrategyForFirstSuccessTest
+            // DotSpatial should be the first since it is assumed in the test by the subclass CompositeStrategyFirstSuccessTest
             adapterDotSpatial,
             adapterProjNet4GeoAPI,
             adapterMightyLittleGeodesy

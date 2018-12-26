@@ -66,7 +66,7 @@ type CrsTransformationAdapterCompositeFactory private
     ///composites with composites (but it is not obvious why anyone would want to do that)
     ///</param>
     member private this.CreateCrsTransformationMedian(list: IList<ICrsTransformationAdapter>): CrsTransformationAdapterComposite =
-        CrsTransformationAdapterCompositeMedianValue.Create(list) :> CrsTransformationAdapterComposite
+        CrsTransformationAdapterCompositeMedian.Create(list) :> CrsTransformationAdapterComposite
     // ----------------------------------------------
 
     // Two Average factory methods:
@@ -83,7 +83,7 @@ type CrsTransformationAdapterCompositeFactory private
     ///The only difference is that the average will be returned instead of the median.
     ///</summary>
     member private this.CreateCrsTransformationAverage(list: IList<ICrsTransformationAdapter>): CrsTransformationAdapterComposite =
-        CrsTransformationAdapterCompositeAverageValue.Create(list) :> CrsTransformationAdapterComposite
+        CrsTransformationAdapterCompositeAverage.Create(list) :> CrsTransformationAdapterComposite
     // ----------------------------------------------
 
     // Two FirstSuccess factory methods:
@@ -116,7 +116,7 @@ type CrsTransformationAdapterCompositeFactory private
         (
             weightedCrsTransformationAdapters: IList<CrsTransformationAdapterWeight>
         ): CrsTransformationAdapterComposite =
-            CrsTransformationAdapterCompositeWeightedAverageValue.Create(weightedCrsTransformationAdapters) :> CrsTransformationAdapterComposite
+            CrsTransformationAdapterCompositeWeightedAverage.Create(weightedCrsTransformationAdapters) :> CrsTransformationAdapterComposite
 
             // Another feature to maybe implement:
             // Configuration paramters e.g. dictionary 

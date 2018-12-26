@@ -10,7 +10,7 @@ using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 
 namespace Programmerare.CrsTransformations.CompositeTransformations 
 {
-public class CompositeStrategyForWeightedAverageValueTest : CompositeStrategyTestBase {
+public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
 
     private const double SMALL_DELTA_VALUE = 0.0000000001;
 
@@ -129,7 +129,7 @@ public class CompositeStrategyForWeightedAverageValueTest : CompositeStrategyTes
 
 
     [Test]
-    public void CreateCompositeStrategyForWeightedAverageValue_whenAllWeightsArePositive__shouldNotThrowException() {
+    public void CreateCompositeStrategyWeightedAverage_whenAllWeightsArePositive__shouldNotThrowException() {
         List<CrsTransformationAdapterWeight> weightedCrsTransformationAdapters =
             new List<CrsTransformationAdapterWeight>{
                 CrsTransformationAdapterWeight.CreateFromInstance(
@@ -137,12 +137,12 @@ public class CompositeStrategyForWeightedAverageValueTest : CompositeStrategyTes
                     1 // null is not possible (compiling error) which is good !
                 )
             };
-        CompositeStrategyForWeightedAverageValue compositeStrategyForWeightedAverageValue =
-                CompositeStrategyForWeightedAverageValue._CreateCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters);
+        CompositeStrategyWeightedAverage compositeStrategyWeightedAverage =
+                CompositeStrategyWeightedAverage._CreateCompositeStrategyWeightedAverage(weightedCrsTransformationAdapters);
         // (the above method is "internal" in the F# project but still available from here 
         //  because of "InternalsVisibleTo" configuration in the .fsproj file)
         // The main test of this test method is that the above create method does not throw an exception
-        Assert.IsNotNull(compositeStrategyForWeightedAverageValue);
+        Assert.IsNotNull(compositeStrategyWeightedAverage);
     }
 
     [Test]
@@ -170,11 +170,11 @@ public class CompositeStrategyForWeightedAverageValueTest : CompositeStrategyTes
 
         // The below type ICompositeStrategy is "internal" in the F# project but still available from here 
         //  because of "InternalsVisibleTo" configuration in the .fsproj file.
-        ICompositeStrategy compositeStrategyForWeightedAverageValue = CompositeStrategyForWeightedAverageValue._CreateCompositeStrategyForWeightedAverageValue(crsTransformationAdapterWeights);
+        ICompositeStrategy compositeStrategyWeightedAverage = CompositeStrategyWeightedAverage._CreateCompositeStrategyWeightedAverage(crsTransformationAdapterWeights);
         // the above composite was created with only one leaf in the list 
         // i.e. the object crsTransformationAdapterResultSource which is also used below    
                 
-        CrsTransformationResult crsTransformationResult1 = compositeStrategyForWeightedAverageValue._CalculateAggregatedResult(
+        CrsTransformationResult crsTransformationResult1 = compositeStrategyWeightedAverage._CalculateAggregatedResult(
             new List<CrsTransformationResult>{crsTransformationResult}, // allResults
             coordinate,
             coordinate.CrsIdentifier, //  crsIdentifier for OutputCoordinateSystem
@@ -195,7 +195,7 @@ public class CompositeStrategyForWeightedAverageValueTest : CompositeStrategyTes
         );
 
         InvalidOperationException exception = Assert.Throws<InvalidOperationException>( () => {
-            compositeStrategyForWeightedAverageValue._CalculateAggregatedResult(
+            compositeStrategyWeightedAverage._CalculateAggregatedResult(
                     new List<CrsTransformationResult>{crsTransformationResultProblem}, // allResults
                     coordinate,
                     coordinate.CrsIdentifier, //  crsIdentifier for OutputCoordinateSystem

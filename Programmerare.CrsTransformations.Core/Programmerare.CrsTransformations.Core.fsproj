@@ -40,16 +40,16 @@
     <Compile Include="CrsTransformations\CrsTransformationAdapterLeafFactory.fs" />
     <Compile Include="CrsTransformations\compositeTransformations\ICompositeStrategy.fs" />
     <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyBase.fs" />
-    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyForFirstSuccess.fs" />
-    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyForMedianValue.fs" />
-    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyForAverageValue.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyFirstSuccess.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyMedian.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyAverage.fs" />
     <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterWeight.fs" />
-    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyForWeightedAverageValue.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyForWeightedAverage.fs" />
     <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterComposite.fs" />
     <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeFirstSuccess.fs" />
-    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeMedianValue.fs" />
-    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeAverageValue.fs" />
-    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeWeightedAverageValue.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeMedian.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeAverage.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeWeightedAverage.fs" />
     <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeFactory.fs" />
   </ItemGroup>
 

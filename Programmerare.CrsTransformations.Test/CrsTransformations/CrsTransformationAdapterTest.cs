@@ -234,36 +234,16 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
     }
 
     [Test]
-    public void getShortNameOfImplementation_shouldReturnUniqueSuffixPartOfTheClassName() {
+    public void ShortNameOfImplementation_shouldReturnUniqueSuffixPartOfTheClassName() {
         // Of course fragile, but the class/package name will not change
         // often and if/when it does the test will fail but will be trivial to fix.
         // The purpose of this test is not only to "test" but also to
         // illustrate what the method returns
-        Assert.AreEqual(
-            "DotSpatial",
-            (new CrsTransformationAdapterDotSpatial()).ShortNameOfImplementation
-        );
 
-        Assert.AreEqual(
-            "MightyLittleGeodesy",
-            (new CrsTransformationAdapterMightyLittleGeodesy()).ShortNameOfImplementation
-        );
-
-        Assert.AreEqual(
-            "ProjNet4GeoAPI",
-            (new CrsTransformationAdapterProjNet4GeoAPI()).ShortNameOfImplementation
-        );
-
-        // The above tests are for the "Leaf" implementations.
-        // Below is a "Composite" created
-        CrsTransformationAdapterComposite compositeAdapterAverage = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
-        // The class name for the above adapter is "CrsTransformationAdapterComposite"
-        // and the prefix part "CrsTransformationAdapter" is removed from the name
-        // to get the short implementation i.e. just "Composite"
-        Assert.AreEqual(
-            "AverageValue",
-            compositeAdapterAverage.ShortNameOfImplementation
-        );
+        // These tests (previously located here) have been removed since they also 
+        // were duplicated and currently are located in the class / method below:
+        // class: CrsTransformationAdapterBaseTest
+        // method: ShortNameOfImplementation_ShouldReturnSuffixPartOfClassName
     }
 
     [Test]

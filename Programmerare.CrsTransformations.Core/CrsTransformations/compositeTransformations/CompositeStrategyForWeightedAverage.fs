@@ -13,7 +13,7 @@ Other subprojects may be released with other licenses e.g. LGPL or Apache Licens
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 *)
-type internal CompositeStrategyForWeightedAverageValue private
+type internal CompositeStrategyWeightedAverage private
     (
         crsTransformationAdapters : IList<ICrsTransformationAdapter>,
         weights: IDictionary<CrsTransformationAdapteeType, double>
@@ -39,8 +39,8 @@ type internal CompositeStrategyForWeightedAverageValue private
         member internal this._GetWeights() = weights
 
         override this._EqualsWhenTypeAndSameLeafsHaveBeenChecked(compositeStrategy: CompositeStrategyBase) =
-            if(compositeStrategy :? CompositeStrategyForWeightedAverageValue) then
-                let that = compositeStrategy :?> CompositeStrategyForWeightedAverageValue
+            if(compositeStrategy :? CompositeStrategyWeightedAverage) then
+                let that = compositeStrategy :?> CompositeStrategyWeightedAverage
                 let thatWeights = that._GetWeights()
                 let mutable areEqual = true
                 for thatWeight in thatWeights do
@@ -114,10 +114,10 @@ type internal CompositeStrategyForWeightedAverageValue private
 
             override this._GetAdapteeType() : CrsTransformationAdapteeType = this._GetAdapteeType()
 
-        static member internal _CreateCompositeStrategyForWeightedAverageValue
+        static member internal _CreateCompositeStrategyWeightedAverage
             (
                 weightedCrsTransformationAdapters: IList<CrsTransformationAdapterWeight>
-            ): CompositeStrategyForWeightedAverageValue =
+            ): CompositeStrategyWeightedAverage =
                 let adapters = weightedCrsTransformationAdapters.Select(fun it -> it.CrsTransformationAdapter).ToList()
                 let map = Dictionary<CrsTransformationAdapteeType, double>()
                 for fw in weightedCrsTransformationAdapters do
@@ -125,6 +125,6 @@ type internal CompositeStrategyForWeightedAverageValue private
                     // should be enforced already at construction with an exception being thrown
                     // if the below weight value would be non-positive 
                     map.Add(fw.CrsTransformationAdapter.AdapteeType, fw.Weight);
-                CompositeStrategyForWeightedAverageValue(adapters, map)
+                CompositeStrategyWeightedAverage(adapters, map)
 
     end

@@ -10,7 +10,7 @@ Other subprojects may be released with other licenses e.g. LGPL or Apache Licens
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
  *)
-type internal CompositeStrategyForFirstSuccess private
+type internal CompositeStrategyFirstSuccess private
     (
         crsTransformationAdapters : IList<ICrsTransformationAdapter>
     ) =
@@ -75,10 +75,10 @@ type internal CompositeStrategyForFirstSuccess private
         * but instead the factory class should be used.
         * @see CrsTransformationAdapterCompositeFactory
         *)
-        static member internal _CreateCompositeStrategyForFirstSuccess
+        static member internal _CreateCompositeStrategyFirstSuccess
             (
                 adapters: IList<ICrsTransformationAdapter>
             ) =
-                CompositeStrategyForFirstSuccess(adapters)
+                CompositeStrategyFirstSuccess(adapters)
 
     end

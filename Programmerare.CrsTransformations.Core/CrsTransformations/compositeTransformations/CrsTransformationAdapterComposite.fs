@@ -92,8 +92,8 @@ type CrsTransformationAdapterComposite internal
             // Base class name:  
             // "CrsTransformationAdapterComposite"
             // Name of subclasses:
-            // "CrsTransformationAdapterCompositeMedianValue"
-            // "CrsTransformationAdapterCompositeAverageValue"
+            // "CrsTransformationAdapterCompositeMedian"
+            // "CrsTransformationAdapterCompositeAverage"
             // and so on
             let thisClassName = this.GetType().Name
             if(thisClassName.Length > lengthOfClassNameSuffix) then

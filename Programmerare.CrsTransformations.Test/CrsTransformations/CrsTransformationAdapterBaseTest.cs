@@ -325,12 +325,12 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
             );
             
             Assert.AreEqual(
-                typeof(CrsTransformationAdapterCompositeAverageValue).FullName,
+                typeof(CrsTransformationAdapterCompositeAverage).FullName,
                 average.LongNameOfImplementation
             );
 
             Assert.AreEqual(
-                typeof(CrsTransformationAdapterCompositeMedianValue).FullName,
+                typeof(CrsTransformationAdapterCompositeMedian).FullName,
                 median.LongNameOfImplementation
             );
 
@@ -340,7 +340,7 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
             );
 
             Assert.AreEqual(
-                typeof(CrsTransformationAdapterCompositeWeightedAverageValue).FullName,
+                typeof(CrsTransformationAdapterCompositeWeightedAverage).FullName,
                 weightedAverage.LongNameOfImplementation
             );
         }
@@ -364,12 +364,12 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
             );
 
             Assert.AreEqual(
-                "AverageValue",
+                "Average",
                 average.ShortNameOfImplementation
             );
 
             Assert.AreEqual(
-                "MedianValue",
+                "Median",
                 median.ShortNameOfImplementation
             );
 
@@ -379,7 +379,7 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
             );
 
             Assert.AreEqual(
-                "WeightedAverageValue",
+                "WeightedAverage",
                 weightedAverage.ShortNameOfImplementation
             );
         }

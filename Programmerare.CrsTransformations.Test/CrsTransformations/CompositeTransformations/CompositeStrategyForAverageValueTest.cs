@@ -7,7 +7,7 @@ using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 
 namespace Programmerare.CrsTransformations.CompositeTransformations 
 {
-public class CompositeStrategyForAverageValueTest : CompositeStrategyTestBase {
+public class CompositeStrategyAverageTest : CompositeStrategyTestBase {
 
     private const double delta = 0.000000001;
 

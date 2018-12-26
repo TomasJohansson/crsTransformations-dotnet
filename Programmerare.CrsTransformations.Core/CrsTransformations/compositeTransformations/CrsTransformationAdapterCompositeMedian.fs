@@ -3,18 +3,18 @@
 open System.Collections.Generic
 open Programmerare.CrsTransformations
 
-type CrsTransformationAdapterCompositeAverageValue private
+type CrsTransformationAdapterCompositeMedian private
     (
         adapters: IList<ICrsTransformationAdapter>
     ) =
     class
         inherit CrsTransformationAdapterComposite
             (
-                CompositeStrategyForAverageValue._CreateCompositeStrategyForAverageValue(adapters)
+                CompositeStrategyMedian._CreateCompositeStrategyMedian(adapters)
             )
         static member Create
             (
                 adapters: IList<ICrsTransformationAdapter>
             ) = 
-            CrsTransformationAdapterCompositeAverageValue(adapters)
+            CrsTransformationAdapterCompositeMedian(adapters)
     end
