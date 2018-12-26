@@ -256,13 +256,13 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
 
         // The above tests are for the "Leaf" implementations.
         // Below is a "Composite" created
-        CrsTransformationAdapterComposite compositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
+        CrsTransformationAdapterComposite compositeAdapterAverage = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
         // The class name for the above adapter is "CrsTransformationAdapterComposite"
         // and the prefix part "CrsTransformationAdapter" is removed from the name
         // to get the short implementation i.e. just "Composite"
         Assert.AreEqual(
-            "Composite",
-            compositeAdapter.ShortNameOfImplementation
+            "AverageValue",
+            compositeAdapterAverage.ShortNameOfImplementation
         );
     }
 

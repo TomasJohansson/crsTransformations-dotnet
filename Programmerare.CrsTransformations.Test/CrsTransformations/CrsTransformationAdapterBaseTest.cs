@@ -305,5 +305,83 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
                 crsTransformationAdapterCompositeFactoryWithOneLeafDifferentlyConfigured.CreateCrsTransformationAverage()
             );
         }
+
+        [Test]
+        public void LongNameOfImplementation_ShouldReturnFullClassName() {
+
+            Assert.AreEqual(
+                typeof(CrsTransformationAdapterDotSpatial).FullName,
+                dotSpatial.LongNameOfImplementation
+            );
+
+            Assert.AreEqual(
+                typeof(CrsTransformationAdapterProjNet4GeoAPI).FullName,
+                projNet4GeoAPI.LongNameOfImplementation
+            );
+
+            Assert.AreEqual(
+                typeof(CrsTransformationAdapterMightyLittleGeodesy).FullName,
+                mightyLittleGeodesy.LongNameOfImplementation
+            );
+            
+            Assert.AreEqual(
+                typeof(CrsTransformationAdapterCompositeAverageValue).FullName,
+                average.LongNameOfImplementation
+            );
+
+            Assert.AreEqual(
+                typeof(CrsTransformationAdapterCompositeMedianValue).FullName,
+                median.LongNameOfImplementation
+            );
+
+            Assert.AreEqual(
+                typeof(CrsTransformationAdapterCompositeFirstSuccess).FullName,
+                firstSuccess.LongNameOfImplementation
+            );
+
+            Assert.AreEqual(
+                typeof(CrsTransformationAdapterCompositeWeightedAverageValue).FullName,
+                weightedAverage.LongNameOfImplementation
+            );
+        }
+
+        [Test]
+        public void ShortNameOfImplementation_ShouldReturnSuffixPartOfClassName() {
+            
+            Assert.AreEqual(
+                "DotSpatial",
+                dotSpatial.ShortNameOfImplementation
+            );
+
+            Assert.AreEqual(
+                "ProjNet4GeoAPI",
+                projNet4GeoAPI.ShortNameOfImplementation
+            );
+
+            Assert.AreEqual(
+                "MightyLittleGeodesy",
+                mightyLittleGeodesy.ShortNameOfImplementation
+            );
+
+            Assert.AreEqual(
+                "AverageValue",
+                average.ShortNameOfImplementation
+            );
+
+            Assert.AreEqual(
+                "MedianValue",
+                median.ShortNameOfImplementation
+            );
+
+            Assert.AreEqual(
+                "FirstSuccess",
+                firstSuccess.ShortNameOfImplementation
+            );
+
+            Assert.AreEqual(
+                "WeightedAverageValue",
+                weightedAverage.ShortNameOfImplementation
+            );
+        }
     }
 }

@@ -46,6 +46,10 @@
     <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterWeight.fs" />
     <Compile Include="CrsTransformations\compositeTransformations\CompositeStrategyForWeightedAverageValue.fs" />
     <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterComposite.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeFirstSuccess.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeMedianValue.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeAverageValue.fs" />
+    <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeWeightedAverageValue.fs" />
     <Compile Include="CrsTransformations\compositeTransformations\CrsTransformationAdapterCompositeFactory.fs" />
   </ItemGroup>
 

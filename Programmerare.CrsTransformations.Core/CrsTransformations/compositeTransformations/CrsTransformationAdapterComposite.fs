@@ -12,13 +12,10 @@ Please find more information in the license file at the root directory of each s
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 *)
 ///<summary>
-///"Base class" for the 'composite' adapters.
-/// (well actually it is THE class since it is currently not using inheritance 
-///    but rather composition)
-/// TODO: use some inheritance also to make use of the method 'LongNameOfImplementation'
-///     ain a similar way as the Leafs i.e. let the property be different class names depending on the implementation
+///Base class for the 'composite' adapters.
 ///</summary>
-type CrsTransformationAdapterComposite private
+[<AbstractClass>]
+type CrsTransformationAdapterComposite internal
     (
     (*
      * Interface for calculating the resulting coordinate in different ways, 
@@ -84,17 +81,28 @@ type CrsTransformationAdapterComposite private
         override this.IsComposite: bool = 
             true
 
+        // TODO: move the below implementation of "LongNameOfImplementation" into a base class
+        // (to avoid the duplication)
+        override this.LongNameOfImplementation = this.GetType().FullName
+
         override this.ShortNameOfImplementation : string = 
-            "Composite"
+            let baseClassName = this.GetType().BaseType.Name
+            let lengthOfClassNameSuffix = baseClassName.Length
+            // The suffix for each subclass is the name of the base class.
+            // Base class name:  
+            // "CrsTransformationAdapterComposite"
+            // Name of subclasses:
+            // "CrsTransformationAdapterCompositeMedianValue"
+            // "CrsTransformationAdapterCompositeAverageValue"
+            // and so on
+            let thisClassName = this.GetType().Name
+            if(thisClassName.Length > lengthOfClassNameSuffix) then
+                thisClassName.Substring(lengthOfClassNameSuffix)
+            else
+                thisClassName
 
         override this.AdapteeType : CrsTransformationAdapteeType =
             this._GetCompositeStrategy()._GetAdapteeType()
-
-        static member internal _CreateCrsTransformationAdapterComposite
-            (
-                compositeStrategy: ICompositeStrategy
-            ): CrsTransformationAdapterComposite =
-                CrsTransformationAdapterComposite(compositeStrategy)
 
         member this.TransformToCoordinate(inputCoordinate, crsCode) =
             this._TransformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))

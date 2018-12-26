@@ -66,13 +66,7 @@ type CrsTransformationAdapterCompositeFactory private
     ///composites with composites (but it is not obvious why anyone would want to do that)
     ///</param>
     member private this.CreateCrsTransformationMedian(list: IList<ICrsTransformationAdapter>): CrsTransformationAdapterComposite =
-        CrsTransformationAdapterComposite._CreateCrsTransformationAdapterComposite
-            (
-                CompositeStrategyForMedianValue._CreateCompositeStrategyForMedianValue
-                    (
-                        list
-                    )
-            )
+        CrsTransformationAdapterCompositeMedianValue.Create(list) :> CrsTransformationAdapterComposite
     // ----------------------------------------------
 
     // Two Average factory methods:
@@ -82,20 +76,14 @@ type CrsTransformationAdapterCompositeFactory private
     ///The only difference is that the average will be returned instead of the median.
     ///</summary>
     member this.CreateCrsTransformationAverage(): CrsTransformationAdapterComposite =
-        this.CreateCrsTransformationAverage (functionReturningListToUseForFactoryMethodsWithoutParameters())
+        this.CreateCrsTransformationAverage(functionReturningListToUseForFactoryMethodsWithoutParameters())
 
     ///<summary>
     ///Please see the documentation for the factory methods creating a median composite.
     ///The only difference is that the average will be returned instead of the median.
     ///</summary>
     member private this.CreateCrsTransformationAverage(list: IList<ICrsTransformationAdapter>): CrsTransformationAdapterComposite =
-        CrsTransformationAdapterComposite._CreateCrsTransformationAdapterComposite
-            (
-                CompositeStrategyForAverageValue._CreateCompositeStrategyForAverageValue
-                    (
-                        list
-                    )
-            )
+        CrsTransformationAdapterCompositeAverageValue.Create(list) :> CrsTransformationAdapterComposite
     // ----------------------------------------------
 
     // Two FirstSuccess factory methods:
@@ -113,13 +101,7 @@ type CrsTransformationAdapterCompositeFactory private
     ///leaf implementation until a succesful result has been found.
     ///</summary>
     member private this.CreateCrsTransformationFirstSuccess(list: IList<ICrsTransformationAdapter>): CrsTransformationAdapterComposite =
-        CrsTransformationAdapterComposite._CreateCrsTransformationAdapterComposite
-            (
-                CompositeStrategyForFirstSuccess._CreateCompositeStrategyForFirstSuccess
-                    (
-                        list
-                    )
-            )
+        CrsTransformationAdapterCompositeFirstSuccess.Create(list) :> CrsTransformationAdapterComposite
 
     // ----------------------------------------------
 
@@ -134,10 +116,7 @@ type CrsTransformationAdapterCompositeFactory private
         (
             weightedCrsTransformationAdapters: IList<CrsTransformationAdapterWeight>
         ): CrsTransformationAdapterComposite =
-            CrsTransformationAdapterComposite._CreateCrsTransformationAdapterComposite
-                (
-                    CompositeStrategyForWeightedAverageValue._CreateCompositeStrategyForWeightedAverageValue(weightedCrsTransformationAdapters)
-                )
+            CrsTransformationAdapterCompositeWeightedAverageValue.Create(weightedCrsTransformationAdapters) :> CrsTransformationAdapterComposite
 
             // Another feature to maybe implement:
             // Configuration paramters e.g. dictionary 
