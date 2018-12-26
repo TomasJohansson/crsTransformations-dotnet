@@ -100,23 +100,22 @@ type CrsTransformationAdapterComposite internal
         override this.AdapteeType : CrsTransformationAdapteeType =
             this._GetCompositeStrategy()._GetAdapteeType()
 
-        member this.TransformToCoordinate(inputCoordinate, crsCode) =
+        override this.TransformToCoordinate(inputCoordinate, crsCode) =
             this._TransformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
 
-        member this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
+        override this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
             this._TransformToCoordinateStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
 
-        member this.TransformToCoordinate(inputCoordinate, crsIdentifier) = 
+        override this.TransformToCoordinate(inputCoordinate, crsIdentifier) = 
             this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifier)
 
-
-        member this.Transform(inputCoordinate, crsCode) =
+        override this.Transform(inputCoordinate, crsCode) =
             this._TransformStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromCrsCode(crsCode))
 
-        member this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
+        override this.Transform(inputCoordinate, epsgNumberForOutputCoordinateSystem) = 
             this._TransformStrategy(inputCoordinate, CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberForOutputCoordinateSystem))
 
-        member this.Transform(inputCoordinate, crsIdentifier) = 
+        override this.Transform(inputCoordinate, crsIdentifier) = 
             this._TransformStrategy(inputCoordinate, crsIdentifier)
                 
         interface ICrsTransformationAdapter with
