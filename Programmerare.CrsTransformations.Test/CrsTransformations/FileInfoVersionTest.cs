@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Text;
 using NUnit.Framework;
 
 namespace Programmerare.CrsTransformations
@@ -48,6 +46,42 @@ namespace Programmerare.CrsTransformations
             // which is the real use case for the FileInfoVersion,
             // i.e. those tests are used for helping to remember to update 
             // the tested enum if an upgrade has been made.
+        }
+
+        [Test]
+        public void FileInfoVersion_ShouldBeEqual_WhenAllPropertiesAreEqual()
+        {
+            var f1 = new FileInfoVersion("", -1L, "");
+            var f2 = new FileInfoVersion("", -1L, "");
+            // The above two should be equal but the rest below should be different
+            var f3 = new FileInfoVersion("a", -1L, "");
+            var f4 = new FileInfoVersion("", -1L, "a");
+            var f5 = new FileInfoVersion("", -2L, "");
+            var f6 = new FileInfoVersion("", 0, "");
+            var f7 = new FileInfoVersion("", 1, "");
+            var f8 = new FileInfoVersion(" ", -1L, ""); // space
+            var f9 = new FileInfoVersion("", -1L, " "); // space
+            
+            Assert.AreEqual(f1, f2);
+            Assert.AreEqual(f1.GetHashCode(), f2.GetHashCode());
+
+            Assert.AreNotEqual(f1, f3);
+            Assert.AreNotEqual(f1, f4);
+            Assert.AreNotEqual(f1, f5);
+            Assert.AreNotEqual(f1, f6);
+            Assert.AreNotEqual(f1, f7);
+            Assert.AreNotEqual(f1, f8);
+            Assert.AreNotEqual(f1, f9);
+        }
+
+        [Test]
+        public void IsRepresentingThirdPartLibrary_ShouldBeTrue_WhenUsingInstanceRepresentingNonThirdPartLibrary()
+        {
+            var instanceRepresentingNonThirdPartLibrary = FileInfoVersion.FileInfoVersionNOTrepresentingThirdPartLibrary;
+            Assert.IsFalse(instanceRepresentingNonThirdPartLibrary.IsRepresentingThirdPartLibrary());
+
+            var someOtherInstanceWithDifferentPropertyValues = new FileInfoVersion("a", 123, "b");
+            Assert.IsTrue(someOtherInstanceWithDifferentPropertyValues.IsRepresentingThirdPartLibrary());
         }
     }
 }

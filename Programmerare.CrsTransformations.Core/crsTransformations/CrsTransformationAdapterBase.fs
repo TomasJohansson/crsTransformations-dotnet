@@ -42,19 +42,16 @@ type FileInfoVersion internal
         
         static member internal FileInfoVersionNOTrepresentingThirdPartLibrary = FileInfoVersion("", -1L, "")
 
+        override this.Equals(obj) =
+            match obj with
+            | :? FileInfoVersion as f -> (fileName, fileSize, version) = (f.FileName, f.FileSize, f.Version)
+            | _ -> false
+
+        override this.GetHashCode() =
+            Tuple.Create(this.FileName, this.FileSize, this.Version).GetHashCode()
+
         member internal this.IsRepresentingThirdPartLibrary() = 
-            let f = FileInfoVersion.FileInfoVersionNOTrepresentingThirdPartLibrary
-            if (
-                // TODO refactor the below code with an Equals method of the type FileInfoVersion
-                f.FileName.Equals(this.FileName)
-                &&
-                f.Version.Equals(this.Version)
-                &&
-                f.FileSize = this.FileSize
-            ) then
-                false
-            else
-                true
+            not(this.Equals(FileInfoVersion.FileInfoVersionNOTrepresentingThirdPartLibrary))
 
         ///<summary>
         ///Helper method intended to be used from implementing adapters 
