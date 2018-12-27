@@ -1,4 +1,5 @@
 namespace Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI
+
 open System.Collections.Generic
 open ProjNet // CoordinateSystemServices
 open ProjNet.CoordinateSystems // CoordinateSystemFactory
@@ -127,30 +128,11 @@ type CrsTransformationAdapterProjNet4GeoAPI
         member private this._GetFileInfoVersion() =
             FileInfoVersion.GetFileInfoVersionHelper(typeof<CoordinateSystemFactory>)
 
-        //member this.SetSridReader(sridReader: SridReader) = 
-        //    _sridReader <- sridReader
-
-        //member this.SetCrsCachingStrategy(crsCachingStrategy: CrsCachingStrategy) = 
-        //    if (
-        //            crsCachingStrategy = CrsCachingStrategy.NO_CACHING
-        //            ||
-        //            (
-        //                _crsCachingStrategy <> CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
-        //                &&
-        //                crsCachingStrategy = CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
-        //                // if it changed to looking up everything 
-        //                // from something else then now reset the hashtable below
-        //                // since the lookup method first check the hash table 
-        //            )
-        //        ) then
-        //        _cachedCoordinateSystem <- Dictionary<int, ICoordinateSystem>()
-        //    _crsCachingStrategy <- crsCachingStrategy
-
         member this.GetCrsCachingStrategy() = 
             _crsCachingStrategy
         
         // mainly for testing purpose:
-        member this.IsEpsgCached(epsgNumber) : bool =     
+        member this.IsEpsgCached(epsgNumber) : bool =
             _cachedCoordinateSystem.ContainsKey(epsgNumber)
 
         new () = // as this = 

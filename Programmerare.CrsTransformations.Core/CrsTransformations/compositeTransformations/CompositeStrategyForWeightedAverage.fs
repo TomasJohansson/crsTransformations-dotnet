@@ -121,7 +121,7 @@ type internal CompositeStrategyWeightedAverage private
                 let adapters = weightedCrsTransformationAdapters.Select(fun it -> it.CrsTransformationAdapter).ToList()
                 let map = Dictionary<CrsTransformationAdapteeType, double>()
                 for fw in weightedCrsTransformationAdapters do
-                    //  no need to check for negative weight values here since it 
+                    // No need to check for negative weight values here since it 
                     // should be enforced already at construction with an exception being thrown
                     // if the below weight value would be non-positive 
                     map.Add(fw.CrsTransformationAdapter.AdapteeType, fw.Weight);

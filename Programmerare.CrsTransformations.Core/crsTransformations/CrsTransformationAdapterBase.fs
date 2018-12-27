@@ -6,7 +6,6 @@ open System.Text.RegularExpressions
 open System.Collections.Generic
 open Programmerare.CrsTransformations.Coordinate
 open Programmerare.CrsTransformations.Identifier
-open System.Diagnostics
 
 (*
 Copyright (c) Tomas Johansson , http://programmerare.com
@@ -116,7 +115,7 @@ type CrsTransformationAdapterBase
         let TrowExceptionIfCoordinateIsNull(inputCoordinate) : unit = 
             if isNull inputCoordinate then
                 nullArg "inputCoordinate"
-            // The above would cause this error:
+            // The above may cause this error:
             // "Value cannot be null. Parameter name: inputCoordinate"
             // instead of the following which otherwise might occur later:
             // "Object reference not set to an instance of an object"
@@ -126,7 +125,11 @@ type CrsTransformationAdapterBase
 
         override this.GetHashCode() =
             this.AdapteeType.GetHashCode()
-            
+
+        // this method should be overridden in subclasses 
+        // where different instances of the same subclass 
+        // should be considered as different, for example 
+        // the subclass 'CrsTransformationAdapterProjNet4GeoAPI'
         override this.Equals(o) =
             if(isNull o) then
                 false
@@ -183,37 +186,30 @@ type CrsTransformationAdapterBase
         // for detecting upgrades to a new version (and then update the above method returned enum value)
         // Future failure will be a reminder to update a corresponding enum value.
         (*
-            * This helper method is NOT intended for
-            * client code but only for test code purposes.
-             Therefore it is named with "_" as prefix.
-            * 
-            * It should be overridden by subclasses.
-            * returns a default value should be returned by the composites (i.e. they should not override).
-            *      
-            *      The 'leaf' adapter implementations should return the
-            *      name of the DLL file and version number retrieved through the file path.
-            *      
-            *      The reason is that the DLL files (retrieved through NuGet)
-            *      includes the version name it the path and can be asserted in test code
-            *      to help remembering that the value of an enum specifying
-            *      the 'adaptee' (and version) should be updated after an adaptee upgrade.
-                Example of a nuget path:
-                // ...\.nuget\packages\mightylittlegeodesy\1.0.1\lib\net45\MightyLittleGeodesy.dll
-                // From the above file we can extract two things i.e. the file name "MightyLittleGeodesy.dll"
-                and the version number "1.0.1" and both these components can be put into 
-                a FileInfoVersion instance
-            *)
+            This helper method is NOT intended for
+            client code but only for test code purposes.
+            Therefore it is named with "_" as prefix.
+             
+            It should be overridden by subclasses.
+            returns a default value should be returned by the composites (i.e. they should not override).
+                  
+                The 'leaf' adapter implementations should return the
+                name of the DLL file and version number retrieved through the file path.
+                  
+                The reason is that the DLL files (retrieved through NuGet)
+                includes the version name it the path and can be asserted in test code
+                to help remembering that the value of an enum specifying
+                the 'adaptee' (and version) should be updated after an adaptee upgrade.
+            Example of a nuget path:
+            // ...\.nuget\packages\mightylittlegeodesy\1.0.1\lib\net45\MightyLittleGeodesy.dll
+            // From the above file we can extract two things i.e. the file name "MightyLittleGeodesy.dll"
+            and the version number "1.0.1" and both these components can be put into 
+            a FileInfoVersion instance
+        *)
         member internal this._GetFileInfoVersion() : FileInfoVersion = 
             functionReturningFileInfoVersion()
-        // Previously, the above method was exposed as public 
-        // by being defined as abstract as below:
-        // (and it should not be "abstract internal" since the access have to 
-        //  be the same as the type, and the type should be inherited 
-        //  by implementations in other assemblies)
-        //abstract member _GetFileInfoVersion : unit -> FileInfoVersion
-        //default this._GetFileInfoVersion() = defaultFileInfoVersion
-        // However, to avoid exposing the above method as public
-        // it is not "internal" instead, and the implementing 
+        // To avoid exposing the above method as public
+        // it is internal", and the implementing 
         // subclasses (in other assemblies) can pass the function 
         // as a constructor parameter.
 

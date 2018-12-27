@@ -32,7 +32,7 @@ Please find more information in the license file at the root directory of each s
 /// - XEastingLongitude
 ///     (the name is also used as one of the four accessors for the part of the coordinate that represents the east-west/X/Longitude direction)
 /// - YNorthingLatitude
-///     (the name is also used as one of the four accessors for the part of the coordinate that represents the east-west/Y/Latitude direction)
+///     (the name is also used as one of the four accessors for the part of the coordinate that represents the north-south/Y/Latitude direction)
 /// - CRS (Coordinate Reference System) identifier with the EPSG code 
 ///     which defines the coordinate reference system for the coordinate instance. 
 ///<para>
@@ -44,8 +44,8 @@ type CrsCoordinate private
     yNorthingLatitude: double,
     crsIdentifier: CrsIdentifier
     ) =
-    // The constructor is private to force client code to use the below factory methods
-    // which are named to indicate the order of the longitude and latitude parameters.
+    // The above constructor is private to force 
+    // the client code to use a factory method.
 
     // -----------------------
     // Four getters for X / Easting / Longitude :
@@ -103,7 +103,6 @@ type CrsCoordinate private
     member this.CrsIdentifier = crsIdentifier
 
     override this.Equals(obj) =
-        // found this below at stack overflow
         match obj with
         | :? CrsCoordinate as c -> (xEastingLongitude, yNorthingLatitude, crsIdentifier) = (c.XEastingLongitude, c.YNorthingLatitude, c.CrsIdentifier)
         | _ -> false
@@ -114,7 +113,7 @@ type CrsCoordinate private
         Tuple.Create(this.XEastingLongitude, this.YNorthingLatitude, this.CrsIdentifier).GetHashCode()
 
     override this.ToString() =
-        "Coordinate(xEastingLongitude=" + this.X.ToString() + ", yNorthingLatitude=" + this.Y.ToString() + ", crsIdentifier=" + this.CrsIdentifier.ToString() + ")"
+        "CrsCoordinate(xEastingLongitude=" + this.X.ToString() + ", yNorthingLatitude=" + this.Y.ToString() + ", crsIdentifier=" + this.CrsIdentifier.ToString() + ")"
 
     //------------------------------------------------------------------
 

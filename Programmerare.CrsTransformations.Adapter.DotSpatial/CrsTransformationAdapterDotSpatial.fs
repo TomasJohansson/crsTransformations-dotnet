@@ -1,4 +1,5 @@
 namespace Programmerare.CrsTransformations.Adapter.DotSpatial
+
 open DotSpatial.Projections
 open Programmerare.CrsTransformations
 open Programmerare.CrsTransformations.Coordinate
@@ -27,15 +28,15 @@ type CrsTransformationAdapterDotSpatial() as this =
             // (for example as in the subclass 'CrsTransformationAdapterProjNet4GeoAPI')
             base.Equals(o)
 
-        // added the below method to get rid of the warning
+        // added the below method to get rid of a warning
         override this.GetHashCode() = base.GetHashCode()
 
         member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
-            let projInfoSourceCrs = ProjectionInfo.FromEpsgCode(inputCoordinate.CrsIdentifier.EpsgNumber);
-            let projInfoTargetCrs = ProjectionInfo.FromEpsgCode(crsIdentifierForOutputCoordinateSystem.EpsgNumber);
+            let projInfoSourceCrs = ProjectionInfo.FromEpsgCode(inputCoordinate.CrsIdentifier.EpsgNumber)
+            let projInfoTargetCrs = ProjectionInfo.FromEpsgCode(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
 
-            let xy: double[] = [| inputCoordinate.X; inputCoordinate.Y |];
-            Reproject.ReprojectPoints(xy, null, projInfoSourceCrs, projInfoTargetCrs, 0, 1);
+            let xy: double[] = [| inputCoordinate.X; inputCoordinate.Y |]
+            Reproject.ReprojectPoints(xy, null, projInfoSourceCrs, projInfoTargetCrs, 0, 1)
 
             CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude
                 (

@@ -18,9 +18,9 @@ Please find more information in the license file at the root directory of each s
 type CrsTransformationAdapterComposite internal
     (
     (*
-     * Interface for calculating the resulting coordinate in different ways, 
-     * e.g. one strategy implementation calculates the median and another the average.
-     *)        
+      Interface for calculating the resulting coordinate in different ways, 
+      e.g. one strategy implementation calculates the median and another the average.
+    *)        
     compositeStrategy: ICompositeStrategy
     ) as this =
 
@@ -42,14 +42,14 @@ type CrsTransformationAdapterComposite internal
             else
                 false
 
-        // Added the below method to get rid of the warning
+        // Added the below method to get rid of a warning
         // (and the performance should not be an issue since there are some very few 
         //  implementations and does not make sense to use lots of instances of them
         //  so it really should never be very "crowded" with lots of object 
         //  within the same hash bucket i.e. with the same hash code)
         override this.GetHashCode() = base.GetHashCode()
 
-        // Not really applicable for composites, so instead just use 
+        // Not really applicable for composites, so instead just using 
         // a "default" object without filename and version
         member private this._GetFileInfoVersionForComposites() = FileInfoVersion.FileInfoVersionNOTrepresentingThirdPartLibrary
             

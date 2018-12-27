@@ -232,7 +232,6 @@ and internal CrsTransformationAdapterLeafFactoryWithConfiguredImplementations in
         ///</returns>
         override x.IsCrsTransformationAdapter(crsTransformationAdapterClassName: string): bool = 
             let adapterInstance = listOfCrsTransformationAdapters.FirstOrDefault(fun a -> a.GetType().FullName.Equals(crsTransformationAdapterClassName))
-            // TODO refactor the above (duplicated row in this class)
             not(isNull adapterInstance)
             
         override x.GetClassNamesForAllImplementations() = 

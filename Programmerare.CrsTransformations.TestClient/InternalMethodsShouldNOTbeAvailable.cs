@@ -1,17 +1,10 @@
-﻿using System;
-using Programmerare.CrsTransformations.Coordinate;
-using Programmerare.CrsTransformations;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations.TestClient
-{
-    public class InternalMethodsShouldNOTbeAvailable
-    {
-        public void test()
-        {
+namespace Programmerare.CrsTransformations.TestClient {
+    public class InternalMethodsShouldNOTbeAvailable {
+        public void test() {
             // The following method should NOT be possible to compile from this project
-
-            //CrsTransformationResult._CreateCrsTransformationResult(null,null,null,true,null,null);
+            // CrsTransformationResult._CreateCrsTransformationResult(null,null,null,true,null,null);
 
             // However, the exact same code above DOES indeed work
             // from the test project's 

@@ -17,6 +17,10 @@ type internal CompositeStrategyBase internal
     (
         crsTransformationAdapters : IList<ICrsTransformationAdapter>
     ) =
+
+    // Note that the type is defined as "internal" above 
+    // since it is not intended for public use.
+
     class
 
         do

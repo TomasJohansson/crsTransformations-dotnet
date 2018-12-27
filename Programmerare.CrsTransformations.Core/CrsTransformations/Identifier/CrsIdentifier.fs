@@ -45,8 +45,8 @@ type CrsIdentifier private
     ///<value>
     ///a code representing a coordinate reference system, 
     ///which should be a string beginning with "EPSG:" and 
-    ///then an EPSG number such as '4326' i.e. the return string 
-    ///should be something like "EPSG:4326" 
+    ///then an EPSG number such as '4326' i.e. 
+    ///the CrsCode string should be something like "EPSG:4326" 
     ///</value>
     member this.CrsCode = crsCode
 
@@ -63,7 +63,12 @@ type CrsIdentifier private
     ///trying to create the instance with a string not beginning with "EPSG:"
     ///</value>
     member this.IsEpsgCode = isEpsgCode
-    
+
+    ///<summary>
+    ///F# factory method with access level "internal".
+    ///NOT indended for public use.
+    ///Please instead use the factory CrsIdentifierFactory.
+    ///</summary>    
     static member internal _internalCrsFactory
         (
             crsCode: string,
@@ -73,7 +78,6 @@ type CrsIdentifier private
         CrsIdentifier(crsCode, isEpsgCode, epsgNumber)
 
     override this.Equals(obj) =
-        // found similar code as below at stackoverflow
         match obj with
         | :? CrsIdentifier as c -> (crsCode, isEpsgCode, epsgNumber) = (c.CrsCode, c.IsEpsgCode, c.EpsgNumber)
         | _ -> false

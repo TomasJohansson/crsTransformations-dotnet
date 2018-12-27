@@ -18,10 +18,10 @@ There are THREE types in this file:
     - ICrsTransformationAdapter
     - CrsTransformationResult
     - CrsTransformationResultStatistic
-(regaring the reason: read below)
+(regarding the reason: read below)
 
 The above three types in this file are separated with "and" 
-( or actually the keyword "and" is used instead of "type" 
+( or actually the keyword "and" is used INSTEAD OF "type" 
 for the second and third types in this file).
 The reason for having these three types in the same file 
 is that F# compiles files in a certain order which often 
@@ -40,17 +40,14 @@ by doing that and by using the keyword "and" between the types.
 ///<summary>
 ///<para>
 ///This adapter interface is the core type of this CRS transformation library.
-///</para>
-///<para/>
-///<para>
 ///It defines six transform methods.
 ///</para>
 ///<para/>
 ///<para>
-///Three of them will only return a coordinate with the result,
+///Three of those methods will only return a coordinate with the result,
 ///while the other three will return a result object
 ///which also contains more information e.g. all the individual 'leaf'
-///results if the implementing class was a 'composite'.  
+///results if the implementing class was a 'composite'.
 ///</para>
 ///<para/>
 ///<para>
@@ -75,15 +72,11 @@ by doing that and by using the keyword "and" between the types.
 ///<para>
 ///The methods 'TransformToCoordinate' can throw exception when the transformation fails.
 ///The methods 'Transform' should always return a result object rather than throwing an exception.
-///</para>
-///<para/>
-///<para> 
-///If you use a method returning the result object then you should
+///If you use a 'Transform' method returning the result object then you should
 ///check for failures with 'TransformationResult.IsSuccess'.
 ///</para>
 ///</summary>
 [<AllowNullLiteral>] // C# interoperability
-
 type ICrsTransformationAdapter =
     interface
         // -------------------------------------------------
@@ -153,8 +146,8 @@ type ICrsTransformationAdapter =
 
         ///<value>
         ///The unique suffix part of the class name
-        ///i.e. the class name without the prefix which is common
-        ///for all implementations.
+        ///i.e. the class name without a prefix which is common
+        ///for many implementations.
         ///</value>
         abstract member ShortNameOfImplementation : string
 
@@ -170,8 +163,8 @@ type ICrsTransformationAdapter =
         abstract member IsComposite : bool
 
         ///<returns>
-        ///a list of children/leafs when the implementation
-        ///is a 'composite'but if the implementation is a 'leaf'
+        ///a list of children/leafs when the implementation 
+        ///is a 'composite' but if the implementation is a 'leaf'
         ///then an empty list should be returned.
         ///</returns>
         abstract member GetTransformationAdapterChildren : unit -> IList<ICrsTransformationAdapter>
@@ -181,8 +174,6 @@ type ICrsTransformationAdapter =
 // NOTE THAT THERE ARE MORE THAN ONE TYPES IN THIS FILE
 // (one type above and two below)
 
-// ---------------------------------------
-// ---------------------------------------
 // ---------------------------------------
 // ---------------------------------------
 // ---------------------------------------
@@ -201,7 +192,7 @@ type ICrsTransformationAdapter =
 ///</para>
 ///<para/>
 ///<para>
-///Normally you define a class with "type" as below:
+///Normally you define a F# class with "type" as below:
 ///"type CrsTransformationResult" (instead of "and CrsTransformationResult")
 ///However, to make it possible for the types to refer to each other
 ///they have been put here in the same file 
@@ -261,7 +252,7 @@ and CrsTransformationResult private
         ///</para>
         ///<para/>
         ///<para>
-        ///Precondition: Verify that the success property return true before using this accessor.
+        ///Precondition: Verify that the success property returns true before using this accessor.
         ///If it returns false, then an exception will be thrown.
         ///</para>
         ///<para/>
@@ -306,8 +297,9 @@ and CrsTransformationResult private
         ///<value>
         ///True if the transform was successful or false if it failed.
         ///Note that "successful" does not necessarily mean that the
-        ///result is correct but an exception was not thrown
+        ///result is correct but at least an exception was not thrown
         ///and the result was not "NaN" (Not a Number).
+        ///(i.e. maybe "SeemsToBeSuccess" might be a better property name)
         ///</value>
         member this.IsSuccess = isSuccess
 
@@ -321,8 +313,8 @@ and CrsTransformationResult private
         ///<value>
         ///An object with conveniently available aggregating information about the
         ///results for the different implementations, which is useful for composite implementations.
-        ///For a leaf implementation this method is not meaningful.
-        ///It is a convenience method in the sense that the information provided
+        ///For a leaf implementation this property is not meaningful.
+        ///It is a convenience property in the sense that the information provided
         ///can be calculated from client code by iterating the leafs/children of a composite.
         ///</value>
         member this.CrsTransformationResultStatistic = 
@@ -350,11 +342,6 @@ and CrsTransformationResult private
             //        }
             //    }
 
-        // TODO refactor the above and the below method !
-        // For a leaf the statistics object should use a list with the one and only result
-        // but for composites it should all results 
-        // but for a leaf the list below should be an empty list
-
         ///<returns>
         ///Empty list if the transform implementation is a concrete "Leaf"
         ///implementation, but if it is a composite/aggregating implementation
@@ -369,7 +356,7 @@ and CrsTransformationResult private
         ///<summary>
         ///<para>
         ///Convenience method intended for "Composite" implementations
-        ///to easy check that more than one implementation (the specified min number)
+        ///to easy check that more than one implementation (the specified minimum number)
         ///resulted in the same coordinate (within the specified delta value).
         ///</para>
         ///<para/>
@@ -397,7 +384,7 @@ and CrsTransformationResult private
         ///<param name="minimumNumberOfSuccesfulResults">
         ///The minimum number of results for a results to be considered as reliable.
         ///Currently there are three implementations (though one of them can only handle coordinate system used in Sweden)
-        ///so you will probably not want to use a value smaller than 4.
+        ///so you should use a value not larger than 3 (for sweden CRS) or 2 (for non-sweden CRS).
         ///</param>
         ///<param name="maxDeltaValueForXLongitudeAndYLatitude">
         ///The maximum difference in either x/Long or y/Lat to be considered as reliable. 
@@ -513,7 +500,7 @@ and CrsTransformationResultStatistic private
             getMaxDiff(_longitudesLazyLoaded.Force())
         )
 
-    let _coordinateMedianLazyLoaded  =
+    let _coordinateMedianLazyLoaded =
         lazy (
             let coords = _successfulCoordinatesLazyLoaded.Force()
             if(coords.Count < 1) then
@@ -536,10 +523,7 @@ and CrsTransformationResultStatistic private
                 invalidOp "No successful result and therefore no average available"
             let avgLat = _latitudesLazyLoaded.Force().Average()
             let avgLon = _longitudesLazyLoaded.Force().Average()
-            let crs = coords.[0].CrsIdentifier
-            // All result coordinates should have the same CRS
-            // Theoretically they might have different which then would be a bug 
-            // so maybe should iterate them to check and throw exception if different ...
+            let crs = coords.[0].CrsIdentifier // all should have the same CRS which is here assumed to work properly i.e. not validated here
             CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude
                 (
                     avgLon,

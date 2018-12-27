@@ -1,4 +1,5 @@
 namespace Programmerare.CrsTransformations.CompositeTransformations
+
 open System.Collections.Generic
 open Programmerare.CrsTransformations
 open Programmerare.CrsTransformations.Coordinate
@@ -16,6 +17,10 @@ Please find more information in the license file at the root directory of each s
 ///for creating different kind of composite results of multiple CRS transformations.
 ///</summary>
 type internal ICompositeStrategy =
+
+    // Note that the type is defined as "internal" above 
+    // since it is not intended for public use.
+
     interface
 
         (*

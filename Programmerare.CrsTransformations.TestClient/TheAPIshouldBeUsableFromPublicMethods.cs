@@ -91,7 +91,7 @@ namespace Programmerare.CrsTransformations.TestClient {
             crsTransformationAdapter = new CrsTransformationAdapterDotSpatial();
             crsTransformationAdapter = new CrsTransformationAdapterProjNet4GeoAPI();
             crsTransformationAdapter = new CrsTransformationAdapterMightyLittleGeodesy();
-            
+
             crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
             // Three factory methods for 'composite' adapters
             // (trying to create them all with reflection, and thus no parameter)
@@ -114,6 +114,7 @@ namespace Programmerare.CrsTransformations.TestClient {
             // One of the above are used below, with the instance,
             // and one of them is instead below using the class name created here:
             string fullClassNameForImplementation = crsTransformationAdapterDotSpatial.GetType().FullName;
+            
 
             // Now creating the composite with weighted average, using the above two
             // leaf adapters, using two different create methods:

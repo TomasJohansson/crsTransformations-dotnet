@@ -73,7 +73,6 @@ type internal CompositeStrategyFirstSuccess private
         (*
         * This method is not intended for public use, 
         * but instead the factory class should be used.
-        * @see CrsTransformationAdapterCompositeFactory
         *)
         static member internal _CreateCompositeStrategyFirstSuccess
             (

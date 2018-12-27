@@ -17,12 +17,12 @@ Please find more information in the license file at the root directory of each s
 /// - X / Easting / Longitude
 /// - Y / Northing / Latitude
 /// - CRS (Coordinate Reference System) identifier with the EPSG code which defines the coordinate system
-///Almost all factory methods takes the above three kind of parameters but in different order and with different names.
+///Almost all factory methods take the above three kind of parameters but in different order and with different names.
 ///There are also a few methods without the last CRS parameter which then assumes WGS84 as the CRS.
 ///</para>
 ///<para/>
 ///<para>
-///The names of the factory methods reflects the expected order of the first two parameters, for example the method
+///The names of the factory methods reflect the expected order of the first two parameters, for example the method
 /// "YX(y: double, x: double, epsgNumber: int)"
 /// versus the method
 /// "XY(x: double, y: double, epsgNumber: int)"
@@ -36,9 +36,9 @@ Please find more information in the license file at the root directory of each s
 /// - integer: a number which is a so called EPSG code e.g. 4326 for the CRS WGS84
 /// - string: also an EPSG code but prefixed with "EPSG:" e.g. "EPSG:4326" for the CRS WGS84
 /// - CrsIdentifier: an object which will be the parameter to the transform method implementations,
-///     and it provides easy accessors for either the above integer or the above string,
+///     and it provides accessors for either the above integer or the above string,
 ///     which is convenient since some adaptee implementations (i.e. third part libraries)
-///     uses the integer number and some use the string with prefix "EPSG:"
+///     use the integer number and some use the string with prefix "EPSG:"
 ///</para>
 ///<para/>
 ///<para>
@@ -57,8 +57,8 @@ type CrsCoordinateFactory private() =
     ///<summary>
     ///WGS84 is probably the most common coordinate reference system,
     ///the coordinates typically used with GPS.
-    ///Therefore it is default for the factory methods not specifying
-    ///the coordinate reference system.
+    ///Therefore it is default for those factory methods 
+    ///which do not specify the coordinate reference system.
     ///</summary>
     static let COORDINATE_REFERENCE_SYSTEM_WGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(4326)
 
@@ -186,10 +186,6 @@ type CrsCoordinateFactory private() =
             epsgNumber
         )
 
-
-    (*
-     * See the documentation at method "createFromXEastingLongitudeAndYNorthingLatitude"
-     *)
     static member LonLat
         (
             longitude: double,

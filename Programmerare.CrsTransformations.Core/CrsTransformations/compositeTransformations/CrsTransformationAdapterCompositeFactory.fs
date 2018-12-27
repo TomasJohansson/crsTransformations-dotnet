@@ -45,7 +45,7 @@ type CrsTransformationAdapterCompositeFactory private
 
     ///<summary>
     ///Creates a 'composite' implementation by first trying to instantiate
-    ///all known 'leaf' implementations available at the class path,
+    ///all known 'leaf' implementations available at runtime,
     ///and then pass those to the constructor of the 'composite' 
     ///through the overloaded method with the same name but receiving a list parameter. 
     ///</summary>
@@ -117,19 +117,6 @@ type CrsTransformationAdapterCompositeFactory private
             weightedCrsTransformationAdapters: IList<CrsTransformationAdapterWeight>
         ): CrsTransformationAdapterComposite =
             CrsTransformationAdapterCompositeWeightedAverage.Create(weightedCrsTransformationAdapters) :> CrsTransformationAdapterComposite
-
-            // Another feature to maybe implement:
-            // Configuration paramters e.g. dictionary 
-            // with strings and e.g. using the "ShortName" as prefix 
-            // for the adapter it should apply to.
-            // Example:
-            // "ProjNet4GeoAPI.CrsCachingStrategy" = "NO_CACHING"
-            // which should be the same as explicitly 
-            // creating a CrsTransformationAdapterProjNet4GeoAPI
-            // and then invoke:
-            // adapter.SetCrsCachingStrategy(CrsCachingStrategy.NO_CACHING)
-            // and then pass it as one of the adapters in the list
-            // to the constructory receiving a list
 
     static member Create
         (

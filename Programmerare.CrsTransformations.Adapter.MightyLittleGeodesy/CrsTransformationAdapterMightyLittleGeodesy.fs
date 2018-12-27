@@ -1,4 +1,5 @@
 namespace Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy
+
 open System.Collections.Generic
 open MightyLittleGeodesy.Positions
 open MightyLittleGeodesy.Classes
@@ -12,13 +13,6 @@ Other subprojects may be released with other licenses e.g. LGPL or Apache Licens
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 *)
-
-(*
- * Implementation of the interface CrsTransformationAdapter.
- * See the documentation of the interface.
- * @see Programmerare.CrsTransformations.CrsTransformationAdapter
- *
- *)
 type CrsTransformationAdapterMightyLittleGeodesy() as this =
     class
         inherit CrsTransformationAdapterBaseLeaf
@@ -37,7 +31,7 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
             // then constants would definitely have been preferred,
             // but adding 20 constants for only one usage is not very motivated.
             // Another option would have been to reuse the already existing constants in the module "crs-transformation-constants" i.e. constants like this:
-            // com.programmerare.crsConstants.constantsByAreaNameNumber.v9_5_4.EpsgNumber.SWEDEN__SWEREF99_TM__3006
+            // Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4.EpsgNumber.SWEDEN__SWEREF99_TM__3006
             // However, that would introduce a dependency to a module with LOTS OF constants just to use this few values below.
 
             // http://spatialreference.org/ref/?search=rt90
