@@ -14,8 +14,7 @@ type SridReader private
     ) =
 
     let GetSomeTypeInTheAssembly() = 
-        let someTypeInTheNameSpace = typeof<CrsCachingStrategy>
-        someTypeInTheNameSpace
+        typeof<CrsCachingStrategy>
 
     let GetSRIDsFromStreamReader
         (
