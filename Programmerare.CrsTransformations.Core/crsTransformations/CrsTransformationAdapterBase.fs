@@ -57,8 +57,8 @@ type CrsTransformationAdapterBase
         abstract member ShortNameOfImplementation : string
         default this.ShortNameOfImplementation = raise (System.NotImplementedException())
 
-        abstract member GetTransformationAdapterChildren : unit -> IList<ICrsTransformationAdapter>
-        default this.GetTransformationAdapterChildren() = raise (System.NotImplementedException())
+        abstract member TransformationAdapterChildren : IList<ICrsTransformationAdapter>
+        default this.TransformationAdapterChildren = raise (System.NotImplementedException())
 
         abstract member TransformToCoordinate : CrsCoordinate * int -> CrsCoordinate
         default this.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinateSystem: int) = 
@@ -192,7 +192,7 @@ type CrsTransformationAdapterBase
         // are invoked i.e. if they are invoked through an 
         // interface typed object or through some subtype.
         interface ICrsTransformationAdapter with
-            member this.GetTransformationAdapterChildren() =  this.GetTransformationAdapterChildren()
+            member this.TransformationAdapterChildren =  this.TransformationAdapterChildren
                 
             // -------------------------------------------------
 

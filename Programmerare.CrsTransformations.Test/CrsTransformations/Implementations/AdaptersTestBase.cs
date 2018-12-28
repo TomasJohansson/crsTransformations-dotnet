@@ -508,8 +508,8 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void GetTransformationAdapterChildrenTest() {
-            IList<ICrsTransformationAdapter> children = crsTransformationAdapter.GetTransformationAdapterChildren();
+        public void TransformationAdapterChildrenTest() {
+            IList<ICrsTransformationAdapter> children = crsTransformationAdapter.TransformationAdapterChildren;
             Assert.AreEqual(
                 0, 
                 children.Count

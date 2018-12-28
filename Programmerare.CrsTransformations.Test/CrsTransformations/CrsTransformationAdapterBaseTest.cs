@@ -50,8 +50,8 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
         [Test]
         public void Composite_ShouldReturnLeafsInTheExpectedOrderAccordingToTheSetupMethod()
         {
-            IList<ICrsTransformationAdapter> leafs1 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage().GetTransformationAdapterChildren();
-            IList<ICrsTransformationAdapter> leafs2 = crsTransformationAdapterCompositeFactoryWithLeafsInReversedOrder.CreateCrsTransformationAverage().GetTransformationAdapterChildren();
+            IList<ICrsTransformationAdapter> leafs1 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage().TransformationAdapterChildren;
+            IList<ICrsTransformationAdapter> leafs2 = crsTransformationAdapterCompositeFactoryWithLeafsInReversedOrder.CreateCrsTransformationAverage().TransformationAdapterChildren;
             Assert.AreEqual(3, leafs1.Count);
             Assert.AreEqual(leafs1.Count, leafs2.Count);
             Assert.AreEqual(leafs1[0].AdapteeType, leafs2[2].AdapteeType);

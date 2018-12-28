@@ -326,7 +326,7 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
     }    
 
     [Test]
-    public void getTransformationAdapterChildren_shouldReturnNonEmptyList_whenComposite() {
+    public void TransformationAdapterChildren_ShouldReturnNonEmptyList_WhenComposite() {
         // all leafs should be children 
         int expectedNumberOfChildrenForTheComposites = base.crsTransformationAdapterLeafImplementations.Count;
         Assert.That(
@@ -336,7 +336,7 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
         foreach (ICrsTransformationAdapter compositeAdapter in base.crsTransformationAdapterCompositeImplementations) {
             Assert.AreEqual(
                 expectedNumberOfChildrenForTheComposites, 
-                compositeAdapter.GetTransformationAdapterChildren().Count
+                compositeAdapter.TransformationAdapterChildren.Count
             );    
         }
     }
@@ -347,7 +347,7 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
         foreach (ICrsTransformationAdapter leafAdapter in base.crsTransformationAdapterLeafImplementations) {
             Assert.AreEqual(
                 zeroExpectedNumberOfChildren,
-                leafAdapter.GetTransformationAdapterChildren().Count
+                leafAdapter.TransformationAdapterChildren.Count
             );
         }
     }

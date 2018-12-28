@@ -125,7 +125,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
             else{
                 if(!manyWillBeIterated) {
                     //Console.WriteLine("NOT 'big' difference for EPSG " + epsgCrsAndAreaCodeWithCoordinates.epsgCrsCode);
-                    int count = crsTransformationComposite.GetTransformationAdapterChildren().Count;
+                    int count = crsTransformationComposite.TransformationAdapterChildren.Count;
                     //Console.WriteLine("Number of implementations not having big difference: " + count);
                 }
             }

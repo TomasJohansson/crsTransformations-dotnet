@@ -162,12 +162,12 @@ type ICrsTransformationAdapter =
         ///</value>
         abstract member IsComposite : bool
 
-        ///<returns>
+        ///<value>
         ///a list of children/leafs when the implementation 
         ///is a 'composite' but if the implementation is a 'leaf'
         ///then an empty list should be returned.
-        ///</returns>
-        abstract member GetTransformationAdapterChildren : unit -> IList<ICrsTransformationAdapter>
+        ///</value>
+        abstract member TransformationAdapterChildren : IList<ICrsTransformationAdapter>
 
     end
 

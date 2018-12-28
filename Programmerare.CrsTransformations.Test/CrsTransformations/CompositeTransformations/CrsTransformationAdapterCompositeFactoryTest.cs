@@ -150,7 +150,7 @@ public class CrsTransformationAdapterCompositeFactoryTest {
     [Test]
     public void CompositeFactoryParameterLessMethod_ShouldOnlyReturnLeafsItIsConfiguredToKnowAbout() {
         var composite = compositeFactoryConfiguredWithLeafFactoryOnlyCreatingDotSpatialImplementationAsDefault.CreateCrsTransformationAverage();
-        var children = composite.GetTransformationAdapterChildren();
+        var children = composite.TransformationAdapterChildren;
         Assert.AreEqual(1, children.Count);
         Assert.AreEqual(
             typeof(CrsTransformationAdapterDotSpatial).FullName,
@@ -163,7 +163,7 @@ public class CrsTransformationAdapterCompositeFactoryTest {
         var composite = compositeFactoryConfiguredWithLeafFactoryOnlyCreatingDotSpatialImplementationAsDefault.CreateCrsTransformationAverage(
             listOfTwoAdaptersWithoutDotSpatial
         );
-        var children = composite.GetTransformationAdapterChildren();
+        var children = composite.TransformationAdapterChildren;
         Assert.AreEqual(2, children.Count);
         var listWithTheTwoExpectedClassNames = new List<string>{
             typeof(CrsTransformationAdapterProjNet4GeoAPI).FullName,

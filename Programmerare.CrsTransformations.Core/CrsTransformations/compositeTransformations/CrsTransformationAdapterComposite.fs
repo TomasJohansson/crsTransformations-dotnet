@@ -77,7 +77,7 @@ type CrsTransformationAdapterComposite internal
                         shouldContinue <- false
             this._GetCompositeStrategy()._CalculateAggregatedResult(list, inputCoordinate, crsIdentifierForOutputCoordinateSystem, this)
 
-        override this.GetTransformationAdapterChildren(): IList<ICrsTransformationAdapter> =
+        override this.TransformationAdapterChildren: IList<ICrsTransformationAdapter> =
             this._GetCompositeStrategy()._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
 
         override this.IsComposite: bool = 
@@ -121,7 +121,7 @@ type CrsTransformationAdapterComposite internal
             this._TransformStrategy(inputCoordinate, crsIdentifier)
                 
         interface ICrsTransformationAdapter with
-            override this.GetTransformationAdapterChildren() =  this.GetTransformationAdapterChildren()
+            override this.TransformationAdapterChildren =  this.TransformationAdapterChildren
 
             override this.TransformToCoordinate(inputCoordinate, crsCode: string) =
                 this.TransformToCoordinate(inputCoordinate, crsCode)

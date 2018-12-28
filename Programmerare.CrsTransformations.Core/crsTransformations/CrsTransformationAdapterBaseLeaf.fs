@@ -61,7 +61,7 @@ type CrsTransformationAdapterBaseLeaf
         override this.IsComposite = false
 
         // empty list of children adapters for leafs:
-        override this.GetTransformationAdapterChildren() =
+        override this.TransformationAdapterChildren =
             new List<ICrsTransformationAdapter>() :> IList<ICrsTransformationAdapter>
 
     end

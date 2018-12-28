@@ -18,7 +18,7 @@ public class CrsTransformationAdapterCompositeTest {
     public void isReliableTest() {
         var crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
         CrsTransformationAdapterComposite crsTransformationComposite = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
-        var children = crsTransformationComposite.GetTransformationAdapterChildren();
+        var children = crsTransformationComposite.TransformationAdapterChildren;
         Assert.AreEqual(3, children.Count);
 
         CrsCoordinate wgs84coordinateInSweden = CrsCoordinateFactory.LatLon(59.31,18.04);

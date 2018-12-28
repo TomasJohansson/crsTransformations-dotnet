@@ -130,7 +130,7 @@ namespace Programmerare.CrsTransformations.TestClient {
             shortNameOfImplementation = crsTransformationAdapter.ShortNameOfImplementation;
 
             // public methods:
-            transformationAdapterChildren = crsTransformationAdapter.GetTransformationAdapterChildren();
+            transformationAdapterChildren = crsTransformationAdapter.TransformationAdapterChildren;
 
             crsTransformationResult = crsTransformationAdapter.Transform(crsCoordinate, crsIdentifier);
             crsTransformationResult = crsTransformationAdapter.Transform(crsCoordinate, epsgNumber);
