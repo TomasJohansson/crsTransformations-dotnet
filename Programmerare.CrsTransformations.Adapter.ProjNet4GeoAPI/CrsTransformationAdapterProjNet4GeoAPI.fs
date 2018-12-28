@@ -42,7 +42,7 @@ type CrsTransformationAdapterProjNet4GeoAPI
         let _sridReader = sridReader
 
         // this private field is only internally mutable i.e. can not be changed through some public setter
-        let mutable _cachedCoordinateSystem: IDictionary<int, ICoordinateSystem> = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
+        let mutable _cachedCoordinateSystem = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
 
         let GetCSbyID(epsgNumber) = 
             let mutable crs: ICoordinateSystem = null
