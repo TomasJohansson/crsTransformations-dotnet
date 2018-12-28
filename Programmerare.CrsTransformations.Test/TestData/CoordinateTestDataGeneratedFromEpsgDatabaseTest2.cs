@@ -139,7 +139,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
             WriteLine("epsg " + transformResult.InputCoordinate.CrsIdentifier.CrsCode);
             WriteLine("MaxDiffYLatitude : " + transformResult.CrsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude);
             WriteLine("MaxDiffYLongitude: " + transformResult.CrsTransformationResultStatistic.MaxDifferenceForXEastingLongitude);
-            IList<CrsTransformationResult> subResults = transformResult.GetTransformationResultChildren();
+            IList<CrsTransformationResult> subResults = transformResult.TransformationResultChildren;
             for (int j = 0; j <subResults.Count ; j++) {
                 CrsTransformationResult subTransformResult = subResults[j];
                 if(subTransformResult.IsSuccess) {
@@ -157,7 +157,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest2 : CrsTransformatio
         Assert.IsNotNull(result);
         Assert.IsTrue(result.IsSuccess);
         const int numberOfImplementations = CrsTransformationAdapterTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
-        Assert.AreEqual(numberOfImplementations, result.GetTransformationResultChildren().Count);
+        Assert.AreEqual(numberOfImplementations, result.TransformationResultChildren.Count);
         CrsTransformationResultStatistic crsTransformationResultStatistic = result.CrsTransformationResultStatistic;
         Assert.IsNotNull(crsTransformationResultStatistic);
         Assert.IsTrue(crsTransformationResultStatistic.IsStatisticsAvailable);

@@ -28,7 +28,7 @@ namespace Programmerare.CrsTransformations.TestWithoutDependeciesToAllAdapters {
             var coord = CrsCoordinateFactory.LatLon(60.0, 20.0);
             var result = median.Transform(coord, 3006);
             Assert.IsTrue(result.IsSuccess);
-            IList<CrsTransformationResult> childrenResults = result.GetTransformationResultChildren();
+            IList<CrsTransformationResult> childrenResults = result.TransformationResultChildren;
             Assert.AreEqual(
                 NUMBER_OF_ADAPTERS_WHICH_ARE_DEPENDENCIES_FROM_THIS_PROJECT,
                 childrenResults.Count

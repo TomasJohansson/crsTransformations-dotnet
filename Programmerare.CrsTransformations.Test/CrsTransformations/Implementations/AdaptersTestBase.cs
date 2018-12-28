@@ -247,7 +247,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
                 expectedOutputCoordinate, 
                 maxDeltaDifference
             );
-            IList<CrsTransformationResult> subresults = result.GetTransformationResultChildren();
+            IList<CrsTransformationResult> subresults = result.TransformationResultChildren;
             Assert.IsNotNull(subresults);
             Assert.AreEqual(0, subresults.Count); // Leaf should have no children
             Assert.AreEqual(this.crsTransformationAdapter, result.CrsTransformationAdapterResultSource);
@@ -409,7 +409,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             );
 
             Assert.AreEqual(inputCoordinate, result.InputCoordinate);
-            IList<CrsTransformationResult> subresults = result.GetTransformationResultChildren();
+            IList<CrsTransformationResult> subresults = result.TransformationResultChildren;
             Assert.IsNotNull(subresults);
             Assert.AreEqual(0, subresults.Count); // Leaf should have no children
             Assert.AreEqual(this.crsTransformationAdapter, result.CrsTransformationAdapterResultSource);

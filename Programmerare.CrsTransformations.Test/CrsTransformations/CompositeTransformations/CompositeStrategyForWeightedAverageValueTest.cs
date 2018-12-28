@@ -66,7 +66,7 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
         CrsTransformationResult weightedAverageResult = weightedAverageCompositeAdapter.Transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         Assert.IsNotNull(weightedAverageResult);
         Assert.IsTrue(weightedAverageResult.IsSuccess);
-        Assert.AreEqual(base.allCoordinateResultsForTheDifferentImplementations.Count, weightedAverageResult.GetTransformationResultChildren().Count);
+        Assert.AreEqual(base.allCoordinateResultsForTheDifferentImplementations.Count, weightedAverageResult.TransformationResultChildren.Count);
 
         CrsCoordinate weightedAverageCoordinate = weightedAverageResult.OutputCoordinate;
 

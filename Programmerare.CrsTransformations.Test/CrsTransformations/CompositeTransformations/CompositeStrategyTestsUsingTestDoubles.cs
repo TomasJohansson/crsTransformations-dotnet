@@ -261,9 +261,9 @@ public class CompositeStrategyTestsUsingTestDoubles {
         Assert.IsNotNull(compositeTransformResult);
         Assert.IsTrue(compositeTransformResult.IsSuccess);
         //assertEquals(expectedNumberOfLeafResults, allLeafAdapters.size()); // five "leafs" were used to calculate the composite
-        Assert.AreEqual(expectedNumberOfLeafResults, compositeTransformResult.GetTransformationResultChildren().Count);
+        Assert.AreEqual(expectedNumberOfLeafResults, compositeTransformResult.TransformationResultChildren.Count);
 
-        IList<CrsTransformationResult> subResults = compositeTransformResult.GetTransformationResultChildren();
+        IList<CrsTransformationResult> subResults = compositeTransformResult.TransformationResultChildren;
         for (int i = 0; i < subResults.Count; i++) {
             CrsTransformationResult transformResult = subResults[i];
             ICrsTransformationAdapter leafAdapter = allLeafAdapters[i];
@@ -271,7 +271,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
             Assert.IsNotNull(transformResultForLeaf);
             Assert.IsTrue(transformResultForLeaf.IsSuccess);
             assertEqualCoordinate(transformResult.OutputCoordinate, transformResultForLeaf.OutputCoordinate);
-            Assert.AreEqual(0, transformResultForLeaf.GetTransformationResultChildren().Count); // no subresults for a leaf
+            Assert.AreEqual(0, transformResultForLeaf.TransformationResultChildren.Count); // no subresults for a leaf
         }
     }
 

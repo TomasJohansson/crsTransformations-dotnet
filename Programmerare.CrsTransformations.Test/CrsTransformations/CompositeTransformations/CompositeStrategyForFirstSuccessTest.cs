@@ -17,7 +17,7 @@ public class CompositeStrategyFirstSuccessTest : CompositeStrategyTestBase {
         CrsTransformationResult firstSuccessResult = firstSuccessCompositeAdapter.Transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         Assert.IsNotNull(firstSuccessResult);
         Assert.IsTrue(firstSuccessResult.IsSuccess);
-        Assert.AreEqual(1, firstSuccessResult.GetTransformationResultChildren().Count);
+        Assert.AreEqual(1, firstSuccessResult.TransformationResultChildren.Count);
 
         CrsCoordinate coordinateReturnedByCompositeAdapterFirstSuccess = firstSuccessResult.OutputCoordinate;
         // The above result of the composite should be equal to the result of DotSpatial since it

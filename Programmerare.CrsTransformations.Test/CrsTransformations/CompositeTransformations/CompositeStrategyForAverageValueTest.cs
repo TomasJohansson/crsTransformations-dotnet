@@ -24,7 +24,7 @@ public class CompositeStrategyAverageTest : CompositeStrategyTestBase {
         CrsTransformationResult averageResult = averageCompositeAdapter.Transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         Assert.IsNotNull(averageResult);
         Assert.IsTrue(averageResult.IsSuccess);
-        Assert.AreEqual(base.allCoordinateResultsForTheDifferentImplementations.Count, averageResult.GetTransformationResultChildren().Count);
+        Assert.AreEqual(base.allCoordinateResultsForTheDifferentImplementations.Count, averageResult.TransformationResultChildren.Count);
 
         CrsCoordinate coordinateReturnedByCompositeAdapter = averageResult.OutputCoordinate;
 

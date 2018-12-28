@@ -23,7 +23,7 @@ namespace Programmerare.CrsTransformations.CompositeTransformations
         CrsTransformationResult medianResult = medianCompositeAdapter.Transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         Assert.IsNotNull(medianResult);
         Assert.IsTrue(medianResult.IsSuccess);
-        Assert.AreEqual(base.allCoordinateResultsForTheDifferentImplementations.Count, medianResult.GetTransformationResultChildren().Count);
+        Assert.AreEqual(base.allCoordinateResultsForTheDifferentImplementations.Count, medianResult.TransformationResultChildren.Count);
 
         CrsCoordinate coordinateReturnedByMedianAdapter = medianResult.OutputCoordinate;
 

@@ -146,7 +146,7 @@ namespace Programmerare.CrsTransformations.TestClient {
             crsCoordinate = crsTransformationResult.OutputCoordinate;
             isSuccess = crsTransformationResult.IsSuccess;
             isReliable = crsTransformationResult.IsReliable(2, 0.01);
-            crsTransformationResults = crsTransformationResult.GetTransformationResultChildren();
+            crsTransformationResults = crsTransformationResult.TransformationResultChildren;
             exception = crsTransformationResult.Exception;
             crsTransformationAdapter = crsTransformationResult.CrsTransformationAdapterResultSource;
             crsTransformationResultStatistic = crsTransformationResult.CrsTransformationResultStatistic;
