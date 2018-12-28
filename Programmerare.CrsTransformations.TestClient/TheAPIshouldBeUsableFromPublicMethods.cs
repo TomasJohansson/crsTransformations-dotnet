@@ -156,7 +156,7 @@ namespace Programmerare.CrsTransformations.TestClient {
             crsCoordinate = crsTransformationResultStatistic.CoordinateAverage;
             crsCoordinate = crsTransformationResultStatistic.CoordinateMedian;
             isStatisticsAvailable = crsTransformationResultStatistic.IsStatisticsAvailable;
-            crsTransformationResults = crsTransformationResultStatistic.GetAllCrsTransformationResults();
+            crsTransformationResults = crsTransformationResultStatistic.AllCrsTransformationResults;
             numberOfPotentiallySuccesfulResults = crsTransformationResultStatistic.NumberOfPotentiallySuccesfulResults;
             maxDifferenceForXEastingLongitude = crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude;
             maxDifferenceForYNorthingLatitude = crsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude;

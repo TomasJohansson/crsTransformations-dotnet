@@ -330,7 +330,7 @@ and CrsTransformationResult private
         ///</value>
         member this.TransformationResultChildren = 
             if(this.CrsTransformationAdapterResultSource.IsComposite) then
-                crsTransformationResultStatistic.GetAllCrsTransformationResults()
+                crsTransformationResultStatistic.AllCrsTransformationResults
             else
                 new List<CrsTransformationResult>() :> IList<CrsTransformationResult>
 
@@ -413,7 +413,7 @@ and CrsTransformationResult private
             if( not(isSuccess) && (isNull exc)) then 
                 // problem , maybe some items has an exception, and if so then reuse some found exception
                 // as the outermost exception in the composite too:
-                let allResults = nullableCrsTransformationResultStatistic.GetAllCrsTransformationResults()
+                let allResults = nullableCrsTransformationResultStatistic.AllCrsTransformationResults
                 for res in allResults do
                     if not(res.IsSuccess) && not(isNull res.Exception) then 
                         exc <- res.Exception
@@ -539,10 +539,10 @@ and CrsTransformationResultStatistic private
     // ----------------------------------------------------------
     // Below: public methods/properties
 
-    ///<returns>
+    ///<value>
     ///list of all transformation results
-    ///</returns>
-    member this.GetAllCrsTransformationResults(): IList<CrsTransformationResult> = results
+    ///</value>
+    member this.AllCrsTransformationResults: IList<CrsTransformationResult> = results
 
     ///<value>
     ///true if there is at least one succesful result but otherwise false.

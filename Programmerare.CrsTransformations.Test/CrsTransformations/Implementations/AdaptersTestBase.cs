@@ -432,7 +432,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
                 stat.NumberOfPotentiallySuccesfulResults 
             );
 
-            IList<CrsTransformationResult> allResults = stat.GetAllCrsTransformationResults();
+            IList<CrsTransformationResult> allResults = stat.AllCrsTransformationResults;
             Assert.AreEqual(1, allResults.Count);
 
             if (stat.IsStatisticsAvailable)
