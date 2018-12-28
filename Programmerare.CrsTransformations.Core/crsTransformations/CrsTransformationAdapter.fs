@@ -274,25 +274,6 @@ and CrsTransformationResult private
         ///the transform resulted in an exception being thrown.
         ///</summary>
         member this.Exception = exceptionOrNull
-        // From the Kotlin project's implementation:
-        //    private fun getExceptionIfNotNullButOtherwiseTryToGetExceptionsFromChildrenExceptionsIfExisting(exception: Throwable?): Throwable? {
-        //        if(exception != null) return exception
-        //        if(this.transformationResultChildren == null || this.transformationResultChildren.size == 0) return exception
-        //        val sb = StringBuilder()
-        //        for (transformationResultChild in this.transformationResultChildren) {
-        //            if(transformationResultChild.exception != null) {
-        //                sb.appendln(transformationResultChild.exception.message)
-        //            }
-        //        }
-        //        if(sb.isEmpty()){
-        //            return null    
-        //        }
-        //        else {
-        //            sb.appendln("If you want more details with stacktrace you can try iterating the children for exceptions.")
-        //            sb.appendln("This composite exception message only contains the 'getMessage' part for each child exception.")
-        //            return RuntimeException(sb.toString())
-        //        }
-        //    }
 
         ///<value>
         ///True if the transform was successful or false if it failed.
@@ -436,6 +417,24 @@ and CrsTransformationResult private
                 for res in allResults do
                     if not(res.IsSuccess) && not(isNull res.Exception) then 
                         exc <- res.Exception
+                // One alternative to simply (as above) reuse 
+                // the last exception can be to instead implement code similar as below 
+                // from the Kotlin project's implementation:
+                //if(this.transformationResultChildren == null || this.transformationResultChildren.size == 0) return exception
+                //val sb = StringBuilder()
+                //for (transformationResultChild in this.transformationResultChildren) {
+                //    if(transformationResultChild.exception != null) {
+                //        sb.appendln(transformationResultChild.exception.message)
+                //    }
+                //}
+                //if(sb.isEmpty()){
+                //    return null    
+                //}
+                //else {
+                //    sb.appendln("If you want more details with stacktrace you can try iterating the children for exceptions.")
+                //    sb.appendln("This composite exception message only contains the 'getMessage' part for each child exception.")
+                //    return RuntimeException(sb.toString())
+                //}
             CrsTransformationResult(
                 inputCoordinate,
                 outputCoordinate,

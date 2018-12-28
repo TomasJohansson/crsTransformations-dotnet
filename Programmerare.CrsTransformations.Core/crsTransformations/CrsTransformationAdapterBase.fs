@@ -112,14 +112,6 @@ type CrsTransformationAdapterBase
         transformStrategy : CrsCoordinate * CrsIdentifier -> CrsTransformationResult
     ) =
     class
-        let TrowExceptionIfCoordinateIsNull(inputCoordinate) : unit = 
-            if isNull inputCoordinate then
-                nullArg "inputCoordinate"
-            // The above may cause this error:
-            // "Value cannot be null. Parameter name: inputCoordinate"
-            // instead of the following which otherwise might occur later:
-            // "Object reference not set to an instance of an object"
-
         abstract member AdapteeType : CrsTransformationAdapteeType
         default this.AdapteeType = CrsTransformationAdapteeType.UNSPECIFIED
 
@@ -213,19 +205,28 @@ type CrsTransformationAdapterBase
         // subclasses (in other assemblies) can pass the function 
         // as a constructor parameter.
 
-        member internal this.ValidateCoordinate(crsCoordinate: CrsCoordinate) = 
+        member internal this.ValidateNonNullIdentifier(crsIdentifier: CrsIdentifier) = 
+            if isNull crsIdentifier then
+                nullArg "crsIdentifier"
+
+        member internal this.ValidateNonNullCoordinate(crsCoordinate: CrsCoordinate) = 
             if isNull crsCoordinate then
                 nullArg "crsCoordinate"
+            this.ValidateNonNullIdentifier(crsCoordinate.CrsIdentifier)
             // Most of the other validation has been moved into the 
             // creation of the coordinate i.e. it should not even be possible
             // to create a coordinate instance with some of the coordinate pair value
             // being e.g. "double.NaN" so therefore no more such validation here
 
-        member private this._TransformToCoordinate(inputCoordinate, crsIdentifier) = 
-            TrowExceptionIfCoordinateIsNull(inputCoordinate)
-            let coord = transformToCoordinateStrategy(inputCoordinate, crsIdentifier)
-            this.ValidateCoordinate(coord)
-            coord
+        member internal this.ValidateCoordinateAndIdentifierNotNull(crsCoordinate: CrsCoordinate, crsIdentifier: CrsIdentifier) = 
+            this.ValidateNonNullCoordinate(crsCoordinate)
+            this.ValidateNonNullIdentifier(crsIdentifier)
+
+        member private this._TransformToCoordinate(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
+            this.ValidateCoordinateAndIdentifierNotNull(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+            let outputCoordinate = transformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
+            this.ValidateNonNullCoordinate(outputCoordinate)
+            outputCoordinate
 
         member private this._Transform
             (

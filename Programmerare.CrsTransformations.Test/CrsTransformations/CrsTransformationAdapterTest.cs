@@ -7,6 +7,7 @@ using Programmerare.CrsTransformations.CompositeTransformations;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Identifier;
 
 namespace Programmerare.CrsTransformations
 {
@@ -198,6 +199,70 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
                     .TypeOf<NotSupportedException>().Or
                     .TypeOf<ArgumentException>().Or
                     .TypeOf<Exception>()
+            );
+        }
+    }
+
+    [Test]
+    public void TransformToCoordinate_ShouldThrowException_WhenCoordinateIsNull() {
+        foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
+            Assert.That(
+                () => crsTransformationAdapter.TransformToCoordinate(
+                    null,  
+                    base.epsgNumberForSweref99TM
+                ),
+                Throws.Exception 
+                    .TypeOf<ArgumentNullException>(),
+                "Failing adapter: " + crsTransformationAdapter.GetType().FullName
+            );
+        }
+    }
+
+    [Test]
+    public void TransformResult_ShouldContainArgumentNullException_WhenCoordinateIsNull() {
+        foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
+            var transformationResult = crsTransformationAdapter.Transform(
+                null,  
+                base.epsgNumberForSweref99TM
+            );
+            Assert.IsNotNull(transformationResult);
+            Assert.IsNotNull(transformationResult.Exception);
+            Assert.AreEqual(
+                transformationResult.Exception.GetType(), 
+                typeof(ArgumentNullException),
+                "Failing adapter: " + crsTransformationAdapter.GetType().FullName
+            );
+        }
+    }
+
+    [Test]
+    public void TransformResult_ShouldContainArgumentNullException_WhenCrsIdentifierIsNull() {
+        CrsIdentifier crsIdentifierNull = null;
+        foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
+            var transformationResult = crsTransformationAdapter.Transform(
+                this.validInputCoordinate,
+                crsIdentifierNull
+            );
+            Assert.IsNotNull(transformationResult);
+            Assert.IsNotNull(transformationResult.Exception);
+            Assert.AreEqual(
+                transformationResult.Exception.GetType(), 
+                typeof(ArgumentNullException),
+                "Failing adapter: " + crsTransformationAdapter.GetType().FullName
+            );
+        }
+    }
+    [Test]
+    public void TransformToCoordinate_ShouldThrowException_WhenCrsIdentifierIsNull() {
+        CrsIdentifier crsIdentifierNull = null;
+        foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
+            Assert.That(
+                () => crsTransformationAdapter.TransformToCoordinate(
+                    this.validInputCoordinate,  
+                    crsIdentifierNull
+                ),
+                Throws.Exception 
+                    .TypeOf<ArgumentNullException>()
             );
         }
     }

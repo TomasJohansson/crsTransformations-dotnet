@@ -30,8 +30,9 @@ type CrsTransformationAdapterBaseLeaf
 
         member private this._TransformStrategy(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
             try
+                base.ValidateCoordinateAndIdentifierNotNull(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
                 let outputCoordinate = transformToCoordinateStrategyLeaf(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
-                base.ValidateCoordinate(outputCoordinate)
+                base.ValidateNonNullCoordinate(outputCoordinate)
                 CrsTransformationResult._CreateCrsTransformationResult(
                     inputCoordinate,
                     outputCoordinate,

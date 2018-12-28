@@ -60,8 +60,10 @@ type CrsTransformationAdapterComposite internal
             if(transformResult.IsSuccess) then
                 transformResult.OutputCoordinate
             else
-                // TODO try to include som exception message from at least some of the leafs if available
-                failwith "Transformation failed"
+                if(isNull transformResult.Exception) then
+                    failwith "Transformation failed"
+                else
+                    raise transformResult.Exception
 
         member private this._TransformStrategy(inputCoordinate: CrsCoordinate, crsIdentifierForOutputCoordinateSystem: CrsIdentifier): CrsTransformationResult =
             let allCrsTransformationAdapters = this._GetCompositeStrategy()._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked()
