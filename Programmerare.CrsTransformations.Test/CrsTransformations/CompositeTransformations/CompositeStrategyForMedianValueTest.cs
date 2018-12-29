@@ -16,7 +16,6 @@ namespace Programmerare.CrsTransformations.CompositeTransformations
     public void transform_shouldReturnMedianResult_whenUsingMedianCompositeAdapter() {
         CrsCoordinate expectedCoordinateWithMedianLatitudeAndLongitude = calculateMedianCoordinate(base.allCoordinateResultsForTheDifferentImplementations);
 
-        var crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
         ICrsTransformationAdapter medianCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(
             allAdapters
         );

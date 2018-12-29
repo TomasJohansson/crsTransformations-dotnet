@@ -10,6 +10,8 @@ namespace Programmerare.CrsTransformations.CompositeTransformations
 {
 public abstract class CompositeStrategyTestBase {
 
+    protected CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
+
     protected ICrsTransformationAdapter adapterDotSpatial;
     protected ICrsTransformationAdapter adapterMightyLittleGeodesy;
     protected ICrsTransformationAdapter adapterProjNet4GeoAPI;
@@ -31,6 +33,8 @@ public abstract class CompositeStrategyTestBase {
 
     [SetUp]
     public void SetUp() {
+        crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
+
         adapterDotSpatial = new CrsTransformationAdapterDotSpatial();
         adapterProjNet4GeoAPI = new CrsTransformationAdapterProjNet4GeoAPI();
         adapterMightyLittleGeodesy = new CrsTransformationAdapterMightyLittleGeodesy();
