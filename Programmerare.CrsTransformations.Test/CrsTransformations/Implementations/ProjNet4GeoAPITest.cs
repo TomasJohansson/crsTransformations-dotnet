@@ -2,51 +2,35 @@
 using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
+using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations.Test.Implementations
-{
-    class ProjNet4GeoAPITest : AdaptersTestBase
-    {
+namespace Programmerare.CrsTransformations.Test.Implementations {
+    class ProjNet4GeoAPITest : AdaptersTestBase {
+
+        private CrsTransformationAdapterProjNet4GeoAPI crsTransformationAdapterProjNet4GeoAPIwithNoConstructorParameters;
+        
         [SetUp]
-        public void SetUp()
-        {
-            base.SetUpbase(
-                new CrsTransformationAdapterProjNet4GeoAPI(),
-                CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1,
+        public void SetUp() {
+            crsTransformationAdapterProjNet4GeoAPIwithNoConstructorParameters = new CrsTransformationAdapterProjNet4GeoAPI();
 
-                // TODO retwrite the below comments ... and make sure they are still applicable ...
+            base.SetUpbase(
+                crsTransformationAdapterProjNet4GeoAPIwithNoConstructorParameters,
+
+                CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1,
 
                 // The implementation ProjNet4GeoAPI
                 // is currently (version 1.4.1) 
                 // producing bad results when transforming 
                 // to the Swedish CRS "RT90 2.5 gon V"
                 // https://github.com/NetTopologySuite/ProjNet4GeoAPI/issues/38
-
-
-                // It is questionable where to draw the limit 
-                // between a failing and succeeding test 
-                // when the result is not accurate,
-                // and here below I it is indeed reasonable to claim 
-                // that I have "cheated" with high values 
-                // to get "succeeding" tests ...
-
-                //195, // maxMeterDifferenceForSuccessfulTest
-                //0.01 // maxLatLongDifferenceForSuccessfulTest
-
-                // something like the above limits are 
-                // currently required for the shipped CSV file
-                // but if modifying the CRS definition for 
-                // RT90 then the below will work:
+                // However, the results for those CRS have been improved by 
+                // using other CRS definitions for those CRS.
+                // See further comments in the file/type EmbeddedResourceFileWithCRSdefinitions 
+                // in the project Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI
 
                 0.5, // maxMeterDifferenceForSuccessfulTest
                 0.00001 // maxLatLongDifferenceForSuccessfulTest
-
-                // from the implementation class:
-                //let mutable _sridReader = SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI)
-                // the above causes failing tests for Swedish CRS RT90
-                //let mutable _sridReader = SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml)
             );
-
 
             // The implementation ProjNet4GeoAPI
             // does not contain a lot of hardcoded definitions 
@@ -190,6 +174,43 @@ namespace Programmerare.CrsTransformations.Test.Implementations
                     )
                 );
             }
+        }
+
+        [Test]
+        public void AdapterInstance_ShouldBeConstructedUsingCachingAndSwedishRT90systems_WhenUsingConstructorWithoutParameters() {
+            // The first adapter below (i.e. the "expected") is 
+            // used in the SetUp method, and is constructed without any parameters.
+            // The purpose of this test is to illustrate which default values are being used by that constructor
+            // i.e. the same as in the second parameter below 
+            // i.e. the "actual" value in the method "AreEqual".
+            Assert.AreEqual(
+                this.crsTransformationAdapterProjNet4GeoAPIwithNoConstructorParameters
+                ,
+                new CrsTransformationAdapterProjNet4GeoAPI(
+                    CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
+                    ,
+                    new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{
+                        EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI,
+                        EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml
+                    })
+                )
+            );
+
+            // The below test is just showing that when switching the order of 
+            // the embedded resource files (which is the only different compared to the above code)
+            // then they are NOT equal
+            Assert.AreNotEqual(
+                this.crsTransformationAdapterProjNet4GeoAPIwithNoConstructorParameters
+                ,
+                new CrsTransformationAdapterProjNet4GeoAPI(
+                    CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
+                    ,
+                    new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{
+                        EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml,
+                        EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI
+                    })
+                )
+            );
         }
     }
 }
