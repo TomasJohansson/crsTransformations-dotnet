@@ -499,11 +499,15 @@ and CrsTransformationResultStatistic private
             getMaxDiff(_longitudesLazyLoaded.Force())
         )
 
+    // stringWithMedianOrAverage should be either "average" or "median"
+    let ThrowExceptionIfNoSuccesfulResult(coords: IList<CrsCoordinate>, stringWithMedianOrAverage: string) = 
+        if(coords.Count < 1) then
+            invalidOp ("No successful result and therefore no " + stringWithMedianOrAverage + " available")
+
     let _coordinateMedianLazyLoaded =
         lazy (
             let coords = _successfulCoordinatesLazyLoaded.Force()
-            if(coords.Count < 1) then
-                invalidOp "No successful result and therefore no median available"
+            ThrowExceptionIfNoSuccesfulResult(coords, "median")
             let medianLat = MedianValueUtility.GetMedianValue(_latitudesLazyLoaded.Force())
             let medianLon = MedianValueUtility.GetMedianValue(_longitudesLazyLoaded.Force())
             let crs = coords.[0].CrsIdentifier // all should have the same CRS which is here assumed to work properly i.e. not validated here
@@ -518,8 +522,7 @@ and CrsTransformationResultStatistic private
     let _coordinateAverageLazyLoaded =
         lazy (
             let coords = _successfulCoordinatesLazyLoaded.Force()
-            if(coords.Count < 1) then
-                invalidOp "No successful result and therefore no average available"
+            ThrowExceptionIfNoSuccesfulResult(coords, "average")
             let avgLat = _latitudesLazyLoaded.Force().Average()
             let avgLon = _longitudesLazyLoaded.Force().Average()
             let crs = coords.[0].CrsIdentifier // all should have the same CRS which is here assumed to work properly i.e. not validated here
