@@ -303,24 +303,6 @@ and CrsTransformationResult private
                 let list = new List<CrsTransformationResult>([this]) // alternative: new ResizeArray
                 CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(list)
 
-            // From the Kotlin project's implementation:
-            //    val crsTransformationResultStatistic: CrsTransformationResultStatistic
-            //        get() {
-            //            return _crsTransformationResultStatisticLazyLoaded
-            //        }
-            // The Kotlin project's implementation of the above property:
-            //    private val _crsTransformationResultStatisticLazyLoaded: CrsTransformationResultStatistic by lazy {
-            //        if(_nullableCrsTransformationResultStatistic != null) {
-            //            _nullableCrsTransformationResultStatistic
-            //        }
-            //        else if(this.transformationResultChildren.size == 0) {
-            //            CrsTransformationResultStatistic._createCrsTransformationResultStatistic(listOf<CrsTransformationResult>(this))
-            //        }
-            //        else {
-            //            CrsTransformationResultStatistic._createCrsTransformationResultStatistic(transformationResultChildren)
-            //        }
-            //    }
-
         ///<value>
         ///Empty list if the transform implementation is a concrete "Leaf"
         ///implementation, but if it is a composite/aggregating implementation
@@ -415,24 +397,7 @@ and CrsTransformationResult private
                 for res in allResults do
                     if not(res.IsSuccess) && not(isNull res.Exception) then 
                         exc <- res.Exception
-                // One alternative to simply (as above) reuse 
-                // the last exception can be to instead implement code similar as below 
-                // from the Kotlin project's implementation:
-                //if(this.transformationResultChildren == null || this.transformationResultChildren.size == 0) return exception
-                //val sb = StringBuilder()
-                //for (transformationResultChild in this.transformationResultChildren) {
-                //    if(transformationResultChild.exception != null) {
-                //        sb.appendln(transformationResultChild.exception.message)
-                //    }
-                //}
-                //if(sb.isEmpty()){
-                //    return null    
-                //}
-                //else {
-                //    sb.appendln("If you want more details with stacktrace you can try iterating the children for exceptions.")
-                //    sb.appendln("This composite exception message only contains the 'getMessage' part for each child exception.")
-                //    return RuntimeException(sb.toString())
-                //}
+
             CrsTransformationResult(
                 inputCoordinate,
                 outputCoordinate,
