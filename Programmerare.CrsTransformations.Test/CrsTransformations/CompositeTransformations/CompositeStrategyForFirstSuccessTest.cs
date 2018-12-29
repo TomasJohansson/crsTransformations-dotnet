@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
+using System.Collections.Generic;
 
 namespace Programmerare.CrsTransformations.CompositeTransformations 
 {
@@ -27,6 +28,38 @@ public class CompositeStrategyFirstSuccessTest : CompositeStrategyTestBase {
             coordinateResultWhenUsingDotSpatial, 
             coordinateReturnedByCompositeAdapterFirstSuccess
         );
+    }
+
+    [Test]
+    public void FirstSuccessAdapter_ShouldNotBeEqual_WhenLeafAdaptersAreAggregatedInDifferentOrder() {
+        ICrsTransformationAdapter firstSuccess1, firstSuccess2, firstSuccess3;
+        firstSuccess1 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(
+            new List<ICrsTransformationAdapter>{
+                base.adapterDotSpatial,
+                base.adapterMightyLittleGeodesy
+            }
+        );
+        // Now creating the same as above but in reversed 
+        // order (and thus they should NOT be considered Equal)
+        firstSuccess2 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(
+            new List<ICrsTransformationAdapter>{
+                base.adapterMightyLittleGeodesy,
+                base.adapterDotSpatial
+            }
+        );
+        Assert.AreNotEqual(firstSuccess1, firstSuccess2);
+
+
+        // Now below creating a new instance "firstSuccess3" with the same 
+        // adapters as above "firstSuccess2" and thus they should be considered Equal
+        firstSuccess3 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(
+            new List<ICrsTransformationAdapter>{
+                base.adapterMightyLittleGeodesy,
+                base.adapterDotSpatial
+            }
+        );            
+        Assert.AreEqual(firstSuccess2, firstSuccess3);
+        Assert.AreEqual(firstSuccess2.GetHashCode(), firstSuccess3.GetHashCode());
     }
 }
 }

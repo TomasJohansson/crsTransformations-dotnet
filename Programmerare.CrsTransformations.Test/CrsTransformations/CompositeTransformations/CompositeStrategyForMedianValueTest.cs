@@ -54,6 +54,38 @@ namespace Programmerare.CrsTransformations.CompositeTransformations
         return CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(medianLongitude, medianLatitude, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
     }
 
+    [Test]
+    public void MedianAdapter_ShouldBeEqual_WhenHavingTheSameLeafAdaptersRegardlessOfTheOrder() {
+        ICrsTransformationAdapter median1, median2, median3;
+
+        median1 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(
+            new List<ICrsTransformationAdapter>{
+                base.adapterDotSpatial,
+                base.adapterMightyLittleGeodesy
+            }
+        );
+        // Now creating the same as above but in reversed 
+        // order (but still they SHOULD be considered Equal)
+        median2 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(
+            new List<ICrsTransformationAdapter>{
+                base.adapterMightyLittleGeodesy,
+                base.adapterDotSpatial
+            }
+        );
+        Assert.AreEqual(median1, median2);
+        Assert.AreEqual(median1.GetHashCode(), median2.GetHashCode());
+
+        // Now below creating a new instance "median3" with one additional 
+        // adapter compared to above "median2" and thus they should NOT be considered Equal
+        median3 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(
+            new List<ICrsTransformationAdapter>{
+                base.adapterMightyLittleGeodesy,
+                base.adapterDotSpatial,
+                base.adapterProjNet4GeoAPI
+            }
+        );            
+        Assert.AreNotEqual(median2, median3);
+    }
 }
 /*
 Now using MathNet.Numerics instead of the below code

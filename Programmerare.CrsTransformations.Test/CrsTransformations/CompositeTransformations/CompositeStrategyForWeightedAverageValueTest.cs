@@ -206,8 +206,40 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
             },
             "The result adapter was not part of the weighted average composite adapter"
         );
+    }
 
+    [Test]
+    public void WeightedAverageAdapter_ShouldBeEqual_WhenHavingTheSameLeafAdaptersRegardlessOfTheOrder() {
+        ICrsTransformationAdapter weightedAverage1, weightedAverage2, weightedAverage3;
 
+        var weights1 = new List<CrsTransformationAdapterWeight>{
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), weightForDotSpatial),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), weightForProjNet4GeoAPI),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), weightForMightyLittleGeodesy)
+        };
+        weightedAverage1 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weights1);
+        // The below weights are exactly the same as above
+        // but in different order (the first two are reversed), but the order is not relevant 
+        // and thus they should be considered as Equal
+        var weights2 = new List<CrsTransformationAdapterWeight>{
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), weightForProjNet4GeoAPI),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), weightForDotSpatial),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), weightForMightyLittleGeodesy)
+        };
+        weightedAverage2 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weights2);
+
+        Assert.AreEqual(weightedAverage1, weightedAverage2);
+        Assert.AreEqual(weightedAverage1.GetHashCode(), weightedAverage2.GetHashCode());
+
+        // Now below creating a new instance "weightedAverage3" with one of the 
+        // modified compared to above "weightedAverage2" and thus they should NOT be considered Equal
+        var weights3 = new List<CrsTransformationAdapterWeight>{
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), weightForProjNet4GeoAPI + 0.01),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), weightForDotSpatial),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), weightForMightyLittleGeodesy)
+        };
+        weightedAverage3 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weights3);
+        Assert.AreNotEqual(weightedAverage2, weightedAverage3);
     }
 
 }

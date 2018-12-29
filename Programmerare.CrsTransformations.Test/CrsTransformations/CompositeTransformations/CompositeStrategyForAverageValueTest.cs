@@ -63,5 +63,38 @@ public class CompositeStrategyAverageTest : CompositeStrategyTestBase {
             crsIdentifier
         );
     }
+
+    [Test]
+    public void AverageAdapter_ShouldBeEqual_WhenHavingTheSameLeafAdaptersRegardlessOfTheOrder() {
+        ICrsTransformationAdapter average1, average2, average3;
+
+        average1 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(
+            new List<ICrsTransformationAdapter>{
+                base.adapterDotSpatial,
+                base.adapterMightyLittleGeodesy
+            }
+        );
+        // Now creating the same as above but in reversed 
+        // order (but still they SHOULD be considered Equal)
+        average2 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(
+            new List<ICrsTransformationAdapter>{
+                base.adapterMightyLittleGeodesy,
+                base.adapterDotSpatial
+            }
+        );
+        Assert.AreEqual(average1, average2);
+        Assert.AreEqual(average1.GetHashCode(), average2.GetHashCode());
+
+        // Now below creating a new instance "average3" with one additional 
+        // adapter compared to above "average2" and thus they should NOT be considered Equal
+        average3 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(
+            new List<ICrsTransformationAdapter>{
+                base.adapterMightyLittleGeodesy,
+                base.adapterDotSpatial,
+                base.adapterProjNet4GeoAPI
+            }
+        );            
+        Assert.AreNotEqual(average2, average3);
+    }
 }
 }
