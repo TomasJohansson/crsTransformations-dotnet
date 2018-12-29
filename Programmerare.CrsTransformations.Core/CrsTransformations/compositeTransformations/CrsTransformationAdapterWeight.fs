@@ -29,8 +29,6 @@ type CrsTransformationAdapterWeight private
         weight: double
     ) =
 
-    static let crsTransformationAdapterLeafFactory = CrsTransformationAdapterLeafFactory.Create()
-
     do
         if isNull crsTransformationAdapter then
             nullArg "crsTransformationAdapter"
@@ -40,30 +38,9 @@ type CrsTransformationAdapterWeight private
     member x.Weight = weight
     member x.CrsTransformationAdapter = crsTransformationAdapter
 
-    ///<param name="crsTransformationAdapterClassName">
-    ///crsTransformationAdapterClassName the full class name (i.e. including the package name)
-    ///of a class which must implement the interface CrsTransformationAdapter
-    ///</param>
-    ///<param name="weight">
-    ///the relative weight value to assign for the adapter specified by the string parameter 
-    ///</param>
-    static member CreateFromStringWithFullClassNameForImplementation
-        (
-            crsTransformationAdapterClassName: string,
-            weight: double
-        ): CrsTransformationAdapterWeight =
-        let crsTransformationAdapter = crsTransformationAdapterLeafFactory.GetCrsTransformationAdapter(crsTransformationAdapterClassName)
-        CrsTransformationAdapterWeight(crsTransformationAdapter, weight)
-
-    ///<param name="crsTransformationAdapter">
-    ///an object implementing the interface ICrsTransformationAdapter
-    ///</param>    
-    ///<param name="weight">
-    ///the relative weight value to assign for the adapter specified by the adapter parameter 
-    ///</param>
-    static member CreateFromInstance
+    static member internal _Create
         (
             crsTransformationAdapter: ICrsTransformationAdapter,
             weight: double
-        ): CrsTransformationAdapterWeight =
-        CrsTransformationAdapterWeight(crsTransformationAdapter, weight)
+        ) = 
+            CrsTransformationAdapterWeight(crsTransformationAdapter, weight)

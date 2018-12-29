@@ -22,8 +22,12 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     private CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
 
+    private CrsTransformationAdapterWeightFactory weightFactory;
+
     [SetUp]
     public void SetUp() {
+        weightFactory = CrsTransformationAdapterWeightFactory.Create();
+
         crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
         double[] outputLatitudes = {
             59.1,
@@ -233,11 +237,11 @@ public class CompositeStrategyTestsUsingTestDoubles {
         CrsCoordinate expectedWeightedAverage = CrsCoordinateFactory.CreateFromLatitudeLongitude(weightedLat, weightedLon);
 
         List<CrsTransformationAdapterWeight> weightedAdapters = new List<CrsTransformationAdapterWeight>{
-            CrsTransformationAdapterWeight.CreateFromInstance(leafAdapterImplementation_1, weights[0]),
-            CrsTransformationAdapterWeight.CreateFromInstance(leafAdapterImplementation_2, weights[1]),
-            CrsTransformationAdapterWeight.CreateFromInstance(leafAdapterImplementation_3, weights[2]),
-            CrsTransformationAdapterWeight.CreateFromInstance(leafAdapterImplementation_4, weights[3]),
-            CrsTransformationAdapterWeight.CreateFromInstance(leafAdapterImplementation_5, weights[4])
+            weightFactory.CreateFromInstance(leafAdapterImplementation_1, weights[0]),
+            weightFactory.CreateFromInstance(leafAdapterImplementation_2, weights[1]),
+            weightFactory.CreateFromInstance(leafAdapterImplementation_3, weights[2]),
+            weightFactory.CreateFromInstance(leafAdapterImplementation_4, weights[3]),
+            weightFactory.CreateFromInstance(leafAdapterImplementation_5, weights[4])
         };
 
         CrsTransformationAdapterComposite weightedAverageCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weightedAdapters);

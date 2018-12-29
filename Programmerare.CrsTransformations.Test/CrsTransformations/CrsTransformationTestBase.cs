@@ -20,8 +20,12 @@ public abstract class CrsTransformationTestBase {
 
     protected CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
 
+    private CrsTransformationAdapterWeightFactory weightFactory;
+
     [SetUp]
     public void SetUp() {
+        weightFactory = CrsTransformationAdapterWeightFactory.Create();
+
         crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
 
         crsTransformationAdapterLeafImplementations = new List<ICrsTransformationAdapter>{
@@ -35,9 +39,9 @@ public abstract class CrsTransformationTestBase {
             crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(),
             crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(),
             crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
-                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 51.0),
-                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 52.0),
-                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 53.0)
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 51.0),
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 52.0),
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 53.0)
             })
         };
         crsTransformationAdapterImplementations = new List<ICrsTransformationAdapter>();

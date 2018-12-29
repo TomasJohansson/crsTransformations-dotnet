@@ -119,8 +119,8 @@ namespace Programmerare.CrsTransformations.TestClient {
             // Now creating the composite with weighted average, using the above two
             // leaf adapters, using two different create methods:
             crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight> {
-                CrsTransformationAdapterWeight.CreateFromInstance(crsTransformationAdapterProjNet4GeoAPI, 1.0),
-                CrsTransformationAdapterWeight.CreateFromStringWithFullClassNameForImplementation(fullClassNameForImplementation, 2.0)
+                CrsTransformationAdapterWeightFactory.Create().CreateFromInstance(crsTransformationAdapterProjNet4GeoAPI, 1.0),
+                CrsTransformationAdapterWeightFactory.Create().CreateFromStringWithFullClassNameForImplementation(fullClassNameForImplementation, 2.0)
             });
 
             // public properties

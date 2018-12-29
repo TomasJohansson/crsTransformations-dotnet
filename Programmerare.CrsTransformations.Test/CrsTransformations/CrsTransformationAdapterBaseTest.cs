@@ -17,8 +17,12 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
         CrsTransformationAdapterComposite average, median, firstSuccess, weightedAverage;
         CrsTransformationAdapterBaseLeaf dotSpatial, mightyLittleGeodesy, projNet4GeoAPI, projNet4GeoAPIWithDifferentConfiguration;
 
+        private CrsTransformationAdapterWeightFactory weightFactory;
+
         [SetUp]
         public void SetUp() {
+            weightFactory = CrsTransformationAdapterWeightFactory.Create();
+
             // Leaf adapters:
             dotSpatial = new CrsTransformationAdapterDotSpatial();
             mightyLittleGeodesy = new CrsTransformationAdapterMightyLittleGeodesy();
@@ -41,9 +45,9 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
             median = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
             firstSuccess = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
             weightedAverage = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
-                CrsTransformationAdapterWeight.CreateFromInstance(dotSpatial, 1.0),
-                CrsTransformationAdapterWeight.CreateFromInstance(projNet4GeoAPI, 2.0),
-                CrsTransformationAdapterWeight.CreateFromInstance(mightyLittleGeodesy, 3.0)
+                weightFactory.CreateFromInstance(dotSpatial, 1.0),
+                weightFactory.CreateFromInstance(projNet4GeoAPI, 2.0),
+                weightFactory.CreateFromInstance(mightyLittleGeodesy, 3.0)
             });
         }
 
@@ -256,16 +260,16 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
             // Two instances are created below but in different order 
             // but with the same weights
             var weightedAverage1 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
-                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
-                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
             });
             // below the order is switched between the above first and second,
             // though their weights are the same
             var weightedAverage2 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
-                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
-                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
             });
             Assert.AreEqual(
                 weightedAverage1
@@ -283,17 +287,17 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
         public void CompositeAdapterWeightedAverage_ShouldNotBeEqual_WhenDifferentWeights() {
             Assert.AreNotEqual(
                 crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
-                    CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-                    CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
-                    CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
+                    weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
+                    weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
+                    weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
                 })
                 ,
                 // The second below has weight 2.01 instead of 2.0
                 // and therefore they should be considered as Equal
                 crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
-                    CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-                    CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.01),
-                    CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
+                    weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
+                    weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.01),
+                    weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
                 })
             );
         }

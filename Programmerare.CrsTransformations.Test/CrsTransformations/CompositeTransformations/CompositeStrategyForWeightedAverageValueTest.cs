@@ -22,18 +22,22 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
 
     private CrsCoordinate coordinateWithExpectedWeightedValues;
 
+    private CrsTransformationAdapterWeightFactory weightFactory;
+
     [SetUp]
     public void SetUp() {
         coordinateWithExpectedWeightedValues = CreateWeightedValue();
+        weightFactory = CrsTransformationAdapterWeightFactory.Create();
     }
+    
 
     [Test]
     public void transform_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapter() {
-
+        
         var weights = new List<CrsTransformationAdapterWeight>{
-            CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), weightForDotSpatial),
-            CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), weightForProjNet4GeoAPI),
-            CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), weightForMightyLittleGeodesy)
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), weightForDotSpatial),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), weightForProjNet4GeoAPI),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), weightForMightyLittleGeodesy)
         };
         var crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
         CrsTransformationAdapterComposite adapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weights);
@@ -49,9 +53,9 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
 
 
         List<CrsTransformationAdapterWeight> weights = new List<CrsTransformationAdapterWeight>{
-            CrsTransformationAdapterWeight.CreateFromStringWithFullClassNameForImplementation(classNameadapterDotSpatial, weightForDotSpatial),
-            CrsTransformationAdapterWeight.CreateFromStringWithFullClassNameForImplementation(classNameProjNet4GeoAPI, weightForProjNet4GeoAPI),
-            CrsTransformationAdapterWeight.CreateFromStringWithFullClassNameForImplementation(classNameMightyLittleGeodesy, weightForMightyLittleGeodesy)
+            weightFactory.CreateFromStringWithFullClassNameForImplementation(classNameadapterDotSpatial, weightForDotSpatial),
+            weightFactory.CreateFromStringWithFullClassNameForImplementation(classNameProjNet4GeoAPI, weightForProjNet4GeoAPI),
+            weightFactory.CreateFromStringWithFullClassNameForImplementation(classNameMightyLittleGeodesy, weightForMightyLittleGeodesy)
         };
 
 
@@ -132,7 +136,7 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
     public void CreateCompositeStrategyWeightedAverage_whenAllWeightsArePositive__shouldNotThrowException() {
         List<CrsTransformationAdapterWeight> weightedCrsTransformationAdapters =
             new List<CrsTransformationAdapterWeight>{
-                CrsTransformationAdapterWeight.CreateFromInstance(
+                weightFactory.CreateFromInstance(
                     new CrsTransformationAdapterMightyLittleGeodesy(),
                     1 // null is not possible (compiling error) which is good !
                 )
@@ -150,7 +154,7 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
         // TODO refactor this too long test method
         ICrsTransformationAdapter crsTransformationAdapterResultSource = new CrsTransformationAdapterMightyLittleGeodesy();
         List<CrsTransformationAdapterWeight> crsTransformationAdapterWeights = new List<CrsTransformationAdapterWeight>{
-            CrsTransformationAdapterWeight.CreateFromInstance(
+            weightFactory.CreateFromInstance(
                 crsTransformationAdapterResultSource,
                 1
             )

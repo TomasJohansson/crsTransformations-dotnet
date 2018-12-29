@@ -21,9 +21,11 @@ public class CrsTransformationAdapterCompositeFactoryTest {
 
     private CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
     private CrsTransformationAdapterCompositeFactory compositeFactoryConfiguredWithLeafFactoryOnlyCreatingDotSpatialImplementationAsDefault;
+    private CrsTransformationAdapterWeightFactory weightFactory;
 
     [SetUp]
     public void SetUp() {
+        weightFactory = CrsTransformationAdapterWeightFactory.Create();
         crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
 
         var dotSpatial = new CrsTransformationAdapterDotSpatial();
@@ -43,12 +45,12 @@ public class CrsTransformationAdapterCompositeFactoryTest {
         };
 
         listOfWeightsWithOneDuplicated = new List<CrsTransformationAdapterWeight>{
-            CrsTransformationAdapterWeight.CreateFromInstance(dotSpatial, 1.0),
-            CrsTransformationAdapterWeight.CreateFromInstance(projNet4GeoAPI, 2.0),
-            CrsTransformationAdapterWeight.CreateFromInstance(mightyLittleGeodesy, 3.0),
+            weightFactory.CreateFromInstance(dotSpatial, 1.0),
+            weightFactory.CreateFromInstance(projNet4GeoAPI, 2.0),
+            weightFactory.CreateFromInstance(mightyLittleGeodesy, 3.0),
             // Duplicate added below !
             // (Duplicate regarding the class, the weight value is not relevant)
-            CrsTransformationAdapterWeight.CreateFromInstance(dotSpatial, 4.0)
+            weightFactory.CreateFromInstance(dotSpatial, 4.0)
         };
 
         CrsTransformationAdapterLeafFactory leafFactoryOnlyCreatingDotSpatialImplementationAsDefault = CrsTransformationAdapterLeafFactory.Create(new List<ICrsTransformationAdapter>{dotSpatial});

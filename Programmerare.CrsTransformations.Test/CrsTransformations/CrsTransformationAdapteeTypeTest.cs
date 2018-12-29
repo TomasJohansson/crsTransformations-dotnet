@@ -11,9 +11,11 @@ namespace Programmerare.CrsTransformations
 class CrsTransformationAdapteeTypeTest {
 
     private CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
+    private CrsTransformationAdapterWeightFactory weightFactory;
 
     [SetUp]
     public void SetUp() {
+        weightFactory = CrsTransformationAdapterWeightFactory.Create();
         crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
     }
 
@@ -125,9 +127,9 @@ class CrsTransformationAdapteeTypeTest {
     public void testCompositeWeightedAverage() {
         verifyExpectedEnumWhenNotRepresentingThirdPartLibrary(
             crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
-                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
-                CrsTransformationAdapterWeight.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
             }),
             CrsTransformationAdapteeType.COMPOSITE_WEIGHTED_AVERAGE
         );

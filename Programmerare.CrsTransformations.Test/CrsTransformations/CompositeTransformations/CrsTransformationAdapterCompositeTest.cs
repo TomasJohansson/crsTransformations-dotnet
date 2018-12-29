@@ -59,11 +59,11 @@ public class CrsTransformationAdapterCompositeTest {
         var compositeAverage = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
         var compositeFirstSuccess = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
         var weightsForCompositeLeafs = new List<CrsTransformationAdapterWeight>{
-            CrsTransformationAdapterWeight.CreateFromInstance(
+            CrsTransformationAdapterWeightFactory.Create().CreateFromInstance(
                 compositeAverage,
                 1.0 // weight
             ),
-            CrsTransformationAdapterWeight.CreateFromInstance(
+            CrsTransformationAdapterWeightFactory.Create().CreateFromInstance(
                 compositeFirstSuccess,
                 2.0 // weight
             )
