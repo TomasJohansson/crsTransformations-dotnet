@@ -15,8 +15,6 @@ public abstract class CompositeStrategyTestBase {
     protected ICrsTransformationAdapter adapterDotSpatial;
     protected ICrsTransformationAdapter adapterMightyLittleGeodesy;
     protected ICrsTransformationAdapter adapterProjNet4GeoAPI;
-    protected ICrsTransformationAdapter adapterProj4J;
-    protected ICrsTransformationAdapter adapterGeoPackageNGA;
 
     protected IList<ICrsTransformationAdapter> allAdapters;
     protected List<CrsCoordinate> allCoordinateResultsForTheDifferentImplementations;
