@@ -228,20 +228,18 @@ and CrsTransformationResult private
             if( not(isNull exceptionOrNull)) then // if there was an exception then should NOT be success and NOT any resulting coordinate !
                 if(isSuccess || not(isNull outputCoordinate)) then
                     invalidArg "isSuccess" "Unvalid object construction. If exception then output coordinate should be null and success should be false"
-            // From the Kotlin project's implementation:
-            //        if(transformationResultChildren == null || transformationResultChildren.size <= 0) {
-            //            // SHOULD be a leaf since no children, i.e. throw exception if Composite
-            //            if(crsTransformationAdapterResultSource.isComposite()) {
-            //                throw IllegalStateException("Inconsistent result: 'Composite' without 'leafs' (should not be possible)")    
-            //            }
-            //        }
-            //        else { // i.e. size > 0
-            //            // SHOULD be a composite since there are children, i.e. throw exception if Leaf
-            //            if(!crsTransformationAdapterResultSource.isComposite()) { // Not Composite means it is a Leaf
-            //                throw IllegalStateException("Inconsistent result: 'Leaf' with 'children' (should not be possible)")
-            //            }            
-            //        }
-            //    }
+            if( 
+                (isNull crsTransformationResultStatistic.AllCrsTransformationResults)
+                ||
+                (crsTransformationResultStatistic.AllCrsTransformationResults.Count <= 0)
+            ) then
+                // SHOULD be a leaf since no children, i.e. throw exception if Composite
+                if(crsTransformationAdapterResultSource.IsComposite) then
+                    invalidArg "crsTransformationResultStatistic" "Inconsistent result: 'Composite' without 'leafs' (should not be possible)"
+            else
+                // SHOULD be a composite since there are children, i.e. throw exception if Leaf
+                if(not(crsTransformationAdapterResultSource.IsComposite)) then // Not Composite means it is a Leaf
+                    invalidArg "crsTransformationResultStatistic" "Inconsistent result: 'Leaf' with 'children' (should not be possible)"
 
         ///<value>The input coordinate used in the transform that return the result object.</value>
         member this.InputCoordinate = inputCoordinate

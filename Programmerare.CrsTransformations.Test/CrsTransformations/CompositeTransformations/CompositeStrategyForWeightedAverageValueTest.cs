@@ -150,10 +150,10 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
     [Test]
     public void calculateAggregatedResultTest() {
         // TODO refactor this too long test method
-        ICrsTransformationAdapter crsTransformationAdapterResultSource = new CrsTransformationAdapterMightyLittleGeodesy();
+        ICrsTransformationAdapter leaf = new CrsTransformationAdapterMightyLittleGeodesy();
         List<CrsTransformationAdapterWeight> crsTransformationAdapterWeights = new List<CrsTransformationAdapterWeight>{
             weightFactory.CreateFromInstance(
-                crsTransformationAdapterResultSource,
+                leaf,
                 1
             )
         };
@@ -161,26 +161,26 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
         List<CrsTransformationResult> listOfSubresultsForStatisticsTest = new List<CrsTransformationResult>();
 
         CrsCoordinate coordinate = CrsCoordinateFactory.LatLon(59,18);
-        CrsTransformationResult crsTransformationResult = new CrsTransformationResult(
+        CrsTransformationResult leafResult = new CrsTransformationResult(
             coordinate, // inputCoordinate irrelevant in this test so okay to use the same as the output
             coordinate, // outputCoordinate
             null, // exception
             true, // isSuccess
-            crsTransformationAdapterResultSource,
+            leaf,
             CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(listOfSubresultsForStatisticsTest)
         );
+        var weightedAverageAdapter = this.crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(crsTransformationAdapterWeights);
 
         // The below type ICompositeStrategy is "internal" in the F# project but still available from here 
         //  because of "InternalsVisibleTo" configuration in the .fsproj file.
         ICompositeStrategy compositeStrategyWeightedAverage = CompositeStrategyWeightedAverage._CreateCompositeStrategyWeightedAverage(crsTransformationAdapterWeights);
         // the above composite was created with only one leaf in the list 
-        // i.e. the object crsTransformationAdapterResultSource which is also used below    
                 
         CrsTransformationResult crsTransformationResult1 = compositeStrategyWeightedAverage._CalculateAggregatedResult(
-            new List<CrsTransformationResult>{crsTransformationResult}, // allResults
+            new List<CrsTransformationResult>{leafResult}, // allResults
             coordinate,
             coordinate.CrsIdentifier, //  crsIdentifier for OutputCoordinateSystem
-            crsTransformationAdapterResultSource
+            weightedAverageAdapter
         );
         Assert.IsNotNull(crsTransformationResult1);
         Assert.IsTrue(crsTransformationResult1.isSuccess);
