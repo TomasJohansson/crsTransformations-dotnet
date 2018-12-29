@@ -148,60 +148,42 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
     }
 
     [Test]
-    public void calculateAggregatedResultTest() {
-        // TODO refactor this too long test method
-        ICrsTransformationAdapter leaf = new CrsTransformationAdapterMightyLittleGeodesy();
-        List<CrsTransformationAdapterWeight> crsTransformationAdapterWeights = new List<CrsTransformationAdapterWeight>{
+    public void CalculateAggregatedResult_ShouldThrowException_WhenResultIsBasedOnLeafsNotBeingPartOfTheWeightedAverageAdapter() {
+        CrsCoordinate coordinate = CrsCoordinateFactory.LatLon(59, 18);
+        List<CrsTransformationResult> emptyListOfTransformationResults = new List<CrsTransformationResult>();
+            
+        ICrsTransformationAdapter leafMightyLittleGeodesy = new CrsTransformationAdapterMightyLittleGeodesy();
+        List<CrsTransformationAdapterWeight> leafWeightsForOnlyMightyLittleGeodesy = new List<CrsTransformationAdapterWeight>{
             weightFactory.CreateFromInstance(
-                leaf,
+                leafMightyLittleGeodesy,
                 1
             )
         };
-
-        List<CrsTransformationResult> listOfSubresultsForStatisticsTest = new List<CrsTransformationResult>();
-
-        CrsCoordinate coordinate = CrsCoordinateFactory.LatLon(59,18);
-        CrsTransformationResult leafResult = new CrsTransformationResult(
-            coordinate, // inputCoordinate irrelevant in this test so okay to use the same as the output
-            coordinate, // outputCoordinate
-            null, // exception
-            true, // isSuccess
-            leaf,
-            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(listOfSubresultsForStatisticsTest)
-        );
-        var weightedAverageAdapter = this.crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(crsTransformationAdapterWeights);
-
         // The below type ICompositeStrategy is "internal" in the F# project but still available from here 
         //  because of "InternalsVisibleTo" configuration in the .fsproj file.
-        ICompositeStrategy compositeStrategyWeightedAverage = CompositeStrategyWeightedAverage._CreateCompositeStrategyWeightedAverage(crsTransformationAdapterWeights);
-        // the above composite was created with only one leaf in the list 
-                
-        CrsTransformationResult crsTransformationResult1 = compositeStrategyWeightedAverage._CalculateAggregatedResult(
-            new List<CrsTransformationResult>{leafResult}, // allResults
-            coordinate,
-            coordinate.CrsIdentifier, //  crsIdentifier for OutputCoordinateSystem
-            weightedAverageAdapter
-        );
-        Assert.IsNotNull(crsTransformationResult1);
-        Assert.IsTrue(crsTransformationResult1.isSuccess);
-        Assert.AreEqual(coordinate, crsTransformationResult1.OutputCoordinate);
+        ICompositeStrategy compositeStrategyWeightedAverageForOnlyMightyLittleGeodesy = CompositeStrategyWeightedAverage._CreateCompositeStrategyWeightedAverage(leafWeightsForOnlyMightyLittleGeodesy);
+        // The above composite was created with only one leaf in the list
 
-        ICrsTransformationAdapter crsTransformationAdapterNotInTheComposite = new CrsTransformationAdapterDotSpatial();
+        ICrsTransformationAdapter leafDotSpatial = new CrsTransformationAdapterDotSpatial();
         CrsTransformationResult crsTransformationResultProblem = new CrsTransformationResult(
             coordinate, // inputCoordinate irrelevant in this test so okay to use the same as the output
             coordinate, // outputCoordinate
             null, // exception
             true, // isSuccess
-            crsTransformationAdapterNotInTheComposite, // crsTransformationAdapterResultSource,
-            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(listOfSubresultsForStatisticsTest)
+            leafDotSpatial, // crsTransformationAdapterResultSource,
+            CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(emptyListOfTransformationResults)
         );
 
+        // The composite strategy used below was created with only MightyLittleGeodesy,
+        // and therefore if the result (as below) would be based on "DotSpatial" 
+        // then there is a bug somewhere i.e. an exception is thrown 
+        // which is tested below
         InvalidOperationException exception = Assert.Throws<InvalidOperationException>( () => {
-            compositeStrategyWeightedAverage._CalculateAggregatedResult(
+            compositeStrategyWeightedAverageForOnlyMightyLittleGeodesy._CalculateAggregatedResult(
                     new List<CrsTransformationResult>{crsTransformationResultProblem}, // allResults
                     coordinate,
                     coordinate.CrsIdentifier, //  crsIdentifier for OutputCoordinateSystem
-                    crsTransformationAdapterNotInTheComposite // SHOULD CAUSE EXCEPTION !
+                    leafDotSpatial // SHOULD CAUSE EXCEPTION !
                 );            
             },
             "The result adapter was not part of the weighted average composite adapter"
