@@ -101,7 +101,7 @@ public void method() {
                 // The above constraint "at least 2 implementations" will always fail because now we are dealing with "leafs"
                 // The above delta value constraint has very high tolerance but it does not matter since 
                 // the constraint about the number of implementations will fail
-                Console.WriteLine("Only 'composites' can have more than one result and this is a 'leaf' and thus does not at least two results");
+                Console.WriteLine("Only 'composites' can have more than one result and this is a 'leaf' and thus does not have at least two results");
             }
             Console.WriteLine("Adapter long name: " + resultAdapter.LongNameOfImplementation); // full class name including package
             Console.WriteLine("Adapter short name: " + resultAdapter.ShortNameOfImplementation); // class name suffix i.e. the unique part

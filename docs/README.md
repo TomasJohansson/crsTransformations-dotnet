@@ -17,69 +17,76 @@ The four 'composites' are using the leafs like this:
 * **Average** (transforms using many leafs and use the *average* latitude/longitude result as the aggregated result)
 * **Weighted average** (transforms using many leafs and use the *weighted* average latitude/longitude result as the aggregated result)
 * **First success** (iterates a list of leafs and tries to transform until some result seem to have succeeded)  
-C#:
+
+C# code illustrating the above mentioned interface and seven implementations:
 ```C#
-		using System.Collections.Generic; // IList
-		using Programmerare.CrsTransformations; // ICrsTransformationAdapter
-		using Programmerare.CrsTransformations.CompositeTransformations; // CrsTransformationAdapterCompositeFactory
-		using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
-		using Programmerare.CrsTransformations.Adapter.DotSpatial;
-		using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using System.Collections.Generic; // IList
+using Programmerare.CrsTransformations; // ICrsTransformationAdapter
+using Programmerare.CrsTransformations.CompositeTransformations; // CrsTransformationAdapterCompositeFactory
+using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
+using Programmerare.CrsTransformations.Adapter.DotSpatial;
+using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 
-		// ...
+	// ...
 
-        // The interface with seven implementations as illustrated below
-        ICrsTransformationAdapter crsTransformationAdapter; 
-        // The interface is defined in the library "Programmerare.CrsTransformations.Core" with this full name:
-        // Programmerare.CrsTransformations.ICrsTransformationAdapter
+    // The interface with seven implementations as illustrated below
+    ICrsTransformationAdapter crsTransformationAdapter; 
+    // The interface is defined in the library "Programmerare.CrsTransformations.Core" with this full name:
+    // Programmerare.CrsTransformations.ICrsTransformationAdapter
         
-        // The three 'Leaf' implementations:
+    // The three 'Leaf' implementations:
 
-        // Library "Programmerare.CrsTransformations.Adapter.DotSpatial", class:
-        // Programmerare.CrsTransformations.Adapter.DotSpatial.CrsTransformationAdapterDotSpatial
-        crsTransformationAdapter = new CrsTransformationAdapterDotSpatial();
+    // Library "Programmerare.CrsTransformations.Adapter.DotSpatial", class:
+    // Programmerare.CrsTransformations.Adapter.DotSpatial.CrsTransformationAdapterDotSpatial
+    crsTransformationAdapter = new CrsTransformationAdapterDotSpatial();
 
-        // Library "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI", class:
-        // Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.CrsTransformationAdapterProjNet4GeoAPI
-        crsTransformationAdapter = new CrsTransformationAdapterProjNet4GeoAPI();
+    // Library "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI", class:
+    // Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.CrsTransformationAdapterProjNet4GeoAPI
+    crsTransformationAdapter = new CrsTransformationAdapterProjNet4GeoAPI();
 
-        // Library "Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy", class:
-        // Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy.CrsTransformationAdapterMightyLittleGeodesy
-        crsTransformationAdapter = new CrsTransformationAdapterMightyLittleGeodesy();
+    // Library "Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy", class:
+    // Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy.CrsTransformationAdapterMightyLittleGeodesy
+    crsTransformationAdapter = new CrsTransformationAdapterMightyLittleGeodesy();
 
-        // - - - - - - - - - - - -
+    // - - - - - - - - - - - -
         
-        // The four 'Composite' implementations below are all located in the library
-        // "Programmerare.CrsTransformations.Core" and the factory class is:
-        // Programmerare.CrsTransformations.CompositeTransformations.CrsTransformationAdapterCompositeFactory
-        var crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
+    // The four 'Composite' implementations below are all located in the library
+    // "Programmerare.CrsTransformations.Core" and the factory class is:
+    // Programmerare.CrsTransformations.CompositeTransformations.CrsTransformationAdapterCompositeFactory
+    var crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
 
-        crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
+    crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
         
-        crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
+    crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
         
-        crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
-        // All of the above three factory methods without any parameter will try to use as many of the three (currently) 'leaf' 
-        // implementations as are available in runtime (e.g. are included as NuGet dependencies).
-        // If you want to specify explicitly which ones to be used, you can provide 
-        // a parameter 'IList<ICrsTransformationAdapter>' to the Create method like this:
-        crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create(new List<ICrsTransformationAdapter>{
-            new CrsTransformationAdapterDotSpatial(),
-            new CrsTransformationAdapterProjNet4GeoAPI(),
-            new CrsTransformationAdapterMightyLittleGeodesy(),
-        });
+    crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
+
+    // All of the above three factory methods without any parameter will try to use as many of 
+	// the three (currently) 'leaf' implementations as are available in runtime 
+	// (e.g. are included as NuGet dependencies).
+    // If you want to specify explicitly which ones to be used, you can provide 
+    // a parameter 'IList<ICrsTransformationAdapter>' to the Create method like this:
+    crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create(
+		new List<ICrsTransformationAdapter>{
+			new CrsTransformationAdapterDotSpatial(),
+			new CrsTransformationAdapterProjNet4GeoAPI(),
+			new CrsTransformationAdapterMightyLittleGeodesy(),
+		}
+	);
         
-        // The fourth 'Composite' below does not use any implicit implementations  
-        // but if you want to use a result created as a weighted average then the weights need 
-        // to be specified explicitly per leaf implementation as in the example below.
-        var weightFactory = CrsTransformationAdapterWeightFactory.Create();
-        crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight> {
-            weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 1.0),
-            weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 2.0),
-        });
-        // The weight values above illustrates a situation where you (for some reason) want to consider 
-        // the transformation results from 'MightyLittleGeodesy' as being 'two times better' than the others.
+    // The fourth 'Composite' below does not use any implicit implementations  
+    // but if you want to use a result created as a weighted average then the weights need 
+    // to be specified explicitly per leaf implementation as in the example below.
+    var weightFactory = CrsTransformationAdapterWeightFactory.Create();
+    crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(
+		new List<CrsTransformationAdapterWeight> {
+			weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
+			weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 1.0),
+			weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 2.0),
+	    }
+	);
+    // The weight values above illustrates a situation where you (for some reason) want to consider 
+    // the transformation results from 'MightyLittleGeodesy' as being 'two times better' than the others.
 ```
 All of the transform methods (defined in the above interface *ICrsTransformationAdapter*) need two parameters, one input coordinate and one parameter specifying the target system i.e. to which coordinate reference system the input coordinate will be transformed to.  
 
@@ -96,13 +103,13 @@ Depending on the desired semantic in your context, you may want to use the diffe
 * Easting/Northing for a cartographic or projected system
 * xEastingLongitude/yNorthingLatitude for general code handling different types of system
   
-C#:
+C# code illustrating how to create coordinate instances with the different factory methods:
 ```C#
-	using Programmerare.CrsTransformations.Identifier; // CrsIdentifier
-	using Programmerare.CrsTransformations.Coordinate; // CrsCoordinate
-	using static Programmerare.CrsTransformations.Coordinate.CrsCoordinateFactory;
-	// The above row with "using static" enables many factory methods:
-	// LatLon , LonLat , YX , XY , ... and so on (see the example code below)
+using Programmerare.CrsTransformations.Identifier; // CrsIdentifier
+using Programmerare.CrsTransformations.Coordinate; // CrsCoordinate
+using static Programmerare.CrsTransformations.Coordinate.CrsCoordinateFactory;
+// The above row with "using static" enables many factory methods:
+// LatLon , LonLat , YX , XY , ... and so on (see the example code below)
 
 	// ...
 
@@ -158,7 +165,7 @@ C#:
     // see more example code further down in this webpage
 ```
 
-# Adaptee libraries used by the adapter libraries in the first release
+# Adaptee libraries used by the three adapter libraries in the first release
 * https://github.com/DotSpatial/DotSpatial
     (version 2.0.0-rc1)
 * https://github.com/NetTopologySuite/ProjNet4GeoAPI
@@ -167,7 +174,7 @@ C#:
     (version 1.0.1)
 
 # NuGet releases
-The following five artifacts from this code project **will** become released/distributed to NuGet:
+The following five libraries from this code project **will** become released/distributed to NuGet:
 * Programmerare.CrsTransformations.**Core**
     (version 1.0.0)
 * Programmerare.CrsTransformations.*Adapter*.**DotSpatial**
@@ -193,12 +200,12 @@ The C# constant class has been generated from the [EPSG database](http://www.eps
 # NuGet configuration (when it has been released, though not quite yet)
 The "Core" library is not necessary to include since there is an implicit/transitive dependency from all the "Adapter" libraries to the "Core".  
 The "Constants" library is not needed but might be interesting if you want to use constants 
-for the EPSG numbers rather than hardcoding them or define your own integer constants.  
+for the EPSG numbers rather than hardcoding them with integer literals or define your own integer constants.  
 ```xml
-<!-- Use one, two or three of the below Adapters -->
+<!-- Use one, two or three of the below three Adapters -->
 <PackageReference Include="Programmerare.CrsTransformations.Adapter.DotSpatial" Version="1.0.0" />
-<PackageReference Include="Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy" Version="1.0.0" />
 <PackageReference Include="Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI" Version="1.0.0" />
+<PackageReference Include="Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy" Version="1.0.0" />
 
 <!-- The Core should not be necessary to include explicitly as below (since it should be implicitly included when using one of the others above ) -->
 <PackageReference Include="Programmerare.CrsTransformations.Core" Version="1.0.0" />
@@ -377,7 +384,7 @@ using System.Collections.Generic;
                 // The above constraint "at least 2 implementations" will always fail because now we are dealing with "leafs"
                 // The above delta value constraint has very high tolerance but it does not matter since 
                 // the constraint about the number of implementations will fail
-                Console.WriteLine("Only 'composites' can have more than one result and this is a 'leaf' and thus does not at least two results");
+                Console.WriteLine("Only 'composites' can have more than one result and this is a 'leaf' and thus does not have at least two results");
             }
             Console.WriteLine("Adapter long name: " + resultAdapter.LongNameOfImplementation); // full class name including package
             Console.WriteLine("Adapter short name: " + resultAdapter.ShortNameOfImplementation); // class name suffix i.e. the unique part

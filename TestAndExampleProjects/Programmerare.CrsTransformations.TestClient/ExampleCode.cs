@@ -17,6 +17,8 @@ class ExampleCode {
     ICrsTransformationAdapter crsTransformationAdapter;
 
 public void method() {
+	// ...
+
     // The interface with seven implementations as illustrated below
     ICrsTransformationAdapter crsTransformationAdapter; 
     // The interface is defined in the library "Programmerare.CrsTransformations.Core" with this full name:
@@ -48,25 +50,31 @@ public void method() {
     crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
         
     crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
-    // All of the above three factory methods without any parameter will try to use as many of the three (currently) 'leaf' 
-    // implementations as are available in runtime (e.g. are included as NuGet dependencies).
+
+    // All of the above three factory methods without any parameter will try to use as many of 
+	// the three (currently) 'leaf' implementations as are available in runtime 
+	// (e.g. are included as NuGet dependencies).
     // If you want to specify explicitly which ones to be used, you can provide 
     // a parameter 'IList<ICrsTransformationAdapter>' to the Create method like this:
-    crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create(new List<ICrsTransformationAdapter>{
-        new CrsTransformationAdapterDotSpatial(),
-        new CrsTransformationAdapterProjNet4GeoAPI(),
-        new CrsTransformationAdapterMightyLittleGeodesy(),
-    });
+    crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create(
+		new List<ICrsTransformationAdapter>{
+			new CrsTransformationAdapterDotSpatial(),
+			new CrsTransformationAdapterProjNet4GeoAPI(),
+			new CrsTransformationAdapterMightyLittleGeodesy(),
+		}
+	);
         
     // The fourth 'Composite' below does not use any implicit implementations  
     // but if you want to use a result created as a weighted average then the weights need 
     // to be specified explicitly per leaf implementation as in the example below.
     var weightFactory = CrsTransformationAdapterWeightFactory.Create();
-    crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight> {
-        weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-        weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 1.0),
-        weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 2.0),
-    });
+    crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(
+		new List<CrsTransformationAdapterWeight> {
+			weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
+			weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 1.0),
+			weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 2.0),
+	    }
+	);
     // The weight values above illustrates a situation where you (for some reason) want to consider 
     // the transformation results from 'MightyLittleGeodesy' as being 'two times better' than the others.
 }
