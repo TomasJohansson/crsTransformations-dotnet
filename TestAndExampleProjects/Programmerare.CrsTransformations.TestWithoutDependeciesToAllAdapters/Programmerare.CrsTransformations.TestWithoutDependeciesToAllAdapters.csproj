@@ -53,11 +53,11 @@
     </PackageReference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.fsproj">
+    <ProjectReference Include="..\..\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.fsproj">
       <Project>{1b78d2d9-106b-4e1b-9cdc-7dcc5d98b515}</Project>
       <Name>Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Programmerare.CrsTransformations.Core\Programmerare.CrsTransformations.Core.fsproj">
+    <ProjectReference Include="..\..\Programmerare.CrsTransformations.Core\Programmerare.CrsTransformations.Core.fsproj">
       <Project>{b67e310b-12f5-4e11-b0e5-fb432280e349}</Project>
       <Name>Programmerare.CrsTransformations.Core</Name>
     </ProjectReference>
