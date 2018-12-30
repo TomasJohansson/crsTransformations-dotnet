@@ -1,14 +1,13 @@
 ﻿using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using NUnit.Framework;
 
-namespace Programmerare.CrsTransformations.Test.Implementations
-{
+namespace Programmerare.CrsTransformations.Test.Implementations {
+
     [TestFixture]
-    class MightyLittleGeodesyTest : AdaptersTestBase
-    {
+    class MightyLittleGeodesyTest : AdaptersTestBase {
+
         [SetUp]
-        public void SetUp()
-        {
+        public void SetUp() {
             base.SetUpbase(
                 new CrsTransformationAdapterMightyLittleGeodesy(),
                 CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_1,

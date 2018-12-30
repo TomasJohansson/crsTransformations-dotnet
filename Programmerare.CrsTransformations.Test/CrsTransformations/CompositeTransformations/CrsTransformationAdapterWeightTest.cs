@@ -5,19 +5,20 @@ using NUnit.Framework;
 using Programmerare.CrsTransformations;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 
+[TestFixture]
 class CrsTransformationAdapterWeightTest {
 
     private ICrsTransformationAdapter crsTransformationAdapterInstanceNotNull;
     private CrsTransformationAdapterWeightFactory weightFactory;
         
     [SetUp]
-    public void setup() {
+    public void Setup() {
         weightFactory = CrsTransformationAdapterWeightFactory.Create();
         crsTransformationAdapterInstanceNotNull = new CrsTransformationAdapterMightyLittleGeodesy();
     }
     
     [Test]
-    public void createFromInstance_shouldThrowException_whenAdapterParameterIsNull() {
+    public void CreateFromInstance_ShouldThrowException_WhenAdapterParameterIsNull() {
         ArgumentNullException exception = Assert.Throws<ArgumentNullException>(() => {
             weightFactory.CreateFromInstance(
                 null, // adapter
@@ -27,7 +28,7 @@ class CrsTransformationAdapterWeightTest {
     }
 
     [Test]
-    public void createFromInstance_shouldThrowException_whenWeightParameterIsNegative() {
+    public void CreateFromInstance_ShouldThrowException_WhenWeightParameterIsNegative() {
         ArgumentException exception = Assert.Throws<ArgumentException>(() => {
             weightFactory.CreateFromInstance(
                 crsTransformationAdapterInstanceNotNull,
@@ -37,7 +38,7 @@ class CrsTransformationAdapterWeightTest {
     }
 
     [Test]
-    public void createFromInstance_shouldThrowException_whenWeightParameterIsZero() {
+    public void CreateFromInstance_ShouldThrowException_WhenWeightParameterIsZero() {
         ArgumentException exception = Assert.Throws<ArgumentException>(() => {
             weightFactory.CreateFromInstance(
                 crsTransformationAdapterInstanceNotNull,
@@ -47,7 +48,7 @@ class CrsTransformationAdapterWeightTest {
     }
 
     [Test]
-    public void createFromStringWithFullClassNameForImplementation_shouldThrowException_whenTheClassIsNotImplementingTheExpectedInterface() {
+    public void CreateFromStringWithFullClassNameForImplementation_ShouldThrowException_WhenTheClassIsNotImplementingTheExpectedInterface() {
         string nameOfClassNotImplementingTheInterfaceCrsTransformationAdapter = this.GetType().FullName;
         ArgumentException exception = Assert.Throws<ArgumentException>(() => {
             weightFactory.CreateFromStringWithFullClassNameForImplementation(
@@ -58,7 +59,7 @@ class CrsTransformationAdapterWeightTest {
     }
 
     [Test]
-    public void createFromStringWithFullClassNameForImplementation_shouldSucceed_whenTheClassIsImplementingTheExpectedInterface() {
+    public void CreateFromStringWithFullClassNameForImplementation_ShouldSucceed_WhenTheClassIsImplementingTheExpectedInterface() {
         string nameOfClassImplementingTheInterfaceCrsTransformationAdapter = crsTransformationAdapterInstanceNotNull.GetType().FullName;
         double weightValue = 123;
         CrsTransformationAdapterWeight crsTransformationAdapterWeight = weightFactory.CreateFromStringWithFullClassNameForImplementation(

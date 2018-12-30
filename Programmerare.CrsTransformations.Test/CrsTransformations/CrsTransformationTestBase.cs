@@ -6,8 +6,9 @@ using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 using Programmerare.CrsTransformations.CompositeTransformations;
 
-namespace Programmerare.CrsTransformations
-{
+namespace Programmerare.CrsTransformations {
+
+[TestFixture]
 public abstract class CrsTransformationTestBase {
 
     protected readonly int epsgNumberForWgs84         = EpsgNumber.WORLD__WGS_84__4326;
@@ -48,5 +49,5 @@ public abstract class CrsTransformationTestBase {
         crsTransformationAdapterImplementations.AddRange(crsTransformationAdapterLeafImplementations);
         crsTransformationAdapterImplementations.AddRange(crsTransformationAdapterCompositeImplementations);
     }
-}
-}
+} // the test class ends here
+} // namespace ends here

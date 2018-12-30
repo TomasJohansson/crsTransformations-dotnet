@@ -3,12 +3,13 @@ using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations.CompositeTransformations 
-{
+namespace Programmerare.CrsTransformations.CompositeTransformations  {
+
+[TestFixture]
 public class CompositeStrategyFirstSuccessTest : CompositeStrategyTestBase {
 
     [Test]
-    public void transform_shouldReturnFirstResult_whenUsingFirstSuccessCompositeAdapter() {
+    public void Transform_ShouldReturnFirstResult_WhenUsingFirstSuccessCompositeAdapter() {
         ICrsTransformationAdapter firstSuccessCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(
             // note that DotSpatial should be the first item in the below list defined in the baseclass,
             // and therefore DotSpatial should be the implementation providing the result

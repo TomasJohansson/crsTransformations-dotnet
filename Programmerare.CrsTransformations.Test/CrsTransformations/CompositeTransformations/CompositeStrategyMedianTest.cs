@@ -1,4 +1,3 @@
-using System;
 using MathNet.Numerics.Statistics; // for calculation of Median value
 using System.Linq;
 using System.Collections.Generic;
@@ -6,15 +5,16 @@ using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 
-namespace Programmerare.CrsTransformations.CompositeTransformations 
-{
-    public class CompositeStrategyMedianTest : CompositeStrategyTestBase {
+namespace Programmerare.CrsTransformations.CompositeTransformations {
+
+[TestFixture]
+public class CompositeStrategyMedianTest : CompositeStrategyTestBase {
 
     private const double delta = 0.00001;
 
     [Test]
-    public void transform_shouldReturnMedianResult_whenUsingMedianCompositeAdapter() {
-        CrsCoordinate expectedCoordinateWithMedianLatitudeAndLongitude = calculateMedianCoordinate(base.allCoordinateResultsForTheDifferentImplementations);
+    public void Transform_ShouldReturnMedianResult_WhenUsingMedianCompositeAdapter() {
+        CrsCoordinate expectedCoordinateWithMedianLatitudeAndLongitude = CalculateMedianCoordinate(base.allCoordinateResultsForTheDifferentImplementations);
 
         ICrsTransformationAdapter medianCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(
             allAdapters
@@ -39,7 +39,7 @@ namespace Programmerare.CrsTransformations.CompositeTransformations
         );
     }
 
-    private CrsCoordinate calculateMedianCoordinate(List<CrsCoordinate> coordinateResultsForTheDifferentImplementations) {
+    private CrsCoordinate CalculateMedianCoordinate(List<CrsCoordinate> coordinateResultsForTheDifferentImplementations) {
         var latitudes = coordinateResultsForTheDifferentImplementations.Select(c => c.Latitude).ToList();
         var longitudes = coordinateResultsForTheDifferentImplementations.Select(c => c.Longitude).ToList();
         // An external package is used not because the performance is important 
@@ -49,8 +49,6 @@ namespace Programmerare.CrsTransformations.CompositeTransformations
         // The below method "Median" is an extension method in namespace "MathNet.Numerics.Statistics" , https://github.com/mathnet/mathnet-numerics , https://www.nuget.org/packages/MathNet.Numerics/
         double medianLongitude = longitudes.Median();
         double medianLatitude = latitudes.Median();
-        
-        ;
         return CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(medianLongitude, medianLatitude, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
     }
 

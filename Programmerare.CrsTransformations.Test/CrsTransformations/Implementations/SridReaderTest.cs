@@ -4,19 +4,17 @@ using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 using GeoAPI.CoordinateSystems; // ICoordinateSystem
 using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations.Test.Implementations
-{
+namespace Programmerare.CrsTransformations.Test.Implementations {
+
     [TestFixture]
-    class SridReaderTest
-    {
+    class SridReaderTest {
         // The purpose of the below five fields is to use them 
         // in test methods for Equals and HashCode
         private SridReader readerForFilePath1, readerForFilePath2;
         private SridReader readerForEmbeddedResource1, readerForEmbeddedResource2, readerForEmbeddedResource3;
 
         [SetUp]
-        public void SetUp()
-        {
+        public void SetUp() {
             // These files (path 1 and 2 below) do not have to exist regarding the tests they are used.
             readerForFilePath1 = new SridReader(@"C:\temp\file1.csv");
             readerForFilePath2 = new SridReader(@"C:\temp\file2.csv");
@@ -26,8 +24,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void WORLD__WGS_84__4326()
-        {
+        public void WORLD__WGS_84__4326() {
             // The test is based on the fact that the file 
             // "SRID.csv" contains a row like this:
             // 4326;GEOGCS["WGS 84",DATUM["WGS_1984",SPHEROID["WGS 84",6378137,298.257223563,AUTHORITY["EPSG","7030"]],AUTHORITY["EPSG","6326"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4326"]]
@@ -38,8 +35,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void SWEDEN__SWEREF99_TM__3006()
-        {
+        public void SWEDEN__SWEREF99_TM__3006() {
             // The test is based on the fact that the file 
             // "SRID.csv" contains a row like this:
             // 3006;PROJCS["SWEREF99 TM",GEOGCS["SWEREF99",DATUM["SWEREF99",SPHEROID["GRS 1980",6378137,298.257222101,AUTHORITY["EPSG","7019"]],TOWGS84[0,0,0,0,0,0,0],AUTHORITY["EPSG","6619"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4619"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",15],PARAMETER["scale_factor",0.9996],PARAMETER["false_easting",500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","3006"]]
@@ -50,8 +46,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void SWEDEN__2_5_GON_W__RT90_2_5_GON_V__3021()
-        {
+        public void SWEDEN__2_5_GON_W__RT90_2_5_GON_V__3021() {
             // The test is based on the fact that the file 
             // "SRID.csv" contains a row like this:
             // 3021;PROJCS["RT90 2.5 gon V",GEOGCS["RT90",DATUM["Rikets_koordinatsystem_1990",SPHEROID["Bessel 1841",6377397.155,299.1528128,AUTHORITY["EPSG","7004"]],AUTHORITY["EPSG","6124"]],PRIMEM["Greenwich",0,AUTHORITY["EPSG","8901"]],UNIT["degree",0.01745329251994328,AUTHORITY["EPSG","9122"]],AUTHORITY["EPSG","4124"]],PROJECTION["Transverse_Mercator"],PARAMETER["latitude_of_origin",0],PARAMETER["central_meridian",15.80827777777778],PARAMETER["scale_factor",1],PARAMETER["false_easting",1500000],PARAMETER["false_northing",0],UNIT["metre",1,AUTHORITY["EPSG","9001"]],AUTHORITY["EPSG","3021"]]
@@ -62,8 +57,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void EdgeCaseFirstRowInTheCsvFile()
-        {
+        public void EdgeCaseFirstRowInTheCsvFile() {
             // Testing the very first row in the file.
 
             // The test is based on the fact that the file 
@@ -76,8 +70,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void EdgeCaseLastRowInTheCsvFile()
-        {
+        public void EdgeCaseLastRowInTheCsvFile() {
             // Testing the very last row in the file.
 
             // The test is based on the fact that the file 
@@ -92,8 +85,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         private void TestSridReaderForEpsgNumber(
             int epsgNumber, 
             string expectedInitialPartOfWellKnownTextString
-        )
-        {
+        ) {
             var listWithOnlyTheStandardFile = new List<EmbeddedResourceFileWithCRSdefinitions>{EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI};
             var sridReader = new SridReader(listWithOnlyTheStandardFile);
             //sridReader = new SridReader(@"PATH_TO_FILE\crsTransformations-dotnet\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI\SRID_ShippedWithProjNet4GeoAPI_1_4_1.csv");

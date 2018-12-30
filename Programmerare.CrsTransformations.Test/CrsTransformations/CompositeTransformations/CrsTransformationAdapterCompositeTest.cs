@@ -15,7 +15,7 @@ public class CrsTransformationAdapterCompositeTest {
     private const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = CrsTransformationAdapterTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;
 
     [Test]
-    public void isReliableTest() {
+    public void IsReliableTest() {
         var crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
         CrsTransformationAdapterComposite crsTransformationComposite = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
         var children = crsTransformationComposite.TransformationAdapterChildren;

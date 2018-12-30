@@ -13,14 +13,13 @@ using NUnit.Framework;
 // (i.e. about half a year after relase 1.9.0)
 // https://github.com/DotSpatial/DotSpatial/pull/865
 
-namespace Programmerare.CrsTransformations.Test.Implementations
-{
+namespace Programmerare.CrsTransformations.Test.Implementations {
+
     [TestFixture]
-    class DotSpatialTest : AdaptersTestBase
-    {
+    class DotSpatialTest : AdaptersTestBase {
+
         [SetUp]
-        public void SetUp()
-        {
+        public void SetUp() {
             base.SetUpbase(
                 new CrsTransformationAdapterDotSpatial(),
                 CrsTransformationAdapteeType.LEAF_DOT_SPATIAL_2_0_0_RC1,

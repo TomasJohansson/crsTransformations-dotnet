@@ -5,14 +5,12 @@ using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 using Programmerare.CrsTransformations.CompositeTransformations;
 
-namespace Programmerare.CrsTransformations.Test.CrsTransformations
-{
+namespace Programmerare.CrsTransformations.Test.CrsTransformation {
 
     // Test class for CrsTransformationAdapterBase
 
     [TestFixture]
-    class CrsTransformationAdapterBaseTest
-    {
+    class CrsTransformationAdapterBaseTest {
         private CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory, crsTransformationAdapterCompositeFactoryWithLeafsInReversedOrder, crsTransformationAdapterCompositeFactoryWithOneLeafDifferentlyConfigured;
         CrsTransformationAdapterComposite average, median, firstSuccess, weightedAverage;
         CrsTransformationAdapterBaseLeaf dotSpatial, mightyLittleGeodesy, projNet4GeoAPI, projNet4GeoAPIWithDifferentConfiguration;
@@ -26,16 +24,23 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
             // Leaf adapters:
             dotSpatial = new CrsTransformationAdapterDotSpatial();
             mightyLittleGeodesy = new CrsTransformationAdapterMightyLittleGeodesy();
+            // currently there are no configurations possibilities for the above two leafs
+            // but for the below leaf it is possible to create instances with 
+            // different configurations
             projNet4GeoAPI = new CrsTransformationAdapterProjNet4GeoAPI();
             projNet4GeoAPIWithDifferentConfiguration = new CrsTransformationAdapterProjNet4GeoAPI(new SridReader("somepath.csv"));
-            
 
             // Composite adapters:
             crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create(
-                new List<ICrsTransformationAdapter>{dotSpatial, mightyLittleGeodesy, projNet4GeoAPI}
+                new List<ICrsTransformationAdapter>{
+                    dotSpatial, mightyLittleGeodesy, projNet4GeoAPI
+                }
             );
+            // Note that below list parameter is the same as the above but with the list items in reversed order
             crsTransformationAdapterCompositeFactoryWithLeafsInReversedOrder = CrsTransformationAdapterCompositeFactory.Create(
-                new List<ICrsTransformationAdapter>{projNet4GeoAPI, mightyLittleGeodesy, dotSpatial}
+                new List<ICrsTransformationAdapter>{
+                    projNet4GeoAPI, mightyLittleGeodesy, dotSpatial
+                }
             );
             crsTransformationAdapterCompositeFactoryWithOneLeafDifferentlyConfigured = CrsTransformationAdapterCompositeFactory.Create(
                 new List<ICrsTransformationAdapter>{dotSpatial, mightyLittleGeodesy, projNet4GeoAPIWithDifferentConfiguration}
@@ -52,20 +57,22 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
         }
 
         [Test]
-        public void Composite_ShouldReturnLeafsInTheExpectedOrderAccordingToTheSetupMethod()
-        {
+        public void Composite_ShouldReturnLeafsInTheExpectedOrderAccordingToTheSetupMethod() {
             IList<ICrsTransformationAdapter> leafs1 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage().TransformationAdapterChildren;
             IList<ICrsTransformationAdapter> leafs2 = crsTransformationAdapterCompositeFactoryWithLeafsInReversedOrder.CreateCrsTransformationAverage().TransformationAdapterChildren;
+            // Note that the list of leafs above should be in reversed order
             Assert.AreEqual(3, leafs1.Count);
             Assert.AreEqual(leafs1.Count, leafs2.Count);
+            // There are three items in each list but since the elements 
+            // should be the same but in reversed order, 
+            // the below assertion is that item 0 should be item 2 in the other list
             Assert.AreEqual(leafs1[0].AdapteeType, leafs2[2].AdapteeType);
             Assert.AreEqual(leafs1[1].AdapteeType, leafs2[1].AdapteeType);
             Assert.AreEqual(leafs1[2].AdapteeType, leafs2[0].AdapteeType);
         }
 
         [Test]
-        public void LeafAdapters_ShouldBeEqual_WhenTheSameTypeAndConfiguration()
-        {
+        public void LeafAdapters_ShouldBeEqual_WhenTheSameTypeAndConfiguration() {
             var dotSpatial1 = new CrsTransformationAdapterDotSpatial();
             var dotSpatial2 = new CrsTransformationAdapterDotSpatial();
             Assert.AreEqual(
@@ -108,8 +115,7 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
         }
         
         [Test]
-        public void LeafAdapters_ShouldNotBeEqual_WhenTheDifferentType()
-        {
+        public void LeafAdapters_ShouldNotBeEqual_WhenDifferentType() {
             Assert.AreNotEqual(
                 projNet4GeoAPI,
                 mightyLittleGeodesy
@@ -125,8 +131,7 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
         }
         
         [Test]
-        public void LeafAdapters_ShouldNotBeEqual_WhenTheSameTypeButDifferentConfiguration()
-        {
+        public void LeafAdapters_ShouldNotBeEqual_WhenTheSameTypeButDifferentConfiguration() {
             Assert.AreNotEqual(
                 new CrsTransformationAdapterProjNet4GeoAPI(), // default configuration
                 new CrsTransformationAdapterProjNet4GeoAPI(new SridReader("filepath1"))
@@ -148,8 +153,7 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
         }
 
         [Test]
-        public void CompositeAdaptersForMedianAndAverage_ShouldBeEqual_WhenLeafsUseTheSameTypeAndConfigurationRegardlessOfTheOrder()
-        {
+        public void CompositeAdaptersForMedianAndAverage_ShouldBeEqual_WhenLeafsUseTheSameTypeAndConfigurationRegardlessOfTheOrder() {
             // Median
             var median1 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
             // the leafs created in reversed order:
@@ -178,11 +182,12 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
         }
 
         [Test]
-        public void CompositeAdapters_ShouldNotBeEqual_WhenDifferentNumberOfLeafs()
-        {
+        public void CompositeAdapters_ShouldNotBeEqual_WhenDifferentNumberOfLeafs() {
             // Composite adapter factory with only two leafs:
             var crsTransformationAdapterCompositeFactoryWithTwoLeafs = CrsTransformationAdapterCompositeFactory.Create(
-                new List<ICrsTransformationAdapter>{dotSpatial, projNet4GeoAPI}
+                new List<ICrsTransformationAdapter>{
+                    dotSpatial, projNet4GeoAPI
+                }
             );
             
             var crsTransformationAdapterCompositeFactoryWithThreeLeafs = crsTransformationAdapterCompositeFactory;
@@ -312,6 +317,14 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformations
 
         [Test]
         public void LongNameOfImplementation_ShouldReturnFullClassName() {
+            // Of course the first test below is fragile, but the class/package name will not change
+            // often and if/when it does the test will fail but will be trivial to fix.
+            // The purpose of this test is not only to "test" but rather to
+            // illustrate what the method returns
+            Assert.AreEqual(
+                "Programmerare.CrsTransformations.Adapter.DotSpatial.CrsTransformationAdapterDotSpatial",
+                dotSpatial.LongNameOfImplementation
+            );
 
             Assert.AreEqual(
                 typeof(CrsTransformationAdapterDotSpatial).FullName,

@@ -6,19 +6,19 @@ using System;
 [TestFixture]
 public class CrsIdentifierTest {
 
-    private String GetCrsCodeIncludingUppercasedEpsgPrefix(int epsgNumber) {
+    private string GetCrsCodeIncludingUppercasedEpsgPrefix(int epsgNumber) {
         return "EPSG:" + epsgNumber;
     }
     
     [Test]
-    public void crsIdentifier_shouldReturnWhitespaceTrimmedCrsCodeAndNotBeConsideredAsEpsg_whenCreatedFromNonEpsgString() {
+    public void CrsIdentifier_ShouldReturnWhitespaceTrimmedCrsCodeAndNotBeConsideredAsEpsg_WhenCreatedFromNonEpsgString() {
         CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromCrsCode("  abc  ");
         Assert.AreEqual("abc", crsIdentifier.CrsCode);
         Assert.AreEqual(false, crsIdentifier.IsEpsgCode);
     }
 
     [Test]
-    public void crsIdentifier_shouldReturnEpsgNumberAndEpsgPrefixedCrsCodeAndBeConsideredAsEpsg_whenCreatedFromEpsgNumber() {
+    public void CrsIdentifier_ShouldReturnEpsgNumberAndEpsgPrefixedCrsCodeAndBeConsideredAsEpsg_WhenCreatedFromEpsgNumber() {
         int inputEpsgNumber = 3006;
         // No validation that the number is actually an existing EPSG but any positive integer
         // is assumed to be a EPSG number
@@ -32,9 +32,9 @@ public class CrsIdentifierTest {
     }
 
     [Test]
-    public void crsIdentifier_shouldReturnEpsgNumberAndUppercasedEpsgPrefixedWhitespaceTrimmedCrsCodeAndBeConsideredAsEpsg_whenCreatedFromLowecasedEpsgCodeWithSurroundingWhitespace() {
+    public void CrsIdentifier_ShouldReturnEpsgNumberAndUppercasedEpsgPrefixedWhitespaceTrimmedCrsCodeAndBeConsideredAsEpsg_WhenCreatedFromLowecasedEpsgCodeWithSurroundingWhitespace() {
         int inputEpsgNumber = 4326;
-        String inputCrsCode = "  epsg:" + inputEpsgNumber + "  "; 
+        string inputCrsCode = "  epsg:" + inputEpsgNumber + "  "; 
         CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromCrsCode(inputCrsCode);
         // the input should become trimmed and return string with uppercased "EPSG:" prefix
         Assert.AreEqual(
@@ -46,11 +46,13 @@ public class CrsIdentifierTest {
     }
 
     [Test]
-    public void crsIdentifierFactory_shouldThrowException_whenCrsCodeInputIsNull()
-    {
-        ArgumentException exception = Assert.Throws<ArgumentNullException>( () => {
-            CrsIdentifierFactory.CreateFromCrsCode(null); // should fail
-        }, "Must not be null");
+    public void CrsIdentifierFactory_ShouldThrowException_WhenCrsCodeInputIsNull() {
+        ArgumentException exception = Assert.Throws<ArgumentNullException>(
+            () => {
+                CrsIdentifierFactory.CreateFromCrsCode(null); // should fail
+            }
+            , "Must not be null"
+        );
         // F# code invoked above may throw exception like this:
         //  nullArg "crsCode"
         // Resulting message: "Value cannot be null. Parameter name: crsCode"
@@ -58,51 +60,54 @@ public class CrsIdentifierTest {
     }
 
     [Test]
-    public void crsIdentifierFactory_shouldThrowException_whenCrsCodeInputIsOnlyWhitespace()
-    {
-        ArgumentException exception = Assert.Throws<ArgumentException>( () => {
-            CrsIdentifierFactory.CreateFromCrsCode("   "); // should fail
-        }, "Must not be empty string");
+    public void CrsIdentifierFactory_ShouldThrowException_WhenCrsCodeInputIsOnlyWhitespace() {
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () => {
+                CrsIdentifierFactory.CreateFromCrsCode("   "); // should fail
+            }
+            ,
+            "Must not be empty string"
+        );
         AssertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-empty");
     }
 
     [Test]
-    public void crsIdentifierFactory_shouldThrowException_whenCrsCodeIsEpsgWithNegativeNumber()
-    {
-        ArgumentException exception = Assert.Throws<ArgumentException>( () => {
-            CrsIdentifierFactory.CreateFromCrsCode(GetCrsCodeIncludingUppercasedEpsgPrefix(-123)); // should fail
-        }, "EPSG must not be negative");
+    public void CrsIdentifierFactory_ShouldThrowException_WhenCrsCodeIsEpsgWithNegativeNumber() {
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () => {
+                CrsIdentifierFactory.CreateFromCrsCode(GetCrsCodeIncludingUppercasedEpsgPrefix(-123)); // should fail
+            }
+            ,
+            "EPSG must not be negative"
+        );
         AssertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-positive");
     }
 
 
     [Test]
-    public void crsIdentifierFactory_shouldThrowException_epsgNumberIsNegative()
-    {
-        ArgumentException exception = Assert.Throws<ArgumentException>( () => {
-            CrsIdentifierFactory.CreateFromEpsgNumber(-1); // should fail
-        }, "EPSG must not be negative");
+    public void CrsIdentifierFactory_ShouldThrowException_WhenEpsgNumberIsNegative() {
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () => {
+                CrsIdentifierFactory.CreateFromEpsgNumber(-1); // should fail
+            }
+            ,
+            "EPSG must not be negative"
+        );
         AssertExceptionMessageWhenArgumentWasNullOrEmptyString(exception, "non-positive");
     }
 
     [Test]
-    public void crsIdentifiers_shouldBeEqual_whenCreatedFromEpsgNumberAndCorrespondingCrsCode()
-    {
+    public void CrsIdentifiers_ShouldBeEqual_WhenCreatedFromEpsgNumberAndCorrespondingCrsCode() {
         CrsIdentifier fromEpsgNumber = CrsIdentifierFactory.CreateFromEpsgNumber(3006);
         CrsIdentifier fromCrsCode = CrsIdentifierFactory.CreateFromCrsCode("  epsg:3006   ");
         Assert.AreEqual(fromEpsgNumber, fromCrsCode);
         Assert.AreEqual(fromEpsgNumber.GetHashCode(), fromCrsCode.GetHashCode());
     }
 
-    ///**
-    // * @param exception
-    // * @param expectedStringToBeContainedInExceptionMessage e.g. "non-null" or "non-empty"
-    // */
     private void AssertExceptionMessageWhenArgumentWasNullOrEmptyString(
         ArgumentException exception,
-        String expectedStringToBeContainedInExceptionMessage
-    )
-    {
+        string expectedStringToBeContainedInExceptionMessage
+    ) {
         Assert.NotNull(exception);
         Assert.NotNull(exception.Message);
         // the exception message is currently something like this: "Parameter specified as non-null is null: method Programmerare.CrsTransformations.Identifier.CrsIdentifier$Companion.createFromCrsCode, parameter crsCode"
@@ -113,16 +118,18 @@ public class CrsIdentifierTest {
     }
 
     [Test]
-    public void createFromCrsCode_shouldThrowException_whenCrsCodeIsNull()
-    {
-        ArgumentException exception = Assert.Throws<ArgumentNullException>( () => {
-            CrsIdentifierFactory.CreateFromCrsCode(null);
-        }, "CRS code must not be null");
+    public void CreateFromCrsCode_ShouldThrowException_WhenCrsCodeIsNull() {
+        ArgumentException exception = Assert.Throws<ArgumentNullException>(
+            () => {
+                CrsIdentifierFactory.CreateFromCrsCode(null);
+            }
+            ,
+            "CRS code must not be null"
+        );
     }
 
     [Test]
-    public void crsIdentifier_shouldNotBeEqual_whenDifferentEpsgNumber()
-    {
+    public void CrsIdentifier_ShouldNotBeEqual_WhenDifferentEpsgNumber() {
         Assert.AreNotEqual(
             CrsIdentifierFactory.CreateFromEpsgNumber(123),
             CrsIdentifierFactory.CreateFromEpsgNumber(124)
@@ -130,8 +137,7 @@ public class CrsIdentifierTest {
     }
 
     [Test]
-    public void crsIdentifier_shouldNotBeEqual_whenDifferentCrsCode()
-    {
+    public void CrsIdentifier_ShouldNotBeEqual_WhenDifferentCrsCode() {
         Assert.AreNotEqual(
             CrsIdentifierFactory.CreateFromCrsCode("EPSG:987"),
             CrsIdentifierFactory.CreateFromCrsCode("EPSG:986")
@@ -139,8 +145,7 @@ public class CrsIdentifierTest {
     }
 
     [Test]
-    public void crsIdentifier_shouldNotBeEqual_whenDifferentNonEpsgCrsCode()
-    {
+    public void crsIdentifier_shouldNotBeEqual_whenDifferentNonEpsgCrsCode() {
         Assert.AreNotEqual(
             CrsIdentifierFactory.CreateFromCrsCode("abc"),
             CrsIdentifierFactory.CreateFromCrsCode("abd")

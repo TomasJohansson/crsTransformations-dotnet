@@ -7,9 +7,9 @@ using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 
+namespace Programmerare.CrsTransformations.CompositeTransformations  {
 
-namespace Programmerare.CrsTransformations.CompositeTransformations 
-{
+[TestFixture]
 public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
 
     private const double SMALL_DELTA_VALUE = 0.0000000001;
@@ -32,7 +32,7 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
     
 
     [Test]
-    public void transform_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapter() {
+    public void Transform_ShouldReturnWeightedAverageResult_WhenUsingWeightedAverageCompositeAdapter() {
         
         var weights = new List<CrsTransformationAdapterWeight>{
             weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), weightForDotSpatial),
@@ -40,11 +40,11 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
             weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), weightForMightyLittleGeodesy)
         };
         CrsTransformationAdapterComposite adapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weights);
-        assertWeightedAverageResult(adapter);
+        AssertWeightedAverageResult(adapter);
     }
 
     [Test]
-    public void transform_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapterAndLeafsInstantiatedFromStringsWithClassNames() {
+    public void Transform_ShouldReturnWeightedAverageResult_WhenUsingWeightedAverageCompositeAdapterAndLeafsInstantiatedFromStringsWithClassNames() {
             
         string classNameadapterDotSpatial = adapterDotSpatial.LongNameOfImplementation;
         string classNameProjNet4GeoAPI = adapterProjNet4GeoAPI.LongNameOfImplementation;
@@ -59,10 +59,10 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
 
 
         CrsTransformationAdapterComposite weightedAverageCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weights);
-        assertWeightedAverageResult(weightedAverageCompositeAdapter);
+        AssertWeightedAverageResult(weightedAverageCompositeAdapter);
     }
 
-    private void assertWeightedAverageResult(
+    private void AssertWeightedAverageResult(
         CrsTransformationAdapterComposite weightedAverageCompositeAdapter
     ) {
         CrsTransformationResult weightedAverageResult = weightedAverageCompositeAdapter.Transform(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
@@ -94,13 +94,13 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
         // However, it turned out to not be like that with the chosen test values,
         // and thus they are asserted here as part of regression testing.
         // If this test would break, it needs to be investigated since these values
-        // have benn working fine to assert like below.
-        assertDiffsAreGreaterThanSmallDelta(resultCoordinateDotSpatial, coordinateWithExpectedWeightedValues);
-        assertDiffsAreGreaterThanSmallDelta(resultCoordinateMightyLittleGeodesy, coordinateWithExpectedWeightedValues);
-        assertDiffsAreGreaterThanSmallDelta(resultCoordinateProjNet4GeoAPI, coordinateWithExpectedWeightedValues);
+        // have been working fine to assert like below.
+        AssertDiffsAreGreaterThanSmallDelta(resultCoordinateDotSpatial, coordinateWithExpectedWeightedValues);
+        AssertDiffsAreGreaterThanSmallDelta(resultCoordinateMightyLittleGeodesy, coordinateWithExpectedWeightedValues);
+        AssertDiffsAreGreaterThanSmallDelta(resultCoordinateProjNet4GeoAPI, coordinateWithExpectedWeightedValues);
     }
 
-    private void assertDiffsAreGreaterThanSmallDelta(
+    private void AssertDiffsAreGreaterThanSmallDelta(
         CrsCoordinate resultCoordinateIndividualImplementation,
         CrsCoordinate coordinateWithExpectedWeightedValues
     ) {

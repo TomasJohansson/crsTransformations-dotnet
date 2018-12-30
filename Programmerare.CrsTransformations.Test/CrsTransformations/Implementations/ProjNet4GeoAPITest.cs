@@ -5,6 +5,8 @@ using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 using System.Collections.Generic;
 
 namespace Programmerare.CrsTransformations.Test.Implementations {
+
+    [TestFixture]
     class ProjNet4GeoAPITest : AdaptersTestBase {
 
         private CrsTransformationAdapterProjNet4GeoAPI crsTransformationAdapterProjNet4GeoAPIwithNoConstructorParameters;
@@ -54,24 +56,21 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
         private CrsTransformationAdapterProjNet4GeoAPI cacheTestTransformationAdapterProjNet4GeoAPI;
 
         [Test]
-        public void TestCachingWhenAllEpsgCodesAreCachedInOneReadOfTheCsvFile()
-        {
+        public void TestCachingWhenAllEpsgCodesAreCachedInOneReadOfTheCsvFile() {
             VerifyExpectedCachingBehaviour(
                 CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
             );
         }
         
         [Test]
-        public void TestCachingWhenEpsgCodesAreCachedAtFirstRequest()
-        {
+        public void TestCachingWhenEpsgCodesAreCachedAtFirstRequest() {
             VerifyExpectedCachingBehaviour(
                 CrsCachingStrategy.CACHE_EPSG_CRS_CODE_WHEN_FIRST_USED
             );
         }
         
         [Test]
-        public void TestBehaviourWhenNoCachingIsChosen()
-        {
+        public void TestBehaviourWhenNoCachingIsChosen() {
             cacheTestTransformationAdapterProjNet4GeoAPI  = new CrsTransformationAdapterProjNet4GeoAPI(CrsCachingStrategy.NO_CACHING);
             Assert.IsFalse(
                 cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
@@ -113,8 +112,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
 
         private void VerifyExpectedCachingBehaviour(
             CrsCachingStrategy crsCachingStrategy
-        )
-        {
+        ) {
             cacheTestTransformationAdapterProjNet4GeoAPI  = new CrsTransformationAdapterProjNet4GeoAPI(crsCachingStrategy);
             Assert.IsFalse(
                 cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
@@ -212,5 +210,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
                 )
             );
         }
+
     }
+
 }

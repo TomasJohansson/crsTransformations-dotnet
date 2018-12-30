@@ -69,7 +69,7 @@ public class CrsTransformationAdapterLeafFactoryTest {
             "  ",
             " x ",
             "abc",
-            // this test class i.e. the below "this" does not imlpement 
+            // this test class i.e. the below "this" does not implement 
             // the interface so therefore 'Assert.IsFalse' below
             this.GetType().FullName
         };
@@ -151,10 +151,10 @@ public class CrsTransformationAdapterLeafFactoryTest {
                 Contains.Item(actualClassNameForAnImplementation)
             );
         }
-        foreach (string hardcodedClassNamesForAllKnownImplementation in hardcodedClassNamesForAllKnownImplementations) {
+        foreach (string hardcodedClassNamesForAKnownImplementation in hardcodedClassNamesForAllKnownImplementations) {
             Assert.That(
                 actualClassNamesForAllKnownImplementations, 
-                Contains.Item(hardcodedClassNamesForAllKnownImplementation)
+                Contains.Item(hardcodedClassNamesForAKnownImplementation)
             );
         }
     }

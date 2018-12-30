@@ -5,8 +5,9 @@ using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Identifier;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 
-namespace Programmerare.CrsTransformations.CompositeTransformations 
-{
+namespace Programmerare.CrsTransformations.CompositeTransformations {
+
+[TestFixture]
 public class CompositeStrategyTestsUsingTestDoubles {
 
     private double expectedMedianLatitude, expectedAverageLatitude, expectedMedianLongitude, expectedAverageLongitude;
@@ -149,7 +150,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
     private const double SMALL_DELTA_VALUE_FOR_COMPARISONS = 0.00000000000001;
 
     [Test]
-    public void transformToCoordinate_shouldReturnAverageResult_whenUsingAverageCompositeAdapter() {
+    public void TransformToCoordinate_ShouldReturnAverageResult_WhenUsingAverageCompositeAdapter() {
         CrsTransformationAdapterComposite averageCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage(allLeafAdapters);
         CrsCoordinate resultCoordinate = averageCompositeAdapter.TransformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         Assert.IsNotNull(resultCoordinate);
@@ -165,14 +166,14 @@ public class CompositeStrategyTestsUsingTestDoubles {
             SMALL_DELTA_VALUE_FOR_COMPARISONS
         );
 
-        assertCompositeResultHasLeafSubResults(
+        AssertCompositeResultHasLeafSubResults(
             averageCompositeAdapter,
             allLeafAdapters.Count // expectedNumberOfLeafResults
         );
     }
 
     [Test]
-    public void transformToCoordinate_shouldReturnMedianResult_whenUsingMedianCompositeAdapter() {
+    public void TransformToCoordinate_ShouldReturnMedianResult_WhenUsingMedianCompositeAdapter() {
         CrsTransformationAdapterComposite medianCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian(allLeafAdapters);
         CrsCoordinate resultCoordinate = medianCompositeAdapter.TransformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         Assert.IsNotNull(resultCoordinate);
@@ -188,14 +189,14 @@ public class CompositeStrategyTestsUsingTestDoubles {
             SMALL_DELTA_VALUE_FOR_COMPARISONS
         );
 
-        assertCompositeResultHasLeafSubResults(
+        AssertCompositeResultHasLeafSubResults(
             medianCompositeAdapter,
             allLeafAdapters.Count // expectedNumberOfLeafResults
         );
     }
 
     [Test]
-    public void transformToCoordinate_shouldReturnFirstResult_whenUsingFirstSuccessCompositeAdapter() {
+    public void TransformToCoordinate_ShouldReturnFirstResult_WhenUsingFirstSuccessCompositeAdapter() {
         CrsTransformationAdapterComposite firstSuccessCompositeAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(allLeafAdapters);
         CrsCoordinate resultCoordinate = firstSuccessCompositeAdapter.TransformToCoordinate(inputCoordinateSweref99, EpsgNumber.WORLD__WGS_84__4326);
         Assert.IsNotNull(resultCoordinate);
@@ -213,14 +214,14 @@ public class CompositeStrategyTestsUsingTestDoubles {
             SMALL_DELTA_VALUE_FOR_COMPARISONS
         );
 
-        assertCompositeResultHasLeafSubResults(
+        AssertCompositeResultHasLeafSubResults(
             firstSuccessCompositeAdapter,
             1 // expectedNumberOfLeafResults
         );
     }
 
     [Test]
-    public void transformToCoordinate_shouldReturnWeightedAverageResult_whenUsingWeightedAverageCompositeAdapter() {
+    public void TransformToCoordinate_ShouldReturnWeightedAverageResult_WhenUsingWeightedAverageCompositeAdapter() {
         double[] weights = {1,2,4,5,9};
         double totWeights = 0;
         double totLats = 0;
@@ -251,13 +252,13 @@ public class CompositeStrategyTestsUsingTestDoubles {
         Assert.AreEqual(expectedWeightedAverage.YNorthingLatitude,  result.YNorthingLatitude, SMALL_DELTA_VALUE_FOR_COMPARISONS);
         Assert.AreEqual(expectedWeightedAverage.XEastingLongitude, result.XEastingLongitude, SMALL_DELTA_VALUE_FOR_COMPARISONS);
 
-        assertCompositeResultHasLeafSubResults(
+        AssertCompositeResultHasLeafSubResults(
             weightedAverageCompositeAdapter,
             allLeafAdapters.Count
         );
     }
 
-    private void assertCompositeResultHasLeafSubResults(
+    private void AssertCompositeResultHasLeafSubResults(
         CrsTransformationAdapterComposite compositeAdapter,
         int expectedNumberOfLeafResults
     ) {
@@ -274,12 +275,12 @@ public class CompositeStrategyTestsUsingTestDoubles {
             CrsTransformationResult transformResultForLeaf = leafAdapter.Transform(inputCoordinateSweref99, crsIdentifierWGS84);
             Assert.IsNotNull(transformResultForLeaf);
             Assert.IsTrue(transformResultForLeaf.IsSuccess);
-            assertEqualCoordinate(transformResult.OutputCoordinate, transformResultForLeaf.OutputCoordinate);
+            AssertEqualCoordinate(transformResult.OutputCoordinate, transformResultForLeaf.OutputCoordinate);
             Assert.AreEqual(0, transformResultForLeaf.TransformationResultChildren.Count); // no subresults for a leaf
         }
     }
 
-    private void assertEqualCoordinate(
+    private void AssertEqualCoordinate(
         CrsCoordinate c1,
         CrsCoordinate c2
     ) {
@@ -289,7 +290,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
 
     // --------------------------------------------------------------
     [Test]
-    public void simpleExampleShowingHowToUseTestStubbingWithMoq() {
+    public void SimpleExampleShowingHowToUseTestStubbingWithMoq() {
         // Moq: https://github.com/Moq/moq4
 
         var mock = new Mock<IList<string>>();

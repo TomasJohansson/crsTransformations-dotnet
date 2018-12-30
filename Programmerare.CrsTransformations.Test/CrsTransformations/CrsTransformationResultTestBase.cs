@@ -5,9 +5,10 @@ using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.CompositeTransformations;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
 
-namespace Programmerare.CrsTransformations
-{
+namespace Programmerare.CrsTransformations {
 // Base class with some common code reused by its subclasses 
+
+[TestFixture]
 public abstract class CrsTransformationResultTestBase {
     protected List<CrsTransformationResult> listOfSubresultsForStatisticsTest;
     protected double expectedLatDiffMax, expectedLonDiffMax;
@@ -50,15 +51,15 @@ public abstract class CrsTransformationResultTestBase {
         // Can use the same above adapter for all parts below. Not used much except that the object must be some leaf
         
         listOfSubresultsForStatisticsTest = new List<CrsTransformationResult>{
-            createCrsTransformationResult(outputCoordinate1, leafAdapterForResultTest, inputCoordinateNotUsedInStatisticsTest),
-            createCrsTransformationResult(outputCoordinate2, leafAdapterForResultTest, inputCoordinateNotUsedInStatisticsTest),
-            createCrsTransformationResult(outputCoordinate3, leafAdapterForResultTest, inputCoordinateNotUsedInStatisticsTest),
-            createCrsTransformationResult(outputCoordinate4, leafAdapterForResultTest, inputCoordinateNotUsedInStatisticsTest)
+            CreateCrsTransformationResult(outputCoordinate1, leafAdapterForResultTest, inputCoordinateNotUsedInStatisticsTest),
+            CreateCrsTransformationResult(outputCoordinate2, leafAdapterForResultTest, inputCoordinateNotUsedInStatisticsTest),
+            CreateCrsTransformationResult(outputCoordinate3, leafAdapterForResultTest, inputCoordinateNotUsedInStatisticsTest),
+            CreateCrsTransformationResult(outputCoordinate4, leafAdapterForResultTest, inputCoordinateNotUsedInStatisticsTest)
         };
     }
 
-    private CrsTransformationResult createCrsTransformationResult(
-        CrsCoordinate outputCoordinate1,
+    private CrsTransformationResult CreateCrsTransformationResult(
+        CrsCoordinate outputCoordinate,
         ICrsTransformationAdapter adapter,
         CrsCoordinate inputCoordinateNotUsedInThisTest
     ) {
@@ -66,7 +67,7 @@ public abstract class CrsTransformationResultTestBase {
         bool isSuccessTrue = true;
         return CrsTransformationResult._CreateCrsTransformationResult(
             inputCoordinateNotUsedInThisTest,
-            outputCoordinate1,
+            outputCoordinate,
             exceptionNull,
             isSuccessTrue,
             adapter,
@@ -74,21 +75,27 @@ public abstract class CrsTransformationResultTestBase {
         );
     }
 
-    protected void assertCrsTransformationResultStatistic(CrsTransformationResultStatistic crsTransformationResultStatistic) {
+    protected void AssertCrsTransformationResultStatistic(CrsTransformationResultStatistic crsTransformationResultStatistic) {
         Assert.IsNotNull(crsTransformationResultStatistic);
         Assert.IsTrue(crsTransformationResultStatistic.IsStatisticsAvailable);
-
-        Assert.AreEqual(4, crsTransformationResultStatistic.NumberOfPotentiallySuccesfulResults);
-        Assert.AreEqual(this.expectedLatDiffMax, crsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude);
-        Assert.AreEqual(this.expectedLonDiffMax, crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude);
-        
+        Assert.AreEqual(
+            listOfSubresultsForStatisticsTest.Count,
+            crsTransformationResultStatistic.NumberOfPotentiallySuccesfulResults
+        );
+        Assert.AreEqual(
+            this.expectedLatDiffMax, 
+            crsTransformationResultStatistic.MaxDifferenceForYNorthingLatitude
+        );
+        Assert.AreEqual(
+            this.expectedLonDiffMax, 
+            crsTransformationResultStatistic.MaxDifferenceForXEastingLongitude
+        );
         CrsCoordinate coordinateAverage = crsTransformationResultStatistic.CoordinateAverage;
         CrsCoordinate coordinateMean = crsTransformationResultStatistic.CoordinateMedian;
         Assert.IsNotNull(coordinateAverage);
         Assert.IsNotNull(coordinateMean);
         Assert.AreEqual(this.expectedCoordinateMean, coordinateMean);
         Assert.AreEqual(this.expectedCoordinateAverage, coordinateAverage);
-        
     }
-}
-}
+} // the test class ends here
+} // namespace ends here

@@ -1,16 +1,16 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace Programmerare.CrsTransformations
-{
+namespace Programmerare.CrsTransformations {
+
     [TestFixture]
     class FileInfoVersionTest {
+
         [Test]
         public void GetFileInfoVersion_ShouldThrowException_WhenTheTypeIsNotRetrivedFromNuGet() {
             // In the test below, the type of "this" is used, i.e. 
             // this test class which is not going to be deployed 
             // as a NuGet assembly and therefore it should fail.
-
             Assert.That(
                 () => FileInfoVersion.GetFileInfoVersionHelper(this.GetType())
                 ,
@@ -31,13 +31,13 @@ namespace Programmerare.CrsTransformations
             FileInfoVersion fileInfoVersion = FileInfoVersion.GetFileInfoVersionHelper(typeWithinTheNUnitFramework);
             Assert.IsNotNull(fileInfoVersion);
             Assert.AreEqual("nunit.framework.dll", fileInfoVersion.FileName);
-            // The above filename will very likely rename the same after an upgrade 
-            // but the below will change and there is no need 
+            // The above filename will very likely remain the same after an upgrade 
+            // but the code disabled below would change and there is no need 
             // to assert the below values in regression testing
             //Assert.AreEqual("3.11.0", fileInfoVersion.Version);
             //Assert.AreEqual(380416L, fileInfoVersion.FileSize);
 
-            Console.WriteLine(typeWithinTheNUnitFramework.Assembly.CodeBase);
+            //Console.WriteLine(typeWithinTheNUnitFramework.Assembly.CodeBase);
             // output example from the above code row:
             // ".../.nuget/packages/nunit/3.11.0/lib/netstandard2.0/nunit.framework.dll"
             // and from that kind of path "3.11.0" can be extracted as the version
@@ -49,8 +49,7 @@ namespace Programmerare.CrsTransformations
         }
 
         [Test]
-        public void FileInfoVersion_ShouldBeEqual_WhenAllPropertiesAreEqual()
-        {
+        public void FileInfoVersion_ShouldBeEqual_WhenAllPropertiesAreEqual() {
             var f1 = new FileInfoVersion("", -1L, "");
             var f2 = new FileInfoVersion("", -1L, "");
             // The above two should be equal but the rest below should be different
@@ -75,8 +74,7 @@ namespace Programmerare.CrsTransformations
         }
 
         [Test]
-        public void IsRepresentingThirdPartLibrary_ShouldBeTrue_WhenUsingInstanceRepresentingNonThirdPartLibrary()
-        {
+        public void IsRepresentingThirdPartLibrary_ShouldBeTrue_WhenUsingInstanceRepresentingNonThirdPartLibrary() {
             var instanceRepresentingNonThirdPartLibrary = FileInfoVersion.FileInfoVersionNOTrepresentingThirdPartLibrary;
             Assert.IsFalse(instanceRepresentingNonThirdPartLibrary.IsRepresentingThirdPartLibrary());
 

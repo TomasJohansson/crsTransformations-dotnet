@@ -5,10 +5,8 @@ using Programmerare.CrsTransformations.Identifier;
 using System;
 using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations.Test.Implementations
-{
-    abstract class AdaptersTestBase
-    {
+namespace Programmerare.CrsTransformations.Test.Implementations {
+    abstract class AdaptersTestBase {
         private const int epsgWGS84 =       EpsgNumber.WORLD__WGS_84__4326;
         private const int epsgSweref99 =    EpsgNumber.SWEDEN__SWEREF99_TM__3006;
         private const int epsgRT9025gonv =  EpsgNumber.SWEDEN__2_5_GON_W__RT90_2_5_GON_V__3021;// RT90 2.5 gon V
@@ -87,8 +85,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             CrsTransformationAdapteeType expectedCrsTransformationAdapteeType,
             double maxMeterDifferenceForSuccessfulTest,
             double maxLatLongDifferenceForSuccessfulTest 
-        )
-        {
+        ) {
             this.crsTransformationAdapter = crsTransformationAdapter;
             this.expectedCrsTransformationAdapteeType = expectedCrsTransformationAdapteeType;
             this.maxMeterDifferenceForSuccessfulTest = maxMeterDifferenceForSuccessfulTest;
@@ -100,8 +97,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void transform_fromWgs84_toSweref99()
-        {
+        public void Transform_FromWgs84_ToSweref99() {
             resultSweref99 = crsTransformationAdapter.TransformToCoordinate(coordinateWgs84, epsgSweref99);
             AssertCoordinateResult(
                 resultSweref99,
@@ -127,8 +123,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void transform_fromSweref99_toWgs84()
-        {
+        public void Transform_FromSweref99_ToWgs84() {
             resultWgs84 = crsTransformationAdapter.TransformToCoordinate(coordinateSweref99, epsgWGS84);
             AssertCoordinateResult(
                 resultWgs84,
@@ -154,8 +149,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void transform_fromWgs84_toRT90()
-        {
+        public void Transform_FromWgs84_ToRT90() {
             resultRT90 = crsTransformationAdapter.TransformToCoordinate(coordinateWgs84, epsgRT9025gonv);
             AssertCoordinateResult(
                 resultRT90,
@@ -166,8 +160,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
 
 
         [Test]
-        public void transform_fromRT90_toWgs84()
-        {
+        public void Transform_FromRT90_ToWgs84() {
             resultWgs84 = crsTransformationAdapter.TransformToCoordinate(coordinateRT90, epsgWGS84);
             AssertCoordinateResult(
                 resultWgs84,
@@ -177,8 +170,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void transform_fromSweref99_toRT90()
-        {
+        public void Transform_FromSweref99_ToRT90() {
             resultRT90 = crsTransformationAdapter.TransformToCoordinate(coordinateSweref99, epsgRT9025gonv);
             AssertCoordinateResult(
                 resultRT90,
@@ -188,8 +180,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
         
         [Test]
-        public void transform_fromRT90_toSweref99()
-        {
+        public void Transform_FromRT90_ToSweref99() {
             resultSweref99 = crsTransformationAdapter.TransformToCoordinate(coordinateRT90, epsgSweref99);
             AssertCoordinateResult(
                 resultSweref99,
@@ -199,8 +190,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void transformResult_fromRT90_toSweref99()
-        {
+        public void TransformResult_FromRT90_ToSweref99() {
             CrsTransformationResult result = crsTransformationAdapter.Transform(coordinateRT90, epsgSweref99);
             AssertTransformationResultSuccess(
                 result, 
@@ -232,13 +222,12 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         private void AssertTransformationResultSuccess(
-            CrsTransformationResult result, 
-            CrsCoordinate inputCoordinate, 
-            CrsCoordinate expectedOutputCoordinate, 
+            CrsTransformationResult result,
+            CrsCoordinate inputCoordinate,
+            CrsCoordinate expectedOutputCoordinate,
             ICrsTransformationAdapter crsTransformationAdapterSource,
             double maxDeltaDifference
-        )
-        {
+        ) {
             Assert.IsNotNull(result);
             Assert.IsTrue(result.IsSuccess);
             Assert.IsNull(result.Exception);
@@ -251,13 +240,11 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             Assert.IsNotNull(subresults);
             Assert.AreEqual(0, subresults.Count); // Leaf should have no children
             Assert.AreEqual(this.crsTransformationAdapter, result.CrsTransformationAdapterResultSource);
-
             AssertStatisticsForLeaf(result);
         }
 
         [Test]
-        public void transformToCoordinate_WhenCrsIsUnvalidForSpecificImplementation()
-        {
+        public void TransformToCoordinate_WhenCrsIsUnvalidForSpecificImplementation() {
             int epsgNotSupported = 123; // not supported by MightyLittleGeodesy
             // TransformToCoordinate SHOULD (unlike the transform method) 
             // throw exception 
@@ -275,13 +262,10 @@ namespace Programmerare.CrsTransformations.Test.Implementations
                 () => crsTransformationAdapter.TransformToCoordinate(coordinateRT90, epsgNotSupported), 
                 Throws.Exception
             );
-
         }
 
-
         [Test]
-        public void transformToCoordinate_WhenCrsIsUnvalidForAllImplementations()
-        {
+        public void TransformToCoordinate_WhenCrsIsUnvalidForAllImplementations() {
             int epsgNotSupported = -99999999;
             // TransformToCoordinate SHOULD (unlike the transform method) 
             // throw exception 
@@ -291,8 +275,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void transformToCoordinate_WhenCrsCodeIsNull()
-        {
+        public void TransformToCoordinate_WhenCrsCodeIsNull() {
             string crsCode = null;
             // TransformToCoordinate SHOULD (unlike the transform method) 
             // throw exception 
@@ -302,8 +285,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void transformToCoordinate_WhenInputCoordinateIsNull()
-        {
+        public void TransformToCoordinate_WhenInputCoordinateIsNull() {
             CrsIdentifier crsWgs84 = coordinateWgs84.CrsIdentifier;
             Assert.IsNotNull(crsWgs84);
             CrsCoordinate nullCordinate = null;
@@ -318,16 +300,14 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             CrsCoordinate actual, 
             CrsCoordinate expected, 
             double maxDeltaDifference
-        )
-        {
+        ) {
             Assert.IsNotNull(coordinateSweref99);
             Assert.AreEqual(expected.Y, actual.Y, maxDeltaDifference);
             Assert.AreEqual(expected.X, actual.X, maxDeltaDifference);
         }
 
         [Test]
-        public void transformResult_WhenCrsIsUnvalidForSpecificImplementation()
-        {
+        public void TransformResult_WhenCrsIsUnvalidForSpecificImplementation() {
             // Negative epsgEPSG values are generally unvalid 
             // and should be handle in a generic way i.e. 
             // without having to implement it in all implementations
@@ -344,12 +324,10 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             );
         }
 
-
         [Test]
-        public void transformResult_WhenCrsIsUnvalidForAllImplementations()
-        {
-            // Negative epsgEPSG values are generally unvalid 
-            // and should be handle in a generic way i.e. 
+        public void TransformResult_WhenCrsIsUnvalidForAllImplementations() {
+            // Negative EPSG values are generally unvalid 
+            // and should be handled in a generic way i.e. 
             // without having to implement it in all implementations
             int epsgNotSupported = -99999999;
             //int epsgNotSupported = 123; // test this in another method
@@ -365,8 +343,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void transformResult_WhenCrsCodeIsNull()
-        {
+        public void TransformResult_WhenCrsCodeIsNull() {
             string crsCode = null;
             CrsTransformationResult result = crsTransformationAdapter.Transform(coordinateRT90, crsCode);
             AssertTransformationResultFailure(
@@ -377,8 +354,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
         }
 
         [Test]
-        public void transformResult_WhenInputCoordinateIsNull()
-        {
+        public void TransformResult_WhenInputCoordinateIsNull() {
             CrsIdentifier crsWgs84 = coordinateWgs84.CrsIdentifier;
             Assert.IsNotNull(crsWgs84);
             CrsCoordinate nullCordinate = null;
@@ -395,14 +371,13 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             CrsCoordinate inputCoordinate, 
             //CrsCoordinate expectedOutputCoordinate, 
             ICrsTransformationAdapter crsTransformationAdapterSource
-        )
-        {
+        ) {
             Assert.IsNotNull(result);
             Assert.IsFalse(result.IsSuccess);
             Assert.IsNotNull(result.Exception);
             
-            InvalidOperationException e = Assert.Throws<InvalidOperationException>(() =>
-                {
+            InvalidOperationException e = Assert.Throws<InvalidOperationException>(
+                () => {
                     var coord = result.OutputCoordinate;
                 },
                 "Should not try to get output coordinate unless the result was a success"
@@ -416,8 +391,8 @@ namespace Programmerare.CrsTransformations.Test.Implementations
 
             AssertStatisticsForLeaf(result);
         }
-        private void AssertStatisticsForLeaf(CrsTransformationResult result)
-        {
+        
+        private void AssertStatisticsForLeaf(CrsTransformationResult result) {
             var stat = result.CrsTransformationResultStatistic;
             Assert.IsNotNull(stat);
 
@@ -435,8 +410,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             IList<CrsTransformationResult> allResults = stat.AllCrsTransformationResults;
             Assert.AreEqual(1, allResults.Count);
 
-            if (stat.IsStatisticsAvailable)
-            {
+            if (stat.IsStatisticsAvailable) {
                 // Since we are not testing a Leaf
                 // there should only one result
                 // and therefore now differences in the 
@@ -464,7 +438,6 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             }
         }
 
-
         [Test]
         public void AdapteeTypeTest() {
             Assert.IsNotNull(crsTransformationAdapter.AdapteeType);
@@ -488,7 +461,8 @@ namespace Programmerare.CrsTransformations.Test.Implementations
             );
         }
 
-        // CrsTransformationAdapterMightyLittleGeodesy
+        // class name for example: "CrsTransformationAdapterMightyLittleGeodesy"
+        // and then the used prefix is "CrsTransformationAdapter"
         private readonly static string PrefixForImplementations = "CrsTransformationAdapter";
 
         [Test]

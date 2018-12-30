@@ -5,12 +5,8 @@ using Programmerare.CrsTransformations.Identifier;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 using System.IO;
 using System;
-using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 
-namespace Programmerare.CrsTransformations.CompositeTransformations 
-{
+namespace Programmerare.CrsTransformations.CompositeTransformations {
 public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestBase {
 
     private const double DELTA_VALUE_FOR_COMPARISONS_WITH_UNIT_METER = 1.0;
@@ -35,30 +31,21 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
         //            upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit
         //        ).ToList();
         epsgNumbersForSwedishProjectionsUsingMeterAsUnit = new List<int>();
-        for(int i=lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit; i<=upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit; i++) {
+        for(
+            int i=lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit;
+            i<=upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit;
+            i++
+        ) {
             epsgNumbersForSwedishProjectionsUsingMeterAsUnit.Add(i);
         }
-
-        // Below the list of implementations is overridden for the base class
-        // and below currently do not use the ProjNet4GeoAPI implementation
-        // since it produces bad results for Swedish projections
-        //crsTransformationAdapterImplementations = new List<ICrsTransformationAdapter>{
-        //    new CrsTransformationAdapterDotSpatial(),
-        //    // new CrsTransformationAdapterProjNet4GeoAPI(),
-        //    new CrsTransformationAdapterMightyLittleGeodesy()
-        //};
-        // currently the above is required for the shipped CSV file
-        // but if modifying the CRS definition for 
-        // RT90 then it work,
-        // from the implementation class:
-        //let mutable _sridReader = SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI)
-        // the above causes failing tests for Swedish CRS RT90
-        //let mutable _sridReader = SridReader(EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_EXCEPT_FOR_SWEDISH_CRS_WITH_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml)
-        Assert.AreEqual(7, crsTransformationAdapterImplementations.Count); // should include ProjNet4GeoAPI
+        Assert.AreEqual(
+            7, // currently 3 leaf implementations and 4 composites
+            base.crsTransformationAdapterImplementations.Count
+        );
     }
 
     [TestCaseSource(nameof(GetCsvDataFromFileWithSomeCoordinatesForSweden))]
-    public void verifyTransformationsCorrespondToCsvFileCoordinates(
+    public void VerifyTransformationsCorrespondToCsvFileCoordinates(
         TestDataSweden t
     ) {
         string description = t.description;
@@ -78,7 +65,7 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
         // which shows the coordinates in the three systems WGS84, RT90, SWREF99
 
         foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
-            transformToCoordinate_shouldReturnEqualCoordinates_whenTransformingBetweenTwoKnownCoordinatesToAndFromEachOther(
+            TransformToCoordinate_ShouldReturnEqualCoordinates_WhenTransformingBetweenTwoKnownCoordinatesToAndFromEachOther(
                 crsTransformationAdapter,
                 epsgNumberForWgs84, epsgNumberForRT90,
                 wgs84Lat, wgs84Lon,
@@ -86,7 +73,7 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
                 description
             );
 
-            transformToCoordinate_shouldReturnEqualCoordinates_whenTransformingBetweenTwoKnownCoordinatesToAndFromEachOther(
+            TransformToCoordinate_ShouldReturnEqualCoordinates_WhenTransformingBetweenTwoKnownCoordinatesToAndFromEachOther(
                 crsTransformationAdapter,
                 epsgNumberForWgs84, epsgNumberForSweref99TM,
                 wgs84Lat, wgs84Lon,
@@ -94,7 +81,7 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
                 description
             );
 
-            transformToCoordinate_shouldReturnEqualCoordinates_whenTransformingBetweenTwoKnownCoordinatesToAndFromEachOther(
+            TransformToCoordinate_ShouldReturnEqualCoordinates_WhenTransformingBetweenTwoKnownCoordinatesToAndFromEachOther(
                 crsTransformationAdapter,
                 epsgNumberForRT90, epsgNumberForSweref99TM,
                 rt90north, rt90east,
@@ -105,7 +92,7 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
     }
 
     [TestCaseSource(nameof(GetCsvDataFromFileWithSomeCoordinatesForSweden))]
-    public void verifyTransformationsBackAndForthFromWgs84ToSwedishProjections(
+    public void VerifyTransformationsBackAndForthFromWgs84ToSwedishProjections(
         TestDataSweden t
     ) {
         CrsCoordinate inputCoordinateWGS84 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(
@@ -115,7 +102,7 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
         );
         foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
             foreach (int epsgNumber in epsgNumbersForSwedishProjectionsUsingMeterAsUnit) {
-                transformToCoordinate_shouldReturnTheOriginalCoordinate_whenTransformingBackAgainFromTheResult(
+                TransformToCoordinate_ShouldReturnTheOriginalCoordinate_WhenTransformingBackAgainFromTheResult(
                     crsTransformationAdapter,
                     inputCoordinateWGS84,
                     epsgNumber
@@ -124,9 +111,8 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
         }
     }
     
-
     [TestCaseSource(nameof(GetCsvDataFromFileWithSomeCoordinatesForSweden))]
-    public void transformToCoordinate_shouldReturnTheSameCoordinate_whenTransformingWithDifferentImplementations(
+    public void TransformToCoordinate_ShouldReturnTheSameCoordinate_WhenTransformingWithDifferentImplementations(
         TestDataSweden t
     ) {
         CrsCoordinate inputCoordinateWGS84 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(
@@ -137,7 +123,7 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
         for (int i = 0; i < crsTransformationAdapterImplementations.Count-1; i++) {
             for (int j = i+1; j < crsTransformationAdapterImplementations.Count; j++) {
                 foreach (int epsgNumber in epsgNumbersForSwedishProjectionsUsingMeterAsUnit) {
-                    transformToCoordinate_shouldReturnTheSameCoordinate_whenTransformingWithTwoDifferentImplementations(
+                    TransformToCoordinate_ShouldReturnTheSameCoordinate_WhenTransformingWithTwoDifferentImplementations(
                         crsTransformationAdapterImplementations[i],
                         crsTransformationAdapterImplementations[j],
                         inputCoordinateWGS84,
@@ -148,8 +134,7 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
         }
     }
     
-
-    private void transformToCoordinate_shouldReturnEqualCoordinates_whenTransformingBetweenTwoKnownCoordinatesToAndFromEachOther(
+    private void TransformToCoordinate_ShouldReturnEqualCoordinates_WhenTransformingBetweenTwoKnownCoordinatesToAndFromEachOther(
         ICrsTransformationAdapter crsTransformationAdapter,
         int epsgNumber1, int epsgNumber2,
         double yLat1, double xLon1,
@@ -162,22 +147,21 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
         CrsCoordinate outputForCoordinate1 = crsTransformationAdapter.TransformToCoordinate(coordinate1, epsgNumber2);
         CrsCoordinate outputForCoordinate2 = crsTransformationAdapter.TransformToCoordinate(coordinate2, epsgNumber1);
 
-        double delta = getDeltaValueForComparisons(epsgNumber2);
+        double delta = GetDeltaValueForComparisons(epsgNumber2);
         Assert.AreEqual(coordinate2.XEastingLongitude, outputForCoordinate1.XEastingLongitude, delta, description);
         Assert.AreEqual(coordinate2.YNorthingLatitude, outputForCoordinate1.YNorthingLatitude, delta, description);
 
-        delta = getDeltaValueForComparisons(epsgNumber1);
+        delta = GetDeltaValueForComparisons(epsgNumber1);
         Assert.AreEqual(coordinate1.XEastingLongitude, outputForCoordinate2.XEastingLongitude, delta, description);
         Assert.AreEqual(coordinate1.YNorthingLatitude, outputForCoordinate2.YNorthingLatitude, delta, description);
     }
 
-
-    private void transformToCoordinate_shouldReturnTheOriginalCoordinate_whenTransformingBackAgainFromTheResult(
+    private void TransformToCoordinate_ShouldReturnTheOriginalCoordinate_WhenTransformingBackAgainFromTheResult(
         ICrsTransformationAdapter crsTransformationAdapter,
         CrsCoordinate inputCoordinateOriginalCRS,
         int epsgNumberForTransformTargetCRS
     ) {
-        double delta = getDeltaValueForComparisons(inputCoordinateOriginalCRS.CrsIdentifier);
+        double delta = GetDeltaValueForComparisons(inputCoordinateOriginalCRS.CrsIdentifier);
 
         CrsCoordinate outputCoordinateForTransformTargetCRS = crsTransformationAdapter.TransformToCoordinate(inputCoordinateOriginalCRS, epsgNumberForTransformTargetCRS);
         CrsCoordinate outputCoordinateOriginalCRS = crsTransformationAdapter.TransformToCoordinate(outputCoordinateForTransformTargetCRS, inputCoordinateOriginalCRS.CrsIdentifier.EpsgNumber);
@@ -187,14 +171,13 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
         Assert.AreEqual(inputCoordinateOriginalCRS.CrsIdentifier.EpsgNumber, outputCoordinateOriginalCRS.CrsIdentifier.EpsgNumber);
     }
 
-
-    private void transformToCoordinate_shouldReturnTheSameCoordinate_whenTransformingWithTwoDifferentImplementations(
+    private void TransformToCoordinate_ShouldReturnTheSameCoordinate_WhenTransformingWithTwoDifferentImplementations(
         ICrsTransformationAdapter crsTransformationAdapter1,
         ICrsTransformationAdapter crsTransformationAdapter2,
         CrsCoordinate inputCoordinate,
         int epsgNumberForOutputCoordinate
     ) {
-        double delta = getDeltaValueForComparisons(epsgNumberForOutputCoordinate);
+        double delta = GetDeltaValueForComparisons(epsgNumberForOutputCoordinate);
 
         CrsCoordinate outputCoordinate1 = crsTransformationAdapter1.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinate);
         CrsCoordinate outputCoordinate2 = crsTransformationAdapter2.TransformToCoordinate(inputCoordinate, epsgNumberForOutputCoordinate);
@@ -211,14 +194,13 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
         Assert.AreEqual(outputCoordinate1.CrsIdentifier.EpsgNumber, outputCoordinate2.CrsIdentifier.EpsgNumber);
     }
 
-
-    private double getDeltaValueForComparisons(
+    private double GetDeltaValueForComparisons(
         CrsIdentifier crsIdentifier
     ) {
-        return getDeltaValueForComparisons(crsIdentifier.EpsgNumber);
+        return GetDeltaValueForComparisons(crsIdentifier.EpsgNumber);
     }
 
-    private double getDeltaValueForComparisons(
+    private double GetDeltaValueForComparisons(
         int epsgNumber
     ) {
         CoordinateReferenceSystemUnit coordinateReferenceSystemUnit = CoordinateReferenceSystemUnit.UNKNOWN;
@@ -234,10 +216,10 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
         ) {
             coordinateReferenceSystemUnit = CoordinateReferenceSystemUnit.METERS;
         }
-        return getDeltaValueForComparisons(coordinateReferenceSystemUnit, epsgNumber);
+        return GetDeltaValueForComparisons(coordinateReferenceSystemUnit, epsgNumber);
     }
 
-    private double getDeltaValueForComparisons(
+    private double GetDeltaValueForComparisons(
         CoordinateReferenceSystemUnit coordinateReferenceSystemUnit,
         int epsgNumberUsedOnlyInErrorMessage
     ) {
@@ -262,10 +244,11 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
     public void VerifyPopulationOfListWithEpsgNumbers() {
         Assert.IsNotNull(epsgNumbersForSwedishProjectionsUsingMeterAsUnit);
         int differecenBetweenUpperAndLowerValue = upperEpsgIntervalForSwedishProjectionsUsingMeterAsUnit - lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit;
-            Assert.AreEqual(
-                1 + differecenBetweenUpperAndLowerValue,
-                epsgNumbersForSwedishProjectionsUsingMeterAsUnit.Count
-            );
+        Assert.AreEqual(
+            1 + differecenBetweenUpperAndLowerValue
+            ,
+            epsgNumbersForSwedishProjectionsUsingMeterAsUnit.Count
+        );
         Assert.AreEqual(
             lowerEpsgIntervalForSwedishProjectionsUsingMeterAsUnit
             ,
@@ -280,8 +263,7 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
         );
     }
 
-    private static IEnumerable<TestDataSweden> GetCsvDataFromFileWithSomeCoordinatesForSweden()
-    {
+    private static IEnumerable<TestDataSweden> GetCsvDataFromFileWithSomeCoordinatesForSweden() {
         using(StreamReader sr = File.OpenText(testFileWithSomeCoordinatesForSweden)) {
             string line;
             while( (line = sr.ReadLine()) != null ) {
@@ -309,8 +291,7 @@ public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestB
     }
 } // the test class ends here
 
-public struct TestDataSweden
-{
+public struct TestDataSweden {
     public string description;
     public double wgs84Lat, wgs84Lon;
     public double rt90north, rt90east;

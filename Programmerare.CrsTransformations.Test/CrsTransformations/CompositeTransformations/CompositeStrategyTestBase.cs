@@ -6,8 +6,8 @@ using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 
-namespace Programmerare.CrsTransformations.CompositeTransformations 
-{
+namespace Programmerare.CrsTransformations.CompositeTransformations  {
+
 public abstract class CompositeStrategyTestBase {
 
     protected CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory;
@@ -30,7 +30,7 @@ public abstract class CompositeStrategyTestBase {
     protected CrsCoordinate resultCoordinateProjNet4GeoAPI;
 
     [SetUp]
-    public void SetUp() {
+    public void SetUpBase() {
         crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
 
         adapterDotSpatial = new CrsTransformationAdapterDotSpatial();

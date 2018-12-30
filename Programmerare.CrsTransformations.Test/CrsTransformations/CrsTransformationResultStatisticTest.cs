@@ -1,14 +1,15 @@
 using NUnit.Framework;
 
-namespace Programmerare.CrsTransformations
-{
+namespace Programmerare.CrsTransformations {
+
+[TestFixture]
 public class CrsTransformationResultStatisticTest : CrsTransformationResultTestBase {
 
     [Test]
-    public void transformResultStatistic_shouldCalculateCorrectAverageAndMeanAndMaxDiffValues() {
+    public void TransformResultStatistic_ShouldCalculateCorrectAverageAndMeanAndMaxDiffValues() {
         // Both the setup code and the verify/assertion code for this test method 
         // is placed in a base class because it is reused from another test class
-        // The keyword "super" is used below to make that more obvious.
+        // The keyword "base" is not needed but used below to make that more obvious.
         
         CrsTransformationResultStatistic crsTransformationResultStatistic = CrsTransformationResultStatistic._CreateCrsTransformationResultStatistic(
             base.listOfSubresultsForStatisticsTest
@@ -22,7 +23,7 @@ public class CrsTransformationResultStatisticTest : CrsTransformationResultTestB
         //  </AssemblyAttribute>
         //</ItemGroup>
         
-        base.assertCrsTransformationResultStatistic(crsTransformationResultStatistic);
+        base.AssertCrsTransformationResultStatistic(crsTransformationResultStatistic);
     }
-}
-}
+} // the test class ends here
+} // namespace ends here

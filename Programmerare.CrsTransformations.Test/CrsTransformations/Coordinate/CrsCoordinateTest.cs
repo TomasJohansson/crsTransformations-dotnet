@@ -20,7 +20,7 @@ class CrsCoordinateTest {
     private readonly static string epsgCode = EpsgPrefix + epsgNumberSweref99;
 
     [Test]
-    public void coordinateProperties_shouldHaveValuesEqualtToFactoryMethodsParameters() {
+    public void CoordinateProperties_ShouldHaveValuesEqualtToFactoryMethodsParameters() {
         CrsCoordinate coordinate = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumberSweref99);
         Assert.AreEqual(xLongitude, coordinate.XEastingLongitude, deltaTolerance);
         Assert.AreEqual(yLatitude, coordinate.YNorthingLatitude, deltaTolerance);
@@ -28,22 +28,22 @@ class CrsCoordinateTest {
     }
 
     [Test]
-    public void coordinates_shouldBeEqual_whenUsingIntegerEpsgNumberAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
+    public void Coordinates_ShouldBeEqual_WhenUsingIntegerEpsgNumberAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
         CrsCoordinate coordinate1 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, epsgNumberSweref99);
         CrsCoordinate coordinate2 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgNumberSweref99);
         AssertEqualCoordinates(coordinate1, coordinate2);
     }
 
     [Test]
-    public void coordinates_shouldBeEqual_whenUsingStringEpsgCodeAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
-        String crsCode = "EPSG:3006";
+    public void Coordinates_ShouldBeEqual_WhenUsingStringEpsgCodeAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
+        string crsCode = "EPSG:3006";
         CrsCoordinate coordinate1 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, crsCode);
         CrsCoordinate coordinate2 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, crsCode);
         AssertEqualCoordinates(coordinate1, coordinate2);
     }
 
     [Test]
-    public void coordinates_shouldBeEqual_whenUsingCrsIdentifierAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
+    public void Coordinates_ShouldBeEqual_WhenUsingCrsIdentifierAndDifferentFactoryMethodsWithParametersInDifferentOrder() {
         CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromEpsgNumber(3006);
         CrsCoordinate coordinate1 = CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(xLongitude, yLatitude, crsIdentifier);
         CrsCoordinate coordinate2 = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, crsIdentifier);
@@ -51,10 +51,8 @@ class CrsCoordinateTest {
     }
 
     [Test]
-    public void coordinate_shouldBeCreatedWithWGS84asDefaultCrs_whenNotSpecifyingCrs() {
-        CrsCoordinate coordinate;
-        
-        coordinate = CrsCoordinateFactory.CreateFromLongitudeLatitude(xLongitude, yLatitude);
+    public void Coordinate_ShouldBeCreatedWithWGS84asDefaultCrs_WhenNotSpecifyingCrs() {
+        CrsCoordinate coordinate = CrsCoordinateFactory.CreateFromLongitudeLatitude(xLongitude, yLatitude);
         Assert.AreEqual(
             epsgNumberWgs84, // EpsgNumber.WORLD__WGS_84__4326,
             coordinate.CrsIdentifier.EpsgNumber
@@ -80,7 +78,7 @@ class CrsCoordinateTest {
 
      // six decimals are commonly used for latitude and longitude values 
     [Test]
-    public void coordinateWithSixDecimals_shouldBeEqualToCoordinateConstructedWithTheSameValues_whenTheOnlyDifferenceIsSomeAdditionalZeroes() {
+    public void CoordinateWithSixDecimals_ShouldBeEqualToCoordinateConstructedWithTheSameValues_WhenTheOnlyDifferenceIsSomeAdditionalZeroes() {
         CrsCoordinate c1 = CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456, 18.123456000);
         CrsCoordinate c2 = CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456000, 18.123456);
         Assert.AreEqual(
@@ -92,7 +90,7 @@ class CrsCoordinateTest {
     }
 
     [Test]
-    public void coordinateWithNineDecimals_shouldBeEqualToCoordinateConstructedWithTheSameValues_whenTheOnlyDifferenceIsSomeAdditionalZeroes() {
+    public void CoordinateWithNineDecimals_ShouldBeEqualToCoordinateConstructedWithTheSameValues_WhenTheOnlyDifferenceIsSomeAdditionalZeroes() {
         CrsCoordinate c1 = CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456789, 18.123456789000);
         CrsCoordinate c2 = CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456789000, 18.123456789);
         Assert.AreEqual(
@@ -104,8 +102,7 @@ class CrsCoordinateTest {
     }
 
     [Test]
-    public void coordinates_shouldNotBeEqual_whenDifferenceAtTwelfthDecimalOfLatitude()
-    {
+    public void Coordinates_ShouldNotBeEqual_WhenDifferenceAtTwelfthDecimalOfLatitude() {
         // very small latitude difference:
         Assert.AreNotEqual(
             CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456789001, 18.123456789),
@@ -114,7 +111,7 @@ class CrsCoordinateTest {
     }
 
     [Test]
-    public void coordinates_shouldNotBeEqual_whenDifferenceAtTwelfthDecimalOfLongitude() {
+    public void Coordinates_ShouldNotBeEqual_WhenDifferenceAtTwelfthDecimalOfLongitude() {
         // very small longitude difference:
         Assert.AreNotEqual(
             CrsCoordinateFactory.CreateFromLatitudeLongitude(59.123456789, 18.123456789000),
@@ -123,7 +120,7 @@ class CrsCoordinateTest {
     }
 
     [Test]
-    public void coordinates_shouldBeEqual_whenCreatedWithTheSameValuesButDifferentFactoryMethods() {
+    public void Coordinates_ShouldBeEqual_WhenCreatedWithTheSameValuesButDifferentFactoryMethods() {
         CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumberSweref99);
         string epsgCode = EpsgPrefix + epsgNumberSweref99;
         
@@ -222,7 +219,7 @@ class CrsCoordinateTest {
     }
 
     [Test]
-    public void coordinate_shouldHaveEquivalentXEastingLongitudeProperties() {
+    public void Coordinate_ShouldHaveEquivalentXEastingLongitudeProperties() {
         CrsCoordinate c = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgCode);
         Assert.AreEqual(c.XEastingLongitude, c.X);
         Assert.AreEqual(c.XEastingLongitude, c.Easting);
@@ -230,7 +227,7 @@ class CrsCoordinateTest {
     }
 
     [Test]
-    public void coordinate_shouldHaveEquivalentgetYNorthingLatitudeProperties() {
+    public void Coordinate_ShouldHaveEquivalentgetYNorthingLatitudeProperties() {
         CrsCoordinate c = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(yLatitude, xLongitude, epsgCode);
         Assert.AreEqual(c.YNorthingLatitude, c.Y);
         Assert.AreEqual(c.YNorthingLatitude, c.Northing);
@@ -241,10 +238,8 @@ class CrsCoordinateTest {
     // fragile hardcoded string below but will not change often and if/when then it will be easy to fix when it fails
     private const string EXPECTED_PART_OF_EXCEPTION_MESSAGE_WHEN_COORDINATE_VALUES_IS_NULL = "Neither of the two coordinate parameters must be null";
 
-
     [Test]
-    public void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenCrsIdentifierIsNull()
-    {
+    public void CreateFromXEastingLongitudeAndYNorthingLatitude_ShouldThrowException_WhenCrsIdentifierIsNull() {
         CrsIdentifier crsIdentifier = null;
         ArgumentException exception = Assert.Throws<ArgumentNullException>( () => {
             CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(
@@ -260,16 +255,17 @@ class CrsCoordinateTest {
     }
 
     [Test]
-    public void createFromXEastingLongitudeAndYNorthingLatitude_shouldThrowException_whenCrsCodeIsNull()
-    {
+    public void CreateFromXEastingLongitudeAndYNorthingLatitude_ShouldThrowException_WhenCrsCodeIsNull() {
         string crsCode = null;
-        ArgumentException exception = Assert.Throws<ArgumentNullException>( () => {
-            CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(
-                60.0,
-                20.0,
-                crsCode
-            );
-        });
+        ArgumentException exception = Assert.Throws<ArgumentNullException>(
+            () => {
+                CrsCoordinateFactory.CreateFromXEastingLongitudeAndYNorthingLatitude(
+                    60.0,
+                    20.0,
+                    crsCode
+                );
+            }
+        );
         // F# may throw this: nullArg "crsCode"
         // which creates the following kind of message:
         // "Value cannot be null. Parameter name: crsCode"
@@ -292,8 +288,7 @@ class CrsCoordinateTest {
     }
 
     [Test]
-    public void CreateCoordinate_shouldThrowException_whenXorYIsNotValidNumber()
-    {
+    public void CreateCoordinate_ShouldThrowException_WhenXorYIsNotValidNumber() {
         // The iteration of three lists in this method
         // is an alternative to implementing 
         // 48 methods with lots of duplication !

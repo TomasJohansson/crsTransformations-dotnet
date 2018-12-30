@@ -4,8 +4,6 @@ using System;
 using NUnit.Framework;
 using System.Collections.Generic;
 using Programmerare.CrsTransformations;
-using Programmerare.CrsTransformations.Coordinate;
-using Programmerare.CrsTransformations.Identifier;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
@@ -59,24 +57,24 @@ public class CrsTransformationAdapterCompositeFactoryTest {
 
 
     [Test]
-    public void createCrsTransformationAverage_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
+    public void CreateCrsTransformationAverage_ShouldBeCreatedWithManyImplementations_WhenInstantiatingWithoutParameters() {
         CrsTransformationAdapterComposite crsTransformationAverage = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
-        assertCompositeNotNullAndAggregatesManyImplementations(crsTransformationAverage);
+        AssertCompositeNotNullAndAggregatesManyImplementations(crsTransformationAverage);
     }
 
     [Test]
-    public void createCrsTransformationMedian_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
+    public void CreateCrsTransformationMedian_ShouldBeCreatedWithManyImplementations_WhenInstantiatingWithoutParameters() {
         CrsTransformationAdapterComposite crsTransformationMedian = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
-        assertCompositeNotNullAndAggregatesManyImplementations(crsTransformationMedian);
+        AssertCompositeNotNullAndAggregatesManyImplementations(crsTransformationMedian);
     }
 
     [Test]
-    public void createCrsTransformationFirstSuccess_shouldBeCreatedWithManyImplementations_whenInstantiatingWithoutParameters() {
+    public void CreateCrsTransformationFirstSuccess_ShouldBeCreatedWithManyImplementations_WhenInstantiatingWithoutParameters() {
         CrsTransformationAdapterComposite crsTransformationFirstSuccess = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
-        assertCompositeNotNullAndAggregatesManyImplementations(crsTransformationFirstSuccess);
+        AssertCompositeNotNullAndAggregatesManyImplementations(crsTransformationFirstSuccess);
     }
 
-    private void assertCompositeNotNullAndAggregatesManyImplementations(CrsTransformationAdapterComposite crsTransformationAdapterComposite) {
+    private void AssertCompositeNotNullAndAggregatesManyImplementations(CrsTransformationAdapterComposite crsTransformationAdapterComposite) {
         Assert.IsNotNull(crsTransformationAdapterComposite);
         IList<ICrsTransformationAdapter> list = crsTransformationAdapterComposite._GetCompositeStrategy()._GetAllTransformationAdaptersInTheOrderTheyShouldBeInvoked();
         Assert.AreEqual(EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS, list.Count);
@@ -85,35 +83,34 @@ public class CrsTransformationAdapterCompositeFactoryTest {
     private static IList<ICrsTransformationAdapter> emptyListOfCrsTransformationAdapters = new List<ICrsTransformationAdapter>();
 
     [Test]
-    public void createCrsTransformationAverage_shouldThrowException_whenInstantiatingWithEmptyList()
-    {
-        helper_shouldThrowException_whenInstantiatingWithEmptyList(
+    public void CreateCrsTransformationAverage_ShouldThrowException_WhenInstantiatingWithEmptyList() {
+        Helper_ShouldThrowException_WhenInstantiatingWithEmptyList(
             crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage
         );
     }
 
     [Test]
-    public void createCrsTransformationMedian_shouldThrowException_whenInstantiatingWithEmptyList() {
-        helper_shouldThrowException_whenInstantiatingWithEmptyList(
+    public void CreateCrsTransformationMedian_ShouldThrowException_WhenInstantiatingWithEmptyList() {
+        Helper_ShouldThrowException_WhenInstantiatingWithEmptyList(
             crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian
         );
     }
 
     [Test]
-    public void createCrsTransformationFirstSuccess_shouldThrowException_whenInstantiatingWithEmptyList() {
-        helper_shouldThrowException_whenInstantiatingWithEmptyList(
+    public void CreateCrsTransformationFirstSuccess_ShouldThrowException_WhenInstantiatingWithEmptyList() {
+        Helper_ShouldThrowException_WhenInstantiatingWithEmptyList(
             crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess
         );
     }
 
-    private void helper_shouldThrowException_whenInstantiatingWithEmptyList(
+    private void Helper_ShouldThrowException_WhenInstantiatingWithEmptyList(
         Func<IList<ICrsTransformationAdapter>, CrsTransformationAdapterComposite> compositeCreator
-    )
-    {
-        ArgumentException exception = Assert.Throws<ArgumentException>(() =>
-        {
-            compositeCreator(emptyListOfCrsTransformationAdapters);
-        });
+    ) {
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () => {
+                compositeCreator(emptyListOfCrsTransformationAdapters);
+            }
+        );
         Assert.IsNotNull(exception);
         // the exception message might be something like:
         // 'Composite' adapter can not be created with an empty list of 'leaf' adapters
@@ -192,10 +189,7 @@ public class CrsTransformationAdapterCompositeFactoryTest {
             classForChild1,
             classForChild2
         );
-
     }
-
-
 
 } // class ends
 } // namespace ends

@@ -5,15 +5,16 @@ using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Identifier;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 
-namespace Programmerare.CrsTransformations.CompositeTransformations 
-{
+namespace Programmerare.CrsTransformations.CompositeTransformations  {
+
+[TestFixture]
 public class CompositeStrategyAverageTest : CompositeStrategyTestBase {
 
     private const double delta = 0.000000001;
 
     [Test]
-    public void transform_shouldReturnAverageResult_whenUsingAverageCompositeAdapter() {
-        CrsCoordinate coordinateWithAverageLatitudeAndLongitude = calculateAverageCoordinate(
+    public void Transform_ShouldReturnAverageResult_WhenUsingAverageCompositeAdapter() {
+        CrsCoordinate coordinateWithAverageLatitudeAndLongitude = CalculateAverageCoordinate(
             base.allCoordinateResultsForTheDifferentImplementations
         );
 
@@ -42,7 +43,7 @@ public class CompositeStrategyAverageTest : CompositeStrategyTestBase {
         // Actual   :Coordinate(xEastingLongitude=674032.3572074447, yNorthingLatitude=6580821.991903967, crsIdentifier=CrsIdentifier(crsCode=EPSG:3006, isEpsgCode=true, epsgNumber=3006))
     }
 
-    private CrsCoordinate calculateAverageCoordinate(
+    private CrsCoordinate CalculateAverageCoordinate(
         List<CrsCoordinate> resultCoordinates
     ) {
         double averageLat = resultCoordinates.Select(c => c.Latitude).Average();
@@ -51,8 +52,7 @@ public class CompositeStrategyAverageTest : CompositeStrategyTestBase {
     }
 
     [Test]
-    public void resultCoordinates_mustBeDefinedWithTheSameCoordinateReferenceSystem()
-    {
+    public void ResultCoordinates_MustBeDefinedWithTheSameCoordinateReferenceSystem() {
         var resultCoordinates = base.allCoordinateResultsForTheDifferentImplementations;
         List<IGrouping<CrsIdentifier, CrsCoordinate>> res = resultCoordinates.GroupBy(c => c.CrsIdentifier).ToList();
         string messageIfFailing = "all coordinates should have the same CRS, since thet should all be the result of a transform to the same CRS";
