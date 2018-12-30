@@ -1,0 +1,4 @@
+The MIT License applies to the project "Programmerare.CrsTransformations.Core" and those adapter projects also using MIT License.
+(i.e. currently "Programmerare.CrsTransformations.Adapter.DotSpatial" and "Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy")
+The license for "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI" is "Lesser General Public License v2.1".
+Please also see license information in the root directories for the adapter projects within this Visual Studio Solution in this git repository.
