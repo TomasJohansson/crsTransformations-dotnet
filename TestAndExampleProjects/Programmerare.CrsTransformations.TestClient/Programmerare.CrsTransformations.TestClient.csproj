@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <AssemblyName>Programmerare.CrsTransformations.TestClient</AssemblyName>
+    <StartupObject>Programmerare.CrsTransformations.TestClient.Program</StartupObject>
   </PropertyGroup>
 
   <ItemGroup>
