@@ -1,12 +1,18 @@
 # License Notice
-Notice that the "core" library with the adapter API and general code is released with MIT License.  
+Notice that the "Core" library with the adapter API and general code is released with MIT License.  
 However, the adapter implementations libraries are licensed in the same way as the adapted libraries which is specified in separate "LICENSE_NOTICE" files (in the adapter base directories) for each such implementation.
 
 # Information about this Coordinate Reference System Transformations library
-This Kotlin/Java/JVM project is intended for transforming coordinates between different coordinate reference systems (CRS).  
-The code has been implemented with Kotlin but the tests (and the generated constants in the subproject "crs-transformation-constants") are implemented with Java.  
-The third-part libraries (the adaptee's below) are Java libraries.  
-Versions of Java and Kotlin: **Java 1.8** and **Kotlin 1.3.10**  
+This F#/C#/.NET project is intended for transforming coordinates between different coordinate reference systems (CRS).  
+The code has been implemented with F# but the tests (and the generated constants in the subproject "Programmerare.CrsTransformations.Constants") are implemented with C#.  
+The third-part libraries (the adaptee's below) are .NET libraries.  
+.NET versions supported in the upcoming NuGet release: .NET 4.5 and .NET Standard 2.0  
+
+# TODO
+The rest of the page will be updated for this .NET project.  
+It has been "ported" from the corresponding JVM project '[crsTransformations](https://github.com/TomasJohansson/crsTransformations)' (Kotlin/Java) and the below text has not yet been updated for this .NET version.  
+
+
 
 # Usage
 The methods for transforming coordinates are defined in the interface *CrsTransformationAdapter*.  
