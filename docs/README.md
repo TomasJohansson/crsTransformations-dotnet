@@ -1,83 +1,75 @@
 # License Notice
-Notice that the "core" library with the adapter API and general code is released with MIT License.  
+Notice that the "Core" library with the adapter API and general code is released with MIT License.  
 However, the adapter implementations libraries are licensed in the same way as the adapted libraries which is specified in separate "LICENSE_NOTICE" files (in the adapter base directories) for each such implementation.
 
 # Information about this Coordinate Reference System Transformations library
-This Kotlin/Java/JVM project is intended for transforming coordinates between different coordinate reference systems (CRS).  
-The code has been implemented with Kotlin but the tests (and the generated constants in the subproject "crs-transformation-constants") are implemented with Java.  
-The third-part libraries (the adaptee's below) are Java libraries.  
-Versions of Java and Kotlin: **Java 1.8** and **Kotlin 1.3.10**  
+This F#/C#/.NET project is intended for transforming coordinates between different coordinate reference systems (CRS).  
+The code has been implemented with F# but the tests (and the generated constants in the subproject "Programmerare.CrsTransformations.Constants") are implemented with C#.  
+The third-part libraries (the adaptee's below) are .NET libraries.  
+.NET versions supported in the upcoming NuGet release: .NET 4.5 and .NET Standard 2.0  
 
 # Usage
-The methods for transforming coordinates are defined in the interface *CrsTransformationAdapter*.  
-There are nine classes implementing the interface. Five 'leafs' and four 'composites'.  
+The methods for transforming coordinates are defined in the interface *ICrsTransformationAdapter*.  
+There are currently seven classes implementing the interface. Three 'leafs' and four 'composites'.  
 Each leaf adapter is using some adaptee library for the implementation.  
-The four 'composites' are using the leafs like this:
+The four 'composites' are using the leafs like this:  
 * **Median** (transform with many leafs and use the *median* latitude/longitude result as the aggregated result)
 * **Average** (transform with many leafs and use the *average* latitude/longitude result as the aggregated result)
 * **Weighted average** (transform with many leafs and use the *weighted* average latitude/longitude result as the aggregated result)
 * **First success** (iterate a list of leafs and try to transform until some result seem to have succeeded)
   
-Java:
-```java
-        // The interface with nine implementations as illustrated below
-        CrsTransformationAdapter crsTransformationAdapter; 
-        // The interface is defined in the library "crs-transformation-adapter-core" with this full name:
-        // com.programmerare.crsTransformations.CrsTransformationAdapter        
+C#:
+```C#
+    // The interface with seven implementations as illustrated below
+    ICrsTransformationAdapter crsTransformationAdapter; 
+    // The interface is defined in the library "Programmerare.CrsTransformations.Core" with this full name:
+    // Programmerare.CrsTransformations.ICrsTransformationAdapter
         
-        // The five 'Leaf' implementations:
+    // The three 'Leaf' implementations:
 
-        // Library "crs-transformation-adapter-impl-proj4j", class:
-        // com.programmerare.crsTransformationAdapterProj4J.CrsTransformationAdapterProj4J;
-        crsTransformationAdapter = new CrsTransformationAdapterProj4J();
+    // Library "Programmerare.CrsTransformations.Adapter.DotSpatial", class:
+    // Programmerare.CrsTransformations.Adapter.DotSpatial.CrsTransformationAdapterDotSpatial
+    crsTransformationAdapter = new CrsTransformationAdapterDotSpatial();
 
-        // Library "crs-transformation-adapter-impl-orbisgis", class:
-        // com.programmerare.crsTransformationAdapterOrbisgisCTS.CrsTransformationAdapterOrbisgisCTS;        
-        crsTransformationAdapter = new CrsTransformationAdapterOrbisgisCTS();
+    // Library "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI", class:
+    // Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.CrsTransformationAdapterProjNet4GeoAPI
+    crsTransformationAdapter = new CrsTransformationAdapterProjNet4GeoAPI();
 
-        // Library "crs-transformation-adapter-impl-nga", class:
-        // com.programmerare.crsTransformationAdapterGeoPackageNGA.CrsTransformationAdapterGeoPackageNGA;
-        crsTransformationAdapter = new CrsTransformationAdapterGeoPackageNGA();
+    // Library "Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy", class:
+    // Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy.CrsTransformationAdapterMightyLittleGeodesy
+    crsTransformationAdapter = new CrsTransformationAdapterMightyLittleGeodesy();
 
-        // Library "crs-transformation-adapter-impl-geotools", class:
-        // com.programmerare.crsTransformationAdapterGeoTools.CrsTransformationAdapterGeoTools;        
-        crsTransformationAdapter = new CrsTransformationAdapterGeoTools();
+    // - - - - - - - - - - - -
+        
+    // The four 'Composite' implementations below are all located in the library
+    // "crs-transformation-adapter-core" and the factory class is:
+    // com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory
+    var crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
 
-        // Library "crs-transformation-adapter-impl-goober", class:
-        // com.programmerare.crsTransformationAdapterGooberCTL.CrsTransformationAdapterGooberCTL;        
-        crsTransformationAdapter = new CrsTransformationAdapterGooberCTL();
-        // - - - - - - - - - - - -
+    crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationMedian();
         
-        // The four 'Composite' implementations below are all located in the library
-        // "crs-transformation-adapter-core" and the factory class is:
-        // com.programmerare.crsTransformations.compositeTransformations.CrsTransformationAdapterCompositeFactory
+    crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
         
-        crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationMedian();
+    crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
         
-        crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationAverage();
+    // All of the above three factory methods without any parameter will try to use as many of the five 'leaf' 
+    // implementations as are available at the class path (e.g. are included as dependencies with Gradle or Maven).
+    // All above three factory methods are also overloaded with methods taking 
+    // a parameter 'List<CrsTransformationAdapter>' if you prefer to explicit define which 'leafs' to use.
         
-        crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationFirstSuccess();
-        
-        // All of the above three factory methods without any parameter will try to use as many of the five 'leaf' 
-        // implementations as are available at the class path (e.g. are included as dependencies with Gradle or Maven).
-        // All above three factory methods are also overloaded with methods taking 
-        // a parameter 'List<CrsTransformationAdapter>' if you prefer to explicit define which 'leafs' to use.
-        
-        // The fourth 'Composite' below does not have any overloaded method without parameter 
-        // but if you want to use a result created as a weighted average then the weights need 
-        // to be specified per leaf implementation as in the example below.
-
-        crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.createCrsTransformationWeightedAverage(Arrays.asList(
-            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterProj4J(), 1.0),
-            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterOrbisgisCTS(), 1.0),
-            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoPackageNGA(), 1.0),
-            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGeoTools(), 1.0),
-            CrsTransformationAdapterWeight.createFromInstance(new CrsTransformationAdapterGooberCTL(), 2.0)
-        ));
-        // The weight values above illustrates a situation where you (for some reason) want to consider 
-        // the transformation result from 'goober' as being 'two times better' than the others.
+    // The fourth 'Composite' below does not have any overloaded method without parameter 
+    // but if you want to use a result created as a weighted average then the weights need 
+    // to be specified per leaf implementation as in the example below.
+    var weightFactory = CrsTransformationAdapterWeightFactory.Create();
+    crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight> {
+        weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
+        weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 1.0),
+        weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 2.0),
+    });
+    // The weight values above illustrates a situation where you (for some reason) want to consider 
+    // the transformation result from 'MightyLittleGeodesy' as being 'two times better' than the others.
 ```
-All of the transform methods (defined in the above interface *CrsTransformationAdapter*) need two parameters, one input coordinate and one parameter specifying the target system i.e. to which coordinate reference system the input coordinate will be transformed to.  
+All of the transform methods (defined in the above interface *ICrsTransformationAdapter*) need two parameters, one input coordinate and one parameter specifying the target system i.e. to which coordinate reference system the input coordinate will be transformed to.  
 
 The target system can be specified with three data types (i.e. with overloaded methods), either an integer or a string, or a 'CrsIdentifier'.  
 If an integer or string is used, then internally an 'CrsIdentifier' will be created, to send it as parameter to the adapter implementations.  
@@ -87,210 +79,124 @@ A coordinate includes information about the coordinate reference system, i.e. a 
 
 There are many factory methods with different names and different order for the two (x/y) position values as illustated in the example below.  
 Depending on the desired semantic in your context, you may want to use the different methods (or similarly named accessors in *CrsCoordinate*) like this:  
-* x/y for a geocentric or cartesian system
-* longitude/latitude for a geodetic or geographic system
-* easting/northing for a cartographic or projected system
+* X/Y for a geocentric or cartesian system
+* Longitude/Latitude for a geodetic or geographic system
+* Easting/Northing for a cartographic or projected system
 * xEastingLongitude/yNorthingLatitude for general code handling different types of system
   
-Java:
-```java
-        final int epsgNumber = 4326;
-        final String crsCode = "EPSG:" + epsgNumber;
-        CrsIdentifier crsIdentifier; // package com.programmerare.crsTransformations.crsIdentifier
-        crsIdentifier = CrsIdentifierFactory.createFromEpsgNumber(epsgNumber);
+C#:
+```C#
+        int epsgNumber = 4326;
+        string crsCode = "EPSG:" + epsgNumber;
+        CrsIdentifier crsIdentifier; // namespace Programmerare.CrsTransformations.Identifier
+        crsIdentifier = CrsIdentifierFactory.CreateFromEpsgNumber(epsgNumber);
         // Alternative:
-        crsIdentifier = CrsIdentifierFactory.createFromCrsCode(crsCode);
+        crsIdentifier = CrsIdentifierFactory.CreateFromCrsCode(crsCode);
 
-        final double latitude = 59.330231;
-        final double longitude = 18.059196;
+        double latitude = 59.330231;
+        double longitude = 18.059196;
 
-        CrsCoordinate crsCoordinate; // package com.programmerare.crsTransformations.coordinate
+        CrsCoordinate crsCoordinate; // namespace Programmerare.CrsTransformations.Coordinate
         // All the below methods are alternatives for creating the same coordinate 
         // with the above latitude/longitude and coordinate reference system.
         // No class or object is used for the methods below because of the following static import:
-        // import static com.programmerare.crsTransformations.coordinate.CrsCoordinateFactory.*;
-        crsCoordinate = latLon(latitude, longitude, epsgNumber);
-        crsCoordinate = latLon(latitude, longitude, crsCode);
-        crsCoordinate = latLon(latitude, longitude, crsIdentifier);
+        // using static Programmerare.CrsTransformations.Coordinate.CrsCoordinateFactory;
+        crsCoordinate = LatLon(latitude, longitude, epsgNumber);
+        crsCoordinate = LatLon(latitude, longitude, crsCode);
+        crsCoordinate = LatLon(latitude, longitude, crsIdentifier);
         
-        crsCoordinate = lonLat(longitude, latitude, epsgNumber);
-        crsCoordinate = lonLat(longitude, latitude, crsCode);
-        crsCoordinate = lonLat(longitude, latitude, crsIdentifier);
+        crsCoordinate = LonLat(longitude, latitude, epsgNumber);
+        crsCoordinate = LonLat(longitude, latitude, crsCode);
+        crsCoordinate = LonLat(longitude, latitude, crsIdentifier);
         
-        crsCoordinate = yx(latitude, longitude, epsgNumber);
-        crsCoordinate = yx(latitude, longitude, crsCode);
-        crsCoordinate = yx(latitude, longitude, crsIdentifier);
+        crsCoordinate = YX(latitude, longitude, epsgNumber);
+        crsCoordinate = YX(latitude, longitude, crsCode);
+        crsCoordinate = YX(latitude, longitude, crsIdentifier);
         
-        crsCoordinate = xy(longitude, latitude, epsgNumber);
-        crsCoordinate = xy(longitude, latitude, crsCode);
-        crsCoordinate = xy(longitude, latitude, crsIdentifier);
+        crsCoordinate = XY(longitude, latitude, epsgNumber);
+        crsCoordinate = XY(longitude, latitude, crsCode);
+        crsCoordinate = XY(longitude, latitude, crsIdentifier);
 
-        crsCoordinate = northingEasting(latitude, longitude, epsgNumber);
-        crsCoordinate = northingEasting(latitude, longitude, crsCode);
-        crsCoordinate = northingEasting(latitude, longitude, crsIdentifier);
+        crsCoordinate = NorthingEasting(latitude, longitude, epsgNumber);
+        crsCoordinate = NorthingEasting(latitude, longitude, crsCode);
+        crsCoordinate = NorthingEasting(latitude, longitude, crsIdentifier);
 
-        crsCoordinate = eastingNorthing(longitude, latitude, epsgNumber);
-        crsCoordinate = eastingNorthing(longitude, latitude, crsCode);
-        crsCoordinate = eastingNorthing(longitude, latitude, crsIdentifier);
+        crsCoordinate = EastingNorthing(longitude, latitude, epsgNumber);
+        crsCoordinate = EastingNorthing(longitude, latitude, crsCode);
+        crsCoordinate = EastingNorthing(longitude, latitude, crsIdentifier);
 
-        crsCoordinate = createFromYNorthingLatitudeAndXEastingLongitude(latitude, longitude, epsgNumber);
-        crsCoordinate = createFromYNorthingLatitudeAndXEastingLongitude(latitude, longitude, crsCode);
-        crsCoordinate = createFromYNorthingLatitudeAndXEastingLongitude(latitude, longitude, crsIdentifier);
+        crsCoordinate = CreateFromYNorthingLatitudeAndXEastingLongitude(latitude, longitude, epsgNumber);
+        crsCoordinate = CreateFromYNorthingLatitudeAndXEastingLongitude(latitude, longitude, crsCode);
+        crsCoordinate = CreateFromYNorthingLatitudeAndXEastingLongitude(latitude, longitude, crsIdentifier);
 
-        crsCoordinate = createFromXEastingLongitudeAndYNorthingLatitude(longitude, latitude, epsgNumber);
-        crsCoordinate = createFromXEastingLongitudeAndYNorthingLatitude(longitude, latitude, crsCode);
-        crsCoordinate = createFromXEastingLongitudeAndYNorthingLatitude(longitude, latitude, crsIdentifier);
+        crsCoordinate = CreateFromXEastingLongitudeAndYNorthingLatitude(longitude, latitude, epsgNumber);
+        crsCoordinate = CreateFromXEastingLongitudeAndYNorthingLatitude(longitude, latitude, crsCode);
+        crsCoordinate = CreateFromXEastingLongitudeAndYNorthingLatitude(longitude, latitude, crsIdentifier);
 
         
-        CrsIdentifier targetCrs = CrsIdentifierFactory.createFromEpsgNumber(3006);
-        CrsTransformationResult crsTransformationResult = crsTransformationAdapter.transform(crsCoordinate, targetCrs);
+        CrsIdentifier targetCrs = CrsIdentifierFactory.CreateFromEpsgNumber(3006);
+        CrsTransformationResult crsTransformationResult = crsTransformationAdapter.Transform(crsCoordinate, targetCrs);
         // see more example code further down in this webpage
 ```
-    
 
 # Adaptee libraries used by the adapter libraries in the first release
-* https://github.com/Proj4J/proj4j
-    (version 0.1.0)
-* https://github.com/orbisgis/cts/
-    (version 1.5.1)
-* https://github.com/ngageoint/geopackage-java
-    (version 3.1.0)
-* https://github.com/geotools/geotools
-    (version 20.0)
-* https://github.com/goober/coordinate-transformation-library
-    (version 1.1)
+* https://github.com/DotSpatial/DotSpatial
+    (version 2.0.0-rc1)
+* https://github.com/NetTopologySuite/ProjNet4GeoAPI
+    (version 1.4.1)
+* https://github.com/bjornsallarp/MightyLittleGeodesy
+    (version 1.0.1)
 
-# Released library versions
-The following seven artifacts from this code project have been released/distributed to the Maven "Central Repository" ([Sonatype OSSRH](https://central.sonatype.org/pages/ossrh-guide.html) "Open Source Software Repository Hosting Service"):
-* crs-transformation-adapter-**core**
+# NuGet releases
+The following five artifacts from this code project **will** become released/distributed to NuGet:
+* Programmerare.CrsTransformations.**Core**
     (version 1.0.0)
-* crs-transformation-adapter-*impl*-**proj4j**
+* Programmerare.CrsTransformations.*Adapter*.**DotSpatial**
     (version 1.0.0)
-* crs-transformation-adapter-*impl*-**orbisgis**
+* Programmerare.CrsTransformations.*Adapter*.**ProjNet4GeoAPI**
     (version 1.0.0)
-* crs-transformation-adapter-*impl*-**nga**
+* Programmerare.CrsTransformations.*Adapter*.**MightyLittleGeodesy**
     (version 1.0.0)
-* crs-transformation-adapter-*impl*-**geotools**
-    (version 1.0.0, the adaptee is currently not at Maven Central, see comment below)
-* crs-transformation-adapter-*impl*-**goober**
-    (version 1.0.0, only used for Swedish CRS, see comment below)
-* crs-transformation-*constants*
+* Programmerare.CrsTransformations.*Constants*
     (version **9.5.4**)  
 
-The five above libraries which includes "*impl*" in the name are adapter implementations of the above "*core*" library.  
-Those five adapters are using the five adaptee libraries for the coordinate transformations.  
+The three above libraries which includes "*Adapter*" in the name are adapter implementations of the above "*Core*" library.  
+Those three adapters are using the three adaptee libraries for the coordinate transformations.  
 
-The above '*goober*' library is only useful for transformation between WGS84 (which is a very common global CRS) and the Swedish coordinate reference systems (CRS) SWEREF99 (13 versions e.g. "SWEREF99 TM") and RT90 (6 versions e.g. "RT90 2.5 gon V").   
+The above '*MightyLittleGeodesy*' library is only useful for transformation between WGS84 (which is a very common global CRS) and the Swedish coordinate reference systems (CRS) SWEREF99 (13 versions e.g. "SWEREF99 TM") and RT90 (6 versions e.g. "RT90 2.5 gon V").   
 
-The above '*geotools*' library are using geotools which currently seem to not be distributed to "Maven Central" but can be used by adding an additional repository as in the Gradle and Maven sections of this webpage.  
-
-The above artifact "crs-transformation-*constants*" is actually totally independent from the others.  
+The above artifact "Programmerare.CrsTransformations.*Constants*" is actually totally independent from the others.  
 It is not depending on anything and nothing depends on it.  
-It is a **Java** library (i.e. not even depending on Kotlin) with only one class with a lot of Java constants.  
-(the other six artifacts/libraries are implemented with Kotlin and thus have an implicit dependency to a Kotlin artifact)    
+It is a **C#** library (i.e. not even depending on F# like the others) with only one class with a lot of C# constants.  
+(the other four artifacts/libraries are implemented with F#)    
 The constant class has been generated from the [EPSG database](http://www.epsg-registry.org) version 9.5.4 which is the reason for the version number.
 
-# Gradle configuration
-The "core" library is not necessary to include since there is an implicit/transitive dependency from all the "impl" libraries to the "core".  
-The "constants" library is not needed but might be interesting if you want to use constants 
+# NuGet configuration
+The "Core" library is not necessary to include since there is an implicit/transitive dependency from all the "Adapter" libraries to the "Core".  
+The "Constants" library is not needed but might be interesting if you want to use constants 
 for the EPSG numbers rather than hardcoding them or define your own integer constants.  
-The "repository" for geotools is only needed if you want to use the library for geotools.
-
-build.gradle
-```Groovy
-...
-repositories {
-    maven {
-        // this repository can be added if you want to use the implementation 
-        // "crs-transformation-adapter-impl-geotools" which uses the "geotools" library     
-        url "https://download.osgeo.org/webdav/geotools/"
-    }    
-    mavenCentral()
-}
-...
-
-dependencies {
-    ...
-    implementation "com.programmerare.crs-transformation:crs-transformation-adapter-impl-proj4j:1.0.0"	
-    implementation "com.programmerare.crs-transformation:crs-transformation-adapter-impl-orbisgis:1.0.0"
-    implementation "com.programmerare.crs-transformation:crs-transformation-adapter-impl-nga:1.0.0"
-    implementation "com.programmerare.crs-transformation:crs-transformation-adapter-impl-geotools:1.0.0" // include the above geotools repository
-    implementation "com.programmerare.crs-transformation:crs-transformation-adapter-impl-goober:1.0.0" // only swedish CRS	
-    
-    implementation "com.programmerare.crs-transformation:crs-transformation-constants:9.5.4" // only one class with constants 
-    ...
-}
-```
-
-# Maven configuration
-The comments at the above section with Gradle configuration applies for Maven too, e.g. the core library is not necessary to include explicitly.  
-
-pom.xml 
 ```xml
-    ...
-    <properties>
-        ...
-        <crsTransformationVersion>1.0.0</crsTransformationVersion>
-    </properties>
-    ...
-    <dependencies>
-        ...    
-        <dependency>
-            <groupId>com.programmerare.crs-transformation</groupId>
-            <artifactId>crs-transformation-adapter-impl-proj4j</artifactId>
-            <version>${crsTransformationVersion}</version>
-        </dependency>
-        
-        <dependency>
-            <groupId>com.programmerare.crs-transformation</groupId>
-            <artifactId>crs-transformation-adapter-impl-orbisgis</artifactId>
-            <version>${crsTransformationVersion}</version>    	
-        </dependency>
-        
-        <dependency>
-            <groupId>com.programmerare.crs-transformation</groupId>
-            <artifactId>crs-transformation-adapter-impl-nga</artifactId>
-            <version>${crsTransformationVersion}</version>
-        </dependency>
-        
-        <dependency>
-            <!--  if using geotools you should also add a repository as shown further down in this example configuration -->
-            <groupId>com.programmerare.crs-transformation</groupId>
-            <artifactId>crs-transformation-adapter-impl-geotools</artifactId>
-            <version>${crsTransformationVersion}</version>
-        </dependency>
-        
-        <dependency>
-            <!-- this is a small library only supporting the global CRS WGS84 and the Swedish coordinate reference systems SWEREF99 and RT90  -->
-            <groupId>com.programmerare.crs-transformation</groupId>
-            <artifactId>crs-transformation-adapter-impl-goober</artifactId>
-            <version>${crsTransformationVersion}</version>      
-        </dependency>
-        
-        <dependency>
-            <!-- optional INDEPENDENT artifact with only one class with lots of Java integer constants -->
-            <groupId>com.programmerare.crs-transformation</groupId>
-            <artifactId>crs-transformation-constants</artifactId>
-            <version>9.5.4</version>
-        </dependency>
-        ...
-    </dependencies>        
-    ...
-    <repositories>
-        <repository>
-            <!-- osgeo repository for geotools  -->	        
-            <id>osgeo.org</id>
-            <url>https://download.osgeo.org/webdav/geotools/</url>
-        </repository>
-    </repositories>
-    ...
-```
+<PackageReference Include="Programmerare.CrsTransformations.Adapter.DotSpatial" Version="1.0.0" />
+<PackageReference Include="Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy" Version="1.0.0" />
+<PackageReference Include="Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI" Version="1.0.0" />
 
-# Kotlin example
+<!-- Optional -->
+<PackageReference Include="Programmerare.CrsTransformations.Constants" Version="9.5.4" />
 
-Below is a small Kotlin example code working with the current version 1.0.0.  
+<!-- Not needed: (implicit through the others) -->
+<PackageReference Include="Programmerare.CrsTransformations.Core" Version="1.0.0" />
+```	
+
+
+# F# example
+
+Below is a small F# example code working with the current version 1.0.0.  
 The example code transforms a coordinate from a global CRS WGS84 (EPSG code 4326) latitude/longitude to
 the Swedish CRS SWEREF99TM (EPSG code 3006).
+
+# TODO
+The rest of the page below will be updated for this .NET project.  
+It has been "ported" from the corresponding JVM project '[crsTransformations](https://github.com/TomasJohansson/crsTransformations)' (Kotlin/Java) and the below text has not yet been updated for this .NET version.  
 
 SmallKotlinExample.kt
 ```kotlin
@@ -321,8 +227,8 @@ fun main(args: Array<String>) {
 }
 ```
 
-# Java examples
-Below is a small Java example code working with the current version 1.0.0.  
+# C# example
+Below is a small C# example code working with the current version 1.0.0.  
 The example code transforms a coordinate from a global CRS WGS84 (EPSG code 4326) latitude/longitude to
 the Swedish CRS SWEREF99TM (EPSG code 3006).  
 ```java
