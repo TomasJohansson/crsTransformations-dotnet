@@ -1,0 +1,3 @@
+*.cs linguist-generated=true
+Programmerare.CrsTransformations.Constants/** linguist-detectable=false
+Programmerare.CrsTransformations.Test/** linguist-detectable=false
