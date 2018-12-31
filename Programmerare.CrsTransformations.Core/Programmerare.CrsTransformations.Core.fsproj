@@ -11,7 +11,7 @@ The core assembly provides an adapter interface which is implemented by other as
     </Description>
     <Authors>TomasJohansson</Authors>
     <PackageProjectUrl>https://github.com/TomasJohansson/crsTransformations-dotnet</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/LICENSE_NOTICE.txt</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/Programmerare.CrsTransformations.Core/LICENSE_NOTICE.txt</PackageLicenseUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

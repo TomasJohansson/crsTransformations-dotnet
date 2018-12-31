@@ -8,7 +8,7 @@
     <Description>Coordinate Reference System Transformations adapter implementation using the adaptee third-part library 'DotSpatial'.</Description>
     <Authors>TomasJohansson</Authors>
     <PackageProjectUrl>https://github.com/TomasJohansson/crsTransformations-dotnet</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/LICENSE_NOTICE.txt</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/Programmerare.CrsTransformations.Adapter.DotSpatial/LICENSE_NOTICE.txt</PackageLicenseUrl>
     <Version>1.0.0</Version>
   </PropertyGroup>
 

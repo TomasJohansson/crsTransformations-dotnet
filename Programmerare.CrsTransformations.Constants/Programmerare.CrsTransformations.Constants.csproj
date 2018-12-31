@@ -14,7 +14,7 @@ Regarding the data itself: Ownership of the EPSG Dataset by IOGP is acknowledged
 Some quotes from the 'Terms of use' URL:
 'The EPSG database is published by IOGP at no charge. Distribution for profit is forbidden.... Ownership of the EPSG Dataset by IOGP must be acknowledged...' See the URL for detailed information</Description>
     <PackageProjectUrl>https://github.com/TomasJohansson/crsTransformations-dotnet</PackageProjectUrl>
-    <PackageLicenseUrl>https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/LICENSE_NOTICE.txt</PackageLicenseUrl>
+    <PackageLicenseUrl>https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/Programmerare.CrsTransformations.Constants/LICENSE_NOTICE.txt</PackageLicenseUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
