@@ -9,7 +9,7 @@
     <Authors>TomasJohansson</Authors>
     <PackageProjectUrl>https://github.com/TomasJohansson/crsTransformations-dotnet</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/Programmerare.CrsTransformations.Adapter.DotSpatial/LICENSE_NOTICE.txt</PackageLicenseUrl>
-    <Version>1.0.0</Version>
+    <PackageTags>gis crs transformations coordinates spatial srs transformation transform convert conversion conversions coordinate projection projections geographic geodetic datum geodesy</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">

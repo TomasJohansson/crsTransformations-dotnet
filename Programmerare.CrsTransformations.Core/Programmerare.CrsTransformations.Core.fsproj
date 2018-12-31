@@ -12,6 +12,7 @@ The core assembly provides an adapter interface which is implemented by other as
     <Authors>TomasJohansson</Authors>
     <PackageProjectUrl>https://github.com/TomasJohansson/crsTransformations-dotnet</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/Programmerare.CrsTransformations.Core/LICENSE_NOTICE.txt</PackageLicenseUrl>
+    <PackageTags>gis crs transformations coordinates spatial srs transformation transform convert conversion conversions coordinate projection projections geographic geodetic datum geodesy</PackageTags>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
