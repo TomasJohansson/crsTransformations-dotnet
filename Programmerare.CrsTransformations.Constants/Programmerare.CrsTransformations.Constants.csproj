@@ -3,6 +3,18 @@
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
     <Version>9.5.4</Version>
+    <Title>.NET constants with EPSG codes for Coordinate Reference Systems</Title>
+    <Authors>TomasJohansson</Authors>
+    <Description>.NET constants with EPSG codes for Coordinate Reference Systems.
+Assembly with only one C# class that defines 6733 integer constants which have been generated from the EPSG database.
+The version number is the same as the used EPSG database at http://www.epsg.org or http://www.epsg-registry.org
+Regarding the license:
+MIT license for this library with C# constants for EPSG codes.
+Regarding the data itself: Ownership of the EPSG Dataset by IOGP is acknowledged. See the URL http://www.epsg.org/TermsOfUse.aspx
+Some quotes from the 'Terms of use' URL:
+'The EPSG database is published by IOGP at no charge. Distribution for profit is forbidden.... Ownership of the EPSG Dataset by IOGP must be acknowledged...' See the URL for detailed information</Description>
+    <PackageProjectUrl>https://github.com/TomasJohansson/crsTransformations-dotnet</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/LICENSE_NOTICE.txt</PackageLicenseUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">

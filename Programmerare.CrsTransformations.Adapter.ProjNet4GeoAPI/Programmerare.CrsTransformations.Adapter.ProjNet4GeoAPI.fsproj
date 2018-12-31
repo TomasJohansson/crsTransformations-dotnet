@@ -2,7 +2,13 @@
 
   <PropertyGroup>
     <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
+    <Version>1.0.0</Version>
     <AssemblyName>Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI</AssemblyName>
+    <Title>Coordinate Reference System Transformations adapter implementation using the adaptee third-part library 'ProjNet4GeoAPI'.</Title>
+    <Description>Coordinate Reference System Transformations adapter implementation using the adaptee third-part library 'ProjNet4GeoAPI'.</Description>
+    <Authors>TomasJohansson</Authors>
+    <PackageProjectUrl>https://github.com/TomasJohansson/crsTransformations-dotnet</PackageProjectUrl>
+    <PackageLicenseUrl>https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/LICENSE_NOTICE.txt</PackageLicenseUrl>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
