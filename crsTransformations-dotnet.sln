@@ -23,6 +23,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Programmerare.CrsTransforma
 EndProject
 Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Programmerare.CrsTransformations.NuGetClientExampleProjectFSharpe", "TestAndExampleProjects\NuGetClientExampleProjectFSharpe\Programmerare.CrsTransformations.NuGetClientExampleProjectFSharpe.fsproj", "{853B49A1-AB89-4695-B698-95C93C8A70E9}"
 EndProject
+Project("{778DAE3C-4631-46EA-AA77-85C1314464D9}") = "Programmerare.CrsTransformations.NuGetClientExampleProjectVBnet", "TestAndExampleProjects\NuGetClientExampleProjectVBnet\Programmerare.CrsTransformations.NuGetClientExampleProjectVBnet.vbproj", "{DFE939AE-6F69-4C93-9A42-1F7CDA4F736E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -69,6 +71,10 @@ Global
 		{853B49A1-AB89-4695-B698-95C93C8A70E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{853B49A1-AB89-4695-B698-95C93C8A70E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{853B49A1-AB89-4695-B698-95C93C8A70E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DFE939AE-6F69-4C93-9A42-1F7CDA4F736E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DFE939AE-6F69-4C93-9A42-1F7CDA4F736E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DFE939AE-6F69-4C93-9A42-1F7CDA4F736E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DFE939AE-6F69-4C93-9A42-1F7CDA4F736E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
