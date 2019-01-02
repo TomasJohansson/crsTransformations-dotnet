@@ -19,6 +19,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Programmerare.CrsTransforma
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Programmerare.CrsTransformations.TestWithoutDependeciesToAllAdapters", "TestAndExampleProjects\Programmerare.CrsTransformations.TestWithoutDependeciesToAllAdapters\Programmerare.CrsTransformations.TestWithoutDependeciesToAllAdapters.csproj", "{108FB9D0-1302-4D83-BC32-43F05431369B}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Programmerare.CrsTransformations.NuGetClientExampleProjectCSharpe", "TestAndExampleProjects\NuGetClientExampleProjectCSharpe\Programmerare.CrsTransformations.NuGetClientExampleProjectCSharpe.csproj", "{E3EDF3EA-01BE-48F7-8F6F-BEE75A995D9D}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{108FB9D0-1302-4D83-BC32-43F05431369B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{108FB9D0-1302-4D83-BC32-43F05431369B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{108FB9D0-1302-4D83-BC32-43F05431369B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E3EDF3EA-01BE-48F7-8F6F-BEE75A995D9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E3EDF3EA-01BE-48F7-8F6F-BEE75A995D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E3EDF3EA-01BE-48F7-8F6F-BEE75A995D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E3EDF3EA-01BE-48F7-8F6F-BEE75A995D9D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
