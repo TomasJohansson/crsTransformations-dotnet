@@ -60,7 +60,17 @@ for the EPSG numbers rather than hardcoding them with integer literals or define
 <PackageReference Include="Programmerare.CrsTransformations.Constants" Version="9.5.4" />
 ```	
 
-# Usage
+# Example projects with code examples for C# , F# and VB.NET
+The code has been implemented with F# but the test code is written with C# in "[Programmerare.CrsTransformations.Test](https://github.com/TomasJohansson/crsTransformations-dotnet/tree/master/TestAndExampleProjects/Programmerare.CrsTransformations.Test/CrsTransformations)".  
+There are also some example code for the three languages C# , F# and VB.NET .  
+These three projects are using the same kind of code (i.e. doing the same thing) but with different syntax for the different languages.  
+* C# [NuGetClientExampleProjectCSharpe](https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/TestAndExampleProjects/NuGetClientExampleProjectCSharpe/CSharpeExampleUsingNuGetDependencies.cs)
+* F# [NuGetClientExampleProjectFSharpe](https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/TestAndExampleProjects/NuGetClientExampleProjectFSharpe/FSharpeExampleUsingNuGetDependencies.fs)
+* VB.NET [NuGetClientExampleProjectVBnet](https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/TestAndExampleProjects/NuGetClientExampleProjectVBnet/VBnetExampleUsingNuGetDependencies.vb)  
+
+In addition to the above mentioned C# code, this github page below are also illustrating how to use the library with C# code.
+
+# Main types of the library
 The methods for transforming coordinates are defined in the interface *ICrsTransformationAdapter*.  
 There are currently seven classes implementing the interface. Three 'leafs' and four 'composites'.  
 Each leaf adapter is using some adaptee library for the implementation.  
@@ -70,7 +80,9 @@ The four 'composites' are using the leafs like this:
 * **Weighted average** (transforms using many leafs and use the *weighted* average latitude/longitude result as the aggregated result)
 * **First success** (iterates a list of leafs and tries to transform until some result seem to have succeeded)  
 
-C# code illustrating the above mentioned interface and seven implementations:
+Two other core types are CrsIdentifier and CrsCoordinate. Both of these are illustrated in the sections below.
+
+# C# code illustrating the above mentioned interface ICrsTransformationAdapter and its seven implementations
 ```C#
 using System.Collections.Generic; // IList
 using Programmerare.CrsTransformations; // ICrsTransformationAdapter
@@ -140,13 +152,14 @@ using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
     // The weight values above illustrates a situation where you (for some reason) want to consider 
     // the transformation results from 'MightyLittleGeodesy' as being 'two times better' than the others.
 ```
+# CrsIdentifier and CrsCoordinate
 All of the transform methods (defined in the above interface *ICrsTransformationAdapter*) need two parameters, one input coordinate and one parameter specifying the target system i.e. to which coordinate reference system the input coordinate will be transformed to.  
 
 The target system can be specified with three data types (i.e. with overloaded methods), either an integer or a string, or a 'CrsIdentifier'.  
 If an integer or string is used, then internally an 'CrsIdentifier' will be created, to send it as parameter to the adapter implementations.  
 Therefore, if you intend to do many transformation from or to a coordinate reference system, then you may choose to create an instace of CrsIdentifier yourself, but for more convenience you may want to use the overloaded methods with integer as parameter (or maybe string if you already have acess to some "EPSG:"-string, see example below).
 
-A coordinate includes information about the coordinate reference system, i.e. a 'CrsIdentifier' but there are also factory methods (creating coordinate instances) which are overloaded with integer or string parameters.  
+A coordinate (type CrsCoordinate) includes information about the coordinate reference system, i.e. a 'CrsIdentifier' but there are also factory methods (creating coordinate instances) which are overloaded with integer or string parameters.  
 
 There are many factory methods with different names and different order for the two (x/y) position values as illustated in the example below.  
 Depending on the desired semantic in your context, you may want to use the different methods (or similarly named accessors in *CrsCoordinate*) like this:  
@@ -155,7 +168,7 @@ Depending on the desired semantic in your context, you may want to use the diffe
 * Easting/Northing for a cartographic or projected system
 * xEastingLongitude/yNorthingLatitude for general code handling different types of system
   
-C# code illustrating how to create coordinate instances with the different factory methods:
+# C# code illustrating how to create CrsCoordinate instances with the different factory methods:
 ```C#
 using Programmerare.CrsTransformations.Identifier; // CrsIdentifier
 using Programmerare.CrsTransformations.Coordinate; // CrsCoordinate
@@ -253,7 +266,7 @@ fun main(args: Array<String>) {
 ```
 ---> 
 
-# C# example
+# Small C# example
 Below is a small C# example code working with the current version 1.0.0.  
 The example code transforms a coordinate from a global CRS WGS84 (EPSG code 4326) latitude/longitude to
 the Swedish CRS SWEREF99TM (EPSG code 3006).  
@@ -287,7 +300,7 @@ class SmallCSharpeExample {
 }
 ```
 
-Another C# example with some more code and comments: 
+# Another C# example with some more code and comments
 ```C#
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
 using Programmerare.CrsTransformations.CompositeTransformations;
