@@ -6,7 +6,10 @@ However, the adapter implementations libraries are licensed in the same way as t
 This F#/C#/.NET project is intended for transforming coordinates between different coordinate reference systems (CRS).  
 The adapters are using third-part .NET libraries as adaptee's.  
 The code has been implemented with F# but the tests (and the generated constants in the subproject "Programmerare.CrsTransformations.Constants") are implemented with C#.  
-The .NET versions supported in the upcoming NuGet release: .NET 4.5 and .NET Standard 2.0  
+
+# Versions of .NET and F# (for the first release 1.0.0)
+The .NET target versions are .NET 4.5 and .NET Standard 2.0  
+The F# version is 4.5.4 (i.e. for the package reference to "FSharp.Core")  
 
 # Usage
 The methods for transforming coordinates are defined in the interface *ICrsTransformationAdapter*.  
@@ -165,7 +168,7 @@ using static Programmerare.CrsTransformations.Coordinate.CrsCoordinateFactory;
     // see more example code further down in this webpage
 ```
 
-# Adaptee libraries used by the three adapter libraries in the first release
+# Adaptee libraries used by the three adapter libraries (in the first release 1.0.0)
 * https://github.com/DotSpatial/DotSpatial
     (version 2.0.0-rc1)
 * https://github.com/NetTopologySuite/ProjNet4GeoAPI
@@ -174,7 +177,7 @@ using static Programmerare.CrsTransformations.Coordinate.CrsCoordinateFactory;
     (version 1.0.1)
 
 # NuGet releases
-The following five libraries from this code project **will** become released/distributed to NuGet:
+The following five libraries from this code project have been released/distributed to NuGet:
 * Programmerare.CrsTransformations.**Core**
     (version 1.0.0)
 * Programmerare.CrsTransformations.*Adapter*.**DotSpatial**
@@ -197,7 +200,7 @@ It is a **C#** library (i.e. not even depending on F# like the others) with only
 (the other four Core/Adapter libraries are implemented with F#)    
 The C# constant class has been generated from the [EPSG database](http://www.epsg-registry.org) version 9.5.4 which is the reason for the version number.
 
-# NuGet configuration (when it has been released, though not quite yet)
+# NuGet configuration
 The "Core" library is not necessary to include since there is an implicit/transitive dependency from all the "Adapter" libraries to the "Core".  
 The "Constants" library is not needed but might be interesting if you want to use constants 
 for the EPSG numbers rather than hardcoding them with integer literals or define your own integer constants.  
@@ -439,19 +442,20 @@ Each constant is used for defining a coordinate reference system (CRS).
 The name of a constant is a concatenation of the following three parts:
 * Name of the area (e.g. country)
 * Name of the CRS
-* EPSG number (also the integer value for the constant)
+* EPSG number (**also the integer value for the constant**)
 
 SQL result example when selecting the above three columns:
 ![EPSG_SQL](images/epsg_db.png)  
-The above three parts are concatenated (in the above order) with two underscores as separator between the parts.  
+The above three parts are concatenated (in the above order i.e. AreaName+CrsName+EpsgNumber) with two underscores as separator between the parts.  
 Spaces and other special characters are replaced with underscores.  
-The names are also uppercased.  
+The constant names are also uppercased as illustrated below.  
 
 Screenshots from Visual Studio 2017 when using intellisense/autocompletion with the class EpsgNumber:
 ![epsg_dropdown_usa](images/epsg_dropdown_usa.png)  
 ![epsg_dropdown_sweden](images/epsg_dropdown_sweden.png)  
 
-Some examples of constant names in the C# class [Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4.EpsgNumber](https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/Programmerare.CrsTransformations.Constants/Programmerare/CrsConstants/ConstantsByAreaNameNumber/v9_5_4/EpsgNumber.cs):
+Some more examples of constant names in the C# class [Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4.EpsgNumber](https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/Programmerare.CrsTransformations.Constants/Programmerare/CrsConstants/ConstantsByAreaNameNumber/v9_5_4/EpsgNumber.cs):  
+(and you can compare these constant names below with the three result columns from the SQL screenshot above)  
 ```C#
 WORLD__WGS_84__4326  
 WORLD__85_S_TO_85_N__WGS_84__PSEUDO_MERCATOR__3857  
@@ -473,7 +477,7 @@ GERMANY__WEST_GERMANY__10_5_E_TO_13_5_E__DHDN__3_DEGREE_GAUSS_KRUGER_ZONE_4__314
 AUSTRIA__ETRS89__AUSTRIA_LAMBERT__3416          
 EUROPE__LIECHTENSTEIN_AND_SWITZERLAND__CH1903__LV03__21781  
 ```
-The above examples with constants are just showing a very few of them.  
+The above examples with constants are showing very few of them.  
 The actual number of constants in the generated class is 6733.  
 This number can easily be retrieved with the C# code 'typeof(EpsgNumber).GetFields().Length'.  
 The same number can also be verified with the value returned by the SQL statement 'SELECT count(DISTINCT coord_ref_sys_code) FROM epsg_coordinatereferencesystem' (or simply 'SELECT count(*) FROM epsg_coordinatereferencesystem' since 'coord_ref_sys_code' is the primary key).
