@@ -5,32 +5,32 @@ However, the adapter implementations libraries are licensed in the same way as t
 # Information about this Coordinate Reference System Transformations library
 This F#/C#/.NET project is intended for transforming coordinates between different coordinate reference systems (CRS).  
 The adapters are using third-part .NET libraries as adaptee's.  
-The code has been implemented with F# but the tests (and the generated constants in the subproject "Programmerare.CrsTransformations.Constants") are implemented with C#.  
+The code has been implemented with F# but the tests (and the generated constants in the subproject "[Programmerare.CrsTransformations.Constants](https://github.com/TomasJohansson/crsTransformations-dotnet/tree/master/Programmerare.CrsTransformations.Constants)") are implemented with C#.  
 
 # Versions of .NET and F#
 The .NET target versions are .NET 4.5 and .NET Standard 2.0  
 The F# version is 4.5.4 (i.e. for the package reference to "FSharp.Core")  
 
-# Adaptee libraries used by the three (in release 1.0.0) adapter libraries
+# Adaptee libraries used by the three adapter libraries
 * https://github.com/DotSpatial/DotSpatial
-    (version 2.0.0-rc1)
+    (version [2.0.0-rc1](https://www.nuget.org/packages/DotSpatial.Projections/2.0.0-rc1) of DotSpatial.Projections)
 * https://github.com/NetTopologySuite/ProjNet4GeoAPI
-    (version 1.4.1)
+    (version [1.4.1](https://www.nuget.org/packages/ProjNET4GeoAPI/1.4.1) of ProjNET4GeoAPI)
 * https://github.com/bjornsallarp/MightyLittleGeodesy
-    (version 1.0.1)
+    (version [1.0.1](https://www.nuget.org/packages/MightyLittleGeodesy/1.0.1) of MightyLittleGeodesy)
 
 # NuGet releases
 The following five libraries from this code project have been released/distributed to NuGet:
 * Programmerare.CrsTransformations.**Core**
-    (version 1.0.0)
+    (version [1.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Core/1.0.0))
 * Programmerare.CrsTransformations.*Adapter*.**DotSpatial**
-    (version 1.0.0)
+    (version [1.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.DotSpatial/1.0.0))
 * Programmerare.CrsTransformations.*Adapter*.**ProjNet4GeoAPI**
-    (version 1.0.0)
+    (version [1.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI/1.0.0))
 * Programmerare.CrsTransformations.*Adapter*.**MightyLittleGeodesy**
-    (version 1.0.0)
+    (version [1.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy/1.0.0))
 * Programmerare.CrsTransformations.*Constants*
-    (version **9.5.4**)  
+    (version [**9.5.4** at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Constants/9.5.4))  
 
 The three above libraries which includes "*Adapter*" in the name are adapter implementations of the above "*Core*" library.  
 Those three adapters are using the three adaptee libraries for the coordinate transformations.  
@@ -58,19 +58,20 @@ for the EPSG numbers rather than hardcoding them with integer literals or define
 
 <!-- Optional (and totally independent) library with only one class with lots of integer constants -->
 <PackageReference Include="Programmerare.CrsTransformations.Constants" Version="9.5.4" />
-```	
+```
+The above libraries can be found at [my NuGet page](https://www.nuget.org/profiles/TomasJohansson).
 
 # Example projects with code examples for C# , F# and VB.NET
-The code has been implemented with F# but the test code is written with C# in "[Programmerare.CrsTransformations.Test](https://github.com/TomasJohansson/crsTransformations-dotnet/tree/master/TestAndExampleProjects/Programmerare.CrsTransformations.Test/CrsTransformations)".  
-There are also some example code for the three languages C# , F# and VB.NET .  
+The code (i.e. Core and Adapter libraries) has been implemented with F# but the test code is written with C# in "[Programmerare.CrsTransformations.Test](https://github.com/TomasJohansson/crsTransformations-dotnet/tree/master/TestAndExampleProjects/Programmerare.CrsTransformations.Test/CrsTransformations)".  
+There are also some example code projects for the three .NET languages C# , F# and VB.NET .  
 These three projects are using the same kind of code (i.e. doing the same thing) but with different syntax for the different languages.  
 * C# [NuGetClientExampleProjectCSharpe](https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/TestAndExampleProjects/NuGetClientExampleProjectCSharpe/CSharpeExampleUsingNuGetDependencies.cs)
 * F# [NuGetClientExampleProjectFSharpe](https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/TestAndExampleProjects/NuGetClientExampleProjectFSharpe/FSharpeExampleUsingNuGetDependencies.fs)
 * VB.NET [NuGetClientExampleProjectVBnet](https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/TestAndExampleProjects/NuGetClientExampleProjectVBnet/VBnetExampleUsingNuGetDependencies.vb)  
 
-In addition to the above mentioned C# code, this github page below are also illustrating how to use the library with C# code.
+In addition to the above mentioned C# code (i.e. the C# test project and the C# NuGet example project), this github page below are also illustrating how to use the library with C# code.
 
-# Main types of the library
+# Main types (classes/interfaces) of the library
 The methods for transforming coordinates are defined in the interface *ICrsTransformationAdapter*.  
 There are currently seven classes implementing the interface. Three 'leafs' and four 'composites'.  
 Each leaf adapter is using some adaptee library for the implementation.  
@@ -82,14 +83,14 @@ The four 'composites' are using the leafs like this:
 
 Two other core types are CrsIdentifier and CrsCoordinate. Both of these are illustrated in the sections below.
 
-# C# code illustrating the above mentioned interface ICrsTransformationAdapter and its seven implementations
+# C# code illustrating the interface ICrsTransformationAdapter and its seven implementations
 ```C#
 using System.Collections.Generic; // IList
 using Programmerare.CrsTransformations; // ICrsTransformationAdapter
 using Programmerare.CrsTransformations.CompositeTransformations; // CrsTransformationAdapterCompositeFactory
-using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 
 	// ...
 
