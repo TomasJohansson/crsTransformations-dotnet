@@ -1,5 +1,7 @@
 namespace Programmerare.CrsTransformations
 
+open System
+
 ///<summary>
 ///<para>
 ///Enumeration type returned from a method in the adapter interface.
@@ -58,6 +60,10 @@ type CrsTransformationAdapteeType =  // F# enum
     ///</summary>
     | LEAF_DOT_SPATIAL_2_0_0_RC1 = 1200
 
+    | 
+        [<Obsolete("Do not use. Use 'LEAF_MIGHTY_LITTLE_GEODESY_1_0_2' instead")>]
+        LEAF_MIGHTY_LITTLE_GEODESY_1_0_1 = 1900
+
     ///<summary>
     ///<para>
     ///NuGet version for the adaptee library "MightyLittleGeodesy":
@@ -76,7 +82,7 @@ type CrsTransformationAdapteeType =  // F# enum
     ///and 6 supported versions of RT90 (with EPSG numbers 3019-3024).
     ///</para>
     ///</summary>
-    | LEAF_MIGHTY_LITTLE_GEODESY_1_0_1 = 1900
+    | LEAF_MIGHTY_LITTLE_GEODESY_1_0_2 = 1902
 
     (*
      The above "leafs" are the real "adaptees" and 

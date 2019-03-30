@@ -10,7 +10,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
         public void SetUp() {
             base.SetUpbase(
                 new CrsTransformationAdapterMightyLittleGeodesy(),
-                CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_1,
+                CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_2,
                 0.5, // maxMeterDifferenceForSuccessfulTest
                 0.00001 // maxLatLongDifferenceForSuccessfulTest
             );

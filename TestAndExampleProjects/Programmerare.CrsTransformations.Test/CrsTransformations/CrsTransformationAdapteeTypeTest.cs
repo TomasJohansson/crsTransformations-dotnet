@@ -51,13 +51,13 @@ class CrsTransformationAdapteeTypeTest {
     public void MightyLittleGeodesyAdapter_ShouldMatchExpectedEnumAndAssemblyNameWithVersion() {
         FileInfoVersion expectedFileInfoVersion = new FileInfoVersion(
             fileName: "mightylittlegeodesy.dll", // .nuget\packages\mightylittlegeodesy\1.0.1\lib\net45
-            fileSize: 15872L, // net45 version
-            version: "1.0.1"
+            fileSize: 16896L, // net45 version
+            version: "1.0.2"
         );
         VerifyExpectedEnumAndAssemblyVersion(
             new CrsTransformationAdapterMightyLittleGeodesy(),
             expectedFileInfoVersion,
-            CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_1
+            CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_2
         );
     }
 

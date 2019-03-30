@@ -21,7 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="MightyLittleGeodesy" Version="1.0.1" />
+    <PackageReference Include="MightyLittleGeodesy" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>

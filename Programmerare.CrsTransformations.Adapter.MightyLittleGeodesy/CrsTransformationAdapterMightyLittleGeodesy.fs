@@ -138,7 +138,7 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
                 invalidOp "Unsupported transformation"
 
         override this.AdapteeType =
-            CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_1
+            CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_2
 
         // it is not a problem to hardcode the name below 
         // if the type name would become renamed since a 
