@@ -1,5 +1,5 @@
-﻿using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
-using static Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4.EpsgNumber;
+﻿using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
+using static Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7.EpsgNumber;
 using System.Collections.Generic;
 using System;
 

@@ -31,7 +31,7 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
             // then constants would definitely have been preferred,
             // but adding 20 constants for only one usage is not very motivated.
             // Another option would have been to reuse the already existing constants in the module "crs-transformation-constants" i.e. constants like this:
-            // Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4.EpsgNumber.SWEDEN__SWEREF99_TM__3006
+            // Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7.EpsgNumber.SWEDEN__SWEREF99_TM__3006
             // However, that would introduce a dependency to a module with LOTS OF constants just to use this few values below.
 
             // http://spatialreference.org/ref/?search=rt90

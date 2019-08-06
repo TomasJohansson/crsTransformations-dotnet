@@ -12,6 +12,7 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_6 {
 *   Ownership of the EPSG Dataset by IOGP must be acknowledged... "
 */
 
+    [System.Obsolete("use a later version instead (with a higher version number in the namespace)")]
     /// <summary>
     /// The constants in this file was generated based on data from EPSG v9.6
     /// http://www.epsg-registry.org

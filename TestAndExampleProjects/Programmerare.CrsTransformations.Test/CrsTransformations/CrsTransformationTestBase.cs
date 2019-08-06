@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 using NUnit.Framework;
-using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
