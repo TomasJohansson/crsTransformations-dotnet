@@ -1,4 +1,4 @@
-﻿namespace Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI
+﻿namespace Programmerare.CrsTransformations.Adapter.ProjNet
 
 // "enum":
 type CrsCachingStrategy = 

@@ -1,4 +1,4 @@
-namespace Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI
+namespace Programmerare.CrsTransformations.Adapter.ProjNet
 
 open System.Collections.Generic
 open ProjNet // CoordinateSystemServices
