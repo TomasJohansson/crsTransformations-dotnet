@@ -10,7 +10,7 @@
     <Compile Include="CrsCachingStrategy.fs" />
     <Compile Include="EmbeddedResourceFileWithCRSdefinitions.fs" />
     <Compile Include="SridReader.fs" />
-    <Compile Include="CrsTransformationAdapterProjNet4GeoAPI.fs" />
+    <Compile Include="CrsTransformationAdapterProjNet.fs" />
   </ItemGroup>
 
   <ItemGroup>

@@ -13,7 +13,7 @@ Other subprojects may be released with other licenses e.g. LGPL or Apache Licens
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 *)
-type CrsTransformationAdapterProjNet4GeoAPI
+type CrsTransformationAdapterProjNet
     (
         crsCachingStrategy: CrsCachingStrategy,
         sridReader: SridReader
@@ -76,8 +76,8 @@ type CrsTransformationAdapterProjNet4GeoAPI
 
         override this.Equals(o) =
             let areTheSameType = base.Equals(o)
-            if(areTheSameType && o :? CrsTransformationAdapterProjNet4GeoAPI) then
-                let c = o :?> CrsTransformationAdapterProjNet4GeoAPI
+            if(areTheSameType && o :? CrsTransformationAdapterProjNet) then
+                let c = o :?> CrsTransformationAdapterProjNet
                 this.GetSridReader().Equals(c.GetSridReader())
             else
                 false
@@ -135,17 +135,17 @@ type CrsTransformationAdapterProjNet4GeoAPI
 
         new () = // as this = 
             (
-                CrsTransformationAdapterProjNet4GeoAPI(_defaultCrsCachingStrategy, _defaultSridReader)
+                CrsTransformationAdapterProjNet(_defaultCrsCachingStrategy, _defaultSridReader)
             )
 
         new (sridReader) =
             (
-                CrsTransformationAdapterProjNet4GeoAPI(_defaultCrsCachingStrategy, sridReader)
+                CrsTransformationAdapterProjNet(_defaultCrsCachingStrategy, sridReader)
             )
 
         new (crsCachingStrategy) =
             (
-                CrsTransformationAdapterProjNet4GeoAPI(crsCachingStrategy, _defaultSridReader)
+                CrsTransformationAdapterProjNet(crsCachingStrategy, _defaultSridReader)
             )
     end
 (*
