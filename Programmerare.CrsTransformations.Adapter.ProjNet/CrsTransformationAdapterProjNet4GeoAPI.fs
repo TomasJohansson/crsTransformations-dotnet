@@ -4,8 +4,6 @@ open System.Collections.Generic
 open ProjNet // CoordinateSystemServices
 open ProjNet.CoordinateSystems // CoordinateSystemFactory
 open ProjNet.CoordinateSystems.Transformations // CoordinateTransformationFactory
-open GeoAPI.CoordinateSystems // ICoordinateSystem
-open GeoAPI.CoordinateSystems.Transformations // ICoordinateTransformation
 open Programmerare.CrsTransformations
 open Programmerare.CrsTransformations.Coordinate
 (*
@@ -42,10 +40,10 @@ type CrsTransformationAdapterProjNet4GeoAPI
         let _sridReader = sridReader
 
         // this private field is only internally mutable i.e. can not be changed through some public setter
-        let mutable _cachedCoordinateSystem = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
+        let mutable _cachedCoordinateSystem = Dictionary<int, CoordinateSystem>() :> IDictionary<int, CoordinateSystem>
 
         let GetCSbyID(epsgNumber) = 
-            let mutable crs: ICoordinateSystem = null
+            let mutable crs: CoordinateSystem = null
             if _cachedCoordinateSystem.ContainsKey(epsgNumber) then
                 crs <- _cachedCoordinateSystem.[epsgNumber]
                 // note that the above might return null since null 
@@ -102,8 +100,8 @@ type CrsTransformationAdapterProjNet4GeoAPI
             // would otherwise read the resource file twice, which it would do 
             // for every usage of the method even if doing multiple 
             // transformations between the same coordinate systems
-            let sourceCrs: ICoordinateSystem = GetCSbyID(inputCoordinate.CrsIdentifier.EpsgNumber)
-            let targetCrs: ICoordinateSystem = GetCSbyID(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
+            let sourceCrs: CoordinateSystem = GetCSbyID(inputCoordinate.CrsIdentifier.EpsgNumber)
+            let targetCrs: CoordinateSystem = GetCSbyID(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
             let ctFact: CoordinateTransformationFactory = new CoordinateTransformationFactory()
             let xy: double[] = [| inputCoordinate.X; inputCoordinate.Y |]
             let trans: ICoordinateTransformation  = ctFact.CreateFromCoordinateSystems(sourceCrs, targetCrs)

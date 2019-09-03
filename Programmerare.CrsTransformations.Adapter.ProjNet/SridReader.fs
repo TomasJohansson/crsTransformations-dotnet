@@ -1,17 +1,17 @@
 ﻿namespace Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI
 
 open System.IO
-open System.Text
 open System.Linq
 open System.Collections.Generic
-open ProjNet.Converters.WellKnownText
-open GeoAPI.CoordinateSystems
+open ProjNet.CoordinateSystems  // CoordinateSystemFactory
 
 type SridReader private
     (
-        functionReadingFromResourceFileOrExternalFilePath: int -> IDictionary<int, ICoordinateSystem>,
+        functionReadingFromResourceFileOrExternalFilePath: int -> IDictionary<int, CoordinateSystem>,
         stringForEqualityComparison: string
     ) =
+
+    let _coordinateSystemFactory = new CoordinateSystemFactory()
 
     let GetSomeTypeInTheAssembly() = 
         typeof<CrsCachingStrategy>
@@ -20,9 +20,9 @@ type SridReader private
         (
             epsgNumberToLookFor: int,
             reader: StreamReader
-        ) : IDictionary<int, ICoordinateSystem> = 
+        ) : IDictionary<int, CoordinateSystem> = 
 
-        let coordinateSystemsWithKeyEpsgNumber = new Dictionary<int, ICoordinateSystem>()
+        let coordinateSystemsWithKeyEpsgNumber = new Dictionary<int, CoordinateSystem>()
         let mutable valid = true
         while valid do 
             let line = reader.ReadLine()
@@ -50,12 +50,12 @@ type SridReader private
                 if (split > -1) then
                     let epsgNumber = System.Int32.Parse(line.Substring(0, split))
                     let wellKnownText = line.Substring(split + 1)
-                    let crs = CoordinateSystemWktReader.Parse(wellKnownText, Encoding.UTF8) :?> ICoordinateSystem
+                    let crs = _coordinateSystemFactory.CreateFromWkt(wellKnownText)
                     coordinateSystemsWithKeyEpsgNumber.Add(epsgNumber, crs)
                     if epsgNumber = epsgNumberToLookFor then
                         // we were only looking for a specific number so no need to keep iterating
                         valid <- false
-        coordinateSystemsWithKeyEpsgNumber :> IDictionary<int, ICoordinateSystem>        
+        coordinateSystemsWithKeyEpsgNumber :> IDictionary<int, CoordinateSystem>        
 
     // This is an "internal" method (for testing purposes).
     // The method may return for example a string like this:
@@ -98,7 +98,7 @@ type SridReader private
         (
             epsgNumberToLookFor: int,
             filePathForCsvFile: string
-        ) : IDictionary<int, ICoordinateSystem> =     
+        ) : IDictionary<int, CoordinateSystem> =     
         use reader = File.OpenText(filePathForCsvFile)
         GetSRIDsFromStreamReader(epsgNumberToLookFor, reader)
 
@@ -107,7 +107,7 @@ type SridReader private
         (
             epsgNumberToLookFor: int,
             nameOfEmbeddedResourceFile: string
-        ) : IDictionary<int, ICoordinateSystem> = 
+        ) : IDictionary<int, CoordinateSystem> = 
         let someTypeInTheNameAssembly = GetSomeTypeInTheAssembly()
         let assembly = someTypeInTheNameAssembly.Assembly
 
@@ -128,8 +128,8 @@ type SridReader private
         (
             epsgNumberToLookFor: int,
             orderedEmbeddedResourceFileWithCRSdefinitions: ICollection<EmbeddedResourceFileWithCRSdefinitions>
-        ) : IDictionary<int, ICoordinateSystem> =
-            let mutable dict = Dictionary<int, ICoordinateSystem>() :> IDictionary<int, ICoordinateSystem>
+        ) : IDictionary<int, CoordinateSystem> =
+            let mutable dict = Dictionary<int, CoordinateSystem>() :> IDictionary<int, CoordinateSystem>
             for embeddedResourceFileWithCRSdefinitions in orderedEmbeddedResourceFileWithCRSdefinitions do
                 let nameOfEmbeddedResourceFile: string = SridReader.GetNameOfEmbeddedResourceFile(embeddedResourceFileWithCRSdefinitions)
                 let srids = this.GetSRIDsFromEmbeddedResourceFile(epsgNumberToLookFor,nameOfEmbeddedResourceFile)
@@ -151,14 +151,14 @@ type SridReader private
     /// <summary>Gets a coordinate system from the SRID.csv file</summary>
     /// <param name="id">EPSG ID</param>
     /// <returns>Coordinate system, or null if SRID was not found.</returns>
-    member this.GetCSbyID(epsgId): ICoordinateSystem =
+    member this.GetCSbyID(epsgId): CoordinateSystem =
         //use stream = GetStreamReaderForTheCsvFile()
         //use reader = new StreamReader(stream)
         // let srids = GetSRIDs(reader, epsgId)
         // NOTE that the above kind of code causes problems
         // (see further comment in the below used function)
         let srids = this.GetSRIDs(epsgId)
-        let mutable crs: ICoordinateSystem = null
+        let mutable crs: CoordinateSystem = null
         if srids.ContainsKey(epsgId) then
             crs <- srids.[epsgId]
         crs
@@ -173,7 +173,7 @@ type SridReader private
 
     new (pathToCsvFile: string) as this = 
         (
-            let fkn: int -> IDictionary<int, ICoordinateSystem> = fun (id) -> this.GetSRIDsFromCsvFile(id, pathToCsvFile)
+            let fkn: int -> IDictionary<int, CoordinateSystem> = fun (id) -> this.GetSRIDsFromCsvFile(id, pathToCsvFile)
             let stringForEqualityComparison = "file:" + pathToCsvFile
             SridReader(fkn, stringForEqualityComparison)
         )
@@ -192,7 +192,7 @@ type SridReader private
             orderedEmbeddedResourceFileWithCRSdefinitions: ICollection<EmbeddedResourceFileWithCRSdefinitions>
         ) as this = 
         (
-            let fkn: int -> IDictionary<int, ICoordinateSystem> = fun (id) -> this.GetSRIDsFromEmbeddedResourceFiles(id, orderedEmbeddedResourceFileWithCRSdefinitions)
+            let fkn: int -> IDictionary<int, CoordinateSystem> = fun (id) -> this.GetSRIDsFromEmbeddedResourceFiles(id, orderedEmbeddedResourceFileWithCRSdefinitions)
             let stringForEqualityComparison = "embedded:" + orderedEmbeddedResourceFileWithCRSdefinitions.Select(fun e -> e.ToString()).Aggregate(fun i j -> i + "," + j)
             SridReader(fkn, stringForEqualityComparison)
         )
