@@ -77,7 +77,7 @@ type SridReader private
         | :? SridReader as s -> s._GetStringForEqualityComparison() = stringForEqualityComparison
         | _ -> false
 
-    static member private nameOfEmbeddedResourceFileDefaultShippedWithProjNet4GeoAPI_1_4_1 = "SRID_ShippedWithProjNet4GeoAPI_1_4_1.csv"
+    static member private nameOfEmbeddedResourceFileDefaultShippedWithProjNet_2_0_0 = "SRID_ShippedWithProjNet_2_0_0.csv"
     // the above file was downloaded from here:
     // https://github.com/NetTopologySuite/ProjNet4GeoAPI/blob/develop/ProjNet.Tests/SRID.csv
     // (the file version dated "Jul 5, 2013" i.e. git commit c7a8b0c72d55ab64e26d40632abe2c85c2ff92df )
@@ -90,7 +90,7 @@ type SridReader private
         if embeddedResourceFileWithCRSdefinition = EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml then
             SridReader.nameOfEmbeddedResourceFileWithSixSwedishRT90crsDefinitionsCopiedFromSharpMapSpatialRefSysXml
         else
-            SridReader.nameOfEmbeddedResourceFileDefaultShippedWithProjNet4GeoAPI_1_4_1
+            SridReader.nameOfEmbeddedResourceFileDefaultShippedWithProjNet_2_0_0
 
     member this.GetSRIDs = functionReadingFromResourceFileOrExternalFilePath
         
