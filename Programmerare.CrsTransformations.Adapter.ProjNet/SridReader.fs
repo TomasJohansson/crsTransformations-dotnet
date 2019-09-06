@@ -78,10 +78,12 @@ type SridReader private
         | :? SridReader as s -> s._GetStringForEqualityComparison() = stringForEqualityComparison
         | _ -> false
 
-    static member private nameOfEmbeddedResourceFileDefaultShippedWithProjNet_2_0_0 = "SRID_ShippedWithProjNet_2_0_0.csv"
+    static member private nameOfEmbeddedResourceFileDefaultShippedWithProjNet4GeoAPI_1_4_1 = "SRID_ShippedWithProjNet4GeoAPI_1_4_1.csv"
     // the above file was downloaded from here:
     // https://github.com/NetTopologySuite/ProjNet4GeoAPI/blob/develop/ProjNet.Tests/SRID.csv
     // (the file version dated "Jul 5, 2013" i.e. git commit c7a8b0c72d55ab64e26d40632abe2c85c2ff92df )
+
+    static member private nameOfEmbeddedResourceFileDefaultShippedWithProjNet_2_0_0 = "SRID_ShippedWithProjNet_2_0_0.csv"
 
     static member private nameOfEmbeddedResourceFileWithSixSwedishRT90crsDefinitionsCopiedFromSharpMapSpatialRefSysXml = "SRID_SixSwedishCrsRT90_copiedFrom_SharpMapSpatialRefSysXml.csv"
 
@@ -90,8 +92,10 @@ type SridReader private
         // then create a hashtable lookup instead of adding more if statements
         if embeddedResourceFileWithCRSdefinition = EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml then
             SridReader.nameOfEmbeddedResourceFileWithSixSwedishRT90crsDefinitionsCopiedFromSharpMapSpatialRefSysXml
-        else
+        else if embeddedResourceFileWithCRSdefinition = EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet_2_0_0 then
             SridReader.nameOfEmbeddedResourceFileDefaultShippedWithProjNet_2_0_0
+        else
+            SridReader.nameOfEmbeddedResourceFileDefaultShippedWithProjNet4GeoAPI_1_4_1
 
     member this.GetSRIDs = functionReadingFromResourceFileOrExternalFilePath
         

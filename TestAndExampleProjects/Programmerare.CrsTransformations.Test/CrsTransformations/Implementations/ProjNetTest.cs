@@ -177,7 +177,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
         }
 
         [Test]
-        public void AdapterInstance_ShouldBeConstructedUsingCachingAndSwedishRT90systems_WhenUsingConstructorWithoutParameters() {
+        public void AdapterInstance_ShouldBeConstructedUsingCachingAndStandardFileShippedWithProjnet_2_0_0_WhenUsingConstructorWithoutParameters() {
             // The first adapter below (i.e. the "expected") is 
             // used in the SetUp method, and is constructed without any parameters.
             // The purpose of this test is to illustrate which default values are being used by that constructor
@@ -190,8 +190,10 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
                     CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
                     ,
                     new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{
-                        EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet,
-                        EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml
+                        //EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet,
+                        //EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml,
+                        // The above had to be used before (with version 1.4) since RT90 were not correctly defined , https://github.com/NetTopologySuite/ProjNet4GeoAPI/issues/38
+                        EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet_2_0_0
                     })
                 )
             );

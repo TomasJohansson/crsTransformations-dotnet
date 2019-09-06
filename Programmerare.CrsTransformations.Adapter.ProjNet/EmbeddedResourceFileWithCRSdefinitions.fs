@@ -1,9 +1,16 @@
 ﻿namespace Programmerare.CrsTransformations.Adapter.ProjNet
 
+open System
+
 // "enum":
 type EmbeddedResourceFileWithCRSdefinitions = 
     
-    | STANDARD_FILE_SHIPPED_WITH_ProjNet = 10
+    |
+        [<Obsolete("Do not use. Instead use a value including the version e.g. 'STANDARD_FILE_SHIPPED_WITH_ProjNet_2_0_0'")>]
+        STANDARD_FILE_SHIPPED_WITH_ProjNet = 10
+
+    | STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI_1_4_1 = 11
+    | STANDARD_FILE_SHIPPED_WITH_ProjNet_2_0_0 = 12
 
     // The only differences compared with the standard "SRID.csv" 
     // shipped with ProjNet4GeoAPI are the following five rows:

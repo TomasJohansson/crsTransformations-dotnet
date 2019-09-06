@@ -1,4 +1,4 @@
-﻿using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+﻿using Programmerare.CrsTransformations.Adapter.ProjNet;
 using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
@@ -40,15 +40,19 @@ namespace Programmerare.CrsTransformations.Test.Implementations.Issues
                 epsg_3021_RT9025gonv
             );
 
-            ICrsTransformationAdapter crsTransformationAdapter = new CrsTransformationAdapterProjNet4GeoAPI(
+            ICrsTransformationAdapter crsTransformationAdapter = new CrsTransformationAdapterProjNet(
                 CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
                 ,
                 new SridReader(
                     new List<EmbeddedResourceFileWithCRSdefinitions>{
-                        EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI,
-                        // When using ProjNet4GeoAPI version 1.4 it is necessary with the below "patch" file 
-                        // for RT90 but hopefully will not be needed in the next version
-                        EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml
+                        //EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI_1_4_1,
+                        //// When using ProjNet4GeoAPI version 1.4 it is necessary with the below "patch" file 
+                        //// for RT90 but hopefully will not be needed in the next version
+                        //EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml,
+                        
+                        // Previously (with version 1.4) the above two files were needed but 
+                        // with version 2 the test succeeds with the CRS/SRID file whipped with that version
+                        EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet_2_0_0
                     }
                 )
             );

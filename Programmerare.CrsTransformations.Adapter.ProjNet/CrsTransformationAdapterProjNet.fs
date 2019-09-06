@@ -29,8 +29,10 @@ type CrsTransformationAdapterProjNet
 
         static let _defaultSridReader =
             let list = new ResizeArray<EmbeddedResourceFileWithCRSdefinitions>([
-                    EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet
-                    EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml
+                    //EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI_1_4_1
+                    //EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml
+                    // Previously (with version 1.4) the above "patch" file was needed because of incorrect RT90 definitions , https://github.com/NetTopologySuite/ProjNet4GeoAPI/issues/38
+                    EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet_2_0_0
                 ]
             )
             SridReader(list)
