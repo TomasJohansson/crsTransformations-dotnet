@@ -40,6 +40,7 @@
     <Compile Include="CrsTransformations\CrsTransformationAdapterLeafFactoryTest.cs" />
     <Compile Include="CrsTransformations\Implementations\DotSpatialTest.cs" />
     <Compile Include="CrsTransformations\Implementations\AdaptersTestBase.cs" />
+    <Compile Include="CrsTransformations\Implementations\Issues\ProjNet4GeoAPI_issue_38_Test.cs" />
     <Compile Include="CrsTransformations\Implementations\MightyLittleGeodesyTest.cs" />
     <Compile Include="CrsTransformations\Implementations\ProjNetTest.cs" />
     <Compile Include="CrsTransformations\Implementations\SridReaderTest.cs" />
