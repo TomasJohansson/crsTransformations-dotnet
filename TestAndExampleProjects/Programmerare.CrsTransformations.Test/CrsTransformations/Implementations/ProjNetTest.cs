@@ -8,7 +8,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
 
     
     [TestFixture]
-    class ProjNetTest : AdaptersTestBase { // TODO rename the file also (i.e. the current file name is ProjNet4GeoAPITest.cs)
+    class ProjNetTest : AdaptersTestBase {
 
         private CrsTransformationAdapterProjNet crsTransformationAdapterProjNetwithNoConstructorParameters;
         

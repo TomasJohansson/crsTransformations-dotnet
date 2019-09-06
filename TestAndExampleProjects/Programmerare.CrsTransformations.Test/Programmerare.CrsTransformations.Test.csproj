@@ -41,7 +41,7 @@
     <Compile Include="CrsTransformations\Implementations\DotSpatialTest.cs" />
     <Compile Include="CrsTransformations\Implementations\AdaptersTestBase.cs" />
     <Compile Include="CrsTransformations\Implementations\MightyLittleGeodesyTest.cs" />
-    <Compile Include="CrsTransformations\Implementations\ProjNet4GeoAPITest.cs" />
+    <Compile Include="CrsTransformations\Implementations\ProjNetTest.cs" />
     <Compile Include="CrsTransformations\Implementations\SridReaderTest.cs" />
     <Compile Include="CrsTransformations\Utils\MedianValueUtilityTest.cs" />
     <Compile Include="TestData\CoordinateTestDataGeneratedFromEpsgDatabaseTest.cs" />
