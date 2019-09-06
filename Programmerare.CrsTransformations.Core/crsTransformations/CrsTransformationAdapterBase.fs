@@ -42,7 +42,7 @@ type CrsTransformationAdapterBase
         // this method should be overridden in subclasses 
         // where different instances of the same subclass 
         // should be considered as different, for example 
-        // the subclass 'CrsTransformationAdapterProjNet4GeoAPI'
+        // the subclass 'CrsTransformationAdapterProjNet'
         override this.Equals(o) =
             if(isNull o) then
                 false

@@ -1,4 +1,4 @@
-﻿using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+﻿using Programmerare.CrsTransformations.Adapter.ProjNet;
 using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
@@ -6,35 +6,37 @@ using System.Collections.Generic;
 
 namespace Programmerare.CrsTransformations.Test.Implementations {
 
+    
     [TestFixture]
-    class ProjNet4GeoAPITest : AdaptersTestBase {
+    class ProjNetTest : AdaptersTestBase { // TODO rename the file also (i.e. the current file name is ProjNet4GeoAPITest.cs)
 
-        private CrsTransformationAdapterProjNet4GeoAPI crsTransformationAdapterProjNet4GeoAPIwithNoConstructorParameters;
+        private CrsTransformationAdapterProjNet crsTransformationAdapterProjNetwithNoConstructorParameters;
         
         [SetUp]
         public void SetUp() {
-            crsTransformationAdapterProjNet4GeoAPIwithNoConstructorParameters = new CrsTransformationAdapterProjNet4GeoAPI();
+            crsTransformationAdapterProjNetwithNoConstructorParameters = new CrsTransformationAdapterProjNet();
 
             base.SetUpbase(
-                crsTransformationAdapterProjNet4GeoAPIwithNoConstructorParameters,
+                crsTransformationAdapterProjNetwithNoConstructorParameters,
 
-                CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1,
+                CrsTransformationAdapteeType.LEAF_PROJ_NET_2_0_0,
 
-                // The implementation ProjNet4GeoAPI
+                // TODO: Obsolete comment maybe after upgrade to 2.0.0:
+                // The implementation ProjNet
                 // is currently (version 1.4.1) 
                 // producing bad results when transforming 
                 // to the Swedish CRS "RT90 2.5 gon V"
-                // https://github.com/NetTopologySuite/ProjNet4GeoAPI/issues/38
+                // https://github.com/NetTopologySuite/ProjNet/issues/38
                 // However, the results for those CRS have been improved by 
                 // using other CRS definitions for those CRS.
                 // See further comments in the file/type EmbeddedResourceFileWithCRSdefinitions 
-                // in the project Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI
+                // in the project Programmerare.CrsTransformations.Adapter.ProjNet
 
                 0.5, // maxMeterDifferenceForSuccessfulTest
                 0.00001 // maxLatLongDifferenceForSuccessfulTest
             );
 
-            // The implementation ProjNet4GeoAPI
+            // The implementation ProjNet
             // does not contain a lot of hardcoded definitions 
             // of coordinate systems but instead it is shipped with a CSV file 
             // with such definitions, and their website shows 
@@ -48,12 +50,12 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
             cacheTestForOutputEpsgNumberNotExisting = 123; // EPSG code 123 does NOT exist
             cacheTestInputCoordinateWgs84 = CrsCoordinateFactory.LatLon(60, 18);
             
-            cacheTestTransformationAdapterProjNet4GeoAPI = new CrsTransformationAdapterProjNet4GeoAPI();
+            cacheTestTransformationAdapterProjNet = new CrsTransformationAdapterProjNet();
         }
 
         private CrsCoordinate cacheTestInputCoordinateWgs84;
         private int cacheTestForOutputEpsgNumberNotExisting;
-        private CrsTransformationAdapterProjNet4GeoAPI cacheTestTransformationAdapterProjNet4GeoAPI;
+        private CrsTransformationAdapterProjNet cacheTestTransformationAdapterProjNet;
 
         [Test]
         public void TestCachingWhenAllEpsgCodesAreCachedInOneReadOfTheCsvFile() {
@@ -71,14 +73,14 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
         
         [Test]
         public void TestBehaviourWhenNoCachingIsChosen() {
-            cacheTestTransformationAdapterProjNet4GeoAPI  = new CrsTransformationAdapterProjNet4GeoAPI(CrsCachingStrategy.NO_CACHING);
+            cacheTestTransformationAdapterProjNet  = new CrsTransformationAdapterProjNet(CrsCachingStrategy.NO_CACHING);
             Assert.IsFalse(
-                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
+                cacheTestTransformationAdapterProjNet.IsEpsgCached(
                     cacheTestForOutputEpsgNumberNotExisting
                 )
             );
             Assert.IsFalse(
-                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
+                cacheTestTransformationAdapterProjNet.IsEpsgCached(
                     EpsgNumber.SWEDEN__SWEREF99_TM__3006
                 )
             );
@@ -86,25 +88,25 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
             // The transform method below may potentially trigger 
             // the used epsg code (the second parameter) to become cached
             // (but that behaviour depends on the caching strategy)
-            cacheTestTransformationAdapterProjNet4GeoAPI.Transform(
+            cacheTestTransformationAdapterProjNet.Transform(
                 cacheTestInputCoordinateWgs84, 
                 cacheTestForOutputEpsgNumberNotExisting
             );
             // The above output CRS was a non-existing EPSG number
             // but below is an existing EPSG number used.
-            cacheTestTransformationAdapterProjNet4GeoAPI.Transform(
+            cacheTestTransformationAdapterProjNet.Transform(
                 cacheTestInputCoordinateWgs84, 
                 EpsgNumber.SWEDEN__SWEREF99_TM__3006
             );
 
             // Neither of the above are still not cached since caching is disabled
             Assert.IsFalse(
-                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
+                cacheTestTransformationAdapterProjNet.IsEpsgCached(
                     cacheTestForOutputEpsgNumberNotExisting
                 )
             );
             Assert.IsFalse(
-                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
+                cacheTestTransformationAdapterProjNet.IsEpsgCached(
                     EpsgNumber.SWEDEN__SWEREF99_TM__3006
                 )
             );
@@ -113,9 +115,9 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
         private void VerifyExpectedCachingBehaviour(
             CrsCachingStrategy crsCachingStrategy
         ) {
-            cacheTestTransformationAdapterProjNet4GeoAPI  = new CrsTransformationAdapterProjNet4GeoAPI(crsCachingStrategy);
+            cacheTestTransformationAdapterProjNet  = new CrsTransformationAdapterProjNet(crsCachingStrategy);
             Assert.IsFalse(
-                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
+                cacheTestTransformationAdapterProjNet.IsEpsgCached(
                     cacheTestForOutputEpsgNumberNotExisting
                 )
             );
@@ -124,7 +126,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
             // the used epsg code (the second parameter) to become cached
             // (but that behaviour depends on the caching strategy 
             //  i.e. it must not be NO_CACHING)
-            cacheTestTransformationAdapterProjNet4GeoAPI.Transform(
+            cacheTestTransformationAdapterProjNet.Transform(
                 cacheTestInputCoordinateWgs84, 
                 cacheTestForOutputEpsgNumberNotExisting
             );
@@ -137,7 +139,7 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
             // just to get null again, so therefore the null value 
             // is also cached as a kind of value in the semantic of the below method
             Assert.IsTrue(
-                cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
+                cacheTestTransformationAdapterProjNet.IsEpsgCached(
                     cacheTestForOutputEpsgNumberNotExisting
                 )
             );
@@ -148,26 +150,26 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
                 // but since everything (according to the above if statement we are now within)
                 // should have been cached it should be cached already anyway now
                 Assert.IsTrue(
-                    cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
+                    cacheTestTransformationAdapterProjNet.IsEpsgCached(
                         EpsgNumber.SWEDEN__SWEREF99_TM__3006
                     )
                 );
             }
             else if(crsCachingStrategy == CrsCachingStrategy.CACHE_EPSG_CRS_CODE_WHEN_FIRST_USED) {
                 Assert.IsFalse(
-                    cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
+                    cacheTestTransformationAdapterProjNet.IsEpsgCached(
                         EpsgNumber.SWEDEN__SWEREF99_TM__3006
                     )
                 );
                 // but after a transformation below it should be cached
                 
-                cacheTestTransformationAdapterProjNet4GeoAPI.Transform(
+                cacheTestTransformationAdapterProjNet.Transform(
                     cacheTestInputCoordinateWgs84, 
                     EpsgNumber.SWEDEN__SWEREF99_TM__3006
                 );
 
                 Assert.IsTrue(
-                    cacheTestTransformationAdapterProjNet4GeoAPI.IsEpsgCached(
+                    cacheTestTransformationAdapterProjNet.IsEpsgCached(
                         EpsgNumber.SWEDEN__SWEREF99_TM__3006
                     )
                 );
@@ -182,13 +184,13 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
             // i.e. the same as in the second parameter below 
             // i.e. the "actual" value in the method "AreEqual".
             Assert.AreEqual(
-                this.crsTransformationAdapterProjNet4GeoAPIwithNoConstructorParameters
+                this.crsTransformationAdapterProjNetwithNoConstructorParameters
                 ,
-                new CrsTransformationAdapterProjNet4GeoAPI(
+                new CrsTransformationAdapterProjNet(
                     CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
                     ,
                     new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{
-                        EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI,
+                        EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet,
                         EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml
                     })
                 )
@@ -198,14 +200,14 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
             // the embedded resource files (which is the only different compared to the above code)
             // then they are NOT equal
             Assert.AreNotEqual(
-                this.crsTransformationAdapterProjNet4GeoAPIwithNoConstructorParameters
+                this.crsTransformationAdapterProjNetwithNoConstructorParameters
                 ,
-                new CrsTransformationAdapterProjNet4GeoAPI(
+                new CrsTransformationAdapterProjNet(
                     CrsCachingStrategy.CACHE_ALL_EPSG_CRS_CODES
                     ,
                     new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{
                         EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml,
-                        EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI
+                        EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet
                     })
                 )
             );

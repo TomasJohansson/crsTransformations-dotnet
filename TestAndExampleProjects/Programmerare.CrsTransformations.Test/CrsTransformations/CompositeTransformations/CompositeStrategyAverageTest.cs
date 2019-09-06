@@ -91,7 +91,7 @@ public class CompositeStrategyAverageTest : CompositeStrategyTestBase {
             new List<ICrsTransformationAdapter>{
                 base.adapterMightyLittleGeodesy,
                 base.adapterDotSpatial,
-                base.adapterProjNet4GeoAPI
+                base.adapterProjNet
             }
         );            
         Assert.AreNotEqual(average2, average3);

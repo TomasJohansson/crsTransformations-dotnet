@@ -5,7 +5,7 @@ using NUnit.Framework;
 using System.Collections.Generic;
 using Programmerare.CrsTransformations;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.ProjNet;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 
 [TestFixture]
@@ -27,24 +27,24 @@ public class CrsTransformationAdapterCompositeFactoryTest {
         crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
 
         var dotSpatial = new CrsTransformationAdapterDotSpatial();
-        var projNet4GeoAPI = new CrsTransformationAdapterProjNet4GeoAPI();
+        var ProjNet = new CrsTransformationAdapterProjNet();
         var mightyLittleGeodesy = new CrsTransformationAdapterMightyLittleGeodesy();
         listOfAdaptersWithOneDuplicated = new List<ICrsTransformationAdapter>{
             dotSpatial,
-            projNet4GeoAPI,
+            ProjNet,
             mightyLittleGeodesy,
             // Duplicate added below !
             new CrsTransformationAdapterDotSpatial()
         };
 
         listOfTwoAdaptersWithoutDotSpatial = new List<ICrsTransformationAdapter>{
-            projNet4GeoAPI,
+            ProjNet,
             mightyLittleGeodesy
         };
 
         listOfWeightsWithOneDuplicated = new List<CrsTransformationAdapterWeight>{
             weightFactory.CreateFromInstance(dotSpatial, 1.0),
-            weightFactory.CreateFromInstance(projNet4GeoAPI, 2.0),
+            weightFactory.CreateFromInstance(ProjNet, 2.0),
             weightFactory.CreateFromInstance(mightyLittleGeodesy, 3.0),
             // Duplicate added below !
             // (Duplicate regarding the class, the weight value is not relevant)
@@ -165,7 +165,7 @@ public class CrsTransformationAdapterCompositeFactoryTest {
         var children = composite.TransformationAdapterChildren;
         Assert.AreEqual(2, children.Count);
         var listWithTheTwoExpectedClassNames = new List<string>{
-            typeof(CrsTransformationAdapterProjNet4GeoAPI).FullName,
+            typeof(CrsTransformationAdapterProjNet).FullName,
             typeof(CrsTransformationAdapterMightyLittleGeodesy).FullName
         };
         string classForChild1 = children[0].GetType().FullName;

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.ProjNet;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Identifier;
@@ -89,7 +89,7 @@ namespace Programmerare.CrsTransformations.TestClient {
         private void crsTransformationAdapterCode() {
             // The three (currently) 'Leaf' adapters:
             crsTransformationAdapter = new CrsTransformationAdapterDotSpatial();
-            crsTransformationAdapter = new CrsTransformationAdapterProjNet4GeoAPI();
+            crsTransformationAdapter = new CrsTransformationAdapterProjNet();
             crsTransformationAdapter = new CrsTransformationAdapterMightyLittleGeodesy();
 
             crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
@@ -110,7 +110,7 @@ namespace Programmerare.CrsTransformations.TestClient {
 
             // leaf adapters (used below for creating a composite with weighted average):
             var crsTransformationAdapterDotSpatial = new CrsTransformationAdapterDotSpatial();
-            var crsTransformationAdapterProjNet4GeoAPI = new CrsTransformationAdapterProjNet4GeoAPI();
+            var crsTransformationAdapterProjNet = new CrsTransformationAdapterProjNet();
             // One of the above are used below, with the instance,
             // and one of them is instead below using the class name created here:
             string fullClassNameForImplementation = crsTransformationAdapterDotSpatial.GetType().FullName;
@@ -119,7 +119,7 @@ namespace Programmerare.CrsTransformations.TestClient {
             // Now creating the composite with weighted average, using the above two
             // leaf adapters, using two different create methods:
             crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight> {
-                CrsTransformationAdapterWeightFactory.Create().CreateFromInstance(crsTransformationAdapterProjNet4GeoAPI, 1.0),
+                CrsTransformationAdapterWeightFactory.Create().CreateFromInstance(crsTransformationAdapterProjNet, 1.0),
                 CrsTransformationAdapterWeightFactory.Create().CreateFromStringWithFullClassNameForImplementation(fullClassNameForImplementation, 2.0)
             });
 

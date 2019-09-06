@@ -86,7 +86,8 @@ and internal CrsTransformationAdapterLeafFactoryWithHardcodedImplementations int
         static let assemblyNamesForAllKnownImplementations = [
             "Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy"
             "Programmerare.CrsTransformations.Adapter.DotSpatial"
-            "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI"
+            "Programmerare.CrsTransformations.Adapter.ProjNet"
+            //"Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI" // Obsolete (ProjNet 2 is the next version of ProjNet4GeoAPI 1.4)
         ]
 
         // The hardcoded strings below will NOT change often 
@@ -95,7 +96,8 @@ and internal CrsTransformationAdapterLeafFactoryWithHardcodedImplementations int
         static let classNamesForAllKnownImplementations = [
             "Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy.CrsTransformationAdapterMightyLittleGeodesy"
             "Programmerare.CrsTransformations.Adapter.DotSpatial.CrsTransformationAdapterDotSpatial"
-            "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.CrsTransformationAdapterProjNet4GeoAPI"
+            "Programmerare.CrsTransformations.Adapter.ProjNet.CrsTransformationAdapterProjNet"
+            // "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.CrsTransformationAdapterProjNet4GeoAPI"  // Obsolete (ProjNet 2 is the next version of ProjNet4GeoAPI 1.4)
         ]
 
         static let assembliesWithAdapterImplementationsLazyLoaded: Lazy<IList<Assembly>> =

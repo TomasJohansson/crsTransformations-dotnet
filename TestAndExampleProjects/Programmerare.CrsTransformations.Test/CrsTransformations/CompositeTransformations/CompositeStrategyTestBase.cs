@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.ProjNet;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 
 namespace Programmerare.CrsTransformations.CompositeTransformations  {
@@ -14,7 +14,7 @@ public abstract class CompositeStrategyTestBase {
 
     protected ICrsTransformationAdapter adapterDotSpatial;
     protected ICrsTransformationAdapter adapterMightyLittleGeodesy;
-    protected ICrsTransformationAdapter adapterProjNet4GeoAPI;
+    protected ICrsTransformationAdapter adapterProjNet;
 
     protected IList<ICrsTransformationAdapter> allAdapters;
     protected List<CrsCoordinate> allCoordinateResultsForTheDifferentImplementations;
@@ -27,33 +27,33 @@ public abstract class CompositeStrategyTestBase {
     protected CrsCoordinate wgs84coordinate;
     protected CrsCoordinate resultCoordinateDotSpatial;
     protected CrsCoordinate resultCoordinateMightyLittleGeodesy;
-    protected CrsCoordinate resultCoordinateProjNet4GeoAPI;
+    protected CrsCoordinate resultCoordinateProjNet;
 
     [SetUp]
     public void SetUpBase() {
         crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create();
 
         adapterDotSpatial = new CrsTransformationAdapterDotSpatial();
-        adapterProjNet4GeoAPI = new CrsTransformationAdapterProjNet4GeoAPI();
+        adapterProjNet = new CrsTransformationAdapterProjNet();
         adapterMightyLittleGeodesy = new CrsTransformationAdapterMightyLittleGeodesy();
 
         allAdapters = new List<ICrsTransformationAdapter>{
             // Regarding the order of the items in the list below:
             // DotSpatial should be the first since it is assumed in the test by the subclass CompositeStrategyFirstSuccessTest
             adapterDotSpatial,
-            adapterProjNet4GeoAPI,
+            adapterProjNet,
             adapterMightyLittleGeodesy
         };
 
         wgs84coordinate = CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude(wgs84Lat, wgs84Lon, EpsgNumber.WORLD__WGS_84__4326);
 
         resultCoordinateDotSpatial = adapterDotSpatial.TransformToCoordinate(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
-        resultCoordinateProjNet4GeoAPI = adapterProjNet4GeoAPI.TransformToCoordinate(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
+        resultCoordinateProjNet = adapterProjNet.TransformToCoordinate(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         resultCoordinateMightyLittleGeodesy = adapterMightyLittleGeodesy.TransformToCoordinate(wgs84coordinate, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
         allCoordinateResultsForTheDifferentImplementations = new List<CrsCoordinate>{
             resultCoordinateDotSpatial,
             resultCoordinateMightyLittleGeodesy,
-            resultCoordinateProjNet4GeoAPI
+            resultCoordinateProjNet
         };
     }
 }

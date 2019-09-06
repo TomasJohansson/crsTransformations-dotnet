@@ -29,7 +29,7 @@ type CrsTransformationAdapterProjNet
 
         static let _defaultSridReader =
             let list = new ResizeArray<EmbeddedResourceFileWithCRSdefinitions>([
-                    EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI
+                    EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet
                     EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml
                 ]
             )
@@ -114,14 +114,14 @@ type CrsTransformationAdapterProjNet
                 )
 
         override this.AdapteeType =
-            CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1
+            CrsTransformationAdapteeType.LEAF_PROJ_NET_2_0_0
 
         // it is not a problem to hardcode the name below 
         // if the type name would become renamed since a 
         // renaming would then be detected by test code which 
         // verfifies that this short name actually is the 
         // suffix of the type name
-        override this.ShortNameOfImplementation = "ProjNet4GeoAPI"
+        override this.ShortNameOfImplementation = "ProjNet"
 
         member private this._GetFileInfoVersion() =
             FileInfoVersion.GetFileInfoVersionHelper(typeof<CoordinateSystemFactory>)

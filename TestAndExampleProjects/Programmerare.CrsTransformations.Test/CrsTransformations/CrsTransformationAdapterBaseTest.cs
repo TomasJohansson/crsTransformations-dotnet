@@ -2,7 +2,7 @@
 using NUnit.Framework;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.ProjNet;
 using Programmerare.CrsTransformations.CompositeTransformations;
 
 namespace Programmerare.CrsTransformations.Test.CrsTransformation {
@@ -13,7 +13,7 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformation {
     class CrsTransformationAdapterBaseTest {
         private CrsTransformationAdapterCompositeFactory crsTransformationAdapterCompositeFactory, crsTransformationAdapterCompositeFactoryWithLeafsInReversedOrder, crsTransformationAdapterCompositeFactoryWithOneLeafDifferentlyConfigured;
         CrsTransformationAdapterComposite average, median, firstSuccess, weightedAverage;
-        CrsTransformationAdapterBaseLeaf dotSpatial, mightyLittleGeodesy, projNet4GeoAPI, projNet4GeoAPIWithDifferentConfiguration;
+        CrsTransformationAdapterBaseLeaf dotSpatial, mightyLittleGeodesy, projNet, ProjNetWithDifferentConfiguration;
 
         private CrsTransformationAdapterWeightFactory weightFactory;
 
@@ -27,23 +27,23 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformation {
             // currently there are no configurations possibilities for the above two leafs
             // but for the below leaf it is possible to create instances with 
             // different configurations
-            projNet4GeoAPI = new CrsTransformationAdapterProjNet4GeoAPI();
-            projNet4GeoAPIWithDifferentConfiguration = new CrsTransformationAdapterProjNet4GeoAPI(new SridReader("somepath.csv"));
+            projNet = new CrsTransformationAdapterProjNet();
+            ProjNetWithDifferentConfiguration = new CrsTransformationAdapterProjNet(new SridReader("somepath.csv"));
 
             // Composite adapters:
             crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create(
                 new List<ICrsTransformationAdapter>{
-                    dotSpatial, mightyLittleGeodesy, projNet4GeoAPI
+                    dotSpatial, mightyLittleGeodesy, projNet
                 }
             );
             // Note that below list parameter is the same as the above but with the list items in reversed order
             crsTransformationAdapterCompositeFactoryWithLeafsInReversedOrder = CrsTransformationAdapterCompositeFactory.Create(
                 new List<ICrsTransformationAdapter>{
-                    projNet4GeoAPI, mightyLittleGeodesy, dotSpatial
+                    projNet, mightyLittleGeodesy, dotSpatial
                 }
             );
             crsTransformationAdapterCompositeFactoryWithOneLeafDifferentlyConfigured = CrsTransformationAdapterCompositeFactory.Create(
-                new List<ICrsTransformationAdapter>{dotSpatial, mightyLittleGeodesy, projNet4GeoAPIWithDifferentConfiguration}
+                new List<ICrsTransformationAdapter>{dotSpatial, mightyLittleGeodesy, ProjNetWithDifferentConfiguration}
             );
 
             average = crsTransformationAdapterCompositeFactory.CreateCrsTransformationAverage();
@@ -51,7 +51,7 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformation {
             firstSuccess = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
             weightedAverage = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
                 weightFactory.CreateFromInstance(dotSpatial, 1.0),
-                weightFactory.CreateFromInstance(projNet4GeoAPI, 2.0),
+                weightFactory.CreateFromInstance(projNet, 2.0),
                 weightFactory.CreateFromInstance(mightyLittleGeodesy, 3.0)
             });
         }
@@ -103,50 +103,50 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformation {
                 mightyLittleGeodesy2.GetHashCode()
             );
 
-            var projNet4GeoAPI2 = new CrsTransformationAdapterProjNet4GeoAPI();
+            var ProjNet2 = new CrsTransformationAdapterProjNet();
             Assert.AreEqual(
-                projNet4GeoAPI, // created in the Setup method
-                projNet4GeoAPI2
+                projNet, // created in the Setup method
+                ProjNet2
             );
             Assert.AreEqual(
-                projNet4GeoAPI.GetHashCode(),
-                projNet4GeoAPI2.GetHashCode()
+                projNet.GetHashCode(),
+                ProjNet2.GetHashCode()
             );
         }
         
         [Test]
         public void LeafAdapters_ShouldNotBeEqual_WhenDifferentType() {
             Assert.AreNotEqual(
-                projNet4GeoAPI,
+                projNet,
                 mightyLittleGeodesy
             );
             Assert.AreNotEqual(
-                projNet4GeoAPI,
+                projNet,
                 dotSpatial
             );
             Assert.AreNotEqual(
                 new CrsTransformationAdapterDotSpatial(),
-                new CrsTransformationAdapterProjNet4GeoAPI()
+                new CrsTransformationAdapterProjNet()
             );
         }
         
         [Test]
         public void LeafAdapters_ShouldNotBeEqual_WhenTheSameTypeButDifferentConfiguration() {
             Assert.AreNotEqual(
-                new CrsTransformationAdapterProjNet4GeoAPI(), // default configuration
-                new CrsTransformationAdapterProjNet4GeoAPI(new SridReader("filepath1"))
+                new CrsTransformationAdapterProjNet(), // default configuration
+                new CrsTransformationAdapterProjNet(new SridReader("filepath1"))
             );
 
             Assert.AreNotEqual(
-                new CrsTransformationAdapterProjNet4GeoAPI(
+                new CrsTransformationAdapterProjNet(
                     new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{
                         EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml}
                     )
                 )
                 ,
-                new CrsTransformationAdapterProjNet4GeoAPI(
+                new CrsTransformationAdapterProjNet(
                     new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{
-                        EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI}
+                        EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet}
                     )
                 )
             );
@@ -186,7 +186,7 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformation {
             // Composite adapter factory with only two leafs:
             var crsTransformationAdapterCompositeFactoryWithTwoLeafs = CrsTransformationAdapterCompositeFactory.Create(
                 new List<ICrsTransformationAdapter>{
-                    dotSpatial, projNet4GeoAPI
+                    dotSpatial, projNet
                 }
             );
             
@@ -266,13 +266,13 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformation {
             // but with the same weights
             var weightedAverage1 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
                 weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-                weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), 2.0),
                 weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
             });
             // below the order is switched between the above first and second,
             // though their weights are the same
             var weightedAverage2 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
-                weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), 2.0),
                 weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
                 weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
             });
@@ -293,7 +293,7 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformation {
             Assert.AreNotEqual(
                 crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
                     weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-                    weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
+                    weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), 2.0),
                     weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
                 })
                 ,
@@ -301,7 +301,7 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformation {
                 // and therefore they should be considered as Equal
                 crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
                     weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-                    weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.01),
+                    weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), 2.01),
                     weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
                 })
             );
@@ -332,8 +332,8 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformation {
             );
 
             Assert.AreEqual(
-                typeof(CrsTransformationAdapterProjNet4GeoAPI).FullName,
-                projNet4GeoAPI.LongNameOfImplementation
+                typeof(CrsTransformationAdapterProjNet).FullName,
+                projNet.LongNameOfImplementation
             );
 
             Assert.AreEqual(
@@ -371,8 +371,8 @@ namespace Programmerare.CrsTransformations.Test.CrsTransformation {
             );
 
             Assert.AreEqual(
-                "ProjNet4GeoAPI",
-                projNet4GeoAPI.ShortNameOfImplementation
+                "ProjNet",
+                projNet.ShortNameOfImplementation
             );
 
             Assert.AreEqual(

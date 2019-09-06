@@ -3,7 +3,7 @@ using Programmerare.CrsTransformations; // ICrsTransformationAdapter
 using Programmerare.CrsTransformations.CompositeTransformations; // CrsTransformationAdapterCompositeFactory
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.ProjNet;
 
 
 using Programmerare.CrsTransformations.Identifier; // CrsIdentifier
@@ -30,9 +30,9 @@ public void method() {
     // Programmerare.CrsTransformations.Adapter.DotSpatial.CrsTransformationAdapterDotSpatial
     crsTransformationAdapter = new CrsTransformationAdapterDotSpatial();
 
-    // Library "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI", class:
-    // Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.CrsTransformationAdapterProjNet4GeoAPI
-    crsTransformationAdapter = new CrsTransformationAdapterProjNet4GeoAPI();
+    // Library "Programmerare.CrsTransformations.Adapter.ProjNet", class:
+    // Programmerare.CrsTransformations.Adapter.ProjNet.CrsTransformationAdapterProjNet
+    crsTransformationAdapter = new CrsTransformationAdapterProjNet();
 
     // Library "Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy", class:
     // Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy.CrsTransformationAdapterMightyLittleGeodesy
@@ -59,7 +59,7 @@ public void method() {
     crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create(
 		new List<ICrsTransformationAdapter>{
 			new CrsTransformationAdapterDotSpatial(),
-			new CrsTransformationAdapterProjNet4GeoAPI(),
+			new CrsTransformationAdapterProjNet(),
 			new CrsTransformationAdapterMightyLittleGeodesy(),
 		}
 	);
@@ -71,7 +71,7 @@ public void method() {
     crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(
 		new List<CrsTransformationAdapterWeight> {
 			weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-			weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 1.0),
+			weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), 1.0),
 			weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 2.0),
 	    }
 	);

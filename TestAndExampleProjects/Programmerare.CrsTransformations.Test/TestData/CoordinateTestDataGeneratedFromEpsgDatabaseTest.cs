@@ -9,7 +9,7 @@ using System.Text;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.ProjNet;
 using Programmerare.CrsTransformations.Coordinate;
 
 namespace Programmerare.CrsTransformations.TestData
@@ -21,9 +21,10 @@ namespace Programmerare.CrsTransformations.TestData
  * can then be compared with each other (also with methods in this class below).
  * It will also be possible to compare files produced by different versions 
  * of the same implementations when having done an upgrade.
- * For example, there is currently a produced file "ProjNet4GeoAPI_version_1.4.1.csv"
+ * TODO obsolete comment below about 1.4.1 since the new version is now 2.0.0
+ * For example, there is currently a produced file "ProjNet_version_1.4.1.csv"
  * and if there will be a version 1.4.2. in the future then another file 
- * "ProjNet4GeoAPI_version_1.4.2.csv" can be created and then those two files 
+ * "ProjNet_version_1.4.2.csv" can be created and then those two files 
  * can be compared with each other, and then it might be possible to detect 
  * problems for certain EPSG codes when there is a new significant difference.
  * (Of course, a new detected difference can be explained in two ways,
@@ -69,7 +70,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     private const double DELTA_LIMIT_FOR_SUCCESS = 0.0001;
 
     private const string PART_OF_FILENAME_DotSpatial = "DotSpatial";
-    private const string PART_OF_FILENAME_ProjNet4GeoAPI = "ProjNet4GeoAPI";
+    private const string PART_OF_FILENAME_ProjNet = "ProjNet";
     private const string PART_OF_FILENAME_MightyLittleGeodesy = "MightyLittleGeodesy";
 
     private static IList<EpsgCrsAndAreaCodeWithCoordinates> list;
@@ -126,18 +127,18 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     [Test]
     [Category(TestCategory.SideEffectFileCreation)] // directory: .../resources/regression_results/
     //[Category(TestCategory.SlowTest)] // no actually only 5 seconds which is not too bad
-    public void TestAllTransformationsInGeneratedCsvFileWithProjNet4GeoAPI() {
-        //testResults for CrsTransformationAdapterProjNet4GeoAPI
+    public void TestAllTransformationsInGeneratedCsvFileWithProjNet() {
+        //testResults for CrsTransformationAdapterProjNet
         //seconds: 5
         //countOfSuccess: 2481
         //countOfFailures: 3954
-        TestResult testResultForProjNet4GeoAPI = RunAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationAdapterProjNet4GeoAPI(), list);
+        TestResult testResultForProjNet = RunAllTransformationsOfTheCoordinatesInTheGeneratedCsvFile(new CrsTransformationAdapterProjNet(), list);
         HandleTestResults(
-            testResultForProjNet4GeoAPI,
+            testResultForProjNet,
             DELTA_LIMIT_FOR_SUCCESS,
             shouldCreateNewRegressionFile,
-            "_version_1.4.1" // LEAF_PROJ_NET_4_GEO_API_1_4_1
-            // File created: "resources/regression_results/ProjNet4GeoAPI_version_1.4.1.csv
+            "_version_1.4.1" // LEAF_PROJ_NET_4_GEO_API_1_4_1  TODO LEAF_PROJ_NET_2_0_0
+            // File created: "resources/regression_results/ProjNet_version_1.4.1.csv
         );
     }
 
@@ -167,10 +168,10 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
     [Test] // currently not a real test with assertions but printing console output with differences
     [Category(TestCategory.SideEffectPrintingConsoleOutput)]
-    public void CompareResultsForDifferentVersionsOfProjNet4GeoAPI() {
-        // filename e.g. "ProjNet4GeoAPI_version_1.4.1.csv"
+    public void CompareResultsForDifferentVersionsOfProjNet() {
+        // filename e.g. "ProjNet_version_1.4.1.csv"
         CompareTheTwoLatestVersion(
-            PART_OF_FILENAME_ProjNet4GeoAPI,
+            PART_OF_FILENAME_ProjNet,
             deltaValueForDifferencesToIgnoreWhenComparingDifferentVersionForSameImplementation,
             true // shouldAlsoDisplayDifferencesWhenValueIsMissing
         );
@@ -232,16 +233,16 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 
     [Category(TestCategory.SideEffectPrintingConsoleOutput)]
     [Test] // currently not a real test with assertions but printing console output with differences
-    public void CompareResultsForLatestDotSpatialAndProjNet4GeoAPIFile() {
+    public void CompareResultsForLatestDotSpatialAndProjNetFile() {
         FileInfo dotSpatialFile = GetLatestDotSpatialFile();
-        FileInfo projNet4GeoAPIFile = GetLatestProjNet4GeoAPIFile();
+        FileInfo ProjNetFile = GetLatestProjNetFile();
         CompareWithRegressionFileContent(
             dotSpatialFile,
-            projNet4GeoAPIFile,
+            ProjNetFile,
             0.01,
             false // shouldAlsoDisplayDifferencesWhenValueIsMissing
         );
-        // when above comparing DotSpatial and ProjNet4GeoAPIFile
+        // when above comparing DotSpatial and ProjNetFile
         // with the following delta values:
         // 0.01 (no difference detected larger than this delta)
         // 0.001 (eight differences detected, with these EPSG codes: 4804 4817 25700 27394 27395 27396 27397 27398)
@@ -261,9 +262,9 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     [Test] // currently not a real test with assertions but printing console output with differences
     public void FindPotentialBuggyImplementations() { // similarly named method in another class, see comment there (current class name: CoordinateTestDataGeneratedFromEpsgDatabaseTest2')
         FileInfo dotSpatialFile = GetLatestDotSpatialFile();
-        FileInfo projNet4GeoAPIFile = GetLatestProjNet4GeoAPIFile();
+        FileInfo ProjNetFile = GetLatestProjNetFile();
         FileInfo mightyLittleGeodesyFile = GetLatestMightyLittleGeodesyFile();
-        IList<FileInfo> filesToCompare = new List<FileInfo>{dotSpatialFile, projNet4GeoAPIFile, mightyLittleGeodesyFile };
+        IList<FileInfo> filesToCompare = new List<FileInfo>{dotSpatialFile, ProjNetFile, mightyLittleGeodesyFile };
         double deltaValueForDifferencesToIgnore = 0.001;
         CompareFiles(
             filesToCompare,
@@ -471,13 +472,13 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
     /// <summary>
     /// The method can be used for comparing different versions for the same adapter
     /// (i.e. produced by different versions)
-    /// In other words, if there would be (but currently not) a version 1.4.2 of ProjNet4GeoAPI,
+    /// In other words, if there would be (but currently not) a version 1.4.2 of ProjNet,
     /// then the following two files would be compared:
-    ///     ProjNet4GeoAPI_version_1.4.2.csv (in the parameter "file1")
-    ///     ProjNet4GeoAPI_version_1.4.1.csv (in the parameter "file2")
+    ///     ProjNet_version_1.4.2.csv (in the parameter "file1")
+    ///     ProjNet_version_1.4.1.csv (in the parameter "file2")
     /// The method can also be used for comparing versions from 
     /// different adapters e.g. comparing these two files:
-    ///     ProjNet4GeoAPI_version_1.4.1.csv
+    ///     ProjNet_version_1.4.1.csv
     ///     MightyLittleGeodesy_version_1.0.1.csv
     /// </summary>
     /// <param name="file1"></param>
@@ -655,8 +656,8 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
         return GetLatestFileWithRegressionsResults(PART_OF_FILENAME_DotSpatial);
     }
         
-    private FileInfo GetLatestProjNet4GeoAPIFile() {
-        return GetLatestFileWithRegressionsResults(PART_OF_FILENAME_ProjNet4GeoAPI);
+    private FileInfo GetLatestProjNetFile() {
+        return GetLatestFileWithRegressionsResults(PART_OF_FILENAME_ProjNet);
     }
     private FileInfo GetLatestMightyLittleGeodesyFile() {
         return GetLatestFileWithRegressionsResults(PART_OF_FILENAME_MightyLittleGeodesy);
@@ -671,7 +672,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
 //countOfSuccess: 5074
 //countOfFailures: 1361
 //-------------------------------
-//testResults for CrsTransformationAdapterProjNet4GeoAPI
+//testResults for CrsTransformationAdapterProjNet
 //seconds: 5
 //countOfSuccess: 2481
 //countOfFailures: 3954

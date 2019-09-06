@@ -5,7 +5,7 @@ using Programmerare.CrsTransformations.CompositeTransformations;
 
 // Only one (i.e. the one below) of the adapters are 
 // added as depdency to this project:
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.ProjNet;
 
 namespace Programmerare.CrsTransformations.TestWithoutDependeciesToAllAdapters {
 
@@ -19,7 +19,7 @@ namespace Programmerare.CrsTransformations.TestWithoutDependeciesToAllAdapters {
         // which are not availale when trying to create 
         // a composite adapter with the available leaf adapters
 
-        private const int NUMBER_OF_ADAPTERS_WHICH_ARE_DEPENDENCIES_FROM_THIS_PROJECT = 1; // Only "ProjNet4GeoAPI"
+        private const int NUMBER_OF_ADAPTERS_WHICH_ARE_DEPENDENCIES_FROM_THIS_PROJECT = 1; // Only "ProjNet"
 
         [Test]
         public void AdapterCompositeFactory_ShouldNotFail_WhenNotAllAdaptersAreAvailable() {

@@ -131,7 +131,7 @@ public class CompositeStrategyTestsUsingTestDoubles {
         //mock4.Setup(leaf => leaf.LongNameOfImplementation).Returns("4");
         //mock5.Setup(leaf => leaf.LongNameOfImplementation).Returns("5");
         mock1.Setup(leaf => leaf.AdapteeType).Returns(CrsTransformationAdapteeType.LEAF_DOT_SPATIAL_2_0_0_RC1);
-        mock2.Setup(leaf => leaf.AdapteeType).Returns(CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1);
+        mock2.Setup(leaf => leaf.AdapteeType).Returns(CrsTransformationAdapteeType.LEAF_PROJ_NET_2_0_0);
         mock3.Setup(leaf => leaf.AdapteeType).Returns(CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_2);
         // The type must be different but there are only three concrete types as above to use
         // but then instead can use the ones below (and the purpose of this enum is to use it as key in a dictionary/hashtable)

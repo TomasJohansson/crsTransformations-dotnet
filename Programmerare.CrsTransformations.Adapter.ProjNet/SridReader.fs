@@ -41,7 +41,7 @@ type SridReader private
             //        //Console.WriteLine("exception : " + exc.ToString())
             //        //exception : System.ObjectDisposedException: Cannot read from a closed TextReader.
             //        //   at System.IO.StreamReader.ReadLine()
-            //        //   at Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.SridReader.GetSRIDs(StreamReader reader, Int32 epsgNumberToLookFor) in F:\t\r\c\f\o\d\crsTransformations-dotnet\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI\SridReader.fs:line 25
+            //        //   at Programmerare.CrsTransformations.Adapter.ProjNet.SridReader.GetSRIDs(StreamReader reader, Int32 epsgNumberToLookFor) in SridReader.fs:line 25
             //        () // just keep on iterating and try with the next
             if (isNull line) then
                 valid <- false
@@ -57,7 +57,8 @@ type SridReader private
                         valid <- false
         coordinateSystemsWithKeyEpsgNumber :> IDictionary<int, CoordinateSystem>        
 
-    // This is an "internal" method (for testing purposes).
+    // Internal method only for testing purposes.
+    // (visible for Test thanks to fsproj file configuration <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleTo"> )
     // The method may return for example a string like this:
     //  (depending on which of the two current constructors are used, i.e. file path or enum specifying a list of embedded resources files to use)
     //      "file:C:\temp\file1.csv"

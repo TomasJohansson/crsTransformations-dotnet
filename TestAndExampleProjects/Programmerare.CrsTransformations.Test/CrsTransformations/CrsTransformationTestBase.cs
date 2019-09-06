@@ -3,7 +3,7 @@ using NUnit.Framework;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.ProjNet;
 using Programmerare.CrsTransformations.CompositeTransformations;
 
 namespace Programmerare.CrsTransformations {
@@ -31,7 +31,7 @@ public abstract class CrsTransformationTestBase {
 
         crsTransformationAdapterLeafImplementations = new List<ICrsTransformationAdapter>{
             new CrsTransformationAdapterDotSpatial(),
-            new CrsTransformationAdapterProjNet4GeoAPI(),
+            new CrsTransformationAdapterProjNet(),
             new CrsTransformationAdapterMightyLittleGeodesy()
         };
 
@@ -41,7 +41,7 @@ public abstract class CrsTransformationTestBase {
             crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess(),
             crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
                 weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 51.0),
-                weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 52.0),
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), 52.0),
                 weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 53.0)
             })
         };

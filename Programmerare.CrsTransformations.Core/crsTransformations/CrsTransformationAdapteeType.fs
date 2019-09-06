@@ -47,7 +47,14 @@ type CrsTransformationAdapteeType =  // F# enum
     ///'<PackageReference Include="ProjNET4GeoAPI" Version="1.4.1" />'
     ///</para>
     ///</summary>
-    | LEAF_PROJ_NET_4_GEO_API_1_4_1 = 1100
+    |
+        [<Obsolete("Do not use. Use 'LEAF_PROJ_NET_2_0_0' instead")>]
+        LEAF_PROJ_NET_4_GEO_API_1_4_1 = 1100
+
+    ///<summary>
+    ///'<PackageReference Include="ProjNet" Version="2.0.0" />'
+    ///</summary>
+    | LEAF_PROJ_NET_2_0_0 = 1130
 
     ///<summary>
     ///<para>

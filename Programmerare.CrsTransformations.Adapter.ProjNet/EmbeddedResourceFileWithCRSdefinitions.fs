@@ -3,7 +3,7 @@
 // "enum":
 type EmbeddedResourceFileWithCRSdefinitions = 
     
-    | STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI = 10
+    | STANDARD_FILE_SHIPPED_WITH_ProjNet = 10
 
     // The only differences compared with the standard "SRID.csv" 
     // shipped with ProjNet4GeoAPI are the following five rows:

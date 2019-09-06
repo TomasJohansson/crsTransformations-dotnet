@@ -79,7 +79,7 @@ public class CompositeStrategyMedianTest : CompositeStrategyTestBase {
             new List<ICrsTransformationAdapter>{
                 base.adapterMightyLittleGeodesy,
                 base.adapterDotSpatial,
-                base.adapterProjNet4GeoAPI
+                base.adapterProjNet
             }
         );            
         Assert.AreNotEqual(median2, median3);

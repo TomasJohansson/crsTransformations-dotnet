@@ -1,6 +1,7 @@
 namespace Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI
 
 open System.Collections.Generic
+open System // System.Obsolete
 open ProjNet // CoordinateSystemServices
 open ProjNet.CoordinateSystems // CoordinateSystemFactory
 open ProjNet.CoordinateSystems.Transformations // CoordinateTransformationFactory
@@ -15,6 +16,7 @@ Other subprojects may be released with other licenses e.g. LGPL or Apache Licens
 Please find more information in the license file at the root directory of each subproject
 (e.g. a subproject such as "Programmerare.CrsTransformations.Adapter.DotSpatial")
 *)
+[<Obsolete("Instead use CrsTransformationAdapterProjNet")>]
 type CrsTransformationAdapterProjNet4GeoAPI
     (
         crsCachingStrategy: CrsCachingStrategy,

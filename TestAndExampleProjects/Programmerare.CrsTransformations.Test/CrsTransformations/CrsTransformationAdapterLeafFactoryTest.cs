@@ -7,7 +7,7 @@ using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.ProjNet;
 
 [TestFixture]
 public class CrsTransformationAdapterLeafFactoryTest {
@@ -18,26 +18,26 @@ public class CrsTransformationAdapterLeafFactoryTest {
 
     private static IList<string> actualClassNamesForAllKnownImplementations;
 
-    private CrsTransformationAdapterLeafFactory factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet4GeoAPI;
-    private string classNameDotSpatial, classNameProjNet4GeoAPI, classNameMightyLittleGeodesy;
+    private CrsTransformationAdapterLeafFactory factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet;
+    private string classNameDotSpatial, classNameProjNet, classNameMightyLittleGeodesy;
     
     [SetUp]
     public void SetUp() {
         classNameDotSpatial = typeof(CrsTransformationAdapterDotSpatial).FullName;
-        classNameProjNet4GeoAPI = typeof(CrsTransformationAdapterProjNet4GeoAPI).FullName;
+        classNameProjNet = typeof(CrsTransformationAdapterProjNet).FullName;
         classNameMightyLittleGeodesy = typeof(CrsTransformationAdapterMightyLittleGeodesy).FullName;
 
-        factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet4GeoAPI = CrsTransformationAdapterLeafFactory.Create(
+        factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet = CrsTransformationAdapterLeafFactory.Create(
             new List<ICrsTransformationAdapter>{
                 new CrsTransformationAdapterDotSpatial(),
-                new CrsTransformationAdapterProjNet4GeoAPI()
+                new CrsTransformationAdapterProjNet()
             }
         );
 
         crsTransformationAdapterLeafFactory = CrsTransformationAdapterLeafFactory.Create();
         actualClassNamesForAllKnownImplementations = new List<string> {
 			typeof(CrsTransformationAdapterDotSpatial).FullName,
-			typeof(CrsTransformationAdapterProjNet4GeoAPI).FullName,
+			typeof(CrsTransformationAdapterProjNet).FullName,
 			typeof(CrsTransformationAdapterMightyLittleGeodesy).FullName
         };
     }
@@ -160,39 +160,39 @@ public class CrsTransformationAdapterLeafFactoryTest {
     }
 
     [Test]
-    public void FactoryWithOnlyTwoLeafs_ShouldOnlyContainClassesDotSpatialAndProjNet4GeoAPI() {
-        IList<string> allClassNames = factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet4GeoAPI.GetClassNamesForAllImplementations();
+    public void FactoryWithOnlyTwoLeafs_ShouldOnlyContainClassesDotSpatialAndProjNet() {
+        IList<string> allClassNames = factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet.GetClassNamesForAllImplementations();
         Assert.AreEqual(2, allClassNames.Count);
         Assert.That(allClassNames, Does.Contain(classNameDotSpatial));
-        Assert.That(allClassNames, Does.Contain(classNameProjNet4GeoAPI));
+        Assert.That(allClassNames, Does.Contain(classNameProjNet));
         Assert.That(allClassNames, Does.Not.Contain(classNameMightyLittleGeodesy));
     }
 
 
     [Test]
-    public void FactoryWithOnlyTwoLeafs_ShouldOnlyContainInstancesOfDotSpatialAndProjNet4GeoAPI() {
-        IList<ICrsTransformationAdapter> allAdapters = factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet4GeoAPI.GetInstancesOfAllImplementations();
+    public void FactoryWithOnlyTwoLeafs_ShouldOnlyContainInstancesOfDotSpatialAndProjNet() {
+        IList<ICrsTransformationAdapter> allAdapters = factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet.GetInstancesOfAllImplementations();
         Assert.AreEqual(2, allAdapters.Count);
         Assert.That(allAdapters, Does.Contain(new CrsTransformationAdapterDotSpatial()));
-        Assert.That(allAdapters, Does.Contain(new CrsTransformationAdapterProjNet4GeoAPI()));
+        Assert.That(allAdapters, Does.Contain(new CrsTransformationAdapterProjNet()));
         Assert.That(allAdapters, Does.Not.Contain(new CrsTransformationAdapterMightyLittleGeodesy()));
     }
 
     [Test]
-    public void FactoryWithOnlyTwoLeafs_ShouldOnlyRecognizeDotSpatialAndProjNet4GeoAPI() {
+    public void FactoryWithOnlyTwoLeafs_ShouldOnlyRecognizeDotSpatialAndProjNet() {
         Assert.IsTrue(
-            factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet4GeoAPI.IsCrsTransformationAdapter(
+            factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet.IsCrsTransformationAdapter(
                 classNameDotSpatial
             )
         );
         Assert.IsTrue(
-            factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet4GeoAPI.IsCrsTransformationAdapter(
-                classNameProjNet4GeoAPI
+            factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet.IsCrsTransformationAdapter(
+                classNameProjNet
             )
         );
 
         Assert.IsFalse(
-            factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet4GeoAPI.IsCrsTransformationAdapter(
+            factoryWithOnlyTheTwoLeafsDotSpatialAndProjNet.IsCrsTransformationAdapter(
                 classNameMightyLittleGeodesy
             )
         );

@@ -2,7 +2,7 @@ using NUnit.Framework;
 using Programmerare.CrsTransformations.CompositeTransformations;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.ProjNet;
 using System.Collections.Generic;
 
 namespace Programmerare.CrsTransformations {
@@ -19,16 +19,16 @@ class CrsTransformationAdapteeTypeTest {
     }
 
     [Test]
-    public void ProjNet4GeoAPIAdapter_ShouldMatchExpectedEnumAndAssemblyNameWithVersion() {
+    public void ProjNetAdapter_ShouldMatchExpectedEnumAndAssemblyNameWithVersion() {
         var expectedFileInfoVersion = new FileInfoVersion(
             fileName: "projnet.dll",
-            fileSize: 102912L, // netstandard2.0 filesize
-            version: "1.4.1"
+            fileSize: 115200L, // netstandard2.0 filesize
+            version: "2.0.0"
         );
         VerifyExpectedEnumAndAssemblyVersion(
-            new CrsTransformationAdapterProjNet4GeoAPI(),
+            new CrsTransformationAdapterProjNet(),
             expectedFileInfoVersion,
-            CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1
+            CrsTransformationAdapteeType.LEAF_PROJ_NET_2_0_0
         );
     }
     
@@ -135,7 +135,7 @@ class CrsTransformationAdapteeTypeTest {
         VerifyExpectedEnumWhenNotRepresentingThirdPartLibrary(
             crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(new List<CrsTransformationAdapterWeight>{
                 weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-                weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 2.0),
+                weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), 2.0),
                 weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 3.0)
             }),
             CrsTransformationAdapteeType.COMPOSITE_WEIGHTED_AVERAGE

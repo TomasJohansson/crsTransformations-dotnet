@@ -1,7 +1,8 @@
 ﻿using NUnit.Framework;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
-using GeoAPI.CoordinateSystems; // ICoordinateSystem
+using Programmerare.CrsTransformations.Adapter.ProjNet;
+using ProjNet.CoordinateSystems;
+//using GeoAPI.CoordinateSystems; // ICoordinateSystem
 using System.Collections.Generic;
 
 namespace Programmerare.CrsTransformations.Test.Implementations {
@@ -18,9 +19,9 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
             // These files (path 1 and 2 below) do not have to exist regarding the tests they are used.
             readerForFilePath1 = new SridReader(@"C:\temp\file1.csv");
             readerForFilePath2 = new SridReader(@"C:\temp\file2.csv");
-            readerForEmbeddedResource1 = new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI});
+            readerForEmbeddedResource1 = new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet});
             readerForEmbeddedResource2 = new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml});
-            readerForEmbeddedResource3 = new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI, EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml});
+            readerForEmbeddedResource3 = new SridReader(new List<EmbeddedResourceFileWithCRSdefinitions>{EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet, EmbeddedResourceFileWithCRSdefinitions.SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml});
         }
 
         [Test]
@@ -86,10 +87,10 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
             int epsgNumber, 
             string expectedInitialPartOfWellKnownTextString
         ) {
-            var listWithOnlyTheStandardFile = new List<EmbeddedResourceFileWithCRSdefinitions>{EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI};
+            var listWithOnlyTheStandardFile = new List<EmbeddedResourceFileWithCRSdefinitions>{EmbeddedResourceFileWithCRSdefinitions.STANDARD_FILE_SHIPPED_WITH_ProjNet};
             var sridReader = new SridReader(listWithOnlyTheStandardFile);
-            //sridReader = new SridReader(@"PATH_TO_FILE\crsTransformations-dotnet\Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI\SRID_ShippedWithProjNet4GeoAPI_1_4_1.csv");
-            ICoordinateSystem crs = sridReader.GetCSbyID(epsgNumber);
+            //sridReader = new SridReader(@"PATH_TO_FILE\crsTransformations-dotnet\Programmerare.CrsTransformations.Adapter.ProjNet\SRID_ShippedWithProjNet_2_0_0.csv");
+            CoordinateSystem crs = sridReader.GetCSbyID(epsgNumber);
             Assert.IsNotNull(crs);
             Assert.AreEqual(
                 epsgNumber,
@@ -142,9 +143,9 @@ namespace Programmerare.CrsTransformations.Test.Implementations {
             // seem properly implemented i.e. that they return a string (as below) in such a way that 
             // different file paths or different list of embedded resource files return different values
             Assert.AreEqual(@"file:C:\temp\file1.csv", readerForFilePath1._GetStringForEqualityComparison());
-            Assert.AreEqual("embedded:STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI", readerForEmbeddedResource1._GetStringForEqualityComparison());
+            Assert.AreEqual("embedded:STANDARD_FILE_SHIPPED_WITH_ProjNet", readerForEmbeddedResource1._GetStringForEqualityComparison());
             Assert.AreEqual("embedded:SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml", readerForEmbeddedResource2._GetStringForEqualityComparison());
-            Assert.AreEqual("embedded:STANDARD_FILE_SHIPPED_WITH_ProjNet4GeoAPI,SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml", readerForEmbeddedResource3._GetStringForEqualityComparison());
+            Assert.AreEqual("embedded:STANDARD_FILE_SHIPPED_WITH_ProjNet,SIX_SWEDISH_RT90_CRS_DEFINITIONS_COPIED_FROM_SharpMap_SpatialRefSys_xml", readerForEmbeddedResource3._GetStringForEqualityComparison());
         }
     }
 }

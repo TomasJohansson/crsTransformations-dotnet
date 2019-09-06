@@ -4,7 +4,7 @@ using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.ProjNet;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 
 namespace Programmerare.CrsTransformations.CompositeTransformations  {
@@ -15,7 +15,7 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
     private const double SMALL_DELTA_VALUE = 0.0000000001;
 
     private const double weightForDotSpatial = 40;
-    private const double weightForProjNet4GeoAPI = 30;
+    private const double weightForProjNet = 30;
     private const double weightForMightyLittleGeodesy = 20;
     // Note : The sum of the weights do NOT have to be 100 (e.g. above it is 90)
     // but the percentage of the weight will become calculated by the implementation
@@ -36,7 +36,7 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
         
         var weights = new List<CrsTransformationAdapterWeight>{
             weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), weightForDotSpatial),
-            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), weightForProjNet4GeoAPI),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), weightForProjNet),
             weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), weightForMightyLittleGeodesy)
         };
         CrsTransformationAdapterComposite adapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weights);
@@ -47,13 +47,13 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
     public void Transform_ShouldReturnWeightedAverageResult_WhenUsingWeightedAverageCompositeAdapterAndLeafsInstantiatedFromStringsWithClassNames() {
             
         string classNameadapterDotSpatial = adapterDotSpatial.LongNameOfImplementation;
-        string classNameProjNet4GeoAPI = adapterProjNet4GeoAPI.LongNameOfImplementation;
+        string classNameProjNet = adapterProjNet.LongNameOfImplementation;
         string classNameMightyLittleGeodesy = adapterMightyLittleGeodesy.LongNameOfImplementation;
 
 
         List<CrsTransformationAdapterWeight> weights = new List<CrsTransformationAdapterWeight>{
             weightFactory.CreateFromStringWithFullClassNameForImplementation(classNameadapterDotSpatial, weightForDotSpatial),
-            weightFactory.CreateFromStringWithFullClassNameForImplementation(classNameProjNet4GeoAPI, weightForProjNet4GeoAPI),
+            weightFactory.CreateFromStringWithFullClassNameForImplementation(classNameProjNet, weightForProjNet),
             weightFactory.CreateFromStringWithFullClassNameForImplementation(classNameMightyLittleGeodesy, weightForMightyLittleGeodesy)
         };
 
@@ -97,7 +97,7 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
         // have been working fine to assert like below.
         AssertDiffsAreGreaterThanSmallDelta(resultCoordinateDotSpatial, coordinateWithExpectedWeightedValues);
         AssertDiffsAreGreaterThanSmallDelta(resultCoordinateMightyLittleGeodesy, coordinateWithExpectedWeightedValues);
-        AssertDiffsAreGreaterThanSmallDelta(resultCoordinateProjNet4GeoAPI, coordinateWithExpectedWeightedValues);
+        AssertDiffsAreGreaterThanSmallDelta(resultCoordinateProjNet, coordinateWithExpectedWeightedValues);
     }
 
     private void AssertDiffsAreGreaterThanSmallDelta(
@@ -118,14 +118,14 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
         double latitudeWeightedSum =
             weightForDotSpatial * resultCoordinateDotSpatial.YNorthingLatitude +
             weightForMightyLittleGeodesy * resultCoordinateMightyLittleGeodesy.YNorthingLatitude +
-            weightForProjNet4GeoAPI * resultCoordinateProjNet4GeoAPI.YNorthingLatitude;
+            weightForProjNet * resultCoordinateProjNet.YNorthingLatitude;
 
         double longitutdeWeightedSum =
             weightForDotSpatial * resultCoordinateDotSpatial.XEastingLongitude +
             weightForMightyLittleGeodesy * resultCoordinateMightyLittleGeodesy.XEastingLongitude +
-            weightForProjNet4GeoAPI * resultCoordinateProjNet4GeoAPI.XEastingLongitude;
+            weightForProjNet * resultCoordinateProjNet.XEastingLongitude;
 
-        double totWeights = weightForDotSpatial + weightForMightyLittleGeodesy + weightForProjNet4GeoAPI;
+        double totWeights = weightForDotSpatial + weightForMightyLittleGeodesy + weightForProjNet;
         return CrsCoordinateFactory.CreateFromYNorthingLatitudeAndXEastingLongitude( latitudeWeightedSum/totWeights, longitutdeWeightedSum/totWeights, EpsgNumber.SWEDEN__SWEREF99_TM__3006);
     }
 
@@ -196,7 +196,7 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
 
         var weights1 = new List<CrsTransformationAdapterWeight>{
             weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), weightForDotSpatial),
-            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), weightForProjNet4GeoAPI),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), weightForProjNet),
             weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), weightForMightyLittleGeodesy)
         };
         weightedAverage1 = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(weights1);
@@ -204,7 +204,7 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
         // but in different order (the first two are reversed), but the order is not relevant 
         // and thus they should be considered as Equal
         var weights2 = new List<CrsTransformationAdapterWeight>{
-            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), weightForProjNet4GeoAPI),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), weightForProjNet),
             weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), weightForDotSpatial),
             weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), weightForMightyLittleGeodesy)
         };
@@ -216,7 +216,7 @@ public class CompositeStrategyWeightedAverageTest : CompositeStrategyTestBase {
         // Now below creating a new instance "weightedAverage3" with one of the 
         // modified compared to above "weightedAverage2" and thus they should NOT be considered Equal
         var weights3 = new List<CrsTransformationAdapterWeight>{
-            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), weightForProjNet4GeoAPI + 0.01),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), weightForProjNet + 0.01),
             weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), weightForDotSpatial),
             weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), weightForMightyLittleGeodesy)
         };

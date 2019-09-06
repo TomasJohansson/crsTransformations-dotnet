@@ -25,7 +25,7 @@ type CrsTransformationAdapterDotSpatial() as this =
             // but the method is put here anyway with this comment 
             // as a reminder that if thic class would become 
             // configurable then update the implementation of this method 
-            // (for example as in the subclass 'CrsTransformationAdapterProjNet4GeoAPI')
+            // (for example as in the subclass 'CrsTransformationAdapterProjNet')
             base.Equals(o)
 
         // added the below method to get rid of a warning
