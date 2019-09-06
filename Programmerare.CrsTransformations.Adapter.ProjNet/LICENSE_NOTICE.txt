@@ -1,8 +1,22 @@
-This adapter library for "ProjNet4GeoAPI" is licensed in the same way as the adaptee library itself.
+This adapter library for "ProjNet" (which is the name for NuGet version 2.0 but the name of the previous NuGet version 1.4 was "ProjNet4GeoAPI") 
+is licensed in the same way as the adaptee library itself.
 
 This means that the license is GNU Lesser General Public License v2.1.
 
 https://github.com/NetTopologySuite/ProjNet4GeoAPI/blob/develop/LICENSE
 https://raw.githubusercontent.com/NetTopologySuite/ProjNet4GeoAPI/master/LICENSE
 https://github.com/NetTopologySuite/ProjNet4GeoAPI
+
+https://github.com/NetTopologySuite/ProjNet4GeoAPI/releases
+> 2.0.0
+> Release of ProjNET without GeoAPI.
+>	Now targets .NET Standard 2.0 only
+>	GeoAPI references removed; the relevant useful stuff has been moved inside this package (namespaces updated).
+> ...
+
+NuGet ProjNet 2.0.0
+https://www.nuget.org/packages/ProjNet
+
+NuGet ProjNET4GeoAPI 1.4.1 (the previous version of ProjNet i.e. the name has changed)
 https://www.nuget.org/packages/ProjNet4GeoAPI
+
