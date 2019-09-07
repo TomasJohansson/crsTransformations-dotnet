@@ -1,5 +1,4 @@
-﻿using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy {
 

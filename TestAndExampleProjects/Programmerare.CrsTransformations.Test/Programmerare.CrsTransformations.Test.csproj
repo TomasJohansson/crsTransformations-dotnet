@@ -17,6 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="CrsTransformations\Adapter\AdaptersTestBase.cs" />
+    <Compile Include="CrsTransformations\Adapter\DotSpatial\DotSpatialTest.cs" />
+    <Compile Include="CrsTransformations\Adapter\ProjNet\ProjNet4GeoAPI_issue_38_Test.cs" />
+    <Compile Include="CrsTransformations\Adapter\MightyLittleGeodesy\MightyLittleGeodesyTest.cs" />
+    <Compile Include="CrsTransformations\Adapter\ProjNet\ProjNetTest.cs" />
+    <Compile Include="CrsTransformations\Adapter\ProjNet\SridReaderTest.cs" />
     <Compile Include="CrsTransformations\CompositeTransformations\CompositeStrategyAverageTest.cs" />
     <Compile Include="CrsTransformations\CompositeTransformations\CompositeStrategyFirstSuccessTest.cs" />
     <Compile Include="CrsTransformations\CompositeTransformations\CompositeStrategyMedianTest.cs" />
@@ -38,12 +44,6 @@
     <Compile Include="CrsTransformations\FileInfoVersionTest.cs" />
     <Compile Include="CrsTransformations\Identifier\CrsIdentifierTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterLeafFactoryTest.cs" />
-    <Compile Include="CrsTransformations\Implementations\DotSpatialTest.cs" />
-    <Compile Include="CrsTransformations\Implementations\AdaptersTestBase.cs" />
-    <Compile Include="CrsTransformations\Implementations\Issues\ProjNet4GeoAPI_issue_38_Test.cs" />
-    <Compile Include="CrsTransformations\Implementations\MightyLittleGeodesyTest.cs" />
-    <Compile Include="CrsTransformations\Implementations\ProjNetTest.cs" />
-    <Compile Include="CrsTransformations\Implementations\SridReaderTest.cs" />
     <Compile Include="CrsTransformations\Utils\MedianValueUtilityTest.cs" />
     <Compile Include="TestData\CoordinateTestDataGeneratedFromEpsgDatabaseTest.cs" />
     <Compile Include="TestData\CoordinateTestDataGeneratedFromEpsgDatabaseTest2.cs" />

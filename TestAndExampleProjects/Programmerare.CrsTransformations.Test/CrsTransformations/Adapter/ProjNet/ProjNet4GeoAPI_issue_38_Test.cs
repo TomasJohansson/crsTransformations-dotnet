@@ -1,5 +1,4 @@
-﻿using Programmerare.CrsTransformations.Adapter.ProjNet;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using System.Collections.Generic;

@@ -1,6 +1,5 @@
 ﻿using NUnit.Framework;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
-using Programmerare.CrsTransformations.Adapter.ProjNet;
 using ProjNet.CoordinateSystems;
 //using GeoAPI.CoordinateSystems; // ICoordinateSystem
 using System.Collections.Generic;

@@ -1,5 +1,4 @@
-﻿using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 // https://www.nuget.org/packages/DotSpatial.Projections
 // The current (as of november 2018) latest versions:
