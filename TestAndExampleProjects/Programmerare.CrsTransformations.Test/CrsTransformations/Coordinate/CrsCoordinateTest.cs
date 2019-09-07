@@ -3,8 +3,9 @@ using NUnit.Framework;
 using System;
 using System.Collections.Generic;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
+using Programmerare.CrsTransformations.Coordinate;
 
-namespace Programmerare.CrsTransformations.Coordinate {
+namespace Programmerare.CrsTransformations.Core.Coordinate {
 
 [TestFixture]
 class CrsCoordinateTest {

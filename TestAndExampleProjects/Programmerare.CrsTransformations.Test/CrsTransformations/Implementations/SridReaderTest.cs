@@ -5,7 +5,7 @@ using ProjNet.CoordinateSystems;
 //using GeoAPI.CoordinateSystems; // ICoordinateSystem
 using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations.Test.Implementations {
+namespace Programmerare.CrsTransformations.Adapter.ProjNet {
 
     [TestFixture]
     class SridReaderTest {

@@ -5,7 +5,7 @@ using Programmerare.CrsTransformations.Identifier;
 using System;
 using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations.Test.Implementations {
+namespace Programmerare.CrsTransformations.Adapter {
     abstract class AdaptersTestBase {
         private const int epsgWGS84 =       EpsgNumber.WORLD__WGS_84__4326;
         private const int epsgSweref99 =    EpsgNumber.SWEDEN__SWEREF99_TM__3006;

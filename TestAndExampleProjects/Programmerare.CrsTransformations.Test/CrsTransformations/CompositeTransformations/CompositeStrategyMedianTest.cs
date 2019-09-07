@@ -5,7 +5,7 @@ using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 
-namespace Programmerare.CrsTransformations.CompositeTransformations {
+namespace Programmerare.CrsTransformations.Core.CompositeTransformations {
 
 [TestFixture]
 public class CompositeStrategyMedianTest : CompositeStrategyTestBase {

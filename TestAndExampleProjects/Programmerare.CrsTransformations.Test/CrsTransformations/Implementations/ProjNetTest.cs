@@ -4,7 +4,7 @@ using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations.Test.Implementations {
+namespace Programmerare.CrsTransformations.Adapter.ProjNet {
 
     
     [TestFixture]

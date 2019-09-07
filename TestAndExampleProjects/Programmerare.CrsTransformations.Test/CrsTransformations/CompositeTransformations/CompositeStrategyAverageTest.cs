@@ -5,7 +5,7 @@ using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Identifier;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 
-namespace Programmerare.CrsTransformations.CompositeTransformations  {
+namespace Programmerare.CrsTransformations.Core.CompositeTransformations  {
 
 [TestFixture]
 public class CompositeStrategyAverageTest : CompositeStrategyTestBase {

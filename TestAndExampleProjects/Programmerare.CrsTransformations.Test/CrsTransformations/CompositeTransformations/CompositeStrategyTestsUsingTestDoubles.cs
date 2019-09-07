@@ -4,8 +4,9 @@ using Moq; // https://github.com/Moq/moq4
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Identifier;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
+using Programmerare.CrsTransformations.CompositeTransformations;
 
-namespace Programmerare.CrsTransformations.CompositeTransformations {
+namespace Programmerare.CrsTransformations.Core.CompositeTransformations {
 
 [TestFixture]
 public class CompositeStrategyTestsUsingTestDoubles {

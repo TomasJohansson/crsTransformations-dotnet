@@ -1,7 +1,8 @@
-namespace Programmerare.CrsTransformations.Identifier {
+namespace Programmerare.CrsTransformations.Core.Identifier {
 
 using NUnit.Framework;
-using System;
+    using Programmerare.CrsTransformations.Identifier;
+    using System;
 
 [TestFixture]
 public class CrsIdentifierTest {

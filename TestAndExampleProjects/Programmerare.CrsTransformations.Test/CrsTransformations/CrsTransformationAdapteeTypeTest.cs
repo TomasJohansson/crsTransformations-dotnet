@@ -5,7 +5,7 @@ using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet;
 using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations {
+namespace Programmerare.CrsTransformations.Core {
 [TestFixture]
 class CrsTransformationAdapteeTypeTest {
 

@@ -1,11 +1,12 @@
-namespace Programmerare.CrsTransformations.CompositeTransformations {
+namespace Programmerare.CrsTransformations.Core.CompositeTransformations {
 
 using System;
 using NUnit.Framework;
 using Programmerare.CrsTransformations;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
+    using Programmerare.CrsTransformations.CompositeTransformations;
 
-[TestFixture]
+    [TestFixture]
 class CrsTransformationAdapterWeightTest {
 
     private ICrsTransformationAdapter crsTransformationAdapterInstanceNotNull;

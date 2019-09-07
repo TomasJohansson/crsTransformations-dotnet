@@ -5,8 +5,9 @@ using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
+using Programmerare.CrsTransformations.CompositeTransformations;
 
-namespace Programmerare.CrsTransformations.CompositeTransformations  {
+namespace Programmerare.CrsTransformations.Core.CompositeTransformations {
 
 public abstract class CompositeStrategyTestBase {
 

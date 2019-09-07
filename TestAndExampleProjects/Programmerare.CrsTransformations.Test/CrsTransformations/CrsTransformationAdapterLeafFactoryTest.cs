@@ -1,5 +1,3 @@
-using Programmerare.CrsTransformations;
-
 using System;
 using System.Collections.Generic;
 using NUnit.Framework;
@@ -8,6 +6,8 @@ using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet;
+
+namespace Programmerare.CrsTransformations.Core {
 
 [TestFixture]
 public class CrsTransformationAdapterLeafFactoryTest {
@@ -207,4 +207,5 @@ public class CrsTransformationAdapterLeafFactoryTest {
             )
         );
     }
+}
 }

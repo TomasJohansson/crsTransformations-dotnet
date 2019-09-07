@@ -2,7 +2,7 @@ using System;
 using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 
-namespace Programmerare.CrsTransformations {
+namespace Programmerare.CrsTransformations.Core {
 
 [TestFixture]
 public class CrsTransformationResultTest : CrsTransformationResultTestBase {

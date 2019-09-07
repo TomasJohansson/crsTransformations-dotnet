@@ -13,7 +13,7 @@ using NUnit.Framework;
 // (i.e. about half a year after relase 1.9.0)
 // https://github.com/DotSpatial/DotSpatial/pull/865
 
-namespace Programmerare.CrsTransformations.Test.Implementations {
+namespace Programmerare.CrsTransformations.Adapter.DotSpatial {
 
     [TestFixture]
     class DotSpatialTest : AdaptersTestBase {

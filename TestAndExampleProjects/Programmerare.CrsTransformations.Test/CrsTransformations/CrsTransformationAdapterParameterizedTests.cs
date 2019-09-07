@@ -6,7 +6,7 @@ using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using System.IO;
 using System;
 
-namespace Programmerare.CrsTransformations.CompositeTransformations {
+namespace Programmerare.CrsTransformations.Core {
 public class CrsTransformationAdapterParameterizedTests : CrsTransformationTestBase {
 
     private const double DELTA_VALUE_FOR_COMPARISONS_WITH_UNIT_METER = 1.0;

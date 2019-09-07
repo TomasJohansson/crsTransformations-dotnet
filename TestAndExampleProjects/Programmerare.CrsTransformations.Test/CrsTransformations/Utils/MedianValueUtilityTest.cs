@@ -1,7 +1,8 @@
 using NUnit.Framework;
+using Programmerare.CrsTransformations.Utils;
 using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations.Utils {
+namespace Programmerare.CrsTransformations.Core.Utils {
 
 [TestFixture]
 public class MedianValueUtilityTest {

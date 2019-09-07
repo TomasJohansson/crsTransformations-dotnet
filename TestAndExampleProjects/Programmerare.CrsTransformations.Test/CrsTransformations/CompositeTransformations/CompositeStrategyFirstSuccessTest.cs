@@ -3,7 +3,7 @@ using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations.CompositeTransformations  {
+namespace Programmerare.CrsTransformations.Core.CompositeTransformations  {
 
 [TestFixture]
 public class CompositeStrategyFirstSuccessTest : CompositeStrategyTestBase {

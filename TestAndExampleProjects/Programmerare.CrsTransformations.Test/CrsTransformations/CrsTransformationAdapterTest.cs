@@ -7,7 +7,7 @@ using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Identifier;
 
-namespace Programmerare.CrsTransformations {
+namespace Programmerare.CrsTransformations.Core {
 [TestFixture]
 public class CrsTransformationAdapterTest : CrsTransformationTestBase {
 	

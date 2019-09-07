@@ -4,8 +4,8 @@ using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using System.Collections.Generic;
 
-namespace Programmerare.CrsTransformations.Test.Implementations.Issues
-{
+namespace Programmerare.CrsTransformations.Adapter.ProjNet {
+
     [TestFixture]
     class ProjNet4GeoAPI_issue_38_Test
     {

@@ -1,4 +1,4 @@
-namespace Programmerare.CrsTransformations.CompositeTransformations {
+namespace Programmerare.CrsTransformations.Core.CompositeTransformations {
 
 using System;
 using NUnit.Framework;
@@ -7,8 +7,9 @@ using Programmerare.CrsTransformations;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.ProjNet;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
+using Programmerare.CrsTransformations.CompositeTransformations;
 
-[TestFixture]
+    [TestFixture]
 public class CrsTransformationAdapterCompositeFactoryTest {
 
     private const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = CrsTransformationAdapterTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;

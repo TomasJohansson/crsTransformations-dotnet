@@ -1,7 +1,7 @@
 ﻿using System;
 using NUnit.Framework;
 
-namespace Programmerare.CrsTransformations {
+namespace Programmerare.CrsTransformations.Core {
 
     [TestFixture]
     class FileInfoVersionTest {

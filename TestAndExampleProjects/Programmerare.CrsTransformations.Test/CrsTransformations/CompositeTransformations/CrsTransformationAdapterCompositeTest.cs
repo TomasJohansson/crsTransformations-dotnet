@@ -1,4 +1,4 @@
-namespace Programmerare.CrsTransformations.CompositeTransformations {
+namespace Programmerare.CrsTransformations.Core.CompositeTransformations {
 
 using System;
 using Programmerare.CrsTransformations;
@@ -8,8 +8,9 @@ using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 using System.Collections.Generic;
+    using Programmerare.CrsTransformations.CompositeTransformations;
 
-[TestFixture]
+    [TestFixture]
 public class CrsTransformationAdapterCompositeTest {
 
     private const int EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS = CrsTransformationAdapterTest.EXPECTED_NUMBER_OF_ADAPTER_LEAF_IMPLEMENTATIONS;

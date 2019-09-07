@@ -2,7 +2,7 @@
 
 using NUnit.Framework;
 
-namespace Programmerare.CrsTransformations.Test.CrsConstants {
+namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber {
     [TestFixture]
     class EpsgNumberTest {
         

@@ -1,6 +1,6 @@
 using NUnit.Framework;
 
-namespace Programmerare.CrsTransformations {
+namespace Programmerare.CrsTransformations.Core {
 
 [TestFixture]
 public class CrsTransformationResultStatisticTest : CrsTransformationResultTestBase {
