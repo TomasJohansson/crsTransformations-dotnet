@@ -44,7 +44,7 @@ namespace Programmerare.CrsTransformations.TestData
 [TestFixture]
 [Category(TestCategory.SideEffectFileCreation)]
 [Category(TestCategory.SideEffectPrintingConsoleOutput)]
-[Ignore("Not real tests but a method in this class can be executed if you temporary disable this 'Ignore'")]
+[Ignore("Not real tests but a method in this class can be executed if you temporary disable this 'Ignore'")] 
 // You may want to temporary change the above line if you want to run the "tests"
 //  ( and also see comments in the class TestCategory regarding that this "test" file 
 //    creates files and produces output to the console)
@@ -101,7 +101,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             testResultForMightyLittleGeodesy,
             DELTA_LIMIT_FOR_SUCCESS,
             shouldCreateNewRegressionFile,
-            "_version_1.0.1" // LEAF_MIGHTY_LITTLE_GEODESY_1_0_1
+            "_version_1.0.2" // LEAF_MIGHTY_LITTLE_GEODESY_1_0_1
             // File created: "resources/regression_results/MightyLittleGeodesy_version_1.0.1.csv
         );
     }
@@ -137,7 +137,7 @@ public class CoordinateTestDataGeneratedFromEpsgDatabaseTest {
             testResultForProjNet,
             DELTA_LIMIT_FOR_SUCCESS,
             shouldCreateNewRegressionFile,
-            "_version_1.4.1" // LEAF_PROJ_NET_4_GEO_API_1_4_1  TODO LEAF_PROJ_NET_2_0_0
+            "_version_2.0.0"
             // File created: "resources/regression_results/ProjNet_version_1.4.1.csv
         );
     }
