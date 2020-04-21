@@ -11,7 +11,7 @@ class SmallCSharpeExample {
         int epsgSweRef = 3006;
         // alternative to the above two hardcodings: use the library "Programmerare.CrsTransformations.Constants"
         // and constants EpsgNumber.WORLD__WGS_84__4326 and EpsgNumber.SWEDEN__SWEREF99_TM__3006
-        // from the class Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7.EpsgNumber
+        // from the class Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9.EpsgNumber
          
         CrsCoordinate centralStockholmWgs84 = CrsCoordinateFactory.LatLon(59.330231, 18.059196, epsgWgs84);
         

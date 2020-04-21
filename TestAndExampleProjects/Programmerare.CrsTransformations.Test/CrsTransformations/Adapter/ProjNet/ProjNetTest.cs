@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
-using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_7;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9;
 using System.Collections.Generic;
 
 namespace Programmerare.CrsTransformations.Adapter.ProjNet {
