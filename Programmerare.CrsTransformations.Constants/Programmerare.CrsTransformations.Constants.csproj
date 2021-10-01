@@ -2,7 +2,7 @@
 
   <PropertyGroup>
     <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>9.5.4</Version>
+    <Version>10.027</Version>
     <Title>.NET constants with EPSG codes for Coordinate Reference Systems</Title>
     <Authors>TomasJohansson</Authors>
     <Description>.NET constants with EPSG codes for Coordinate Reference Systems.
@@ -16,6 +16,8 @@ Some quotes from the 'Terms of use' URL:
     <PackageProjectUrl>https://github.com/TomasJohansson/crsTransformations-dotnet</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/Programmerare.CrsTransformations.Constants/LICENSE_NOTICE.txt</PackageLicenseUrl>
     <PackageTags>gis crs transformations coordinates spatial srs transformation transform convert conversion conversions coordinate projection projections geographic geodetic datum geodesy</PackageTags>
+    <Product>Programmerare.CrsTransformations.Constants</Product>
+    <PackageId>Programmerare.CrsTransformations.Constants</PackageId>
   </PropertyGroup>
 
   <PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net45|AnyCPU'">
@@ -24,6 +26,9 @@ Some quotes from the 'Terms of use' URL:
 
   <ItemGroup>
     <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_5_4\EpsgNumber.fs" />
+    <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_6\EpsgNumber.fs" />
+    <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_7\EpsgNumber.fs" />
+    <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_8_9\EpsgNumber.fs" />
   </ItemGroup>
 
 </Project>
