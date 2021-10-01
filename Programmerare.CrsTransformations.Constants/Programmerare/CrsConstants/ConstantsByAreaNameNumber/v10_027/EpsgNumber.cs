@@ -1,4 +1,4 @@
-namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
+namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_027 {
 /** 
 * Copyright (c) Tomas Johansson ( http://programmerare.com )
 * The above person is author of the code that generated this class 
@@ -12,9 +12,8 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
 *   Ownership of the EPSG Dataset by IOGP must be acknowledged... "
 */
 
-    [System.Obsolete("use a later version instead (with a higher version number in the namespace)")]
     /// <summary>
-    /// The constants in this file was generated based on data from EPSG v9.8.9
+    /// The constants in this file was generated based on data from EPSG v10.027
     /// http://www.epsg-registry.org
     /// http://www.epsg.org
     /// </summary>
@@ -417,6 +416,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int AMERICAN_SAMOA__TUTUILA_ISLAND__ASVD02_HEIGHT__6643 = 6643;
 
         /**
+        * EPSG:9526 , NAD83(PA11) + ASVD02 height , American Samoa - Tutuila island
+        * https://epsg.io/9526
+        */
+        public const int AMERICAN_SAMOA__TUTUILA_ISLAND__NAD83_PA11__ASVD02_HEIGHT__9526 = 9526;
+
+        /**
+        * EPSG:9675 , Pago Pago 2020 height , American Samoa - Tutuila island
+        * https://epsg.io/9675
+        */
+        public const int AMERICAN_SAMOA__TUTUILA_ISLAND__PAGO_PAGO_2020_HEIGHT__9675 = 9675;
+
+        /**
         * EPSG:6638 , Tutuila 1962 height , American Samoa - Tutuila island
         * https://epsg.io/6638
         */
@@ -433,6 +444,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/22033
         */
         public const int ANGOLA__ANGOLA_PROPER__12_E_TO_18_E__CAMACUPA_1948__UTM_ZONE_33S__22033 = 22033;
+
+        /**
+        * EPSG:4220 , Camacupa 1948 , Angola - Angola proper
+        * https://epsg.io/4220
+        */
+        public const int ANGOLA__ANGOLA_PROPER__CAMACUPA_1948__4220 = 4220;
 
         /**
         * EPSG:62206405 , Camacupa (deg) , Angola - Angola proper
@@ -487,12 +504,6 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/26432
         */
         public const int ANGOLA__CABINDA__MHAST__UTM_ZONE_32S__26432 = 26432;
-
-        /**
-        * EPSG:4220 , Camacupa 1948 , Angola
-        * https://epsg.io/4220
-        */
-        public const int ANGOLA__CAMACUPA_1948__4220 = 4220;
 
         /**
         * EPSG:8694 , Camacupa 2015 , Angola
@@ -2013,6 +2024,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int ARGENTINA__70_5_W_TO_67_5_W_ONSHORE__POSGAR_98__ARGENTINA_2__22172 = 22172;
 
         /**
+        * EPSG:9498 , POSGAR 2007 / CABA 2019 , Argentina - Buenos Aires city
+        * https://epsg.io/9498
+        */
+        public const int ARGENTINA__BUENOS_AIRES_CITY__POSGAR_2007__CABA_2019__9498 = 9498;
+
+        /**
         * EPSG:62216405 , Campo Inchauspe (deg) , Argentina
         * https://epsg.io/62216405
         */
@@ -2073,10 +2090,16 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int ARGENTINA__MENDOZA_AND_NEUQUEN__CHOS_MALAL_1914__4160 = 4160;
 
         /**
-        * EPSG:61606405 , Chos Malal 1914 (deg) , Argentina - Neuquen basin
+        * EPSG:61606405 , Chos Malal 1914 (deg) , Argentina - Neuquen province
         * https://epsg.io/61606405
         */
-        public const int ARGENTINA__NEUQUEN_BASIN__CHOS_MALAL_1914__DEG__61606405 = 61606405;
+        public const int ARGENTINA__NEUQUEN_PROVINCE__CHOS_MALAL_1914__DEG__61606405 = 61606405;
+
+        /**
+        * EPSG:9521 , POSGAR 2007 + SRVN16 height , Argentina - onshore
+        * https://epsg.io/9521
+        */
+        public const int ARGENTINA__ONSHORE__POSGAR_2007__SRVN16_HEIGHT__9521 = 9521;
 
         /**
         * EPSG:9255 , SRVN16 height , Argentina - onshore
@@ -3081,6 +3104,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int AUSTRALIA_CHRISTMAS_AND_COCOS__ONSHORE__AHD_HEIGHT__5711 = 5711;
 
         /**
+        * EPSG:9463 , GDA2020 + AHD height , Australia Christmas and Cocos - onshore
+        * https://epsg.io/9463
+        */
+        public const int AUSTRALIA_CHRISTMAS_AND_COCOS__ONSHORE__GDA2020__AHD_HEIGHT__9463 = 9463;
+
+        /**
+        * EPSG:9464 , GDA94 + AHD height , Australia Christmas and Cocos - onshore
+        * https://epsg.io/9464
+        */
+        public const int AUSTRALIA_CHRISTMAS_AND_COCOS__ONSHORE__GDA94__AHD_HEIGHT__9464 = 9464;
+
+        /**
         * EPSG:20248 , AGD66 / AMG zone 48 , Australia - 102°E to 108°E
         * https://epsg.io/20248
         */
@@ -3273,6 +3308,30 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int AUSTRALIA__EEZ_EAST_OF_162_E__AGD84__AMG_ZONE_58__20358 = 20358;
 
         /**
+        * EPSG:9307 , ATRF2014 , Australia - GDA
+        * https://epsg.io/9307
+        */
+        public const int AUSTRALIA__GDA__ATRF2014__9307 = 9307;
+
+        /**
+        * EPSG:9308 , ATRF2014 , Australia - GDA
+        * https://epsg.io/9308
+        */
+        public const int AUSTRALIA__GDA__ATRF2014__9308 = 9308;
+
+        /**
+        * EPSG:9309 , ATRF2014 , Australia - GDA
+        * https://epsg.io/9309
+        */
+        public const int AUSTRALIA__GDA__ATRF2014__9309 = 9309;
+
+        /**
+        * EPSG:9458 , AVWS height , Australia - GDA
+        * https://epsg.io/9458
+        */
+        public const int AUSTRALIA__GDA__AVWS_HEIGHT__9458 = 9458;
+
+        /**
         * EPSG:7842 , GDA2020 , Australia - GDA
         * https://epsg.io/7842
         */
@@ -3289,6 +3348,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/7844
         */
         public const int AUSTRALIA__GDA__GDA2020__7844 = 7844;
+
+        /**
+        * EPSG:9462 , GDA2020 + AVWS height , Australia - GDA
+        * https://epsg.io/9462
+        */
+        public const int AUSTRALIA__GDA__GDA2020__AVWS_HEIGHT__9462 = 9462;
 
         /**
         * EPSG:4283 , GDA94 , Australia - GDA
@@ -3343,6 +3408,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/4348
         */
         public const int AUSTRALIA__ONSHORE_AND_EEZ__GDA94__GEOCENTRIC__4348 = 4348;
+
+        /**
+        * EPSG:9473 , GDA2020 / Australian Albers , Australia - onshore
+        * https://epsg.io/9473
+        */
+        public const int AUSTRALIA__ONSHORE__GDA2020__AUSTRALIAN_ALBERS__9473 = 9473;
 
         /**
         * EPSG:7845 , GDA2020 / GA LCC , Australia - onshore
@@ -3663,6 +3734,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int AUSTRIA__ETRS89__AUSTRIA_LAMBERT__3416 = 3416;
 
         /**
+        * EPSG:9500 , ETRS89 + EVRF2000 Austria height , Austria
+        * https://epsg.io/9500
+        */
+        public const int AUSTRIA__ETRS89__EVRF2000_AUSTRIA_HEIGHT__9500 = 9500;
+
+        /**
         * EPSG:9274 , EVRF2000 Austria height , Austria
         * https://epsg.io/9274
         */
@@ -3703,6 +3780,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/31297
         */
         public const int AUSTRIA__MGI__AUSTRIA_LAMBERT__31297 = 31297;
+
+        /**
+        * EPSG:9501 , MGI + EVRF2000 Austria height , Austria
+        * https://epsg.io/9501
+        */
+        public const int AUSTRIA__MGI__EVRF2000_AUSTRIA_HEIGHT__9501 = 9501;
+
+        /**
+        * EPSG:8881 , Vienna height , Austria - Vienna
+        * https://epsg.io/8881
+        */
+        public const int AUSTRIA__VIENNA__VIENNA_HEIGHT__8881 = 8881;
 
         /**
         * EPSG:31257 , MGI / Austria GK M28 , Austria - west of 11°50&#39;E
@@ -3783,10 +3872,10 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int BANGLADESH__GULSHAN_303__4682 = 4682;
 
         /**
-        * EPSG:3106 , Gulshan 303 / Bangladesh Transverse Mercator , Bangladesh
+        * EPSG:3106 , Gulshan 303 / TM 90 NE , Bangladesh
         * https://epsg.io/3106
         */
-        public const int BANGLADESH__GULSHAN_303__BANGLADESH_TRANSVERSE_MERCATOR__3106 = 3106;
+        public const int BANGLADESH__GULSHAN_303__TM_90_NE__3106 = 3106;
 
         /**
         * EPSG:24306 , Kalianpur 1937 / UTM zone 46N , Bangladesh - onshore east of 90°E
@@ -3801,10 +3890,34 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int BANGLADESH__ONSHORE_WEST_OF_90_E__KALIANPUR_1937__UTM_ZONE_45N__24305 = 24305;
 
         /**
+        * EPSG:9678 , Gulshan 303 / Bangladesh Transverse Mercator , Bangladesh - onshore
+        * https://epsg.io/9678
+        */
+        public const int BANGLADESH__ONSHORE__GULSHAN_303__BANGLADESH_TRANSVERSE_MERCATOR__9678 = 9678;
+
+        /**
+        * EPSG:3106 , Gulshan 303 / TM 90 NE , Bangladesh - onshore
+        * https://epsg.io/3106
+        */
+        public const int BANGLADESH__ONSHORE__GULSHAN_303__TM_90_NE__3106 = 3106;
+
+        /**
         * EPSG:24375 , Kalianpur 1937 / India zone IIb , Bangladesh - onshore
         * https://epsg.io/24375
         */
         public const int BANGLADESH__ONSHORE__KALIANPUR_1937__INDIA_ZONE_IIB__24375 = 24375;
+
+        /**
+        * EPSG:9681 , NVD 1992 height , Bangladesh - onshore
+        * https://epsg.io/9681
+        */
+        public const int BANGLADESH__ONSHORE__NVD_1992_HEIGHT__9681 = 9681;
+
+        /**
+        * EPSG:9680 , WGS 84 / TM 90 NE , Bangladesh
+        * https://epsg.io/9680
+        */
+        public const int BANGLADESH__WGS_84__TM_90_NE__9680 = 9680;
 
         /**
         * EPSG:62126405 , Barbados 1938 (deg) , Barbados
@@ -3831,22 +3944,46 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int BARBADOS__ONSHORE__BARBADOS_1938__BRITISH_WEST_INDIES_GRID__21291 = 21291;
 
         /**
-        * EPSG:4215 , Belge 1950 , Belgium - onshore
+        * EPSG:4215 , BD50 , Belgium - onshore
         * https://epsg.io/4215
         */
-        public const int BELGIUM__ONSHORE__BELGE_1950__4215 = 4215;
+        public const int BELGIUM__ONSHORE__BD50__4215 = 4215;
 
         /**
-        * EPSG:4809 , Belge 1950 (Brussels) , Belgium - onshore
+        * EPSG:4809 , BD50 (Brussels) , Belgium - onshore
         * https://epsg.io/4809
         */
-        public const int BELGIUM__ONSHORE__BELGE_1950__BRUSSELS__4809 = 4809;
+        public const int BELGIUM__ONSHORE__BD50__BRUSSELS__4809 = 4809;
 
         /**
-        * EPSG:21500 , Belge 1950 (Brussels) / Belge Lambert 50 , Belgium - onshore
+        * EPSG:21500 , BD50 (Brussels) / Belge Lambert 50 , Belgium - onshore
         * https://epsg.io/21500
         */
-        public const int BELGIUM__ONSHORE__BELGE_1950__BRUSSELS__BELGE_LAMBERT_50__21500 = 21500;
+        public const int BELGIUM__ONSHORE__BD50__BRUSSELS__BELGE_LAMBERT_50__21500 = 21500;
+
+        /**
+        * EPSG:4313 , BD72 , Belgium - onshore
+        * https://epsg.io/4313
+        */
+        public const int BELGIUM__ONSHORE__BD72__4313 = 4313;
+
+        /**
+        * EPSG:31300 , BD72 / Belge Lambert 72 , Belgium - onshore
+        * https://epsg.io/31300
+        */
+        public const int BELGIUM__ONSHORE__BD72__BELGE_LAMBERT_72__31300 = 31300;
+
+        /**
+        * EPSG:31370 , BD72 / Belgian Lambert 72 , Belgium - onshore
+        * https://epsg.io/31370
+        */
+        public const int BELGIUM__ONSHORE__BD72__BELGIAN_LAMBERT_72__31370 = 31370;
+
+        /**
+        * EPSG:6190 , BD72 / Belgian Lambert 72 + Ostend height , Belgium - onshore
+        * https://epsg.io/6190
+        */
+        public const int BELGIUM__ONSHORE__BD72__BELGIAN_LAMBERT_72__OSTEND_HEIGHT__6190 = 6190;
 
         /**
         * EPSG:68096405 , Belge 1950 (Brussels) (deg) , Belgium - onshore
@@ -3859,30 +3996,6 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/62156405
         */
         public const int BELGIUM__ONSHORE__BELGE_1950__DEG__62156405 = 62156405;
-
-        /**
-        * EPSG:4313 , Belge 1972 , Belgium - onshore
-        * https://epsg.io/4313
-        */
-        public const int BELGIUM__ONSHORE__BELGE_1972__4313 = 4313;
-
-        /**
-        * EPSG:31300 , Belge 1972 / Belge Lambert 72 , Belgium - onshore
-        * https://epsg.io/31300
-        */
-        public const int BELGIUM__ONSHORE__BELGE_1972__BELGE_LAMBERT_72__31300 = 31300;
-
-        /**
-        * EPSG:31370 , Belge 1972 / Belgian Lambert 72 , Belgium - onshore
-        * https://epsg.io/31370
-        */
-        public const int BELGIUM__ONSHORE__BELGE_1972__BELGIAN_LAMBERT_72__31370 = 31370;
-
-        /**
-        * EPSG:6190 , Belge 1972 / Belgian Lambert 72 + Ostend height , Belgium - onshore
-        * https://epsg.io/6190
-        */
-        public const int BELGIUM__ONSHORE__BELGE_1972__BELGIAN_LAMBERT_72__OSTEND_HEIGHT__6190 = 6190;
 
         /**
         * EPSG:63136405 , Belge 1972 (deg) , Belgium - onshore
@@ -4509,6 +4622,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int BULGARIA__24_E_TO_30_E__BGS2005__UTM_ZONE_35N__7804 = 7804;
 
         /**
+        * EPSG:9391 , BGS2005 / UTM zone 35N , Bulgaria - 24°E to 30°E
+        * https://epsg.io/9391
+        */
+        public const int BULGARIA__24_E_TO_30_E__BGS2005__UTM_ZONE_35N__9391 = 9391;
+
+        /**
         * EPSG:7800 , BGS2005 / UTM zone 35N (N-E) , Bulgaria - 24°E to 30°E
         * https://epsg.io/7800
         */
@@ -4543,6 +4662,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/5786
         */
         public const int BULGARIA__ONSHORE__BALTIC_1982_HEIGHT__5786 = 5786;
+
+        /**
+        * EPSG:9669 , BGS2005 height , Bulgaria - onshore
+        * https://epsg.io/9669
+        */
+        public const int BULGARIA__ONSHORE__BGS2005_HEIGHT__9669 = 9669;
 
         /**
         * EPSG:7801 , BGS2005 / CCS2005 , Bulgaria - onshore
@@ -4785,6 +4910,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int CANADA__144_W_TO_138_W__NAD83_CSRS__UTM_ZONE_7N__CGVD2013_HEIGHT__6650 = 6650;
 
         /**
+        * EPSG:9709 , NAD83(CSRS) / UTM zone 23N , Canada - 48°W to 42°W
+        * https://epsg.io/9709
+        */
+        public const int CANADA__48_W_TO_42_W__NAD83_CSRS__UTM_ZONE_23N__9709 = 9709;
+
+        /**
+        * EPSG:9711 , NAD83(CSRS) / UTM zone 23N + CGVD2013 height , Canada - 48°W to 42°W
+        * https://epsg.io/9711
+        */
+        public const int CANADA__48_W_TO_42_W__NAD83_CSRS__UTM_ZONE_23N__CGVD2013_HEIGHT__9711 = 9711;
+
+        /**
         * EPSG:26923 , NAD83 / UTM zone 23N , Canada - 48°W to 42°W
         * https://epsg.io/26923
         */
@@ -4915,6 +5052,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/3159
         */
         public const int CANADA__96_W_TO_90_W__NAD83_CSRS__UTM_ZONE_15N__3159 = 3159;
+
+        /**
+        * EPSG:9715 , NAD83(CSRS) / UTM zone 15N + CGVD2013a height , Canada - 96°W to 90°W
+        * https://epsg.io/9715
+        */
+        public const int CANADA__96_W_TO_90_W__NAD83_CSRS__UTM_ZONE_15N__CGVD2013A_HEIGHT__9715 = 9715;
 
         /**
         * EPSG:6658 , NAD83(CSRS) / UTM zone 15N + CGVD2013 height , Canada - 96°W to 90°W
@@ -5073,6 +5216,24 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int CANADA__CSRS98__NAD83_CSRS98__4140 = 4140;
 
         /**
+        * EPSG:9713 , NAD83(CSRS) / UTM zone 24N , Canada - east of 42°W
+        * https://epsg.io/9713
+        */
+        public const int CANADA__EAST_OF_42_W__NAD83_CSRS__UTM_ZONE_24N__9713 = 9713;
+
+        /**
+        * EPSG:9714 , NAD83(CSRS) / UTM zone 24N + CGVD2013 height , Canada - east of 42°W
+        * https://epsg.io/9714
+        */
+        public const int CANADA__EAST_OF_42_W__NAD83_CSRS__UTM_ZONE_24N__CGVD2013_HEIGHT__9714 = 9714;
+
+        /**
+        * EPSG:9712 , NAD83 / UTM zone 24N , Canada - east of 42°W
+        * https://epsg.io/9712
+        */
+        public const int CANADA__EAST_OF_42_W__NAD83__UTM_ZONE_24N__9712 = 9712;
+
+        /**
         * EPSG:32084 , NAD27 / MTM zone 4 , Canada - Labrador - 63°W to 60°W
         * https://epsg.io/32084
         */
@@ -5221,6 +5382,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/8252
         */
         public const int CANADA__NAD83_CSRS_V6__8252 = 8252;
+
+        /**
+        * EPSG:9544 , NAD83(CSRS)v6 + CGVD2013(CGG2013a) height , Canada
+        * https://epsg.io/9544
+        */
+        public const int CANADA__NAD83_CSRS_V6__CGVD2013_CGG2013A__HEIGHT__9544 = 9544;
 
         /**
         * EPSG:8253 , NAD83(CSRS)v7 , Canada
@@ -6171,6 +6338,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int CAYMAN_ISLANDS__CAYMAN_BRAC__CBVD61_HEIGHT__FT__6132 = 6132;
 
         /**
+        * EPSG:9502 , CIGD11 + CBVD61 height (ft) , Cayman Islands - Cayman Brac
+        * https://epsg.io/9502
+        */
+        public const int CAYMAN_ISLANDS__CAYMAN_BRAC__CIGD11__CBVD61_HEIGHT__FT__9502 = 9502;
+
+        /**
         * EPSG:6141 , Cayman Islands National Grid 2011 , Cayman Islands
         * https://epsg.io/6141
         */
@@ -6199,6 +6372,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/6135
         */
         public const int CAYMAN_ISLANDS__CIGD11__6135 = 6135;
+
+        /**
+        * EPSG:9503 , CIGD11 + GCVD54 height (ft) , Cayman Islands - Grand Cayman
+        * https://epsg.io/9503
+        */
+        public const int CAYMAN_ISLANDS__GRAND_CAYMAN__CIGD11__GCVD54_HEIGHT__FT__9503 = 9503;
 
         /**
         * EPSG:4723 , GCGD59 , Cayman Islands - Grand Cayman
@@ -6243,6 +6422,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int CAYMAN_ISLANDS__LITTLE_CAYMAN_AND_CAYMAN_BRAC__SISTER_ISLANDS_NATIONAL_GRID_1961__6129 = 6129;
 
         /**
+        * EPSG:9504 , CIGD11 + LCVD61 height (ft) , Cayman Islands - Little Cayman
+        * https://epsg.io/9504
+        */
+        public const int CAYMAN_ISLANDS__LITTLE_CAYMAN__CIGD11__LCVD61_HEIGHT__FT__9504 = 9504;
+
+        /**
         * EPSG:6131 , LCVD61 height (ft) , Cayman Islands - Little Cayman
         * https://epsg.io/6131
         */
@@ -6267,6 +6452,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int CHANNEL_ISLANDS__JERSEY__LES_ECREHOS_AND_LES_MINQUIERS__ETRS89__JERSEY_TRANSVERSE_MERCATOR__3109 = 3109;
 
         /**
+        * EPSG:9699 , REDGEOMIN / UTM zone 19S , Chile - 72°W to 66°W
+        * https://epsg.io/9699
+        */
+        public const int CHILE__72_W_TO_66_W__REDGEOMIN__UTM_ZONE_19S__9699 = 9699;
+
+        /**
         * EPSG:5361 , SIRGAS-Chile 2002 / UTM zone 19S , Chile - 72°W to 66°W
         * https://epsg.io/5361
         */
@@ -6289,6 +6480,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/9155
         */
         public const int CHILE__72_W_TO_66_W__SIRGAS_CHILE_2016__UTM_ZONE_19S__9155 = 9155;
+
+        /**
+        * EPSG:9698 , REDGEOMIN / UTM zone 18S , Chile - 78°W to 72°W
+        * https://epsg.io/9698
+        */
+        public const int CHILE__78_W_TO_72_W__REDGEOMIN__UTM_ZONE_18S__9698 = 9698;
 
         /**
         * EPSG:5362 , SIRGAS-Chile 2002 / UTM zone 18S , Chile - 78°W to 72°W
@@ -6319,6 +6516,30 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/4719
         */
         public const int CHILE__EASTER_ISLAND_ONSHORE__EASTER_ISLAND_1967__4719 = 4719;
+
+        /**
+        * EPSG:9697 , REDGEOMIN / UTM zone 12S , Chile - Easter Island onshore
+        * https://epsg.io/9697
+        */
+        public const int CHILE__EASTER_ISLAND_ONSHORE__REDGEOMIN__UTM_ZONE_12S__9697 = 9697;
+
+        /**
+        * EPSG:9694 , REDGEOMIN , Chile
+        * https://epsg.io/9694
+        */
+        public const int CHILE__REDGEOMIN__9694 = 9694;
+
+        /**
+        * EPSG:9695 , REDGEOMIN , Chile
+        * https://epsg.io/9695
+        */
+        public const int CHILE__REDGEOMIN__9695 = 9695;
+
+        /**
+        * EPSG:9696 , REDGEOMIN , Chile
+        * https://epsg.io/9696
+        */
+        public const int CHILE__REDGEOMIN__9696 = 9696;
 
         /**
         * EPSG:5358 , SIRGAS-Chile 2002 , Chile
@@ -8433,6 +8654,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int COLOMBIA__MAGNA_SIRGAS__4997 = 4997;
 
         /**
+        * EPSG:9377 , MAGNA-SIRGAS / Origen-Nacional , Colombia
+        * https://epsg.io/9377
+        */
+        public const int COLOMBIA__MAGNA_SIRGAS__ORIGEN_NACIONAL__9377 = 9377;
+
+        /**
         * EPSG:4218 , Bogota 1975 , Colombia - mainland and offshore Caribbean
         * https://epsg.io/4218
         */
@@ -8443,6 +8670,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/4802
         */
         public const int COLOMBIA__MAINLAND__BOGOTA_1975__BOGOTA__4802 = 4802;
+
+        /**
+        * EPSG:3116 , MAGNA-SIRGAS / Colombia Bogota zone , Colombia - mainland
+        * https://epsg.io/3116
+        */
+        public const int COLOMBIA__MAINLAND__MAGNA_SIRGAS__COLOMBIA_BOGOTA_ZONE__3116 = 3116;
 
         /**
         * EPSG:6256 , MAGNA-SIRGAS / Manizales urban grid , Colombia - Manizales city
@@ -9423,6 +9656,54 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int ENTER_HERE_APPLICABLE_EXTENT__ENTER_HERE_NAME_OF_I_J_90_BIN_GRID__5859 = 5859;
 
         /**
+        * EPSG:32762 , EPSG example I=J+90 bin grid (integer values) , enter here applicable extent
+        * https://epsg.io/32762
+        */
+        public const int ENTER_HERE_APPLICABLE_EXTENT__EPSG_EXAMPLE_I_J_90_BIN_GRID__INTEGER_VALUES__32762 = 32762;
+
+        /**
+        * EPSG:32763 , EPSG example I=J-90 bin grid (integer values) , enter here applicable extent
+        * https://epsg.io/32763
+        */
+        public const int ENTER_HERE_APPLICABLE_EXTENT__EPSG_EXAMPLE_I_J_90_BIN_GRID__INTEGER_VALUES__32763 = 32763;
+
+        /**
+        * EPSG:32596 , EPSG example I=J+90 bin grid (real values) , enter here applicable extent
+        * https://epsg.io/32596
+        */
+        public const int ENTER_HERE_APPLICABLE_EXTENT__EPSG_EXAMPLE_I_J_90_BIN_GRID__REAL_VALUES__32596 = 32596;
+
+        /**
+        * EPSG:32597 , EPSG example I=J-90 bin grid (real values) , enter here applicable extent
+        * https://epsg.io/32597
+        */
+        public const int ENTER_HERE_APPLICABLE_EXTENT__EPSG_EXAMPLE_I_J_90_BIN_GRID__REAL_VALUES__32597 = 32597;
+
+        /**
+        * EPSG:32764 , EPSG example I=J+90 local bin grid (integer values) , enter here applicable extent
+        * https://epsg.io/32764
+        */
+        public const int ENTER_HERE_APPLICABLE_EXTENT__EPSG_EXAMPLE_I_J_90_LOCAL_BIN_GRID__INTEGER_VALUES__32764 = 32764;
+
+        /**
+        * EPSG:32765 , EPSG example I=J-90 local bin grid (integer values) , enter here applicable extent
+        * https://epsg.io/32765
+        */
+        public const int ENTER_HERE_APPLICABLE_EXTENT__EPSG_EXAMPLE_I_J_90_LOCAL_BIN_GRID__INTEGER_VALUES__32765 = 32765;
+
+        /**
+        * EPSG:32598 , EPSG example I=J+90 local bin grid (real values) , enter here applicable extent
+        * https://epsg.io/32598
+        */
+        public const int ENTER_HERE_APPLICABLE_EXTENT__EPSG_EXAMPLE_I_J_90_LOCAL_BIN_GRID__REAL_VALUES__32598 = 32598;
+
+        /**
+        * EPSG:32599 , EPSG example I=J-90 local bin grid (real values) , enter here applicable extent
+        * https://epsg.io/32599
+        */
+        public const int ENTER_HERE_APPLICABLE_EXTENT__EPSG_EXAMPLE_I_J_90_LOCAL_BIN_GRID__REAL_VALUES__32599 = 32599;
+
+        /**
         * EPSG:6883 , Bioko , Equatorial Guinea - Bioko
         * https://epsg.io/6883
         */
@@ -9499,6 +9780,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/3301
         */
         public const int ESTONIA__ESTONIAN_COORDINATE_SYSTEM_OF_1997__3301 = 3301;
+
+        /**
+        * EPSG:9663 , EH2000 height , Estonia - onshore
+        * https://epsg.io/9663
+        */
+        public const int ESTONIA__ONSHORE__EH2000_HEIGHT__9663 = 9663;
 
         /**
         * EPSG:4133 , EST92 , Estonia - onshore
@@ -9957,6 +10244,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int EUROPE__BRITISH_ISLES__UK_AND_IRELAND_ONSHORE__OS_SN_80__DEG__62796405 = 62796405;
 
         /**
+        * EPSG:9451 , BI height , Europe - British Isles - UK and Ireland onshore, UKCS
+        * https://epsg.io/9451
+        */
+        public const int EUROPE__BRITISH_ISLES__UK_AND_IRELAND_ONSHORE__UKCS__BI_HEIGHT__9451 = 9451;
+
+        /**
+        * EPSG:9452 , ETRS89 + BI height , Europe - British Isles - UK and Ireland onshore, UKCS
+        * https://epsg.io/9452
+        */
+        public const int EUROPE__BRITISH_ISLES__UK_AND_IRELAND_ONSHORE__UKCS__ETRS89__BI_HEIGHT__9452 = 9452;
+
+        /**
         * EPSG:8358 , Baltic 1957 depth , Europe - Czechoslovakia
         * https://epsg.io/8358
         */
@@ -10287,6 +10586,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int EUROPE__ETRF_BY_COUNTRY__ETRS89__GEOCENTRIC__4346 = 4346;
 
         /**
+        * EPSG:9422 , ETRS89 + EVRF2019 height , Europe - ETRF EVRF2019
+        * https://epsg.io/9422
+        */
+        public const int EUROPE__ETRF_EVRF2019__ETRS89__EVRF2019_HEIGHT__9422 = 9422;
+
+        /**
+        * EPSG:9423 , ETRS89 + EVRF2019 mean-tide height , Europe - ETRF EVRF2019
+        * https://epsg.io/9423
+        */
+        public const int EUROPE__ETRF_EVRF2019__ETRS89__EVRF2019_MEAN_TIDE_HEIGHT__9423 = 9423;
+
+        /**
         * EPSG:7409 , ETRS89 + EVRF2000 height , Europe - EVRF2000
         * https://epsg.io/7409
         */
@@ -10311,10 +10622,28 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int EUROPE__EVRF2007__EVRF2007_HEIGHT__5621 = 5621;
 
         /**
+        * EPSG:9389 , EVRF2019 height , Europe - EVRF2019
+        * https://epsg.io/9389
+        */
+        public const int EUROPE__EVRF2019__EVRF2019_HEIGHT__9389 = 9389;
+
+        /**
+        * EPSG:9390 , EVRF2019 mean-tide height , Europe - EVRF2019
+        * https://epsg.io/9390
+        */
+        public const int EUROPE__EVRF2019__EVRF2019_MEAN_TIDE_HEIGHT__9390 = 9390;
+
+        /**
         * EPSG:5597 , FCSVR10 height , Europe - Fehmarnbelt inner
         * https://epsg.io/5597
         */
         public const int EUROPE__FEHMARNBELT_INNER__FCSVR10_HEIGHT__5597 = 5597;
+
+        /**
+        * EPSG:9519 , FEH2010 + FCSVR10 height , Europe - Fehmarnbelt inner
+        * https://epsg.io/9519
+        */
+        public const int EUROPE__FEHMARNBELT_INNER__FEH2010__FCSVR10_HEIGHT__9519 = 9519;
 
         /**
         * EPSG:5598 , FEH2010 / Fehmarnbelt TM + FCSVR10 height , Europe - Fehmarnbelt inner
@@ -10707,6 +11036,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int EUROPE__FSU__CS63_ZONE_C2__PULKOVO_1942__CS63_ZONE_C2__3352 = 3352;
 
         /**
+        * EPSG:9449 , ETRS89 + Malin Head height , Europe - Ireland (Republic and Ulster) - onshore
+        * https://epsg.io/9449
+        */
+        public const int EUROPE__IRELAND__REPUBLIC_AND_ULSTER__ONSHORE__ETRS89__MALIN_HEAD_HEIGHT__9449 = 9449;
+
+        /**
         * EPSG:61736413 , IRENET95 (3D deg) , Europe - Ireland (Republic and Ulster) - onshore
         * https://epsg.io/61736413
         */
@@ -10953,6 +11288,30 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int EUROPE__LOWER_AUSTRIA_AND_MORAVIA__ST__STEPHEN__FERRO__8043 = 8043;
 
         /**
+        * EPSG:9549 , LTF2004(C) , Europe - Lyon-Turin
+        * https://epsg.io/9549
+        */
+        public const int EUROPE__LYON_TURIN__LTF2004_C__9549 = 9549;
+
+        /**
+        * EPSG:9545 , LTF2004(G) , Europe - Lyon-Turin
+        * https://epsg.io/9545
+        */
+        public const int EUROPE__LYON_TURIN__LTF2004_G__9545 = 9545;
+
+        /**
+        * EPSG:9546 , LTF2004(G) , Europe - Lyon-Turin
+        * https://epsg.io/9546
+        */
+        public const int EUROPE__LYON_TURIN__LTF2004_G__9546 = 9546;
+
+        /**
+        * EPSG:9547 , LTF2004(G) , Europe - Lyon-Turin
+        * https://epsg.io/9547
+        */
+        public const int EUROPE__LYON_TURIN__LTF2004_G__9547 = 9547;
+
+        /**
         * EPSG:4179 , Pulkovo 1942(58) , Europe - onshore - eastern - S-42(58)
         * https://epsg.io/4179
         */
@@ -11001,7 +11360,7 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int EUROPE__WEST__ED87__DEG__62316405 = 62316405;
 
         /**
-        * EPSG:6703 , WGS 84 / TM 60 SW , Falkland Islands -  offshore 63°W to 57°W
+        * EPSG:6703 , WGS 84 / TM 60 SW , Falkland Islands - offshore 63°W to 57°W
         * https://epsg.io/6703
         */
         public const int FALKLAND_ISLANDS__OFFSHORE_63_W_TO_57_W__WGS_84__TM_60_SW__6703 = 6703;
@@ -11247,7 +11606,7 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int FINLAND__25_5_E_TO_26_5_E_ONSHORE__ETRS89__ETRS_GK26FIN__3133 = 3133;
 
         /**
-        * EPSG:2393 , KKJ / Finland Uniform Coordinate System , Finland - 25.5°E to 28.5°E onshore.
+        * EPSG:2393 , KKJ / Finland Uniform Coordinate System , Finland - 25.5°E to 28.5°E onshore
         * https://epsg.io/2393
         */
         public const int FINLAND__25_5_E_TO_28_5_E_ONSHORE__KKJ__FINLAND_UNIFORM_COORDINATE_SYSTEM__2393 = 2393;
@@ -11367,6 +11726,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int FINLAND__ONSHORE__KKJ__4123 = 4123;
 
         /**
+        * EPSG:2393 , KKJ / Finland Uniform Coordinate System , Finland - onshore
+        * https://epsg.io/2393
+        */
+        public const int FINLAND__ONSHORE__KKJ__FINLAND_UNIFORM_COORDINATE_SYSTEM__2393 = 2393;
+
+        /**
         * EPSG:3901 , KKJ / Finland Uniform Coordinate System + N60 height , Finland - onshore
         * https://epsg.io/3901
         */
@@ -11461,6 +11826,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/5699
         */
         public const int FRANCE__CORSICA_ONSHORE__RGF93__LAMBERT_93__NGF_IGN78_HEIGHT__5699 = 5699;
+
+        /**
+        * EPSG:9539 , RGF93 + NGF-IGN78 height , France - Corsica onshore
+        * https://epsg.io/9539
+        */
+        public const int FRANCE__CORSICA_ONSHORE__RGF93__NGF_IGN78_HEIGHT__9539 = 9539;
 
         /**
         * EPSG:27582 , NTF (Paris) / France II , France - mainland 45.45°N to 48.15°N. Also all mainland.
@@ -11587,6 +11958,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/5698
         */
         public const int FRANCE__MAINLAND_ONSHORE__RGF93__LAMBERT_93__NGF_IGN69_HEIGHT__5698 = 5698;
+
+        /**
+        * EPSG:9538 , RGF93 + NGF-IGN69 height , France - mainland onshore
+        * https://epsg.io/9538
+        */
+        public const int FRANCE__MAINLAND_ONSHORE__RGF93__NGF_IGN69_HEIGHT__9538 = 9538;
 
         /**
         * EPSG:3942 , RGF93 / CC42 , France - mainland south of 43°N and Corsica
@@ -11803,6 +12180,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/5755
         */
         public const int FRENCH_GUIANA__ONSHORE__NGG1977_HEIGHT__5755 = 5755;
+
+        /**
+        * EPSG:9530 , RGFG95 + NGG1977 height , French Guiana - onshore
+        * https://epsg.io/9530
+        */
+        public const int FRENCH_GUIANA__ONSHORE__RGFG95__NGG1977_HEIGHT__9530 = 9530;
 
         /**
         * EPSG:66246413 , RGFG95 (3D deg) , French Guiana
@@ -12225,10 +12608,10 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int GAMBIA__ONSHORE__GAMBIA__6894 = 6894;
 
         /**
-        * EPSG:5336 , Black Sea depth , Georgia - onshore
+        * EPSG:5336 , Black Sea depth , Georgia
         * https://epsg.io/5336
         */
-        public const int GEORGIA__ONSHORE__BLACK_SEA_DEPTH__5336 = 5336;
+        public const int GEORGIA__BLACK_SEA_DEPTH__5336 = 5336;
 
         /**
         * EPSG:5735 , Black Sea height , Georgia - onshore
@@ -13011,6 +13394,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int GUADELOUPE__GRANDE_TERRE_AND_BASSE_TERRE__ONSHORE__GUADELOUPE_1988_HEIGHT__5757 = 5757;
 
         /**
+        * EPSG:9531 , RGAF09 + Guadeloupe 1988 height , Guadeloupe - Grande-Terre and Basse-Terre - onshore
+        * https://epsg.io/9531
+        */
+        public const int GUADELOUPE__GRANDE_TERRE_AND_BASSE_TERRE__ONSHORE__RGAF09__GUADELOUPE_1988_HEIGHT__9531 = 9531;
+
+        /**
         * EPSG:4622 , Guadeloupe 1948 , Guadeloupe - Grande-Terre and surrounding islands - onshore
         * https://epsg.io/4622
         */
@@ -13041,10 +13430,28 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int GUADELOUPE__LA_DESIRADE__ONSHORE__IGN_2008_LD_HEIGHT__9130 = 9130;
 
         /**
+        * EPSG:9536 , RGAF09 + IGN 2008 LD height , Guadeloupe - La Desirade - onshore
+        * https://epsg.io/9536
+        */
+        public const int GUADELOUPE__LA_DESIRADE__ONSHORE__RGAF09__IGN_2008_LD_HEIGHT__9536 = 9536;
+
+        /**
+        * EPSG:9542 , RRAF 1991 + IGN 2008 LD height , Guadeloupe - La Desirade - onshore
+        * https://epsg.io/9542
+        */
+        public const int GUADELOUPE__LA_DESIRADE__ONSHORE__RRAF_1991__IGN_2008_LD_HEIGHT__9542 = 9542;
+
+        /**
         * EPSG:5616 , IGN 1988 LS height , Guadeloupe - Les Saintes - onshore
         * https://epsg.io/5616
         */
         public const int GUADELOUPE__LES_SAINTES__ONSHORE__IGN_1988_LS_HEIGHT__5616 = 5616;
+
+        /**
+        * EPSG:9532 , RGAF09 + IGN 1988 LS height , Guadeloupe - Les Saintes - onshore
+        * https://epsg.io/9532
+        */
+        public const int GUADELOUPE__LES_SAINTES__ONSHORE__RGAF09__IGN_1988_LS_HEIGHT__9532 = 9532;
 
         /**
         * EPSG:5617 , IGN 1988 MG height , Guadeloupe - Marie-Galante - onshore
@@ -13053,10 +13460,22 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int GUADELOUPE__MARIE_GALANTE__ONSHORE__IGN_1988_MG_HEIGHT__5617 = 5617;
 
         /**
+        * EPSG:9533 , RGAF09 + IGN 1988 MG height , Guadeloupe - Marie-Galante - onshore
+        * https://epsg.io/9533
+        */
+        public const int GUADELOUPE__MARIE_GALANTE__ONSHORE__RGAF09__IGN_1988_MG_HEIGHT__9533 = 9533;
+
+        /**
         * EPSG:5619 , IGN 1988 SB height , Guadeloupe - St Barthelemy - onshore
         * https://epsg.io/5619
         */
         public const int GUADELOUPE__ST_BARTHELEMY__ONSHORE__IGN_1988_SB_HEIGHT__5619 = 5619;
+
+        /**
+        * EPSG:9534 , RGAF09 + IGN 1988 SB height , Guadeloupe - St Barthelemy - onshore
+        * https://epsg.io/9534
+        */
+        public const int GUADELOUPE__ST_BARTHELEMY__ONSHORE__RGAF09__IGN_1988_SB_HEIGHT__9534 = 9534;
 
         /**
         * EPSG:4621 , Fort Marigot , Guadeloupe - St Martin and St Barthelemy - onshore
@@ -13081,6 +13500,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/5620
         */
         public const int GUADELOUPE__ST_MARTIN__ONSHORE__IGN_1988_SM_HEIGHT__5620 = 5620;
+
+        /**
+        * EPSG:9535 , RGAF09 + IGN 1988 SM height , Guadeloupe - St Martin - onshore
+        * https://epsg.io/9535
+        */
+        public const int GUADELOUPE__ST_MARTIN__ONSHORE__RGAF09__IGN_1988_SM_HEIGHT__9535 = 9535;
 
         /**
         * EPSG:6639 , Guam 1963 height , Guam - onshore
@@ -13111,6 +13536,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/6637
         */
         public const int GUAM__ONSHORE__NAD83_MA11__GUAM_MAP_GRID__6637 = 6637;
+
+        /**
+        * EPSG:9524 , NAD83(MA11) + GUVD04 height , Guam - onshore
+        * https://epsg.io/9524
+        */
+        public const int GUAM__ONSHORE__NAD83_MA11__GUVD04_HEIGHT__9524 = 9524;
 
         /**
         * EPSG:32061 , NAD27 / Guatemala Norte , Guatemala - north of 15°51&#39;30&quot;N
@@ -13761,6 +14192,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int INDONESIA__102_E_TO_108_E__N_HEMISPHERE__DGN95__UTM_ZONE_48N__23868 = 23868;
 
         /**
+        * EPSG:9478 , SRGI2013 / UTM zone 48N , Indonesia - 102°E to 108°E, N hemisphere
+        * https://epsg.io/9478
+        */
+        public const int INDONESIA__102_E_TO_108_E__N_HEMISPHERE__SRGI2013__UTM_ZONE_48N__9478 = 9478;
+
+        /**
         * EPSG:23888 , ID74 / UTM zone 48S , Indonesia - 102°E to 108°E, S hemisphere onshore
         * https://epsg.io/23888
         */
@@ -13771,6 +14208,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/23878
         */
         public const int INDONESIA__102_E_TO_108_E__S_HEMISPHERE__DGN95__UTM_ZONE_48S__23878 = 23878;
+
+        /**
+        * EPSG:9488 , SRGI2013 / UTM zone 48S , Indonesia - 102°E to 108°E, S hemisphere
+        * https://epsg.io/9488
+        */
+        public const int INDONESIA__102_E_TO_108_E__S_HEMISPHERE__SRGI2013__UTM_ZONE_48S__9488 = 9488;
 
         /**
         * EPSG:23834 , DGN95 / Indonesia TM-3 zone 48.2 , Indonesia - 105°E to 108°E onshore
@@ -13797,6 +14240,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int INDONESIA__108_E_TO_114_E__N_HEMISPHERE__DGN95__UTM_ZONE_49N__23869 = 23869;
 
         /**
+        * EPSG:9479 , SRGI2013 / UTM zone 49N , Indonesia - 108°E to 114°E, N hemisphere
+        * https://epsg.io/9479
+        */
+        public const int INDONESIA__108_E_TO_114_E__N_HEMISPHERE__SRGI2013__UTM_ZONE_49N__9479 = 9479;
+
+        /**
         * EPSG:23889 , ID74 / UTM zone 49S , Indonesia - 108°E to 114°E, S hemisphere onshore
         * https://epsg.io/23889
         */
@@ -13807,6 +14256,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/23879
         */
         public const int INDONESIA__108_E_TO_114_E__S_HEMISPHERE__DGN95__UTM_ZONE_49S__23879 = 23879;
+
+        /**
+        * EPSG:9489 , SRGI2013 / UTM zone 49S , Indonesia - 108°E to 114°E, S hemisphere
+        * https://epsg.io/9489
+        */
+        public const int INDONESIA__108_E_TO_114_E__S_HEMISPHERE__SRGI2013__UTM_ZONE_49S__9489 = 9489;
 
         /**
         * EPSG:23836 , DGN95 / Indonesia TM-3 zone 49.2 , Indonesia - 111°E to 114°E onshore
@@ -13833,6 +14288,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int INDONESIA__114_E_TO_120_E__N_HEMISPHERE__DGN95__UTM_ZONE_50N__23870 = 23870;
 
         /**
+        * EPSG:9480 , SRGI2013 / UTM zone 50N , Indonesia - 114°E to 120°E, N hemisphere
+        * https://epsg.io/9480
+        */
+        public const int INDONESIA__114_E_TO_120_E__N_HEMISPHERE__SRGI2013__UTM_ZONE_50N__9480 = 9480;
+
+        /**
         * EPSG:23890 , ID74 / UTM zone 50S , Indonesia - 114°E to 120°E, S hemisphere onshore
         * https://epsg.io/23890
         */
@@ -13843,6 +14304,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/23880
         */
         public const int INDONESIA__114_E_TO_120_E__S_HEMISPHERE__DGN95__UTM_ZONE_50S__23880 = 23880;
+
+        /**
+        * EPSG:9490 , SRGI2013 / UTM zone 50S , Indonesia - 114°E to 120°E, S hemisphere
+        * https://epsg.io/9490
+        */
+        public const int INDONESIA__114_E_TO_120_E__S_HEMISPHERE__SRGI2013__UTM_ZONE_50S__9490 = 9490;
 
         /**
         * EPSG:23838 , DGN95 / Indonesia TM-3 zone 50.2 , Indonesia - 117°E to 120°E onshore
@@ -13869,6 +14336,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int INDONESIA__120_E_TO_126_E__N_HEMISPHERE__DGN95__UTM_ZONE_51N__23871 = 23871;
 
         /**
+        * EPSG:9481 , SRGI2013 / UTM zone 51N , Indonesia - 120°E to 126°E, N hemisphere
+        * https://epsg.io/9481
+        */
+        public const int INDONESIA__120_E_TO_126_E__N_HEMISPHERE__SRGI2013__UTM_ZONE_51N__9481 = 9481;
+
+        /**
         * EPSG:23891 , ID74 / UTM zone 51S , Indonesia - 120°E to 126°E, S hemisphere onshore
         * https://epsg.io/23891
         */
@@ -13879,6 +14352,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/23881
         */
         public const int INDONESIA__120_E_TO_126_E__S_HEMISPHERE__DGN95__UTM_ZONE_51S__23881 = 23881;
+
+        /**
+        * EPSG:9491 , SRGI2013 / UTM zone 51S , Indonesia - 120°E to 126°E, S hemisphere
+        * https://epsg.io/9491
+        */
+        public const int INDONESIA__120_E_TO_126_E__S_HEMISPHERE__SRGI2013__UTM_ZONE_51S__9491 = 9491;
 
         /**
         * EPSG:23840 , DGN95 / Indonesia TM-3 zone 51.2 , Indonesia - 123°E to 126°E onshore
@@ -13905,6 +14384,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int INDONESIA__126_E_TO_132_E__N_HEMISPHERE__DGN95__UTM_ZONE_52N__23872 = 23872;
 
         /**
+        * EPSG:9482 , SRGI2013 / UTM zone 52N , Indonesia - 126°E to 132°E, N hemisphere
+        * https://epsg.io/9482
+        */
+        public const int INDONESIA__126_E_TO_132_E__N_HEMISPHERE__SRGI2013__UTM_ZONE_52N__9482 = 9482;
+
+        /**
         * EPSG:23892 , ID74 / UTM zone 52S , Indonesia - 126°E to 132°E, S hemisphere onshore
         * https://epsg.io/23892
         */
@@ -13915,6 +14400,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/23882
         */
         public const int INDONESIA__126_E_TO_132_E__S_HEMISPHERE__DGN95__UTM_ZONE_52S__23882 = 23882;
+
+        /**
+        * EPSG:9492 , SRGI2013 / UTM zone 52S , Indonesia - 126°E to 132°E, S hemisphere
+        * https://epsg.io/9492
+        */
+        public const int INDONESIA__126_E_TO_132_E__S_HEMISPHERE__SRGI2013__UTM_ZONE_52S__9492 = 9492;
 
         /**
         * EPSG:23842 , DGN95 / Indonesia TM-3 zone 52.2 , Indonesia - 129°E to 132°E onshore
@@ -13947,6 +14438,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int INDONESIA__132_E_TO_138_E__S_HEMISPHERE__DGN95__UTM_ZONE_53S__23883 = 23883;
 
         /**
+        * EPSG:9493 , SRGI2013 / UTM zone 53S , Indonesia - 132°E to 138°E, S hemisphere
+        * https://epsg.io/9493
+        */
+        public const int INDONESIA__132_E_TO_138_E__S_HEMISPHERE__SRGI2013__UTM_ZONE_53S__9493 = 9493;
+
+        /**
         * EPSG:23844 , DGN95 / Indonesia TM-3 zone 53.2 , Indonesia - 135°E to 138°E onshore
         * https://epsg.io/23844
         */
@@ -13965,6 +14462,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int INDONESIA__96_E_TO_102_E__N_HEMISPHERE__DGN95__UTM_ZONE_47N__23867 = 23867;
 
         /**
+        * EPSG:9477 , SRGI2013 / UTM zone 47N , Indonesia - 96°E to 102°E, N hemisphere
+        * https://epsg.io/9477
+        */
+        public const int INDONESIA__96_E_TO_102_E__N_HEMISPHERE__SRGI2013__UTM_ZONE_47N__9477 = 9477;
+
+        /**
         * EPSG:23887 , ID74 / UTM zone 47S , Indonesia - 96°E to 102°E, S hemisphere onshore
         * https://epsg.io/23887
         */
@@ -13975,6 +14478,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/23877
         */
         public const int INDONESIA__96_E_TO_102_E__S_HEMISPHERE__DGN95__UTM_ZONE_47S__23877 = 23877;
+
+        /**
+        * EPSG:9487 , SRGI2013 / UTM zone 47S , Indonesia - 96°E to 102°E, S hemisphere
+        * https://epsg.io/9487
+        */
+        public const int INDONESIA__96_E_TO_102_E__S_HEMISPHERE__SRGI2013__UTM_ZONE_47S__9487 = 9487;
 
         /**
         * EPSG:23831 , DGN95 / Indonesia TM-3 zone 47.1 , Indonesia - 96°E to 99°E onshore
@@ -14085,10 +14594,22 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int INDONESIA__EAST_OF_138_E__S_HEMISPHERE__DGN95__UTM_ZONE_54S__23884 = 23884;
 
         /**
+        * EPSG:9494 , SRGI2013 / UTM zone 54S , Indonesia - east of 138°E, S hemisphere
+        * https://epsg.io/9494
+        */
+        public const int INDONESIA__EAST_OF_138_E__S_HEMISPHERE__SRGI2013__UTM_ZONE_54S__9494 = 9494;
+
+        /**
         * EPSG:62386405 , ID74 (deg) , Indonesia
         * https://epsg.io/62386405
         */
         public const int INDONESIA__ID74__DEG__62386405 = 62386405;
+
+        /**
+        * EPSG:9471 , INAGeoid2020 height , Indonesia
+        * https://epsg.io/9471
+        */
+        public const int INDONESIA__INAGEOID2020_HEIGHT__9471 = 9471;
 
         /**
         * EPSG:21149 , Batavia / UTM zone 49S , Indonesia - Java and Java Sea - 108°E to 114°E
@@ -14199,6 +14720,30 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int INDONESIA__ONSHORE__ID74__4238 = 4238;
 
         /**
+        * EPSG:9468 , SRGI2013 , Indonesia
+        * https://epsg.io/9468
+        */
+        public const int INDONESIA__SRGI2013__9468 = 9468;
+
+        /**
+        * EPSG:9469 , SRGI2013 , Indonesia
+        * https://epsg.io/9469
+        */
+        public const int INDONESIA__SRGI2013__9469 = 9469;
+
+        /**
+        * EPSG:9470 , SRGI2013 , Indonesia
+        * https://epsg.io/9470
+        */
+        public const int INDONESIA__SRGI2013__9470 = 9470;
+
+        /**
+        * EPSG:9529 , SRGI2013 + INAGeoid2020 height , Indonesia
+        * https://epsg.io/9529
+        */
+        public const int INDONESIA__SRGI2013__INAGEOID2020_HEIGHT__9529 = 9529;
+
+        /**
         * EPSG:4257 , Makassar , Indonesia - Sulawesi SW
         * https://epsg.io/4257
         */
@@ -14281,6 +14826,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/23866
         */
         public const int INDONESIA__WEST_OF_96_E__N_HEMISPHERE__DGN95__UTM_ZONE_46N__23866 = 23866;
+
+        /**
+        * EPSG:9476 , SRGI2013 / UTM zone 46N , Indonesia - west of 96°E, N hemisphere
+        * https://epsg.io/9476
+        */
+        public const int INDONESIA__WEST_OF_96_E__N_HEMISPHERE__SRGI2013__UTM_ZONE_46N__9476 = 9476;
 
         /**
         * EPSG:23886 , ID74 / UTM zone 46S , Indonesia - west of 96°E, S hemisphere
@@ -14511,6 +15062,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int ISLE_OF_MAN__ONSHORE__DOUGLAS_HEIGHT__5750 = 5750;
 
         /**
+        * EPSG:9429 , ETRS89 + Douglas height , Isle of Man - onshore
+        * https://epsg.io/9429
+        */
+        public const int ISLE_OF_MAN__ONSHORE__ETRS89__DOUGLAS_HEIGHT__9429 = 9429;
+
+        /**
         * EPSG:6985 , IGD05/12 , Israel
         * https://epsg.io/6985
         */
@@ -14583,6 +15140,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int ISRAEL__IGD05__7136 = 7136;
 
         /**
+        * EPSG:3065 , IGM95 / UTM zone 33N , Italy - 12°E to 18°E
+        * https://epsg.io/3065
+        */
+        public const int ITALY__12_E_TO_18_E__IGM95__UTM_ZONE_33N__3065 = 3065;
+
+        /**
         * EPSG:7792 , RDN2008 / UTM zone 33N , Italy - 12°E to 18°E
         * https://epsg.io/7792
         */
@@ -14595,12 +15158,6 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int ITALY__12_E_TO_18_E__RDN2008__UTM_ZONE_33N__N_E__6708 = 6708;
 
         /**
-        * EPSG:3065 , IGM95 / UTM zone 33N , Italy - east of 12°E
-        * https://epsg.io/3065
-        */
-        public const int ITALY__EAST_OF_12_E__IGM95__UTM_ZONE_33N__3065 = 3065;
-
-        /**
         * EPSG:3004 , Monte Mario / Italy zone 2 , Italy - east of 12°E
         * https://epsg.io/3004
         */
@@ -14611,6 +15168,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/26592
         */
         public const int ITALY__EAST_OF_12_E__MONTE_MARIO__ROME__ITALY_ZONE_2__26592 = 26592;
+
+        /**
+        * EPSG:9716 , IGM95 / UTM zone 34N , Italy - east of 18°E
+        * https://epsg.io/9716
+        */
+        public const int ITALY__EAST_OF_18_E__IGM95__UTM_ZONE_34N__9716 = 9716;
 
         /**
         * EPSG:7793 , RDN2008 / UTM zone 34N , Italy - east of 18°E
@@ -14679,10 +15242,16 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int ITALY__INCLUDING_SAN_MARINO_AND_VATICAN__RDN2008__6706 = 6706;
 
         /**
-        * EPSG:5214 , Genoa height , Italy - mainland and Sicily
+        * EPSG:9723 , ETRS89 + Genoa 1942 height , Italy - mainland and Sicily
+        * https://epsg.io/9723
+        */
+        public const int ITALY__MAINLAND_AND_SICILY__ETRS89__GENOA_1942_HEIGHT__9723 = 9723;
+
+        /**
+        * EPSG:5214 , Genoa 1942 height , Italy - mainland and Sicily
         * https://epsg.io/5214
         */
-        public const int ITALY__MAINLAND_AND_SICILY__GENOA_HEIGHT__5214 = 5214;
+        public const int ITALY__MAINLAND_AND_SICILY__GENOA_1942_HEIGHT__5214 = 5214;
 
         /**
         * EPSG:62656405 , Monte Mario (deg) , Italy
@@ -14719,6 +15288,30 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/6876
         */
         public const int ITALY__RDN2008__ZONE_12__N_E__6876 = 6876;
+
+        /**
+        * EPSG:9722 , Cagliari 1956 height , Italy - Sardinia onshore
+        * https://epsg.io/9722
+        */
+        public const int ITALY__SARDINIA_ONSHORE__CAGLIARI_1956_HEIGHT__9722 = 9722;
+
+        /**
+        * EPSG:9725 , ETRS89 + Cagliari 1956 height , Italy - Sardinia onshore
+        * https://epsg.io/9725
+        */
+        public const int ITALY__SARDINIA_ONSHORE__ETRS89__CAGLIARI_1956_HEIGHT__9725 = 9725;
+
+        /**
+        * EPSG:9721 , Catania 1965 height , Italy - Sicily onshore
+        * https://epsg.io/9721
+        */
+        public const int ITALY__SICILY_ONSHORE__CATANIA_1965_HEIGHT__9721 = 9721;
+
+        /**
+        * EPSG:9724 , ETRS89 + Catania 1965 height , Italy - Sicily onshore
+        * https://epsg.io/9724
+        */
+        public const int ITALY__SICILY_ONSHORE__ETRS89__CATANIA_1965_HEIGHT__9724 = 9724;
 
         /**
         * EPSG:3064 , IGM95 / UTM zone 32N , Italy - west of 12°E
@@ -16491,6 +17084,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int LITHUANIA__LKS94__LITHUANIA_TM__3346 = 3346;
 
         /**
+        * EPSG:9666 , LAS07 height , Lithuania - onshore
+        * https://epsg.io/9666
+        */
+        public const int LITHUANIA__ONSHORE__LAS07_HEIGHT__9666 = 9666;
+
+        /**
         * EPSG:4181 , Luxembourg 1930 , Luxembourg
         * https://epsg.io/4181
         */
@@ -16569,16 +17168,22 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int MADAGASCAR__ONSHORE__TANANARIVE__PARIS__LABORDE_GRID__29701 = 29701;
 
         /**
-        * EPSG:29872 , Timbalai 1948 / RSO Borneo (ftSe) , Malaysia - East Malaysia onshore
-        * https://epsg.io/29872
-        */
-        public const int MALAYSIA__EAST_MALAYSIA_ONSHORE__TIMBALAI_1948__RSO_BORNEO__FTSE__29872 = 29872;
-
-        /**
         * EPSG:3376 , GDM2000 / East Malaysia BRSO , Malaysia - East Malaysia
         * https://epsg.io/3376
         */
         public const int MALAYSIA__EAST_MALAYSIA__GDM2000__EAST_MALAYSIA_BRSO__3376 = 3376;
+
+        /**
+        * EPSG:29874 , Timbalai 1948 / RSO Sarawak LSD (m) , Malaysia - East Malaysia - Sarawak onshore
+        * https://epsg.io/29874
+        */
+        public const int MALAYSIA__EAST_MALAYSIA__SARAWAK_ONSHORE__TIMBALAI_1948__RSO_SARAWAK_LSD__M__29874 = 29874;
+
+        /**
+        * EPSG:29872 , Timbalai 1948 / RSO Borneo (ftSe) , Malaysia - East Malaysia
+        * https://epsg.io/29872
+        */
+        public const int MALAYSIA__EAST_MALAYSIA__TIMBALAI_1948__RSO_BORNEO__FTSE__29872 = 29872;
 
         /**
         * EPSG:4742 , GDM2000 , Malaysia
@@ -16789,6 +17394,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/5756
         */
         public const int MARTINIQUE__ONSHORE__MARTINIQUE_1987_HEIGHT__5756 = 5756;
+
+        /**
+        * EPSG:9537 , RGAF09 + Martinique 1987 height , Martinique - onshore
+        * https://epsg.io/9537
+        */
+        public const int MARTINIQUE__ONSHORE__RGAF09__MARTINIQUE_1987_HEIGHT__9537 = 9537;
 
         /**
         * EPSG:3368 , IGN Astro 1960 / UTM zone 29N , Mauritania - 12°W to 6°W
@@ -17415,10 +18026,46 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int NEPAL__NEPAL_1981__6207 = 6207;
 
         /**
+        * EPSG:9286 , ETRS89 + NAP height , Netherlands
+        * https://epsg.io/9286
+        */
+        public const int NETHERLANDS__ETRS89__NAP_HEIGHT__9286 = 9286;
+
+        /**
+        * EPSG:5709 , NAP height , Netherlands
+        * https://epsg.io/5709
+        */
+        public const int NETHERLANDS__NAP_HEIGHT__5709 = 5709;
+
+        /**
         * EPSG:23095 , ED50 / TM 5 NE , Netherlands - offshore
         * https://epsg.io/23095
         */
         public const int NETHERLANDS__OFFSHORE__ED50__TM_5_NE__23095 = 23095;
+
+        /**
+        * EPSG:9289 , ETRS89 + LAT NL depth , Netherlands - offshore
+        * https://epsg.io/9289
+        */
+        public const int NETHERLANDS__OFFSHORE__ETRS89__LAT_NL_DEPTH__9289 = 9289;
+
+        /**
+        * EPSG:9290 , ETRS89 + MSL NL depth , Netherlands - offshore
+        * https://epsg.io/9290
+        */
+        public const int NETHERLANDS__OFFSHORE__ETRS89__MSL_NL_DEPTH__9290 = 9290;
+
+        /**
+        * EPSG:9287 , LAT NL depth , Netherlands - offshore
+        * https://epsg.io/9287
+        */
+        public const int NETHERLANDS__OFFSHORE__LAT_NL_DEPTH__9287 = 9287;
+
+        /**
+        * EPSG:9288 , MSL NL depth , Netherlands - offshore
+        * https://epsg.io/9288
+        */
+        public const int NETHERLANDS__OFFSHORE__MSL_NL_DEPTH__9288 = 9288;
 
         /**
         * EPSG:4289 , Amersfoort , Netherlands - onshore
@@ -17451,12 +18098,6 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int NETHERLANDS__ONSHORE__AMERSFOORT__RD_OLD__28991 = 28991;
 
         /**
-        * EPSG:5709 , NAP height , Netherlands - onshore
-        * https://epsg.io/5709
-        */
-        public const int NETHERLANDS__ONSHORE__NAP_HEIGHT__5709 = 5709;
-
-        /**
         * EPSG:7408 , RD/NAP , Netherlands - onshore
         * https://epsg.io/7408
         */
@@ -17469,10 +18110,22 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int NEW_CALEDONIA__162_E_TO_168_E__RGNC91_93__UTM_ZONE_58S__3170 = 3170;
 
         /**
+        * EPSG:9351 , NGNC08 height , New Caledonia - Belep, Grande Terre, Ile des Pins, Loyalty Islands
+        * https://epsg.io/9351
+        */
+        public const int NEW_CALEDONIA__BELEP__GRANDE_TERRE__ILE_DES_PINS__LOYALTY_ISLANDS__NGNC08_HEIGHT__9351 = 9351;
+
+        /**
         * EPSG:3163 , RGNC91-93 / Lambert New Caledonia , New Caledonia - Belep, Grande Terre, Ile des Pins, Loyalty Islands
         * https://epsg.io/3163
         */
         public const int NEW_CALEDONIA__BELEP__GRANDE_TERRE__ILE_DES_PINS__LOYALTY_ISLANDS__RGNC91_93__LAMBERT_NEW_CALEDONIA__3163 = 3163;
+
+        /**
+        * EPSG:9540 , RGNC91-93 + NGNC08 height , New Caledonia - Belep, Grande Terre, Ile des Pins, Loyalty Islands
+        * https://epsg.io/9540
+        */
+        public const int NEW_CALEDONIA__BELEP__GRANDE_TERRE__ILE_DES_PINS__LOYALTY_ISLANDS__RGNC91_93__NGNC08_HEIGHT__9540 = 9540;
 
         /**
         * EPSG:4643 , ST71 Belep , New Caledonia - Belep
@@ -17529,10 +18182,10 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int NEW_CALEDONIA__GRANDE_TERRE__IGN72_GRAND_TERRE__UTM_ZONE_58S__2982 = 2982;
 
         /**
-        * EPSG:5753 , NGNC height , New Caledonia - Grande Terre
+        * EPSG:5753 , NGNC69 height , New Caledonia - Grande Terre
         * https://epsg.io/5753
         */
-        public const int NEW_CALEDONIA__GRANDE_TERRE__NGNC_HEIGHT__5753 = 5753;
+        public const int NEW_CALEDONIA__GRANDE_TERRE__NGNC69_HEIGHT__5753 = 5753;
 
         /**
         * EPSG:4644 , NEA74 Noumea , New Caledonia - Grande Terre - Noumea
@@ -18001,6 +18654,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/4364
         */
         public const int NEW_ZEALAND__NZGD2000__GEOCENTRIC__4364 = 4364;
+
+        /**
+        * EPSG:9527 , NZGD2000 + NZVD2009 height , New Zealand
+        * https://epsg.io/9527
+        */
+        public const int NEW_ZEALAND__NZGD2000__NZVD2009_HEIGHT__9527 = 9527;
+
+        /**
+        * EPSG:9528 , NZGD2000 + NZVD2016 height , New Zealand
+        * https://epsg.io/9528
+        */
+        public const int NEW_ZEALAND__NZGD2000__NZVD2016_HEIGHT__9528 = 9528;
 
         /**
         * EPSG:62726405 , NZGD49 (deg) , New Zealand
@@ -18477,6 +19142,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int NORFOLK_ISLAND__EAST_OF_168_E__GDA94__MGA_ZONE_59__6738 = 6738;
 
         /**
+        * EPSG:9525 , NAD83(MA11) + NMVD03 height , Northern Mariana Islands - onshore
+        * https://epsg.io/9525
+        */
+        public const int NORTHERN_MARIANA_ISLANDS__ONSHORE__NAD83_MA11__NMVD03_HEIGHT__9525 = 9525;
+
+        /**
         * EPSG:6640 , NMVD03 height , Northern Mariana Islands - Rota, Saipan and Tinian
         * https://epsg.io/6640
         */
@@ -18723,73 +19394,73 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int NORTH_MACEDONIA__MACEDONIA_STATE_COORDINATE_SYSTEM__6204 = 6204;
 
         /**
-        * EPSG:4860 , ETRS89 / NTM zone 10 , Norway - onshore - 10ºE to 11ºE
+        * EPSG:4860 , ETRS89 / NTM zone 10 , Norway - onshore - 10°E to 11°E
         * https://epsg.io/4860
         */
         public const int NORWAY__ONSHORE__10_E_TO_11_E__ETRS89__NTM_ZONE_10__4860 = 4860;
 
         /**
-        * EPSG:5110 , ETRS89 / NTM zone 10 , Norway - onshore - 10ºE to 11ºE
+        * EPSG:5110 , ETRS89 / NTM zone 10 , Norway - onshore - 10°E to 11°E
         * https://epsg.io/5110
         */
         public const int NORWAY__ONSHORE__10_E_TO_11_E__ETRS89__NTM_ZONE_10__5110 = 5110;
 
         /**
-        * EPSG:5950 , ETRS89 / NTM zone 10 + NN2000 height , Norway - onshore - 10ºE to 11ºE
+        * EPSG:5950 , ETRS89 / NTM zone 10 + NN2000 height , Norway - onshore - 10°E to 11°E
         * https://epsg.io/5950
         */
         public const int NORWAY__ONSHORE__10_E_TO_11_E__ETRS89__NTM_ZONE_10__NN2000_HEIGHT__5950 = 5950;
 
         /**
-        * EPSG:6150 , ETRS89 / NTM zone 10 + NN54 height , Norway - onshore - 10ºE to 11ºE
+        * EPSG:6150 , ETRS89 / NTM zone 10 + NN54 height , Norway - onshore - 10°E to 11°E
         * https://epsg.io/6150
         */
         public const int NORWAY__ONSHORE__10_E_TO_11_E__ETRS89__NTM_ZONE_10__NN54_HEIGHT__6150 = 6150;
 
         /**
-        * EPSG:4861 , ETRS89 / NTM zone 11 , Norway - onshore - 11ºE to 12ºE
+        * EPSG:4861 , ETRS89 / NTM zone 11 , Norway - onshore - 11°E to 12°E
         * https://epsg.io/4861
         */
         public const int NORWAY__ONSHORE__11_E_TO_12_E__ETRS89__NTM_ZONE_11__4861 = 4861;
 
         /**
-        * EPSG:5111 , ETRS89 / NTM zone 11 , Norway - onshore - 11ºE to 12ºE
+        * EPSG:5111 , ETRS89 / NTM zone 11 , Norway - onshore - 11°E to 12°E
         * https://epsg.io/5111
         */
         public const int NORWAY__ONSHORE__11_E_TO_12_E__ETRS89__NTM_ZONE_11__5111 = 5111;
 
         /**
-        * EPSG:5951 , ETRS89 / NTM zone 11 + NN2000 height , Norway - onshore - 11ºE to 12ºE
+        * EPSG:5951 , ETRS89 / NTM zone 11 + NN2000 height , Norway - onshore - 11°E to 12°E
         * https://epsg.io/5951
         */
         public const int NORWAY__ONSHORE__11_E_TO_12_E__ETRS89__NTM_ZONE_11__NN2000_HEIGHT__5951 = 5951;
 
         /**
-        * EPSG:6151 , ETRS89 / NTM zone 11 + NN54 height , Norway - onshore - 11ºE to 12ºE
+        * EPSG:6151 , ETRS89 / NTM zone 11 + NN54 height , Norway - onshore - 11°E to 12°E
         * https://epsg.io/6151
         */
         public const int NORWAY__ONSHORE__11_E_TO_12_E__ETRS89__NTM_ZONE_11__NN54_HEIGHT__6151 = 6151;
 
         /**
-        * EPSG:4862 , ETRS89 / NTM zone 12 , Norway - onshore - 12ºE to 13ºE
+        * EPSG:4862 , ETRS89 / NTM zone 12 , Norway - onshore - 12°E to 13°E
         * https://epsg.io/4862
         */
         public const int NORWAY__ONSHORE__12_E_TO_13_E__ETRS89__NTM_ZONE_12__4862 = 4862;
 
         /**
-        * EPSG:5112 , ETRS89 / NTM zone 12 , Norway - onshore - 12ºE to 13ºE
+        * EPSG:5112 , ETRS89 / NTM zone 12 , Norway - onshore - 12°E to 13°E
         * https://epsg.io/5112
         */
         public const int NORWAY__ONSHORE__12_E_TO_13_E__ETRS89__NTM_ZONE_12__5112 = 5112;
 
         /**
-        * EPSG:5952 , ETRS89 / NTM zone 12 + NN2000 height , Norway - onshore - 12ºE to 13ºE
+        * EPSG:5952 , ETRS89 / NTM zone 12 + NN2000 height , Norway - onshore - 12°E to 13°E
         * https://epsg.io/5952
         */
         public const int NORWAY__ONSHORE__12_E_TO_13_E__ETRS89__NTM_ZONE_12__NN2000_HEIGHT__5952 = 5952;
 
         /**
-        * EPSG:6152 , ETRS89 / NTM zone 12 + NN54 height , Norway - onshore - 12ºE to 13ºE
+        * EPSG:6152 , ETRS89 / NTM zone 12 + NN54 height , Norway - onshore - 12°E to 13°E
         * https://epsg.io/6152
         */
         public const int NORWAY__ONSHORE__12_E_TO_13_E__ETRS89__NTM_ZONE_12__NN54_HEIGHT__6152 = 6152;
@@ -18807,145 +19478,145 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int NORWAY__ONSHORE__12_E_TO_18_E__ETRS89__UTM_ZONE_33N__NN54_HEIGHT__6173 = 6173;
 
         /**
-        * EPSG:4863 , ETRS89 / NTM zone 13 , Norway - onshore - 13ºE to 14ºE
+        * EPSG:4863 , ETRS89 / NTM zone 13 , Norway - onshore - 13°E to 14°E
         * https://epsg.io/4863
         */
         public const int NORWAY__ONSHORE__13_E_TO_14_E__ETRS89__NTM_ZONE_13__4863 = 4863;
 
         /**
-        * EPSG:5113 , ETRS89 / NTM zone 13 , Norway - onshore - 13ºE to 14ºE
+        * EPSG:5113 , ETRS89 / NTM zone 13 , Norway - onshore - 13°E to 14°E
         * https://epsg.io/5113
         */
         public const int NORWAY__ONSHORE__13_E_TO_14_E__ETRS89__NTM_ZONE_13__5113 = 5113;
 
         /**
-        * EPSG:5953 , ETRS89 / NTM zone 13 + NN2000 height , Norway - onshore - 13ºE to 14ºE
+        * EPSG:5953 , ETRS89 / NTM zone 13 + NN2000 height , Norway - onshore - 13°E to 14°E
         * https://epsg.io/5953
         */
         public const int NORWAY__ONSHORE__13_E_TO_14_E__ETRS89__NTM_ZONE_13__NN2000_HEIGHT__5953 = 5953;
 
         /**
-        * EPSG:6153 , ETRS89 / NTM zone 13 + NN54 height , Norway - onshore - 13ºE to 14ºE
+        * EPSG:6153 , ETRS89 / NTM zone 13 + NN54 height , Norway - onshore - 13°E to 14°E
         * https://epsg.io/6153
         */
         public const int NORWAY__ONSHORE__13_E_TO_14_E__ETRS89__NTM_ZONE_13__NN54_HEIGHT__6153 = 6153;
 
         /**
-        * EPSG:4864 , ETRS89 / NTM zone 14 , Norway - onshore - 14ºE to 15ºE
+        * EPSG:4864 , ETRS89 / NTM zone 14 , Norway - onshore - 14°E to 15°E
         * https://epsg.io/4864
         */
         public const int NORWAY__ONSHORE__14_E_TO_15_E__ETRS89__NTM_ZONE_14__4864 = 4864;
 
         /**
-        * EPSG:5114 , ETRS89 / NTM zone 14 , Norway - onshore - 14ºE to 15ºE
+        * EPSG:5114 , ETRS89 / NTM zone 14 , Norway - onshore - 14°E to 15°E
         * https://epsg.io/5114
         */
         public const int NORWAY__ONSHORE__14_E_TO_15_E__ETRS89__NTM_ZONE_14__5114 = 5114;
 
         /**
-        * EPSG:5954 , ETRS89 / NTM zone 14 + NN2000 height , Norway - onshore - 14ºE to 15ºE
+        * EPSG:5954 , ETRS89 / NTM zone 14 + NN2000 height , Norway - onshore - 14°E to 15°E
         * https://epsg.io/5954
         */
         public const int NORWAY__ONSHORE__14_E_TO_15_E__ETRS89__NTM_ZONE_14__NN2000_HEIGHT__5954 = 5954;
 
         /**
-        * EPSG:6154 , ETRS89 / NTM zone 14 + NN54 height , Norway - onshore - 14ºE to 15ºE
+        * EPSG:6154 , ETRS89 / NTM zone 14 + NN54 height , Norway - onshore - 14°E to 15°E
         * https://epsg.io/6154
         */
         public const int NORWAY__ONSHORE__14_E_TO_15_E__ETRS89__NTM_ZONE_14__NN54_HEIGHT__6154 = 6154;
 
         /**
-        * EPSG:4865 , ETRS89 / NTM zone 15 , Norway - onshore - 15ºE to 16ºE
+        * EPSG:4865 , ETRS89 / NTM zone 15 , Norway - onshore - 15°E to 16°E
         * https://epsg.io/4865
         */
         public const int NORWAY__ONSHORE__15_E_TO_16_E__ETRS89__NTM_ZONE_15__4865 = 4865;
 
         /**
-        * EPSG:5115 , ETRS89 / NTM zone 15 , Norway - onshore - 15ºE to 16ºE
+        * EPSG:5115 , ETRS89 / NTM zone 15 , Norway - onshore - 15°E to 16°E
         * https://epsg.io/5115
         */
         public const int NORWAY__ONSHORE__15_E_TO_16_E__ETRS89__NTM_ZONE_15__5115 = 5115;
 
         /**
-        * EPSG:5955 , ETRS89 / NTM zone 15 + NN2000 height , Norway - onshore - 15ºE to 16ºE
+        * EPSG:5955 , ETRS89 / NTM zone 15 + NN2000 height , Norway - onshore - 15°E to 16°E
         * https://epsg.io/5955
         */
         public const int NORWAY__ONSHORE__15_E_TO_16_E__ETRS89__NTM_ZONE_15__NN2000_HEIGHT__5955 = 5955;
 
         /**
-        * EPSG:6155 , ETRS89 / NTM zone 15 + NN54 height , Norway - onshore - 15ºE to 16ºE
+        * EPSG:6155 , ETRS89 / NTM zone 15 + NN54 height , Norway - onshore - 15°E to 16°E
         * https://epsg.io/6155
         */
         public const int NORWAY__ONSHORE__15_E_TO_16_E__ETRS89__NTM_ZONE_15__NN54_HEIGHT__6155 = 6155;
 
         /**
-        * EPSG:4866 , ETRS89 / NTM zone 16 , Norway - onshore - 16ºE to 17ºE
+        * EPSG:4866 , ETRS89 / NTM zone 16 , Norway - onshore - 16°E to 17°E
         * https://epsg.io/4866
         */
         public const int NORWAY__ONSHORE__16_E_TO_17_E__ETRS89__NTM_ZONE_16__4866 = 4866;
 
         /**
-        * EPSG:5116 , ETRS89 / NTM zone 16 , Norway - onshore - 16ºE to 17ºE
+        * EPSG:5116 , ETRS89 / NTM zone 16 , Norway - onshore - 16°E to 17°E
         * https://epsg.io/5116
         */
         public const int NORWAY__ONSHORE__16_E_TO_17_E__ETRS89__NTM_ZONE_16__5116 = 5116;
 
         /**
-        * EPSG:5956 , ETRS89 / NTM zone 16 + NN2000 height , Norway - onshore - 16ºE to 17ºE
+        * EPSG:5956 , ETRS89 / NTM zone 16 + NN2000 height , Norway - onshore - 16°E to 17°E
         * https://epsg.io/5956
         */
         public const int NORWAY__ONSHORE__16_E_TO_17_E__ETRS89__NTM_ZONE_16__NN2000_HEIGHT__5956 = 5956;
 
         /**
-        * EPSG:6156 , ETRS89 / NTM zone 16 + NN54 height , Norway - onshore - 16ºE to 17ºE
+        * EPSG:6156 , ETRS89 / NTM zone 16 + NN54 height , Norway - onshore - 16°E to 17°E
         * https://epsg.io/6156
         */
         public const int NORWAY__ONSHORE__16_E_TO_17_E__ETRS89__NTM_ZONE_16__NN54_HEIGHT__6156 = 6156;
 
         /**
-        * EPSG:4867 , ETRS89 / NTM zone 17 , Norway - onshore - 17ºE to 18ºE
+        * EPSG:4867 , ETRS89 / NTM zone 17 , Norway - onshore - 17°E to 18°E
         * https://epsg.io/4867
         */
         public const int NORWAY__ONSHORE__17_E_TO_18_E__ETRS89__NTM_ZONE_17__4867 = 4867;
 
         /**
-        * EPSG:5117 , ETRS89 / NTM zone 17 , Norway - onshore - 17ºE to 18ºE
+        * EPSG:5117 , ETRS89 / NTM zone 17 , Norway - onshore - 17°E to 18°E
         * https://epsg.io/5117
         */
         public const int NORWAY__ONSHORE__17_E_TO_18_E__ETRS89__NTM_ZONE_17__5117 = 5117;
 
         /**
-        * EPSG:5957 , ETRS89 / NTM zone 17 + NN2000 height , Norway - onshore - 17ºE to 18ºE
+        * EPSG:5957 , ETRS89 / NTM zone 17 + NN2000 height , Norway - onshore - 17°E to 18°E
         * https://epsg.io/5957
         */
         public const int NORWAY__ONSHORE__17_E_TO_18_E__ETRS89__NTM_ZONE_17__NN2000_HEIGHT__5957 = 5957;
 
         /**
-        * EPSG:6157 , ETRS89 / NTM zone 17 + NN54 height , Norway - onshore - 17ºE to 18ºE
+        * EPSG:6157 , ETRS89 / NTM zone 17 + NN54 height , Norway - onshore - 17°E to 18°E
         * https://epsg.io/6157
         */
         public const int NORWAY__ONSHORE__17_E_TO_18_E__ETRS89__NTM_ZONE_17__NN54_HEIGHT__6157 = 6157;
 
         /**
-        * EPSG:4868 , ETRS89 / NTM zone 18 , Norway - onshore - 18ºE to 19ºE
+        * EPSG:4868 , ETRS89 / NTM zone 18 , Norway - onshore - 18°E to 19°E
         * https://epsg.io/4868
         */
         public const int NORWAY__ONSHORE__18_E_TO_19_E__ETRS89__NTM_ZONE_18__4868 = 4868;
 
         /**
-        * EPSG:5118 , ETRS89 / NTM zone 18 , Norway - onshore - 18ºE to 19ºE
+        * EPSG:5118 , ETRS89 / NTM zone 18 , Norway - onshore - 18°E to 19°E
         * https://epsg.io/5118
         */
         public const int NORWAY__ONSHORE__18_E_TO_19_E__ETRS89__NTM_ZONE_18__5118 = 5118;
 
         /**
-        * EPSG:5958 , ETRS89 / NTM zone 18 + NN2000 height , Norway - onshore - 18ºE to 19ºE
+        * EPSG:5958 , ETRS89 / NTM zone 18 + NN2000 height , Norway - onshore - 18°E to 19°E
         * https://epsg.io/5958
         */
         public const int NORWAY__ONSHORE__18_E_TO_19_E__ETRS89__NTM_ZONE_18__NN2000_HEIGHT__5958 = 5958;
 
         /**
-        * EPSG:6158 , ETRS89 / NTM zone 18 + NN54 height , Norway - onshore - 18ºE to 19ºE
+        * EPSG:6158 , ETRS89 / NTM zone 18 + NN54 height , Norway - onshore - 18°E to 19°E
         * https://epsg.io/6158
         */
         public const int NORWAY__ONSHORE__18_E_TO_19_E__ETRS89__NTM_ZONE_18__NN54_HEIGHT__6158 = 6158;
@@ -18963,145 +19634,145 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int NORWAY__ONSHORE__18_E_TO_24_E__ETRS89__UTM_ZONE_34N__NN54_HEIGHT__6174 = 6174;
 
         /**
-        * EPSG:4869 , ETRS89 / NTM zone 19 , Norway - onshore - 19ºE to 20ºE
+        * EPSG:4869 , ETRS89 / NTM zone 19 , Norway - onshore - 19°E to 20°E
         * https://epsg.io/4869
         */
         public const int NORWAY__ONSHORE__19_E_TO_20_E__ETRS89__NTM_ZONE_19__4869 = 4869;
 
         /**
-        * EPSG:5119 , ETRS89 / NTM zone 19 , Norway - onshore - 19ºE to 20ºE
+        * EPSG:5119 , ETRS89 / NTM zone 19 , Norway - onshore - 19°E to 20°E
         * https://epsg.io/5119
         */
         public const int NORWAY__ONSHORE__19_E_TO_20_E__ETRS89__NTM_ZONE_19__5119 = 5119;
 
         /**
-        * EPSG:5959 , ETRS89 / NTM zone 19 + NN2000 height , Norway - onshore - 19ºE to 20ºE
+        * EPSG:5959 , ETRS89 / NTM zone 19 + NN2000 height , Norway - onshore - 19°E to 20°E
         * https://epsg.io/5959
         */
         public const int NORWAY__ONSHORE__19_E_TO_20_E__ETRS89__NTM_ZONE_19__NN2000_HEIGHT__5959 = 5959;
 
         /**
-        * EPSG:6159 , ETRS89 / NTM zone 19 + NN54 height , Norway - onshore - 19ºE to 20ºE
+        * EPSG:6159 , ETRS89 / NTM zone 19 + NN54 height , Norway - onshore - 19°E to 20°E
         * https://epsg.io/6159
         */
         public const int NORWAY__ONSHORE__19_E_TO_20_E__ETRS89__NTM_ZONE_19__NN54_HEIGHT__6159 = 6159;
 
         /**
-        * EPSG:4870 , ETRS89 / NTM zone 20 , Norway - onshore - 20ºE to 21ºE
+        * EPSG:4870 , ETRS89 / NTM zone 20 , Norway - onshore - 20°E to 21°E
         * https://epsg.io/4870
         */
         public const int NORWAY__ONSHORE__20_E_TO_21_E__ETRS89__NTM_ZONE_20__4870 = 4870;
 
         /**
-        * EPSG:5120 , ETRS89 / NTM zone 20 , Norway - onshore - 20ºE to 21ºE
+        * EPSG:5120 , ETRS89 / NTM zone 20 , Norway - onshore - 20°E to 21°E
         * https://epsg.io/5120
         */
         public const int NORWAY__ONSHORE__20_E_TO_21_E__ETRS89__NTM_ZONE_20__5120 = 5120;
 
         /**
-        * EPSG:5960 , ETRS89 / NTM zone 20 + NN2000 height , Norway - onshore - 20ºE to 21ºE
+        * EPSG:5960 , ETRS89 / NTM zone 20 + NN2000 height , Norway - onshore - 20°E to 21°E
         * https://epsg.io/5960
         */
         public const int NORWAY__ONSHORE__20_E_TO_21_E__ETRS89__NTM_ZONE_20__NN2000_HEIGHT__5960 = 5960;
 
         /**
-        * EPSG:6160 , ETRS89 / NTM zone 20 + NN54 height , Norway - onshore - 20ºE to 21ºE
+        * EPSG:6160 , ETRS89 / NTM zone 20 + NN54 height , Norway - onshore - 20°E to 21°E
         * https://epsg.io/6160
         */
         public const int NORWAY__ONSHORE__20_E_TO_21_E__ETRS89__NTM_ZONE_20__NN54_HEIGHT__6160 = 6160;
 
         /**
-        * EPSG:4871 , ETRS89 / NTM zone 21 , Norway - onshore - 21ºE to 22ºE
+        * EPSG:4871 , ETRS89 / NTM zone 21 , Norway - onshore - 21°E to 22°E
         * https://epsg.io/4871
         */
         public const int NORWAY__ONSHORE__21_E_TO_22_E__ETRS89__NTM_ZONE_21__4871 = 4871;
 
         /**
-        * EPSG:5121 , ETRS89 / NTM zone 21 , Norway - onshore - 21ºE to 22ºE
+        * EPSG:5121 , ETRS89 / NTM zone 21 , Norway - onshore - 21°E to 22°E
         * https://epsg.io/5121
         */
         public const int NORWAY__ONSHORE__21_E_TO_22_E__ETRS89__NTM_ZONE_21__5121 = 5121;
 
         /**
-        * EPSG:5961 , ETRS89 / NTM zone 21 + NN2000 height , Norway - onshore - 21ºE to 22ºE
+        * EPSG:5961 , ETRS89 / NTM zone 21 + NN2000 height , Norway - onshore - 21°E to 22°E
         * https://epsg.io/5961
         */
         public const int NORWAY__ONSHORE__21_E_TO_22_E__ETRS89__NTM_ZONE_21__NN2000_HEIGHT__5961 = 5961;
 
         /**
-        * EPSG:6161 , ETRS89 / NTM zone 21 + NN54 height , Norway - onshore - 21ºE to 22ºE
+        * EPSG:6161 , ETRS89 / NTM zone 21 + NN54 height , Norway - onshore - 21°E to 22°E
         * https://epsg.io/6161
         */
         public const int NORWAY__ONSHORE__21_E_TO_22_E__ETRS89__NTM_ZONE_21__NN54_HEIGHT__6161 = 6161;
 
         /**
-        * EPSG:4872 , ETRS89 / NTM zone 22 , Norway - onshore - 22ºE to 23ºE
+        * EPSG:4872 , ETRS89 / NTM zone 22 , Norway - onshore - 22°E to 23°E
         * https://epsg.io/4872
         */
         public const int NORWAY__ONSHORE__22_E_TO_23_E__ETRS89__NTM_ZONE_22__4872 = 4872;
 
         /**
-        * EPSG:5122 , ETRS89 / NTM zone 22 , Norway - onshore - 22ºE to 23ºE
+        * EPSG:5122 , ETRS89 / NTM zone 22 , Norway - onshore - 22°E to 23°E
         * https://epsg.io/5122
         */
         public const int NORWAY__ONSHORE__22_E_TO_23_E__ETRS89__NTM_ZONE_22__5122 = 5122;
 
         /**
-        * EPSG:5962 , ETRS89 / NTM zone 22 + NN2000 height , Norway - onshore - 22ºE to 23ºE
+        * EPSG:5962 , ETRS89 / NTM zone 22 + NN2000 height , Norway - onshore - 22°E to 23°E
         * https://epsg.io/5962
         */
         public const int NORWAY__ONSHORE__22_E_TO_23_E__ETRS89__NTM_ZONE_22__NN2000_HEIGHT__5962 = 5962;
 
         /**
-        * EPSG:6162 , ETRS89 / NTM zone 22 + NN54 height , Norway - onshore - 22ºE to 23ºE
+        * EPSG:6162 , ETRS89 / NTM zone 22 + NN54 height , Norway - onshore - 22°E to 23°E
         * https://epsg.io/6162
         */
         public const int NORWAY__ONSHORE__22_E_TO_23_E__ETRS89__NTM_ZONE_22__NN54_HEIGHT__6162 = 6162;
 
         /**
-        * EPSG:4873 , ETRS89 / NTM zone 23 , Norway - onshore - 23ºE to 24ºE
+        * EPSG:4873 , ETRS89 / NTM zone 23 , Norway - onshore - 23°E to 24°E
         * https://epsg.io/4873
         */
         public const int NORWAY__ONSHORE__23_E_TO_24_E__ETRS89__NTM_ZONE_23__4873 = 4873;
 
         /**
-        * EPSG:5123 , ETRS89 / NTM zone 23 , Norway - onshore - 23ºE to 24ºE
+        * EPSG:5123 , ETRS89 / NTM zone 23 , Norway - onshore - 23°E to 24°E
         * https://epsg.io/5123
         */
         public const int NORWAY__ONSHORE__23_E_TO_24_E__ETRS89__NTM_ZONE_23__5123 = 5123;
 
         /**
-        * EPSG:5963 , ETRS89 / NTM zone 23 + NN2000 height , Norway - onshore - 23ºE to 24ºE
+        * EPSG:5963 , ETRS89 / NTM zone 23 + NN2000 height , Norway - onshore - 23°E to 24°E
         * https://epsg.io/5963
         */
         public const int NORWAY__ONSHORE__23_E_TO_24_E__ETRS89__NTM_ZONE_23__NN2000_HEIGHT__5963 = 5963;
 
         /**
-        * EPSG:6163 , ETRS89 / NTM zone 23 + NN54 height , Norway - onshore - 23ºE to 24ºE
+        * EPSG:6163 , ETRS89 / NTM zone 23 + NN54 height , Norway - onshore - 23°E to 24°E
         * https://epsg.io/6163
         */
         public const int NORWAY__ONSHORE__23_E_TO_24_E__ETRS89__NTM_ZONE_23__NN54_HEIGHT__6163 = 6163;
 
         /**
-        * EPSG:4874 , ETRS89 / NTM zone 24 , Norway - onshore - 24ºE to 25ºE
+        * EPSG:4874 , ETRS89 / NTM zone 24 , Norway - onshore - 24°E to 25°E
         * https://epsg.io/4874
         */
         public const int NORWAY__ONSHORE__24_E_TO_25_E__ETRS89__NTM_ZONE_24__4874 = 4874;
 
         /**
-        * EPSG:5124 , ETRS89 / NTM zone 24 , Norway - onshore - 24ºE to 25ºE
+        * EPSG:5124 , ETRS89 / NTM zone 24 , Norway - onshore - 24°E to 25°E
         * https://epsg.io/5124
         */
         public const int NORWAY__ONSHORE__24_E_TO_25_E__ETRS89__NTM_ZONE_24__5124 = 5124;
 
         /**
-        * EPSG:5964 , ETRS89 / NTM zone 24 + NN2000 height , Norway - onshore - 24ºE to 25ºE
+        * EPSG:5964 , ETRS89 / NTM zone 24 + NN2000 height , Norway - onshore - 24°E to 25°E
         * https://epsg.io/5964
         */
         public const int NORWAY__ONSHORE__24_E_TO_25_E__ETRS89__NTM_ZONE_24__NN2000_HEIGHT__5964 = 5964;
 
         /**
-        * EPSG:6164 , ETRS89 / NTM zone 24 + NN54 height , Norway - onshore - 24ºE to 25ºE
+        * EPSG:6164 , ETRS89 / NTM zone 24 + NN54 height , Norway - onshore - 24°E to 25°E
         * https://epsg.io/6164
         */
         public const int NORWAY__ONSHORE__24_E_TO_25_E__ETRS89__NTM_ZONE_24__NN54_HEIGHT__6164 = 6164;
@@ -19119,121 +19790,121 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int NORWAY__ONSHORE__24_E_TO_30_E__ETRS89__UTM_ZONE_35N__NN54_HEIGHT__6175 = 6175;
 
         /**
-        * EPSG:4875 , ETRS89 / NTM zone 25 , Norway - onshore - 25ºE to 26ºE
+        * EPSG:4875 , ETRS89 / NTM zone 25 , Norway - onshore - 25°E to 26°E
         * https://epsg.io/4875
         */
         public const int NORWAY__ONSHORE__25_E_TO_26_E__ETRS89__NTM_ZONE_25__4875 = 4875;
 
         /**
-        * EPSG:5125 , ETRS89 / NTM zone 25 , Norway - onshore - 25ºE to 26ºE
+        * EPSG:5125 , ETRS89 / NTM zone 25 , Norway - onshore - 25°E to 26°E
         * https://epsg.io/5125
         */
         public const int NORWAY__ONSHORE__25_E_TO_26_E__ETRS89__NTM_ZONE_25__5125 = 5125;
 
         /**
-        * EPSG:5965 , ETRS89 / NTM zone 25 + NN2000 height , Norway - onshore - 25ºE to 26ºE
+        * EPSG:5965 , ETRS89 / NTM zone 25 + NN2000 height , Norway - onshore - 25°E to 26°E
         * https://epsg.io/5965
         */
         public const int NORWAY__ONSHORE__25_E_TO_26_E__ETRS89__NTM_ZONE_25__NN2000_HEIGHT__5965 = 5965;
 
         /**
-        * EPSG:6165 , ETRS89 / NTM zone 25 + NN54 height , Norway - onshore - 25ºE to 26ºE
+        * EPSG:6165 , ETRS89 / NTM zone 25 + NN54 height , Norway - onshore - 25°E to 26°E
         * https://epsg.io/6165
         */
         public const int NORWAY__ONSHORE__25_E_TO_26_E__ETRS89__NTM_ZONE_25__NN54_HEIGHT__6165 = 6165;
 
         /**
-        * EPSG:4876 , ETRS89 / NTM zone 26 , Norway - onshore - 26ºE to 27ºE
+        * EPSG:4876 , ETRS89 / NTM zone 26 , Norway - onshore - 26°E to 27°E
         * https://epsg.io/4876
         */
         public const int NORWAY__ONSHORE__26_E_TO_27_E__ETRS89__NTM_ZONE_26__4876 = 4876;
 
         /**
-        * EPSG:5126 , ETRS89 / NTM zone 26 , Norway - onshore - 26ºE to 27ºE
+        * EPSG:5126 , ETRS89 / NTM zone 26 , Norway - onshore - 26°E to 27°E
         * https://epsg.io/5126
         */
         public const int NORWAY__ONSHORE__26_E_TO_27_E__ETRS89__NTM_ZONE_26__5126 = 5126;
 
         /**
-        * EPSG:5966 , ETRS89 / NTM zone 26 + NN2000 height , Norway - onshore - 26ºE to 27ºE
+        * EPSG:5966 , ETRS89 / NTM zone 26 + NN2000 height , Norway - onshore - 26°E to 27°E
         * https://epsg.io/5966
         */
         public const int NORWAY__ONSHORE__26_E_TO_27_E__ETRS89__NTM_ZONE_26__NN2000_HEIGHT__5966 = 5966;
 
         /**
-        * EPSG:6166 , ETRS89 / NTM zone 26 + NN54 height , Norway - onshore - 26ºE to 27ºE
+        * EPSG:6166 , ETRS89 / NTM zone 26 + NN54 height , Norway - onshore - 26°E to 27°E
         * https://epsg.io/6166
         */
         public const int NORWAY__ONSHORE__26_E_TO_27_E__ETRS89__NTM_ZONE_26__NN54_HEIGHT__6166 = 6166;
 
         /**
-        * EPSG:4877 , ETRS89 / NTM zone 27 , Norway - onshore - 27ºE to 28ºE
+        * EPSG:4877 , ETRS89 / NTM zone 27 , Norway - onshore - 27°E to 28°E
         * https://epsg.io/4877
         */
         public const int NORWAY__ONSHORE__27_E_TO_28_E__ETRS89__NTM_ZONE_27__4877 = 4877;
 
         /**
-        * EPSG:5127 , ETRS89 / NTM zone 27 , Norway - onshore - 27ºE to 28ºE
+        * EPSG:5127 , ETRS89 / NTM zone 27 , Norway - onshore - 27°E to 28°E
         * https://epsg.io/5127
         */
         public const int NORWAY__ONSHORE__27_E_TO_28_E__ETRS89__NTM_ZONE_27__5127 = 5127;
 
         /**
-        * EPSG:5967 , ETRS89 / NTM zone 27 + NN2000 height , Norway - onshore - 27ºE to 28ºE
+        * EPSG:5967 , ETRS89 / NTM zone 27 + NN2000 height , Norway - onshore - 27°E to 28°E
         * https://epsg.io/5967
         */
         public const int NORWAY__ONSHORE__27_E_TO_28_E__ETRS89__NTM_ZONE_27__NN2000_HEIGHT__5967 = 5967;
 
         /**
-        * EPSG:6167 , ETRS89 / NTM zone 27 + NN54 height , Norway - onshore - 27ºE to 28ºE
+        * EPSG:6167 , ETRS89 / NTM zone 27 + NN54 height , Norway - onshore - 27°E to 28°E
         * https://epsg.io/6167
         */
         public const int NORWAY__ONSHORE__27_E_TO_28_E__ETRS89__NTM_ZONE_27__NN54_HEIGHT__6167 = 6167;
 
         /**
-        * EPSG:4878 , ETRS89 / NTM zone 28 , Norway - onshore - 28ºE to 29ºE
+        * EPSG:4878 , ETRS89 / NTM zone 28 , Norway - onshore - 28°E to 29°E
         * https://epsg.io/4878
         */
         public const int NORWAY__ONSHORE__28_E_TO_29_E__ETRS89__NTM_ZONE_28__4878 = 4878;
 
         /**
-        * EPSG:5128 , ETRS89 / NTM zone 28 , Norway - onshore - 28ºE to 29ºE
+        * EPSG:5128 , ETRS89 / NTM zone 28 , Norway - onshore - 28°E to 29°E
         * https://epsg.io/5128
         */
         public const int NORWAY__ONSHORE__28_E_TO_29_E__ETRS89__NTM_ZONE_28__5128 = 5128;
 
         /**
-        * EPSG:5968 , ETRS89 / NTM zone 28 + NN2000 height , Norway - onshore - 28ºE to 29ºE
+        * EPSG:5968 , ETRS89 / NTM zone 28 + NN2000 height , Norway - onshore - 28°E to 29°E
         * https://epsg.io/5968
         */
         public const int NORWAY__ONSHORE__28_E_TO_29_E__ETRS89__NTM_ZONE_28__NN2000_HEIGHT__5968 = 5968;
 
         /**
-        * EPSG:6168 , ETRS89 / NTM zone 28 + NN54 height , Norway - onshore - 28ºE to 29ºE
+        * EPSG:6168 , ETRS89 / NTM zone 28 + NN54 height , Norway - onshore - 28°E to 29°E
         * https://epsg.io/6168
         */
         public const int NORWAY__ONSHORE__28_E_TO_29_E__ETRS89__NTM_ZONE_28__NN54_HEIGHT__6168 = 6168;
 
         /**
-        * EPSG:4879 , ETRS89 / NTM zone 29 , Norway - onshore - 29ºE to 30ºE
+        * EPSG:4879 , ETRS89 / NTM zone 29 , Norway - onshore - 29°E to 30°E
         * https://epsg.io/4879
         */
         public const int NORWAY__ONSHORE__29_E_TO_30_E__ETRS89__NTM_ZONE_29__4879 = 4879;
 
         /**
-        * EPSG:5129 , ETRS89 / NTM zone 29 , Norway - onshore - 29ºE to 30ºE
+        * EPSG:5129 , ETRS89 / NTM zone 29 , Norway - onshore - 29°E to 30°E
         * https://epsg.io/5129
         */
         public const int NORWAY__ONSHORE__29_E_TO_30_E__ETRS89__NTM_ZONE_29__5129 = 5129;
 
         /**
-        * EPSG:5969 , ETRS89 / NTM zone 29 + NN2000 height , Norway - onshore - 29ºE to 30ºE
+        * EPSG:5969 , ETRS89 / NTM zone 29 + NN2000 height , Norway - onshore - 29°E to 30°E
         * https://epsg.io/5969
         */
         public const int NORWAY__ONSHORE__29_E_TO_30_E__ETRS89__NTM_ZONE_29__NN2000_HEIGHT__5969 = 5969;
 
         /**
-        * EPSG:6169 , ETRS89 / NTM zone 29 + NN54 height , Norway - onshore - 29ºE to 30ºE
+        * EPSG:6169 , ETRS89 / NTM zone 29 + NN54 height , Norway - onshore - 29°E to 30°E
         * https://epsg.io/6169
         */
         public const int NORWAY__ONSHORE__29_E_TO_30_E__ETRS89__NTM_ZONE_29__NN54_HEIGHT__6169 = 6169;
@@ -19251,133 +19922,133 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int NORWAY__ONSHORE__6_E_TO_12_E__ETRS89__UTM_ZONE_32N__NN54_HEIGHT__6172 = 6172;
 
         /**
-        * EPSG:4856 , ETRS89 / NTM zone 6 , Norway - onshore - 6ºE to 7ºE
+        * EPSG:4856 , ETRS89 / NTM zone 6 , Norway - onshore - 6°E to 7°E
         * https://epsg.io/4856
         */
         public const int NORWAY__ONSHORE__6_E_TO_7_E__ETRS89__NTM_ZONE_6__4856 = 4856;
 
         /**
-        * EPSG:5106 , ETRS89 / NTM zone 6 , Norway - onshore - 6ºE to 7ºE
+        * EPSG:5106 , ETRS89 / NTM zone 6 , Norway - onshore - 6°E to 7°E
         * https://epsg.io/5106
         */
         public const int NORWAY__ONSHORE__6_E_TO_7_E__ETRS89__NTM_ZONE_6__5106 = 5106;
 
         /**
-        * EPSG:5946 , ETRS89 / NTM zone 6 + NN2000 height , Norway - onshore - 6ºE to 7ºE
+        * EPSG:5946 , ETRS89 / NTM zone 6 + NN2000 height , Norway - onshore - 6°E to 7°E
         * https://epsg.io/5946
         */
         public const int NORWAY__ONSHORE__6_E_TO_7_E__ETRS89__NTM_ZONE_6__NN2000_HEIGHT__5946 = 5946;
 
         /**
-        * EPSG:6146 , ETRS89 / NTM zone 6 + NN54 height , Norway - onshore - 6ºE to 7ºE
+        * EPSG:6146 , ETRS89 / NTM zone 6 + NN54 height , Norway - onshore - 6°E to 7°E
         * https://epsg.io/6146
         */
         public const int NORWAY__ONSHORE__6_E_TO_7_E__ETRS89__NTM_ZONE_6__NN54_HEIGHT__6146 = 6146;
 
         /**
-        * EPSG:4857 , ETRS89 / NTM zone 7 , Norway - onshore - 7ºE to 8ºE
+        * EPSG:4857 , ETRS89 / NTM zone 7 , Norway - onshore - 7°E to 8°E
         * https://epsg.io/4857
         */
         public const int NORWAY__ONSHORE__7_E_TO_8_E__ETRS89__NTM_ZONE_7__4857 = 4857;
 
         /**
-        * EPSG:5107 , ETRS89 / NTM zone 7 , Norway - onshore - 7ºE to 8ºE
+        * EPSG:5107 , ETRS89 / NTM zone 7 , Norway - onshore - 7°E to 8°E
         * https://epsg.io/5107
         */
         public const int NORWAY__ONSHORE__7_E_TO_8_E__ETRS89__NTM_ZONE_7__5107 = 5107;
 
         /**
-        * EPSG:5947 , ETRS89 / NTM zone 7 + NN2000 height , Norway - onshore - 7ºE to 8ºE
+        * EPSG:5947 , ETRS89 / NTM zone 7 + NN2000 height , Norway - onshore - 7°E to 8°E
         * https://epsg.io/5947
         */
         public const int NORWAY__ONSHORE__7_E_TO_8_E__ETRS89__NTM_ZONE_7__NN2000_HEIGHT__5947 = 5947;
 
         /**
-        * EPSG:6147 , ETRS89 / NTM zone 7 + NN54 height , Norway - onshore - 7ºE to 8ºE
+        * EPSG:6147 , ETRS89 / NTM zone 7 + NN54 height , Norway - onshore - 7°E to 8°E
         * https://epsg.io/6147
         */
         public const int NORWAY__ONSHORE__7_E_TO_8_E__ETRS89__NTM_ZONE_7__NN54_HEIGHT__6147 = 6147;
 
         /**
-        * EPSG:4858 , ETRS89 / NTM zone 8 , Norway - onshore - 8ºE to 9ºE
+        * EPSG:4858 , ETRS89 / NTM zone 8 , Norway - onshore - 8°E to 9°E
         * https://epsg.io/4858
         */
         public const int NORWAY__ONSHORE__8_E_TO_9_E__ETRS89__NTM_ZONE_8__4858 = 4858;
 
         /**
-        * EPSG:5108 , ETRS89 / NTM zone 8 , Norway - onshore - 8ºE to 9ºE
+        * EPSG:5108 , ETRS89 / NTM zone 8 , Norway - onshore - 8°E to 9°E
         * https://epsg.io/5108
         */
         public const int NORWAY__ONSHORE__8_E_TO_9_E__ETRS89__NTM_ZONE_8__5108 = 5108;
 
         /**
-        * EPSG:5948 , ETRS89 / NTM zone 8 + NN2000 height , Norway - onshore - 8ºE to 9ºE
+        * EPSG:5948 , ETRS89 / NTM zone 8 + NN2000 height , Norway - onshore - 8°E to 9°E
         * https://epsg.io/5948
         */
         public const int NORWAY__ONSHORE__8_E_TO_9_E__ETRS89__NTM_ZONE_8__NN2000_HEIGHT__5948 = 5948;
 
         /**
-        * EPSG:6148 , ETRS89 / NTM zone 8 + NN54 height , Norway - onshore - 8ºE to 9ºE
+        * EPSG:6148 , ETRS89 / NTM zone 8 + NN54 height , Norway - onshore - 8°E to 9°E
         * https://epsg.io/6148
         */
         public const int NORWAY__ONSHORE__8_E_TO_9_E__ETRS89__NTM_ZONE_8__NN54_HEIGHT__6148 = 6148;
 
         /**
-        * EPSG:4859 , ETRS89 / NTM zone 9 , Norway - onshore - 9ºE to 10ºE
+        * EPSG:4859 , ETRS89 / NTM zone 9 , Norway - onshore - 9°E to 10°E
         * https://epsg.io/4859
         */
         public const int NORWAY__ONSHORE__9_E_TO_10_E__ETRS89__NTM_ZONE_9__4859 = 4859;
 
         /**
-        * EPSG:5109 , ETRS89 / NTM zone 9 , Norway - onshore - 9ºE to 10ºE
+        * EPSG:5109 , ETRS89 / NTM zone 9 , Norway - onshore - 9°E to 10°E
         * https://epsg.io/5109
         */
         public const int NORWAY__ONSHORE__9_E_TO_10_E__ETRS89__NTM_ZONE_9__5109 = 5109;
 
         /**
-        * EPSG:5949 , ETRS89 / NTM zone 9 + NN2000 height , Norway - onshore - 9ºE to 10ºE
+        * EPSG:5949 , ETRS89 / NTM zone 9 + NN2000 height , Norway - onshore - 9°E to 10°E
         * https://epsg.io/5949
         */
         public const int NORWAY__ONSHORE__9_E_TO_10_E__ETRS89__NTM_ZONE_9__NN2000_HEIGHT__5949 = 5949;
 
         /**
-        * EPSG:6149 , ETRS89 / NTM zone 9 + NN54 height , Norway - onshore - 9ºE to 10ºE
+        * EPSG:6149 , ETRS89 / NTM zone 9 + NN54 height , Norway - onshore - 9°E to 10°E
         * https://epsg.io/6149
         */
         public const int NORWAY__ONSHORE__9_E_TO_10_E__ETRS89__NTM_ZONE_9__NN54_HEIGHT__6149 = 6149;
 
         /**
-        * EPSG:4880 , ETRS89 / NTM zone 30 , Norway - onshore - east of 30ºE
+        * EPSG:4880 , ETRS89 / NTM zone 30 , Norway - onshore - east of 30°E
         * https://epsg.io/4880
         */
         public const int NORWAY__ONSHORE__EAST_OF_30_E__ETRS89__NTM_ZONE_30__4880 = 4880;
 
         /**
-        * EPSG:5130 , ETRS89 / NTM zone 30 , Norway - onshore - east of 30ºE
+        * EPSG:5130 , ETRS89 / NTM zone 30 , Norway - onshore - east of 30°E
         * https://epsg.io/5130
         */
         public const int NORWAY__ONSHORE__EAST_OF_30_E__ETRS89__NTM_ZONE_30__5130 = 5130;
 
         /**
-        * EPSG:5970 , ETRS89 / NTM zone 30 + NN2000 height , Norway - onshore - east of 30ºE
+        * EPSG:5970 , ETRS89 / NTM zone 30 + NN2000 height , Norway - onshore - east of 30°E
         * https://epsg.io/5970
         */
         public const int NORWAY__ONSHORE__EAST_OF_30_E__ETRS89__NTM_ZONE_30__NN2000_HEIGHT__5970 = 5970;
 
         /**
-        * EPSG:6170 , ETRS89 / NTM zone 30 + NN54 height , Norway - onshore - east of 30ºE
+        * EPSG:6170 , ETRS89 / NTM zone 30 + NN54 height , Norway - onshore - east of 30°E
         * https://epsg.io/6170
         */
         public const int NORWAY__ONSHORE__EAST_OF_30_E__ETRS89__NTM_ZONE_30__NN54_HEIGHT__6170 = 6170;
 
         /**
-        * EPSG:5976 , ETRS89 / UTM zone 36N + NN2000 height , Norway - onshore - east of 30ºE
+        * EPSG:5976 , ETRS89 / UTM zone 36N + NN2000 height , Norway - onshore - east of 30°E
         * https://epsg.io/5976
         */
         public const int NORWAY__ONSHORE__EAST_OF_30_E__ETRS89__UTM_ZONE_36N__NN2000_HEIGHT__5976 = 5976;
 
         /**
-        * EPSG:6176 , ETRS89 / UTM zone 36N + NN54 height , Norway - onshore - east of 30ºE
+        * EPSG:6176 , ETRS89 / UTM zone 36N + NN54 height , Norway - onshore - east of 30°E
         * https://epsg.io/6176
         */
         public const int NORWAY__ONSHORE__EAST_OF_30_E__ETRS89__UTM_ZONE_36N__NN54_HEIGHT__6176 = 6176;
@@ -19425,40 +20096,46 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int NORWAY__ONSHORE__NN54_HEIGHT__5776 = 5776;
 
         /**
-        * EPSG:4855 , ETRS89 / NTM zone 5 , Norway - onshore - west of 6ºE
+        * EPSG:4855 , ETRS89 / NTM zone 5 , Norway - onshore - west of 6°E
         * https://epsg.io/4855
         */
         public const int NORWAY__ONSHORE__WEST_OF_6_E__ETRS89__NTM_ZONE_5__4855 = 4855;
 
         /**
-        * EPSG:5105 , ETRS89 / NTM zone 5 , Norway - onshore - west of 6ºE
+        * EPSG:5105 , ETRS89 / NTM zone 5 , Norway - onshore - west of 6°E
         * https://epsg.io/5105
         */
         public const int NORWAY__ONSHORE__WEST_OF_6_E__ETRS89__NTM_ZONE_5__5105 = 5105;
 
         /**
-        * EPSG:5945 , ETRS89 / NTM zone 5 + NN2000 height , Norway - onshore - west of 6ºE
+        * EPSG:5945 , ETRS89 / NTM zone 5 + NN2000 height , Norway - onshore - west of 6°E
         * https://epsg.io/5945
         */
         public const int NORWAY__ONSHORE__WEST_OF_6_E__ETRS89__NTM_ZONE_5__NN2000_HEIGHT__5945 = 5945;
 
         /**
-        * EPSG:6145 , ETRS89 / NTM zone 5 + NN54 height , Norway - onshore - west of 6ºE
+        * EPSG:6145 , ETRS89 / NTM zone 5 + NN54 height , Norway - onshore - west of 6°E
         * https://epsg.io/6145
         */
         public const int NORWAY__ONSHORE__WEST_OF_6_E__ETRS89__NTM_ZONE_5__NN54_HEIGHT__6145 = 6145;
 
         /**
-        * EPSG:5971 , ETRS89 / UTM zone 31N + NN2000 height , Norway - onshore - west of 6ºE
+        * EPSG:5971 , ETRS89 / UTM zone 31N + NN2000 height , Norway - onshore - west of 6°E
         * https://epsg.io/5971
         */
         public const int NORWAY__ONSHORE__WEST_OF_6_E__ETRS89__UTM_ZONE_31N__NN2000_HEIGHT__5971 = 5971;
 
         /**
-        * EPSG:6171 , ETRS89 / UTM zone 31N + NN54 height , Norway - onshore - west of 6ºE
+        * EPSG:6171 , ETRS89 / UTM zone 31N + NN54 height , Norway - onshore - west of 6°E
         * https://epsg.io/6171
         */
         public const int NORWAY__ONSHORE__WEST_OF_6_E__ETRS89__UTM_ZONE_31N__NN54_HEIGHT__6171 = 6171;
+
+        /**
+        * EPSG:9672 , CD Norway depth , Norway, Svalbard and Jan Mayen - offshore
+        * https://epsg.io/9672
+        */
+        public const int NORWAY__SVALBARD_AND_JAN_MAYEN__OFFSHORE__CD_NORWAY_DEPTH__9672 = 9672;
 
         /**
         * EPSG:27393 , NGO 1948 (Oslo) / NGO zone III , Norway - zone III
@@ -20343,28 +21020,70 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int PITCAIRN__PITCAIRN_ISLAND__PITCAIRN_2006__PITCAIRN_TM_2006__3783 = 3783;
 
         /**
-        * EPSG:2177 , ETRS89 / Poland CS2000 zone 6 , Poland - 16.5°E to 19.5°E
+        * EPSG:2177 , ETRF2000-PL / CS2000/18 , Poland - 16.5°E to 19.5°E
         * https://epsg.io/2177
         */
-        public const int POLAND__16_5_E_TO_19_5_E__ETRS89__POLAND_CS2000_ZONE_6__2177 = 2177;
+        public const int POLAND__16_5_E_TO_19_5_E__ETRF2000_PL__CS2000_18__2177 = 2177;
 
         /**
-        * EPSG:2178 , ETRS89 / Poland CS2000 zone 7 , Poland - 19.5°E to 22.5°E
+        * EPSG:2178 , ETRF2000-PL / CS2000/21 , Poland - 19.5°E to 22.5°E
         * https://epsg.io/2178
         */
-        public const int POLAND__19_5_E_TO_22_5_E__ETRS89__POLAND_CS2000_ZONE_7__2178 = 2178;
+        public const int POLAND__19_5_E_TO_22_5_E__ETRF2000_PL__CS2000_21__2178 = 2178;
 
         /**
-        * EPSG:2179 , ETRS89 / Poland CS2000 zone 8 , Poland - east of 22.5°E
+        * EPSG:2179 , ETRF2000-PL / CS2000/24 , Poland - east of 22.5°E
         * https://epsg.io/2179
         */
-        public const int POLAND__EAST_OF_22_5_E__ETRS89__POLAND_CS2000_ZONE_8__2179 = 2179;
+        public const int POLAND__EAST_OF_22_5_E__ETRF2000_PL__CS2000_24__2179 = 2179;
 
         /**
-        * EPSG:2180 , ETRS89 / Poland CS92 , Poland
+        * EPSG:9700 , ETRF2000-PL , Poland
+        * https://epsg.io/9700
+        */
+        public const int POLAND__ETRF2000_PL__9700 = 9700;
+
+        /**
+        * EPSG:9701 , ETRF2000-PL , Poland
+        * https://epsg.io/9701
+        */
+        public const int POLAND__ETRF2000_PL__9701 = 9701;
+
+        /**
+        * EPSG:9702 , ETRF2000-PL , Poland
+        * https://epsg.io/9702
+        */
+        public const int POLAND__ETRF2000_PL__9702 = 9702;
+
+        /**
+        * EPSG:2180 , ETRF2000-PL / CS92 , Poland
         * https://epsg.io/2180
         */
-        public const int POLAND__ETRS89__POLAND_CS92__2180 = 2180;
+        public const int POLAND__ETRF2000_PL__CS92__2180 = 2180;
+
+        /**
+        * EPSG:9650 , Baltic 1986 height , Poland - onshore
+        * https://epsg.io/9650
+        */
+        public const int POLAND__ONSHORE__BALTIC_1986_HEIGHT__9650 = 9650;
+
+        /**
+        * EPSG:9656 , ETRF2000-PL + Baltic 1986 height , Poland - onshore
+        * https://epsg.io/9656
+        */
+        public const int POLAND__ONSHORE__ETRF2000_PL__BALTIC_1986_HEIGHT__9656 = 9656;
+
+        /**
+        * EPSG:9657 , ETRF2000-PL + EVRF2007-PL height , Poland - onshore
+        * https://epsg.io/9657
+        */
+        public const int POLAND__ONSHORE__ETRF2000_PL__EVRF2007_PL_HEIGHT__9657 = 9657;
+
+        /**
+        * EPSG:9651 , EVRF2007-PL height , Poland - onshore
+        * https://epsg.io/9651
+        */
+        public const int POLAND__ONSHORE__EVRF2007_PL_HEIGHT__9651 = 9651;
 
         /**
         * EPSG:3328 , Pulkovo 1942(58) / GUGiK-80 , Poland - onshore
@@ -20379,10 +21098,10 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int POLAND__PULKOVO_1942_58__DEG__61796405 = 61796405;
 
         /**
-        * EPSG:2176 , ETRS89 / Poland CS2000 zone 5 , Poland - west of 16.5°E
+        * EPSG:2176 , ETRF2000-PL / CS2000/15 , Poland - west of 16.5°E
         * https://epsg.io/2176
         */
-        public const int POLAND__WEST_OF_16_5_E__ETRS89__POLAND_CS2000_ZONE_5__2176 = 2176;
+        public const int POLAND__WEST_OF_16_5_E__ETRF2000_PL__CS2000_15__2176 = 2176;
 
         /**
         * EPSG:2173 , Pulkovo 1942(58) / Poland zone III , Poland - zone III
@@ -20799,6 +21518,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int PORTUGAL__SELVAGENS_ONSHORE__SELVAGEM_GRANDE__UTM_ZONE_28N__2943 = 2943;
 
         /**
+        * EPSG:9522 , NAD83(2011) + PRVD02 height , Puerto Rico - onshore
+        * https://epsg.io/9522
+        */
+        public const int PUERTO_RICO__ONSHORE__NAD83_2011__PRVD02_HEIGHT__9522 = 9522;
+
+        /**
         * EPSG:6641 , PRVD02 height , Puerto Rico - onshore
         * https://epsg.io/6641
         */
@@ -20865,7 +21590,7 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int QATAR__QATAR_1974__4285 = 4285;
 
         /**
-        * EPSG:2975 , RGR92 / UTM zone 40S , Reunion - east of 54ºE
+        * EPSG:2975 , RGR92 / UTM zone 40S , Reunion - east of 54°E
         * https://epsg.io/2975
         */
         public const int REUNION__EAST_OF_54_E__RGR92__UTM_ZONE_40S__2975 = 2975;
@@ -20955,7 +21680,7 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int REUNION__RGR92__LON_LAT__7037 = 7037;
 
         /**
-        * EPSG:5644 , RGR92 / UTM zone 39S , Reunion - west of 54ºE
+        * EPSG:5644 , RGR92 / UTM zone 39S , Reunion - west of 54°E
         * https://epsg.io/5644
         */
         public const int REUNION__WEST_OF_54_E__RGR92__UTM_ZONE_39S__5644 = 5644;
@@ -21037,6 +21762,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2668
         */
         public const int RUSSIA__100_5_E_TO_103_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_34__2668 = 2668;
+
+        /**
+        * EPSG:21018 , GSK-2011 / Gauss-Kruger CM 105E , Russia - 102°E to 108°E onshore
+        * https://epsg.io/21018
+        */
+        public const int RUSSIA__102_E_TO_108_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_105E__21018 = 21018;
+
+        /**
+        * EPSG:20918 , GSK-2011 / Gauss-Kruger zone 18 , Russia - 102°E to 108°E onshore
+        * https://epsg.io/20918
+        */
+        public const int RUSSIA__102_E_TO_108_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_18__20918 = 20918;
 
         /**
         * EPSG:28478 , Pulkovo 1942 / Gauss-Kruger 18N , Russia - 102°E to 108°E onshore
@@ -21123,6 +21860,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__106_5_E_TO_109_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_36__2670 = 2670;
 
         /**
+        * EPSG:21019 , GSK-2011 / Gauss-Kruger CM 111E , Russia - 108°E to 114°E onshore
+        * https://epsg.io/21019
+        */
+        public const int RUSSIA__108_E_TO_114_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_111E__21019 = 21019;
+
+        /**
+        * EPSG:20919 , GSK-2011 / Gauss-Kruger zone 19 , Russia - 108°E to 114°E onshore
+        * https://epsg.io/20919
+        */
+        public const int RUSSIA__108_E_TO_114_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_19__20919 = 20919;
+
+        /**
         * EPSG:28479 , Pulkovo 1942 / Gauss-Kruger 19N , Russia - 108°E to 114°E onshore
         * https://epsg.io/28479
         */
@@ -21205,6 +21954,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2672
         */
         public const int RUSSIA__112_5_E_TO_115_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_38__2672 = 2672;
+
+        /**
+        * EPSG:21020 , GSK-2011 / Gauss-Kruger CM 117E , Russia - 114°E to 120°E onshore
+        * https://epsg.io/21020
+        */
+        public const int RUSSIA__114_E_TO_120_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_117E__21020 = 21020;
+
+        /**
+        * EPSG:20920 , GSK-2011 / Gauss-Kruger zone 20 , Russia - 114°E to 120°E onshore
+        * https://epsg.io/20920
+        */
+        public const int RUSSIA__114_E_TO_120_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_20__20920 = 20920;
 
         /**
         * EPSG:28480 , Pulkovo 1942 / Gauss-Kruger 20N , Russia - 114°E to 120°E onshore
@@ -21291,6 +22052,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__118_5_E_TO_121_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_40__2674 = 2674;
 
         /**
+        * EPSG:21021 , GSK-2011 / Gauss-Kruger CM 123E , Russia - 120°E to 126°E onshore
+        * https://epsg.io/21021
+        */
+        public const int RUSSIA__120_E_TO_126_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_123E__21021 = 21021;
+
+        /**
+        * EPSG:20921 , GSK-2011 / Gauss-Kruger zone 21 , Russia - 120°E to 126°E onshore
+        * https://epsg.io/20921
+        */
+        public const int RUSSIA__120_E_TO_126_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_21__20921 = 20921;
+
+        /**
         * EPSG:28481 , Pulkovo 1942 / Gauss-Kruger 21N , Russia - 120°E to 126°E onshore
         * https://epsg.io/28481
         */
@@ -21373,6 +22146,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2676
         */
         public const int RUSSIA__124_5_E_TO_127_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_42__2676 = 2676;
+
+        /**
+        * EPSG:21022 , GSK-2011 / Gauss-Kruger CM 129E , Russia - 126°E to 132°E onshore
+        * https://epsg.io/21022
+        */
+        public const int RUSSIA__126_E_TO_132_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_129E__21022 = 21022;
+
+        /**
+        * EPSG:20922 , GSK-2011 / Gauss-Kruger zone 22 , Russia - 126°E to 132°E onshore
+        * https://epsg.io/20922
+        */
+        public const int RUSSIA__126_E_TO_132_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_22__20922 = 20922;
 
         /**
         * EPSG:28482 , Pulkovo 1942 / Gauss-Kruger 22N , Russia - 126°E to 132°E onshore
@@ -21459,6 +22244,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__130_5_E_TO_133_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_44__2678 = 2678;
 
         /**
+        * EPSG:21023 , GSK-2011 / Gauss-Kruger CM 135E , Russia - 132°E to 138°E onshore
+        * https://epsg.io/21023
+        */
+        public const int RUSSIA__132_E_TO_138_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_135E__21023 = 21023;
+
+        /**
+        * EPSG:20923 , GSK-2011 / Gauss-Kruger zone 23 , Russia - 132°E to 138°E onshore
+        * https://epsg.io/20923
+        */
+        public const int RUSSIA__132_E_TO_138_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_23__20923 = 20923;
+
+        /**
         * EPSG:28483 , Pulkovo 1942 / Gauss-Kruger 23N , Russia - 132°E to 138°E onshore
         * https://epsg.io/28483
         */
@@ -21541,6 +22338,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2680
         */
         public const int RUSSIA__136_5_E_TO_139_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_46__2680 = 2680;
+
+        /**
+        * EPSG:21024 , GSK-2011 / Gauss-Kruger CM 141E , Russia - 138°E to 144°E onshore
+        * https://epsg.io/21024
+        */
+        public const int RUSSIA__138_E_TO_144_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_141E__21024 = 21024;
+
+        /**
+        * EPSG:20924 , GSK-2011 / Gauss-Kruger zone 24 , Russia - 138°E to 144°E onshore
+        * https://epsg.io/20924
+        */
+        public const int RUSSIA__138_E_TO_144_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_24__20924 = 20924;
 
         /**
         * EPSG:28484 , Pulkovo 1942 / Gauss-Kruger 24N , Russia - 138°E to 144°E onshore
@@ -21627,6 +22436,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__142_5_E_TO_145_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_48__2682 = 2682;
 
         /**
+        * EPSG:21025 , GSK-2011 / Gauss-Kruger CM 147E , Russia - 144°E to 150°E onshore
+        * https://epsg.io/21025
+        */
+        public const int RUSSIA__144_E_TO_150_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_147E__21025 = 21025;
+
+        /**
+        * EPSG:20925 , GSK-2011 / Gauss-Kruger zone 25 , Russia - 144°E to 150°E onshore
+        * https://epsg.io/20925
+        */
+        public const int RUSSIA__144_E_TO_150_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_25__20925 = 20925;
+
+        /**
         * EPSG:28485 , Pulkovo 1942 / Gauss-Kruger 25N , Russia - 144°E to 150°E onshore
         * https://epsg.io/28485
         */
@@ -21709,6 +22530,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2684
         */
         public const int RUSSIA__148_5_E_TO_151_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_50__2684 = 2684;
+
+        /**
+        * EPSG:21026 , GSK-2011 / Gauss-Kruger CM 153E , Russia - 150°E to 156°E onshore
+        * https://epsg.io/21026
+        */
+        public const int RUSSIA__150_E_TO_156_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_153E__21026 = 21026;
+
+        /**
+        * EPSG:20926 , GSK-2011 / Gauss-Kruger zone 26 , Russia - 150°E to 156°E onshore
+        * https://epsg.io/20926
+        */
+        public const int RUSSIA__150_E_TO_156_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_26__20926 = 20926;
 
         /**
         * EPSG:28486 , Pulkovo 1942 / Gauss-Kruger 26N , Russia - 150°E to 156°E onshore
@@ -21795,6 +22628,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__154_5_E_TO_157_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_52__2686 = 2686;
 
         /**
+        * EPSG:21027 , GSK-2011 / Gauss-Kruger CM 159E , Russia - 156°E to 162°E onshore
+        * https://epsg.io/21027
+        */
+        public const int RUSSIA__156_E_TO_162_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_159E__21027 = 21027;
+
+        /**
+        * EPSG:20927 , GSK-2011 / Gauss-Kruger zone 27 , Russia - 156°E to 162°E onshore
+        * https://epsg.io/20927
+        */
+        public const int RUSSIA__156_E_TO_162_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_27__20927 = 20927;
+
+        /**
         * EPSG:28487 , Pulkovo 1942 / Gauss-Kruger 27N , Russia - 156°E to 162°E onshore
         * https://epsg.io/28487
         */
@@ -21879,6 +22724,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__160_5_E_TO_163_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_54__2688 = 2688;
 
         /**
+        * EPSG:21028 , GSK-2011 / Gauss-Kruger CM 165E , Russia - 162°E to 168°E onshore
+        * https://epsg.io/21028
+        */
+        public const int RUSSIA__162_E_TO_168_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_165E__21028 = 21028;
+
+        /**
+        * EPSG:20928 , GSK-2011 / Gauss-Kruger zone 28 , Russia - 162°E to 168°E onshore
+        * https://epsg.io/20928
+        */
+        public const int RUSSIA__162_E_TO_168_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_28__20928 = 20928;
+
+        /**
         * EPSG:28488 , Pulkovo 1942 / Gauss-Kruger 28N , Russia - 162°E to 168°E onshore
         * https://epsg.io/28488
         */
@@ -21961,6 +22818,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2690
         */
         public const int RUSSIA__166_5_E_TO_169_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_56__2690 = 2690;
+
+        /**
+        * EPSG:21029 , GSK-2011 / Gauss-Kruger CM 171E , Russia - 168°E to 174°E onshore
+        * https://epsg.io/21029
+        */
+        public const int RUSSIA__168_E_TO_174_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_171E__21029 = 21029;
+
+        /**
+        * EPSG:20929 , GSK-2011 / Gauss-Kruger zone 29 , Russia - 168°E to 174°E onshore
+        * https://epsg.io/20929
+        */
+        public const int RUSSIA__168_E_TO_174_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_29__20929 = 20929;
 
         /**
         * EPSG:28489 , Pulkovo 1942 / Gauss-Kruger 29N , Russia - 168°E to 174°E onshore
@@ -22069,6 +22938,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2697
         */
         public const int RUSSIA__172_5_W_TO_169_5_W_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_63__2697 = 2697;
+
+        /**
+        * EPSG:21030 , GSK-2011 / Gauss-Kruger CM 177E , Russia - 174°E to 180°E onshore
+        * https://epsg.io/21030
+        */
+        public const int RUSSIA__174_E_TO_180_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_177E__21030 = 21030;
+
+        /**
+        * EPSG:20930 , GSK-2011 / Gauss-Kruger zone 30 , Russia - 174°E to 180°E onshore
+        * https://epsg.io/20930
+        */
+        public const int RUSSIA__174_E_TO_180_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_30__20930 = 20930;
 
         /**
         * EPSG:28490 , Pulkovo 1942 / Gauss-Kruger 30N , Russia - 174°E to 180°E onshore
@@ -22215,6 +23096,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__178_5_W_TO_175_5_W_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_61__2695 = 2695;
 
         /**
+        * EPSG:21031 , GSK-2011 / Gauss-Kruger CM 177W , Russia - 180° to 174°W onshore
+        * https://epsg.io/21031
+        */
+        public const int RUSSIA__180__TO_174_W_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_177W__21031 = 21031;
+
+        /**
+        * EPSG:20931 , GSK-2011 / Gauss-Kruger zone 31 , Russia - 180° to 174°W onshore
+        * https://epsg.io/20931
+        */
+        public const int RUSSIA__180__TO_174_W_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_31__20931 = 20931;
+
+        /**
         * EPSG:28491 , Pulkovo 1942 / Gauss-Kruger 31N , Russia - 180° to 174°W onshore
         * https://epsg.io/28491
         */
@@ -22275,6 +23168,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__22_5_E_TO_25_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_8__2642 = 2642;
 
         /**
+        * EPSG:21005 , GSK-2011 / Gauss-Kruger CM 27E , Russia - 24°E to 30°E onshore
+        * https://epsg.io/21005
+        */
+        public const int RUSSIA__24_E_TO_30_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_27E__21005 = 21005;
+
+        /**
+        * EPSG:20905 , GSK-2011 / Gauss-Kruger zone 5 , Russia - 24°E to 30°E onshore
+        * https://epsg.io/20905
+        */
+        public const int RUSSIA__24_E_TO_30_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_5__20905 = 20905;
+
+        /**
         * EPSG:20065 , Pulkovo 1995 / Gauss-Kruger 5N , Russia - 24°E to 30°E onshore
         * https://epsg.io/20065
         */
@@ -22315,6 +23220,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2644
         */
         public const int RUSSIA__28_5_E_TO_31_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_10__2644 = 2644;
+
+        /**
+        * EPSG:21006 , GSK-2011 / Gauss-Kruger CM 33E , Russia - 30°E to 36°E onshore
+        * https://epsg.io/21006
+        */
+        public const int RUSSIA__30_E_TO_36_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_33E__21006 = 21006;
+
+        /**
+        * EPSG:20906 , GSK-2011 / Gauss-Kruger zone 6 , Russia - 30°E to 36°E onshore
+        * https://epsg.io/20906
+        */
+        public const int RUSSIA__30_E_TO_36_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_6__20906 = 20906;
 
         /**
         * EPSG:20066 , Pulkovo 1995 / Gauss-Kruger 6N , Russia - 30°E to 36°E onshore
@@ -22359,6 +23276,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__34_5_E_TO_37_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_12__2646 = 2646;
 
         /**
+        * EPSG:21007 , GSK-2011 / Gauss-Kruger CM 39E , Russia - 36°E to 42°E onshore
+        * https://epsg.io/21007
+        */
+        public const int RUSSIA__36_E_TO_42_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_39E__21007 = 21007;
+
+        /**
+        * EPSG:20907 , GSK-2011 / Gauss-Kruger zone 7 , Russia - 36°E to 42°E onshore
+        * https://epsg.io/20907
+        */
+        public const int RUSSIA__36_E_TO_42_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_7__20907 = 20907;
+
+        /**
         * EPSG:20067 , Pulkovo 1995 / Gauss-Kruger 7N , Russia - 36°E to 42°E onshore
         * https://epsg.io/20067
         */
@@ -22399,6 +23328,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2648
         */
         public const int RUSSIA__40_5_E_TO_43_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_14__2648 = 2648;
+
+        /**
+        * EPSG:21008 , GSK-2011 / Gauss-Kruger CM 45E , Russia - 42°E to 48°E onshore
+        * https://epsg.io/21008
+        */
+        public const int RUSSIA__42_E_TO_48_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_45E__21008 = 21008;
+
+        /**
+        * EPSG:20908 , GSK-2011 / Gauss-Kruger zone 8 , Russia - 42°E to 48°E onshore
+        * https://epsg.io/20908
+        */
+        public const int RUSSIA__42_E_TO_48_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_8__20908 = 20908;
 
         /**
         * EPSG:20068 , Pulkovo 1995 / Gauss-Kruger 8N , Russia - 42°E to 48°E onshore
@@ -22443,6 +23384,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__46_5_E_TO_49_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_16__2650 = 2650;
 
         /**
+        * EPSG:21009 , GSK-2011 / Gauss-Kruger CM 51E , Russia - 48°E to 54°E onshore
+        * https://epsg.io/21009
+        */
+        public const int RUSSIA__48_E_TO_54_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_51E__21009 = 21009;
+
+        /**
+        * EPSG:20909 , GSK-2011 / Gauss-Kruger zone 9 , Russia - 48°E to 54°E onshore
+        * https://epsg.io/20909
+        */
+        public const int RUSSIA__48_E_TO_54_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_9__20909 = 20909;
+
+        /**
         * EPSG:20069 , Pulkovo 1995 / Gauss-Kruger 9N , Russia - 48°E to 54°E onshore
         * https://epsg.io/20069
         */
@@ -22483,6 +23436,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2652
         */
         public const int RUSSIA__52_5_E_TO_55_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_18__2652 = 2652;
+
+        /**
+        * EPSG:21010 , GSK-2011 / Gauss-Kruger CM 57E , Russia - 54°E to 60°E onshore
+        * https://epsg.io/21010
+        */
+        public const int RUSSIA__54_E_TO_60_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_57E__21010 = 21010;
+
+        /**
+        * EPSG:20910 , GSK-2011 / Gauss-Kruger zone 10 , Russia - 54°E to 60°E onshore
+        * https://epsg.io/20910
+        */
+        public const int RUSSIA__54_E_TO_60_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_10__20910 = 20910;
 
         /**
         * EPSG:20070 , Pulkovo 1995 / Gauss-Kruger 10N , Russia - 54°E to 60°E onshore
@@ -22527,6 +23492,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__58_5_E_TO_61_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_20__2654 = 2654;
 
         /**
+        * EPSG:21011 , GSK-2011 / Gauss-Kruger CM 63E , Russia - 60°E to 66°E onshore
+        * https://epsg.io/21011
+        */
+        public const int RUSSIA__60_E_TO_66_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_63E__21011 = 21011;
+
+        /**
+        * EPSG:20911 , GSK-2011 / Gauss-Kruger zone 11 , Russia - 60°E to 66°E onshore
+        * https://epsg.io/20911
+        */
+        public const int RUSSIA__60_E_TO_66_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_11__20911 = 20911;
+
+        /**
         * EPSG:20071 , Pulkovo 1995 / Gauss-Kruger 11N , Russia - 60°E to 66°E onshore
         * https://epsg.io/20071
         */
@@ -22567,6 +23544,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2656
         */
         public const int RUSSIA__64_5_E_TO_67_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_22__2656 = 2656;
+
+        /**
+        * EPSG:21012 , GSK-2011 / Gauss-Kruger CM 69E , Russia - 66°E to 72°E onshore
+        * https://epsg.io/21012
+        */
+        public const int RUSSIA__66_E_TO_72_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_69E__21012 = 21012;
+
+        /**
+        * EPSG:20912 , GSK-2011 / Gauss-Kruger zone 12 , Russia - 66°E to 72°E onshore
+        * https://epsg.io/20912
+        */
+        public const int RUSSIA__66_E_TO_72_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_12__20912 = 20912;
 
         /**
         * EPSG:20072 , Pulkovo 1995 / Gauss-Kruger 12N , Russia - 66°E to 72°E onshore
@@ -22611,6 +23600,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__70_5_E_TO_73_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_24__2658 = 2658;
 
         /**
+        * EPSG:21013 , GSK-2011 / Gauss-Kruger CM 75E , Russia - 72°E to 78°E onshore
+        * https://epsg.io/21013
+        */
+        public const int RUSSIA__72_E_TO_78_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_75E__21013 = 21013;
+
+        /**
+        * EPSG:20913 , GSK-2011 / Gauss-Kruger zone 13 , Russia - 72°E to 78°E onshore
+        * https://epsg.io/20913
+        */
+        public const int RUSSIA__72_E_TO_78_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_13__20913 = 20913;
+
+        /**
         * EPSG:20073 , Pulkovo 1995 / Gauss-Kruger 13N , Russia - 72°E to 78°E onshore
         * https://epsg.io/20073
         */
@@ -22653,6 +23654,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__76_5_E_TO_79_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_26__2660 = 2660;
 
         /**
+        * EPSG:21014 , GSK-2011 / Gauss-Kruger CM 81E , Russia - 78°E to 84°E onshore
+        * https://epsg.io/21014
+        */
+        public const int RUSSIA__78_E_TO_84_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_81E__21014 = 21014;
+
+        /**
+        * EPSG:20914 , GSK-2011 / Gauss-Kruger zone 14 , Russia - 78°E to 84°E onshore
+        * https://epsg.io/20914
+        */
+        public const int RUSSIA__78_E_TO_84_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_14__20914 = 20914;
+
+        /**
         * EPSG:20074 , Pulkovo 1995 / Gauss-Kruger 14N , Russia - 78°E to 84°E onshore
         * https://epsg.io/20074
         */
@@ -22693,6 +23706,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2662
         */
         public const int RUSSIA__82_5_E_TO_85_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_28__2662 = 2662;
+
+        /**
+        * EPSG:21015 , GSK-2011 / Gauss-Kruger CM 87E , Russia - 84°E to 90°E onshore
+        * https://epsg.io/21015
+        */
+        public const int RUSSIA__84_E_TO_90_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_87E__21015 = 21015;
+
+        /**
+        * EPSG:20915 , GSK-2011 / Gauss-Kruger zone 15 , Russia - 84°E to 90°E onshore
+        * https://epsg.io/20915
+        */
+        public const int RUSSIA__84_E_TO_90_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_15__20915 = 20915;
 
         /**
         * EPSG:20075 , Pulkovo 1995 / Gauss-Kruger 15N , Russia - 84°E to 90°E onshore
@@ -22747,6 +23772,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2664
         */
         public const int RUSSIA__88_5_E_TO_91_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_30__2664 = 2664;
+
+        /**
+        * EPSG:21016 , GSK-2011 / Gauss-Kruger CM 93E , Russia - 90°E to 96°E onshore
+        * https://epsg.io/21016
+        */
+        public const int RUSSIA__90_E_TO_96_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_93E__21016 = 21016;
+
+        /**
+        * EPSG:20916 , GSK-2011 / Gauss-Kruger zone 16 , Russia - 90°E to 96°E onshore
+        * https://epsg.io/20916
+        */
+        public const int RUSSIA__90_E_TO_96_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_16__20916 = 20916;
 
         /**
         * EPSG:28476 , Pulkovo 1942 / Gauss-Kruger 16N , Russia - 90°E to 96°E onshore
@@ -22833,6 +23870,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__94_5_E_TO_97_5_E_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_32__2666 = 2666;
 
         /**
+        * EPSG:21017 , GSK-2011 / Gauss-Kruger CM 99E , Russia - 96°E to 102°E onshore
+        * https://epsg.io/21017
+        */
+        public const int RUSSIA__96_E_TO_102_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_99E__21017 = 21017;
+
+        /**
+        * EPSG:20917 , GSK-2011 / Gauss-Kruger zone 17 , Russia - 96°E to 102°E onshore
+        * https://epsg.io/20917
+        */
+        public const int RUSSIA__96_E_TO_102_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_17__20917 = 20917;
+
+        /**
         * EPSG:28477 , Pulkovo 1942 / Gauss-Kruger 17N , Russia - 96°E to 102°E onshore
         * https://epsg.io/28477
         */
@@ -22915,6 +23964,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/2698
         */
         public const int RUSSIA__EAST_OF_169_5_W_ONSHORE__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_64__2698 = 2698;
+
+        /**
+        * EPSG:21032 , GSK-2011 / Gauss-Kruger CM 171W , Russia - east of 174°W onshore
+        * https://epsg.io/21032
+        */
+        public const int RUSSIA__EAST_OF_174_W_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_171W__21032 = 21032;
+
+        /**
+        * EPSG:20932 , GSK-2011 / Gauss-Kruger zone 32 , Russia - east of 174°W onshore
+        * https://epsg.io/20932
+        */
+        public const int RUSSIA__EAST_OF_174_W_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_32__20932 = 20932;
 
         /**
         * EPSG:28492 , Pulkovo 1942 / Gauss-Kruger 32N , Russia - east of 174°W onshore
@@ -23007,6 +24068,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int RUSSIA__WEST_OF_19_5_E__PULKOVO_1995__3_DEGREE_GAUSS_KRUGER_ZONE_6__3150 = 3150;
 
         /**
+        * EPSG:21004 , GSK-2011 / Gauss-Kruger CM 21E , Russia - west of 24°E onshore
+        * https://epsg.io/21004
+        */
+        public const int RUSSIA__WEST_OF_24_E_ONSHORE__GSK_2011__GAUSS_KRUGER_CM_21E__21004 = 21004;
+
+        /**
+        * EPSG:20904 , GSK-2011 / Gauss-Kruger zone 4 , Russia - west of 24°E onshore
+        * https://epsg.io/20904
+        */
+        public const int RUSSIA__WEST_OF_24_E_ONSHORE__GSK_2011__GAUSS_KRUGER_ZONE_4__20904 = 20904;
+
+        /**
         * EPSG:20064 , Pulkovo 1995 / Gauss-Kruger 4N , Russia - west of 24°E onshore
         * https://epsg.io/20064
         */
@@ -23037,16 +24110,34 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int SAO_TOME_AND_PRINCIPE__ONSHORE__SAO_TOME__SAO_TOME__4823 = 4823;
 
         /**
+        * EPSG:9357 , KSA-GRF17 / UTM zone 37N , Saudi Arabia - 36°E to 42°E
+        * https://epsg.io/9357
+        */
+        public const int SAUDI_ARABIA__36_E_TO_42_E__KSA_GRF17__UTM_ZONE_37N__9357 = 9357;
+
+        /**
         * EPSG:8837 , MTRF-2000 / UTM zone 37N , Saudi Arabia - 36°E to 42°E
         * https://epsg.io/8837
         */
         public const int SAUDI_ARABIA__36_E_TO_42_E__MTRF_2000__UTM_ZONE_37N__8837 = 8837;
 
         /**
+        * EPSG:9358 , KSA-GRF17 / UTM zone 38N , Saudi Arabia - 42°E to 48°E
+        * https://epsg.io/9358
+        */
+        public const int SAUDI_ARABIA__42_E_TO_48_E__KSA_GRF17__UTM_ZONE_38N__9358 = 9358;
+
+        /**
         * EPSG:8838 , MTRF-2000 / UTM zone 38N , Saudi Arabia - 42°E to 48°E
         * https://epsg.io/8838
         */
         public const int SAUDI_ARABIA__42_E_TO_48_E__MTRF_2000__UTM_ZONE_38N__8838 = 8838;
+
+        /**
+        * EPSG:9359 , KSA-GRF17 / UTM zone 39N , Saudi Arabia - 48°E to 54°E
+        * https://epsg.io/9359
+        */
+        public const int SAUDI_ARABIA__48_E_TO_54_E__KSA_GRF17__UTM_ZONE_39N__9359 = 9359;
 
         /**
         * EPSG:8839 , MTRF-2000 / UTM zone 39N , Saudi Arabia - 48°E to 54°E
@@ -23059,6 +24150,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/20440
         */
         public const int SAUDI_ARABIA__EAST_OF_54_E__AIN_EL_ABD__UTM_ZONE_40N__20440 = 20440;
+
+        /**
+        * EPSG:9360 , KSA-GRF17 / UTM zone 40N , Saudi Arabia - east of 54°E
+        * https://epsg.io/9360
+        */
+        public const int SAUDI_ARABIA__EAST_OF_54_E__KSA_GRF17__UTM_ZONE_40N__9360 = 9360;
 
         /**
         * EPSG:8840 , MTRF-2000 / UTM zone 40N , Saudi Arabia - east of 54°E
@@ -23121,6 +24218,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int SAUDI_ARABIA__ONSHORE__AIN_EL_ABD__ARAMCO_LAMBERT__2318 = 2318;
 
         /**
+        * EPSG:9520 , KSA-GRF17 + KSA-VRF14 height , Saudi Arabia - onshore
+        * https://epsg.io/9520
+        */
+        public const int SAUDI_ARABIA__ONSHORE__KSA_GRF17__KSA_VRF14_HEIGHT__9520 = 9520;
+
+        /**
         * EPSG:9335 , KSA-VRF14 height , Saudi Arabia - onshore
         * https://epsg.io/9335
         */
@@ -23131,6 +24234,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/8841
         */
         public const int SAUDI_ARABIA__ONSHORE__MVGC_HEIGHT__8841 = 8841;
+
+        /**
+        * EPSG:9356 , KSA-GRF17 / UTM zone 36N , Saudi Arabia - west of 36°E
+        * https://epsg.io/9356
+        */
+        public const int SAUDI_ARABIA__WEST_OF_36_E__KSA_GRF17__UTM_ZONE_36N__9356 = 9356;
 
         /**
         * EPSG:8836 , MTRF-2000 / UTM zone 36N , Saudi Arabia - west of 36°E
@@ -23557,6 +24666,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/9221
         */
         public const int SOUTH_AFRICA__MAINLAND__ONSHORE_AND_OFFSHORE__HARTEBEESTHOEK94__ZAF_BSU_ALBERS_25E__9221 = 9221;
+
+        /**
+        * EPSG:9543 , ITRF2005 + SA LLD height , South Africa - onshore
+        * https://epsg.io/9543
+        */
+        public const int SOUTH_AFRICA__ONSHORE__ITRF2005__SA_LLD_HEIGHT__9543 = 9543;
 
         /**
         * EPSG:9279 , SA LLD height , South Africa - onshore
@@ -24027,16 +25142,160 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int SPAIN_AND_GIBRALTAR__ONSHORE__ALICANTE_HEIGHT__5782 = 5782;
 
         /**
-        * EPSG:4728 , Pico de las Nieves 1984 , Spain - Canary Islands onshore
+        * EPSG:9505 , ETRS89 + Alicante height , Spain and Gibraltar - onshore
+        * https://epsg.io/9505
+        */
+        public const int SPAIN_AND_GIBRALTAR__ONSHORE__ETRS89__ALICANTE_HEIGHT__9505 = 9505;
+
+        /**
+        * EPSG:9507 , ETRS89 + Ibiza height , Spain - Balearic Islands - Ibiza and Formentera
+        * https://epsg.io/9507
+        */
+        public const int SPAIN__BALEARIC_ISLANDS__IBIZA_AND_FORMENTERA__ETRS89__IBIZA_HEIGHT__9507 = 9507;
+
+        /**
+        * EPSG:9394 , Ibiza height , Spain - Balearic Islands - Ibiza and Formentera
+        * https://epsg.io/9394
+        */
+        public const int SPAIN__BALEARIC_ISLANDS__IBIZA_AND_FORMENTERA__IBIZA_HEIGHT__9394 = 9394;
+
+        /**
+        * EPSG:9508 , ETRS89 + Mallorca height , Spain - Balearic Islands - Mallorca
+        * https://epsg.io/9508
+        */
+        public const int SPAIN__BALEARIC_ISLANDS__MALLORCA__ETRS89__MALLORCA_HEIGHT__9508 = 9508;
+
+        /**
+        * EPSG:9392 , Mallorca height , Spain - Balearic Islands - Mallorca
+        * https://epsg.io/9392
+        */
+        public const int SPAIN__BALEARIC_ISLANDS__MALLORCA__MALLORCA_HEIGHT__9392 = 9392;
+
+        /**
+        * EPSG:9509 , ETRS89 + Menorca height , Spain - Balearic Islands - Menorca
+        * https://epsg.io/9509
+        */
+        public const int SPAIN__BALEARIC_ISLANDS__MENORCA__ETRS89__MENORCA_HEIGHT__9509 = 9509;
+
+        /**
+        * EPSG:9393 , Menorca height , Spain - Balearic Islands - Menorca
+        * https://epsg.io/9393
+        */
+        public const int SPAIN__BALEARIC_ISLANDS__MENORCA__MENORCA_HEIGHT__9393 = 9393;
+
+        /**
+        * EPSG:9405 , PN68 / UTM zone 28N , Spain - Canary Islands onshore east of 18°W
+        * https://epsg.io/9405
+        */
+        public const int SPAIN__CANARY_ISLANDS_ONSHORE_EAST_OF_18_W__PN68__UTM_ZONE_28N__9405 = 9405;
+
+        /**
+        * EPSG:9403 , PN68 , Spain - Canary Islands onshore
+        * https://epsg.io/9403
+        */
+        public const int SPAIN__CANARY_ISLANDS_ONSHORE__PN68__9403 = 9403;
+
+        /**
+        * EPSG:9407 , PN84 / UTM zone 28N , Spain - Canary Islands western east of 18°W
+        * https://epsg.io/9407
+        */
+        public const int SPAIN__CANARY_ISLANDS_WESTERN_EAST_OF_18_W__PN84__UTM_ZONE_28N__9407 = 9407;
+
+        /**
+        * EPSG:4728 , PN84 , Spain - Canary Islands western
         * https://epsg.io/4728
         */
-        public const int SPAIN__CANARY_ISLANDS_ONSHORE__PICO_DE_LAS_NIEVES_1984__4728 = 4728;
+        public const int SPAIN__CANARY_ISLANDS_WESTERN__PN84__4728 = 4728;
 
         /**
         * EPSG:4083 , REGCAN95 / UTM zone 28N , Spain - Canary Islands - east of 18°W
         * https://epsg.io/4083
         */
         public const int SPAIN__CANARY_ISLANDS__EAST_OF_18_W__REGCAN95__UTM_ZONE_28N__4083 = 4083;
+
+        /**
+        * EPSG:9404 , PN68 / UTM zone 27N , Spain - Canary Islands - El Hierro west of 18°W
+        * https://epsg.io/9404
+        */
+        public const int SPAIN__CANARY_ISLANDS__EL_HIERRO_WEST_OF_18_W__PN68__UTM_ZONE_27N__9404 = 9404;
+
+        /**
+        * EPSG:9406 , PN84 / UTM zone 27N , Spain - Canary Islands - El Hierro west of 18°W
+        * https://epsg.io/9406
+        */
+        public const int SPAIN__CANARY_ISLANDS__EL_HIERRO_WEST_OF_18_W__PN84__UTM_ZONE_27N__9406 = 9406;
+
+        /**
+        * EPSG:9401 , El Hierro height , Spain - Canary Islands - El Hierro
+        * https://epsg.io/9401
+        */
+        public const int SPAIN__CANARY_ISLANDS__EL_HIERRO__EL_HIERRO_HEIGHT__9401 = 9401;
+
+        /**
+        * EPSG:9510 , REGCAN95 + El Hierro height , Spain - Canary Islands - El Hierro
+        * https://epsg.io/9510
+        */
+        public const int SPAIN__CANARY_ISLANDS__EL_HIERRO__REGCAN95__EL_HIERRO_HEIGHT__9510 = 9510;
+
+        /**
+        * EPSG:9396 , Fuerteventura height , Spain - Canary Islands - Fuerteventura
+        * https://epsg.io/9396
+        */
+        public const int SPAIN__CANARY_ISLANDS__FUERTEVENTURA__FUERTEVENTURA_HEIGHT__9396 = 9396;
+
+        /**
+        * EPSG:9511 , REGCAN95 + Fuerteventura height , Spain - Canary Islands - Fuerteventura
+        * https://epsg.io/9511
+        */
+        public const int SPAIN__CANARY_ISLANDS__FUERTEVENTURA__REGCAN95__FUERTEVENTURA_HEIGHT__9511 = 9511;
+
+        /**
+        * EPSG:9397 , Gran Canaria height , Spain - Canary Islands - Gran Canaria
+        * https://epsg.io/9397
+        */
+        public const int SPAIN__CANARY_ISLANDS__GRAN_CANARIA__GRAN_CANARIA_HEIGHT__9397 = 9397;
+
+        /**
+        * EPSG:9512 , REGCAN95 + Gran Canaria height , Spain - Canary Islands - Gran Canaria
+        * https://epsg.io/9512
+        */
+        public const int SPAIN__CANARY_ISLANDS__GRAN_CANARIA__REGCAN95__GRAN_CANARIA_HEIGHT__9512 = 9512;
+
+        /**
+        * EPSG:9395 , Lanzarote height , Spain - Canary Islands - Lanzarote
+        * https://epsg.io/9395
+        */
+        public const int SPAIN__CANARY_ISLANDS__LANZAROTE__LANZAROTE_HEIGHT__9395 = 9395;
+
+        /**
+        * EPSG:9515 , REGCAN95 + Lanzarote height , Spain - Canary Islands - Lanzarote
+        * https://epsg.io/9515
+        */
+        public const int SPAIN__CANARY_ISLANDS__LANZAROTE__REGCAN95__LANZAROTE_HEIGHT__9515 = 9515;
+
+        /**
+        * EPSG:9399 , La Gomera height , Spain - Canary Islands - La Gomera
+        * https://epsg.io/9399
+        */
+        public const int SPAIN__CANARY_ISLANDS__LA_GOMERA__LA_GOMERA_HEIGHT__9399 = 9399;
+
+        /**
+        * EPSG:9513 , REGCAN95 + La Gomera height , Spain - Canary Islands - La Gomera
+        * https://epsg.io/9513
+        */
+        public const int SPAIN__CANARY_ISLANDS__LA_GOMERA__REGCAN95__LA_GOMERA_HEIGHT__9513 = 9513;
+
+        /**
+        * EPSG:9400 , La Palma height , Spain - Canary Islands - La Palma
+        * https://epsg.io/9400
+        */
+        public const int SPAIN__CANARY_ISLANDS__LA_PALMA__LA_PALMA_HEIGHT__9400 = 9400;
+
+        /**
+        * EPSG:9514 , REGCAN95 + La Palma height , Spain - Canary Islands - La Palma
+        * https://epsg.io/9514
+        */
+        public const int SPAIN__CANARY_ISLANDS__LA_PALMA__REGCAN95__LA_PALMA_HEIGHT__9514 = 9514;
 
         /**
         * EPSG:4079 , REGCAN95 , Spain - Canary Islands
@@ -24069,10 +25328,34 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int SPAIN__CANARY_ISLANDS__REGCAN95__LCC_EUROPE__5634 = 5634;
 
         /**
+        * EPSG:9516 , REGCAN95 + Tenerife height , Spain - Canary Islands - Tenerife
+        * https://epsg.io/9516
+        */
+        public const int SPAIN__CANARY_ISLANDS__TENERIFE__REGCAN95__TENERIFE_HEIGHT__9516 = 9516;
+
+        /**
+        * EPSG:9398 , Tenerife height , Spain - Canary Islands - Tenerife
+        * https://epsg.io/9398
+        */
+        public const int SPAIN__CANARY_ISLANDS__TENERIFE__TENERIFE_HEIGHT__9398 = 9398;
+
+        /**
         * EPSG:4082 , REGCAN95 / UTM zone 27N , Spain - Canary Islands - west of 18°W
         * https://epsg.io/4082
         */
         public const int SPAIN__CANARY_ISLANDS__WEST_OF_18_W__REGCAN95__UTM_ZONE_27N__4082 = 4082;
+
+        /**
+        * EPSG:9402 , Ceuta 2 height , Spain - Ceuta
+        * https://epsg.io/9402
+        */
+        public const int SPAIN__CEUTA__CEUTA_2_HEIGHT__9402 = 9402;
+
+        /**
+        * EPSG:9506 , ETRS89 + Ceuta 2 height , Spain - Ceuta
+        * https://epsg.io/9506
+        */
+        public const int SPAIN__CEUTA__ETRS89__CEUTA_2_HEIGHT__9506 = 9506;
 
         /**
         * EPSG:69036405 , Madrid 1870 (Madrid) (deg) , Spain
@@ -24087,10 +25370,10 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int SPAIN__MAINLAND_ONSHORE__MADRID_1870__MADRID__4903 = 4903;
 
         /**
-        * EPSG:2062 , Madrid 1870 (Madrid) / Spain , Spain - mainland onshore
+        * EPSG:2062 , Madrid 1870 (Madrid) / Spain LCC , Spain - mainland onshore
         * https://epsg.io/2062
         */
-        public const int SPAIN__MAINLAND_ONSHORE__MADRID_1870__MADRID__SPAIN__2062 = 2062;
+        public const int SPAIN__MAINLAND_ONSHORE__MADRID_1870__MADRID__SPAIN_LCC__2062 = 2062;
 
         /**
         * EPSG:62446405 , Kandawala (deg) , Sri Lanka
@@ -24183,13 +25466,19 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int ST_HELENA__ST_HELENA_ISLAND__SHGD2015__7886 = 7886;
 
         /**
+        * EPSG:9517 , SHGD2015 + SHVD2015 height , St Helena - St Helena Island
+        * https://epsg.io/9517
+        */
+        public const int ST_HELENA__ST_HELENA_ISLAND__SHGD2015__SHVD2015_HEIGHT__9517 = 9517;
+
+        /**
         * EPSG:7887 , SHMG2015 , St Helena - St Helena Island
         * https://epsg.io/7887
         */
         public const int ST_HELENA__ST_HELENA_ISLAND__SHMG2015__7887 = 7887;
 
         /**
-        * EPSG:7956 , SHMG2015 +  SHVD2015 height , St Helena - St Helena Island
+        * EPSG:7956 , SHMG2015 + SHVD2015 height , St Helena - St Helena Island
         * https://epsg.io/7956
         */
         public const int ST_HELENA__ST_HELENA_ISLAND__SHMG2015__SHVD2015_HEIGHT__7956 = 7956;
@@ -24237,7 +25526,7 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int ST_HELENA__ST_HELENA_ISLAND__ST__HELENA_TRITAN__UTM_ZONE_30S__7883 = 7883;
 
         /**
-        * EPSG:7955 , St. Helena Tritan / UTM zone 30S +  Tritan 2011 height , St Helena - St Helena Island
+        * EPSG:7955 , St. Helena Tritan / UTM zone 30S + Tritan 2011 height , St Helena - St Helena Island
         * https://epsg.io/7955
         */
         public const int ST_HELENA__ST_HELENA_ISLAND__ST__HELENA_TRITAN__UTM_ZONE_30S__TRITAN_2011_HEIGHT__7955 = 7955;
@@ -24289,6 +25578,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/5792
         */
         public const int ST_PIERRE_AND_MIQUELON__ONSHORE__DANGER_1950_HEIGHT__5792 = 5792;
+
+        /**
+        * EPSG:9541 , RGSPM06 + Danger 1950 height , St Pierre and Miquelon - onshore
+        * https://epsg.io/9541
+        */
+        public const int ST_PIERRE_AND_MIQUELON__ONSHORE__RGSPM06__DANGER_1950_HEIGHT__9541 = 9541;
 
         /**
         * EPSG:4638 , Saint Pierre et Miquelon 1950 , St Pierre and Miquelon - onshore
@@ -24687,6 +25982,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int SWEDEN__ONSHORE__RH70_HEIGHT__5718 = 5718;
 
         /**
+        * EPSG:3027 , RT38 2.5 gon V , Sweden - onshore
+        * https://epsg.io/3027
+        */
+        public const int SWEDEN__ONSHORE__RT38_2_5_GON_V__3027 = 3027;
+
+        /**
         * EPSG:4308 , RT38 , Sweden - onshore
         * https://epsg.io/4308
         */
@@ -24697,6 +25998,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/4814
         */
         public const int SWEDEN__ONSHORE__RT38__STOCKHOLM__4814 = 4814;
+
+        /**
+        * EPSG:3021 , RT90 2.5 gon V , Sweden - onshore
+        * https://epsg.io/3021
+        */
+        public const int SWEDEN__ONSHORE__RT90_2_5_GON_V__3021 = 3021;
 
         /**
         * EPSG:7404 , RT90 + RH70 height , Sweden - onshore
@@ -25009,24 +26316,6 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/7706
         */
         public const int TO_BE_SPECIFIED__EPSG_MOVING_PLATFORM_EXAMPLE__7706 = 7706;
-
-        /**
-        * EPSG:5819 , EPSG topocentric example A , To be specified
-        * https://epsg.io/5819
-        */
-        public const int TO_BE_SPECIFIED__EPSG_TOPOCENTRIC_EXAMPLE_A__5819 = 5819;
-
-        /**
-        * EPSG:5820 , EPSG topocentric example B , To be specified
-        * https://epsg.io/5820
-        */
-        public const int TO_BE_SPECIFIED__EPSG_TOPOCENTRIC_EXAMPLE_B__5820 = 5820;
-
-        /**
-        * EPSG:5821 , EPSG vertical perspective example , To be specified
-        * https://epsg.io/5821
-        */
-        public const int TO_BE_SPECIFIED__EPSG_VERTICAL_PERSPECTIVE_EXAMPLE__5821 = 5821;
 
         /**
         * EPSG:8036 , WGS 84 / TM Zone 21N (ftUS) , Trinidad and Tobago - offshore east of 60°W
@@ -25653,16 +26942,34 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int UKRAINE__WEST_OF_25_E__PULKOVO_1942__CS63_ZONE_X1__7825 = 7825;
 
         /**
-        * EPSG:4277 , OSGB 1936 , UK - Britain and UKCS 49°46&#39;N to 61°01&#39;N, 7°33&#39;W to 3°33&#39;E
-        * https://epsg.io/4277
+        * EPSG:9387 , AbInvA96_2020 Grid , UK - Aberdeen to Inverness
+        * https://epsg.io/9387
         */
-        public const int UK__BRITAIN_AND_UKCS_49_46_N_TO_61_01_N__7_33_W_TO_3_33_E__OSGB_1936__4277 = 4277;
+        public const int UK__ABERDEEN_TO_INVERNESS__ABINVA96_2020_GRID__9387 = 9387;
 
         /**
-        * EPSG:27700 , OSGB 1936 / British National Grid , UK - Britain and UKCS 49°46&#39;N to 61°01&#39;N, 7°33&#39;W to 3°33&#39;E
+        * EPSG:9388 , AbInvA96_2020 Grid + ODN height , UK - Aberdeen to Inverness
+        * https://epsg.io/9388
+        */
+        public const int UK__ABERDEEN_TO_INVERNESS__ABINVA96_2020_GRID__ODN_HEIGHT__9388 = 9388;
+
+        /**
+        * EPSG:9384 , AbInvA96_2020-IRF , UK - Aberdeen to Inverness
+        * https://epsg.io/9384
+        */
+        public const int UK__ABERDEEN_TO_INVERNESS__ABINVA96_2020_IRF__9384 = 9384;
+
+        /**
+        * EPSG:4277 , OSGB36 , UK - Britain and UKCS 49°45&#39;N to 61°N, 9°W to 2°E
+        * https://epsg.io/4277
+        */
+        public const int UK__BRITAIN_AND_UKCS_49_45_N_TO_61_N__9_W_TO_2_E__OSGB36__4277 = 4277;
+
+        /**
+        * EPSG:27700 , OSGB36 / British National Grid , UK - Britain and UKCS 49°45&#39;N to 61°N, 9°W to 2°E
         * https://epsg.io/27700
         */
-        public const int UK__BRITAIN_AND_UKCS_49_46_N_TO_61_01_N__7_33_W_TO_3_33_E__OSGB_1936__BRITISH_NATIONAL_GRID__27700 = 27700;
+        public const int UK__BRITAIN_AND_UKCS_49_45_N_TO_61_N__9_W_TO_2_E__OSGB36__BRITISH_NATIONAL_GRID__27700 = 27700;
 
         /**
         * EPSG:5741 , Fair Isle height , UK - Fair Isle onshore
@@ -25683,40 +26990,130 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int UK__FOULA_ONSHORE__FOULA_HEIGHT__5743 = 5743;
 
         /**
+        * EPSG:9456 , GBK19 Grid , UK - Glasgow to Kilmarnock
+        * https://epsg.io/9456
+        */
+        public const int UK__GLASGOW_TO_KILMARNOCK__GBK19_GRID__9456 = 9456;
+
+        /**
+        * EPSG:9457 , GBK19 Grid + ODN height , UK - Glasgow to Kilmarnock
+        * https://epsg.io/9457
+        */
+        public const int UK__GLASGOW_TO_KILMARNOCK__GBK19_GRID__ODN_HEIGHT__9457 = 9457;
+
+        /**
+        * EPSG:9453 , GBK19-IRF , UK - Glasgow to Kilmarnock
+        * https://epsg.io/9453
+        */
+        public const int UK__GLASGOW_TO_KILMARNOCK__GBK19_IRF__9453 = 9453;
+
+        /**
+        * EPSG:9424 , ETRS89 + ODN height , UK - Great Britain mainland onshore
+        * https://epsg.io/9424
+        */
+        public const int UK__GREAT_BRITAIN_MAINLAND_ONSHORE__ETRS89__ODN_HEIGHT__9424 = 9424;
+
+        /**
         * EPSG:5701 , ODN height , UK - Great Britain mainland onshore
         * https://epsg.io/5701
         */
         public const int UK__GREAT_BRITAIN_MAINLAND_ONSHORE__ODN_HEIGHT__5701 = 5701;
 
         /**
-        * EPSG:7405 , OSGB 1936 / British National Grid + ODN height , UK - Great Britain mainland onshore
+        * EPSG:7405 , OSGB36 / British National Grid + ODN height , UK - Great Britain mainland onshore
         * https://epsg.io/7405
         */
-        public const int UK__GREAT_BRITAIN_MAINLAND_ONSHORE__OSGB_1936__BRITISH_NATIONAL_GRID__ODN_HEIGHT__7405 = 7405;
+        public const int UK__GREAT_BRITAIN_MAINLAND_ONSHORE__OSGB36__BRITISH_NATIONAL_GRID__ODN_HEIGHT__7405 = 7405;
 
         /**
-        * EPSG:4278 , OSGB70 , UK - Great Britain; Isle of Man
+        * EPSG:4278 , OSGB70 , UK - Great Britain onshore and nearshore; Isle of Man
         * https://epsg.io/4278
         */
-        public const int UK__GREAT_BRITAIN__ISLE_OF_MAN__OSGB70__4278 = 4278;
+        public const int UK__GREAT_BRITAIN_ONSHORE_AND_NEARSHORE__ISLE_OF_MAN__OSGB70__4278 = 4278;
 
         /**
-        * EPSG:62786405 , OSGB70 (deg) , UK - Great Britain; Isle of Man
+        * EPSG:62786405 , OSGB70 (deg) , UK - Great Britain onshore and nearshore; Isle of Man
         * https://epsg.io/62786405
         */
-        public const int UK__GREAT_BRITAIN__ISLE_OF_MAN__OSGB70__DEG__62786405 = 62786405;
+        public const int UK__GREAT_BRITAIN_ONSHORE_AND_NEARSHORE__ISLE_OF_MAN__OSGB70__DEG__62786405 = 62786405;
 
         /**
-        * EPSG:62776405 , OSGB 1936 (deg) , UK - Great Britain; Isle of Man
+        * EPSG:62776405 , OSGB 1936 (deg) , UK - Great Britain onshore and nearshore; Isle of Man
         * https://epsg.io/62776405
         */
-        public const int UK__GREAT_BRITAIN__ISLE_OF_MAN__OSGB_1936__DEG__62776405 = 62776405;
+        public const int UK__GREAT_BRITAIN_ONSHORE_AND_NEARSHORE__ISLE_OF_MAN__OSGB_1936__DEG__62776405 = 62776405;
+
+        /**
+        * EPSG:9367 , TPEN11 Grid , UK - Liverpool to Leeds
+        * https://epsg.io/9367
+        */
+        public const int UK__LIVERPOOL_TO_LEEDS__TPEN11_GRID__9367 = 9367;
+
+        /**
+        * EPSG:9368 , TPEN11 Grid + ODN height , UK - Liverpool to Leeds
+        * https://epsg.io/9368
+        */
+        public const int UK__LIVERPOOL_TO_LEEDS__TPEN11_GRID__ODN_HEIGHT__9368 = 9368;
+
+        /**
+        * EPSG:9364 , TPEN11-IRF , UK - Liverpool to Leeds
+        * https://epsg.io/9364
+        */
+        public const int UK__LIVERPOOL_TO_LEEDS__TPEN11_IRF__9364 = 9364;
+
+        /**
+        * EPSG:9299 , HS2-IRF , UK - London to Birmingham and Crewe
+        * https://epsg.io/9299
+        */
+        public const int UK__LONDON_TO_BIRMINGHAM_AND_CREWE__HS2_IRF__9299 = 9299;
+
+        /**
+        * EPSG:9300 , HS2 Survey Grid , UK - London to Birmingham and Crewe
+        * https://epsg.io/9300
+        */
+        public const int UK__LONDON_TO_BIRMINGHAM_AND_CREWE__HS2_SURVEY_GRID__9300 = 9300;
+
+        /**
+        * EPSG:9306 , HS2 Survey Grid + HS2-VRF height , UK - London to Birmingham and Crewe
+        * https://epsg.io/9306
+        */
+        public const int UK__LONDON_TO_BIRMINGHAM_AND_CREWE__HS2_SURVEY_GRID__HS2_VRF_HEIGHT__9306 = 9306;
+
+        /**
+        * EPSG:9303 , HS2-VRF height , UK - London to Birmingham and Crewe
+        * https://epsg.io/9303
+        */
+        public const int UK__LONDON_TO_BIRMINGHAM_AND_CREWE__HS2_VRF_HEIGHT__9303 = 9303;
+
+        /**
+        * EPSG:9373 , MML07 Grid , UK - London to Sheffield
+        * https://epsg.io/9373
+        */
+        public const int UK__LONDON_TO_SHEFFIELD__MML07_GRID__9373 = 9373;
+
+        /**
+        * EPSG:9374 , MML07 Grid + ODN height , UK - London to Sheffield
+        * https://epsg.io/9374
+        */
+        public const int UK__LONDON_TO_SHEFFIELD__MML07_GRID__ODN_HEIGHT__9374 = 9374;
+
+        /**
+        * EPSG:9372 , MML07-IRF , UK - London to Sheffield
+        * https://epsg.io/9372
+        */
+        public const int UK__LONDON_TO_SHEFFIELD__MML07_IRF__9372 = 9372;
 
         /**
         * EPSG:5732 , Belfast height , UK - Northern Ireland - onshore
         * https://epsg.io/5732
         */
         public const int UK__NORTHERN_IRELAND__ONSHORE__BELFAST_HEIGHT__5732 = 5732;
+
+        /**
+        * EPSG:9450 , ETRS89 + Belfast height , UK - Northern Ireland - onshore
+        * https://epsg.io/9450
+        */
+        public const int UK__NORTHERN_IRELAND__ONSHORE__ETRS89__BELFAST_HEIGHT__9450 = 9450;
 
         /**
         * EPSG:4188 , OSNI 1952 , UK - Northern Ireland - onshore
@@ -25743,10 +27140,16 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int UK__NORTH_RONA_ONSHORE__NORTH_RONA_HEIGHT__5745 = 5745;
 
         /**
-        * EPSG:7707 , ODN (Offshore) height , UK - offshore 49°46&#39;N to 61°01&#39;N, 7°33&#39;W to 3°33&#39;E
+        * EPSG:9425 , ETRS89 + ODN (Offshore) height , UK - offshore 49°45&#39;N to 61°N, 9°W to 2°E
+        * https://epsg.io/9425
+        */
+        public const int UK__OFFSHORE_49_45_N_TO_61_N__9_W_TO_2_E__ETRS89__ODN__OFFSHORE__HEIGHT__9425 = 9425;
+
+        /**
+        * EPSG:7707 , ODN (Offshore) height , UK - offshore 49°45&#39;N to 61°N, 9°W to 2°E
         * https://epsg.io/7707
         */
-        public const int UK__OFFSHORE_49_46_N_TO_61_01_N__7_33_W_TO_3_33_E__ODN__OFFSHORE__HEIGHT__7707 = 7707;
+        public const int UK__OFFSHORE_49_45_N_TO_61_N__9_W_TO_2_E__ODN__OFFSHORE__HEIGHT__7707 = 7707;
 
         /**
         * EPSG:23090 , ED50 / TM 0 N , UK - offshore - North Sea
@@ -25755,10 +27158,22 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int UK__OFFSHORE__NORTH_SEA__ED50__TM_0_N__23090 = 23090;
 
         /**
+        * EPSG:9426 , ETRS89 + ODN Orkney height , UK - Orkney Islands onshore
+        * https://epsg.io/9426
+        */
+        public const int UK__ORKNEY_ISLANDS_ONSHORE__ETRS89__ODN_ORKNEY_HEIGHT__9426 = 9426;
+
+        /**
         * EPSG:5740 , ODN Orkney height , UK - Orkney Islands onshore
         * https://epsg.io/5740
         */
         public const int UK__ORKNEY_ISLANDS_ONSHORE__ODN_ORKNEY_HEIGHT__5740 = 5740;
+
+        /**
+        * EPSG:9428 , ETRS89 + Stornoway height , UK - Outer Hebrides onshore
+        * https://epsg.io/9428
+        */
+        public const int UK__OUTER_HEBRIDES_ONSHORE__ETRS89__STORNOWAY_HEIGHT__9428 = 9428;
 
         /**
         * EPSG:5746 , Stornoway height , UK - Outer Hebrides onshore
@@ -25767,10 +27182,22 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int UK__OUTER_HEBRIDES_ONSHORE__STORNOWAY_HEIGHT__5746 = 5746;
 
         /**
+        * EPSG:9430 , ETRS89 + St. Marys height , UK - Scilly Isles onshore
+        * https://epsg.io/9430
+        */
+        public const int UK__SCILLY_ISLES_ONSHORE__ETRS89__ST__MARYS_HEIGHT__9430 = 9430;
+
+        /**
         * EPSG:5749 , St. Marys height , UK - Scilly Isles onshore
         * https://epsg.io/5749
         */
         public const int UK__SCILLY_ISLES_ONSHORE__ST__MARYS_HEIGHT__5749 = 5749;
+
+        /**
+        * EPSG:9427 , ETRS89 + Lerwick height , UK - Shetland Islands onshore
+        * https://epsg.io/9427
+        */
+        public const int UK__SHETLAND_ISLANDS_ONSHORE__ETRS89__LERWICK_HEIGHT__9427 = 9427;
 
         /**
         * EPSG:5742 , Lerwick height , UK - Shetland Islands onshore
@@ -25789,6 +27216,24 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/5744
         */
         public const int UK__SULE_SKERRY_ONSHORE__SULE_SKERRY_HEIGHT__5744 = 5744;
+
+        /**
+        * EPSG:9741 , EOS21 Grid , UK - Tweedmouth to Aberdeen
+        * https://epsg.io/9741
+        */
+        public const int UK__TWEEDMOUTH_TO_ABERDEEN__EOS21_GRID__9741 = 9741;
+
+        /**
+        * EPSG:9742 , EOS21 Grid + ODN height , UK - Tweedmouth to Aberdeen
+        * https://epsg.io/9742
+        */
+        public const int UK__TWEEDMOUTH_TO_ABERDEEN__EOS21_GRID__ODN_HEIGHT__9742 = 9742;
+
+        /**
+        * EPSG:9739 , EOS21-IRF , UK - Tweedmouth to Aberdeen
+        * https://epsg.io/9739
+        */
+        public const int UK__TWEEDMOUTH_TO_ABERDEEN__EOS21_IRF__9739 = 9739;
 
         /**
         * EPSG:5383 , SIRGAS-ROU98 / UTM zone 22S , Uruguay - east of 54°W
@@ -26139,6 +27584,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int USA__156_W_TO_150_W__AK__OCS__NAD83__BLM_5N__FTUS__4425 = 4425;
 
         /**
+        * EPSG:3750 , NAD83(HARN) / UTM zone 4N , USA - 162°W to 156°W onshore - HI
+        * https://epsg.io/3750
+        */
+        public const int USA__162_W_TO_156_W_ONSHORE__HI__NAD83_HARN__UTM_ZONE_4N__3750 = 3750;
+
+        /**
+        * EPSG:6634 , NAD83(PA11) / UTM zone 4N , USA - 162°W to 156°W onshore - HI
+        * https://epsg.io/6634
+        */
+        public const int USA__162_W_TO_156_W_ONSHORE__HI__NAD83_PA11__UTM_ZONE_4N__6634 = 6634;
+
+        /**
         * EPSG:26904 , NAD83 / UTM zone 4N , USA - 162°W to 156°W - AK, HI
         * https://epsg.io/26904
         */
@@ -26173,18 +27630,6 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/4424
         */
         public const int USA__162_W_TO_156_W__AK__OCS__NAD83__BLM_4N__FTUS__4424 = 4424;
-
-        /**
-        * EPSG:3750 , NAD83(HARN) / UTM zone 4N , USA - 162°W to 156°W  onshore - HI
-        * https://epsg.io/3750
-        */
-        public const int USA__162_W_TO_156_W__ONSHORE__HI__NAD83_HARN__UTM_ZONE_4N__3750 = 3750;
-
-        /**
-        * EPSG:6634 , NAD83(PA11) / UTM zone 4N , USA - 162°W to 156°W  onshore - HI
-        * https://epsg.io/6634
-        */
-        public const int USA__162_W_TO_156_W__ONSHORE__HI__NAD83_PA11__UTM_ZONE_4N__6634 = 6634;
 
         /**
         * EPSG:4403 , NAD27 / BLM 3N (ftUS) , USA - 168°W to 162°W - AK, OCS
@@ -26493,6 +27938,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int USA__ALABAMA__SPCS__E__NAD83_2011__ALABAMA_EAST__6355 = 6355;
 
         /**
+        * EPSG:9748 , NAD83(2011) / Alabama East (ftUS) , USA - Alabama - SPCS - E
+        * https://epsg.io/9748
+        */
+        public const int USA__ALABAMA__SPCS__E__NAD83_2011__ALABAMA_EAST__FTUS__9748 = 9748;
+
+        /**
         * EPSG:2759 , NAD83(HARN) / Alabama East , USA - Alabama - SPCS - E
         * https://epsg.io/2759
         */
@@ -26527,6 +27978,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/6356
         */
         public const int USA__ALABAMA__SPCS__W__NAD83_2011__ALABAMA_WEST__6356 = 6356;
+
+        /**
+        * EPSG:9749 , NAD83(2011) / Alabama West (ftUS) , USA - Alabama - SPCS - W
+        * https://epsg.io/9749
+        */
+        public const int USA__ALABAMA__SPCS__W__NAD83_2011__ALABAMA_WEST__FTUS__9749 = 9749;
 
         /**
         * EPSG:2760 , NAD83(HARN) / Alabama West , USA - Alabama - SPCS - W
@@ -33291,6 +34748,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int USA__ONSHORE__AZ_MI_MT_ND_OR_SC__NAVD88_HEIGHT__FT__8228 = 8228;
 
         /**
+        * EPSG:9674 , NAD83 / USFS R6 Albers , USA - Oregon and Washington
+        * https://epsg.io/9674
+        */
+        public const int USA__OREGON_AND_WASHINGTON__NAD83__USFS_R6_ALBERS__9674 = 9674;
+
+        /**
         * EPSG:6787 , NAD83(2011) / Oregon Baker zone (ft) , USA - Oregon - Baker City
         * https://epsg.io/6787
         */
@@ -37893,6 +39356,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int VIETNAM__103_5_E_TO_106_5_E_ONSHORE__VN_2000__TM_3_ZONE_482__6957 = 6957;
 
         /**
+        * EPSG:5897 , VN-2000 / TM-3 zone 482 , Vietnam - 104°20&#39;E to 106°10&#39;E by province - Hanoi
+        * https://epsg.io/5897
+        */
+        public const int VIETNAM__104_20_E_TO_106_10_E_BY_PROVINCE__HANOI__VN_2000__TM_3_ZONE_482__5897 = 5897;
+
+        /**
         * EPSG:9209 , VN-2000 / TM-3 105-30 , Vietnam - 104°20&#39;E to 106°40&#39;E by province
         * https://epsg.io/9209
         */
@@ -38043,6 +39512,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int VIETNAM__ONSHORE__VN_2000__4756 = 4756;
 
         /**
+        * EPSG:5898 , VN-2000 / TM-3 zone 491 , Vietnam - Quang Ngai
+        * https://epsg.io/5898
+        */
+        public const int VIETNAM__QUANG_NGAI__VN_2000__TM_3_ZONE_491__5898 = 5898;
+
+        /**
         * EPSG:5899 , VN-2000 / TM-3 107-45 , Vietnam - Quang Ninh; Da Nang, Quang Nam; Ba Ria-Vung Tau, Dong Nai, Lam Dong
         * https://epsg.io/5899
         */
@@ -38089,6 +39564,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/3920
         */
         public const int VIRGIN_ISLANDS__BRITISH__ONSHORE__PUERTO_RICO__UTM_ZONE_20N__3920 = 3920;
+
+        /**
+        * EPSG:9523 , NAD83(2011) + VIVD09 height , Virgin Islands, US - onshore
+        * https://epsg.io/9523
+        */
+        public const int VIRGIN_ISLANDS__US__ONSHORE__NAD83_2011__VIVD09_HEIGHT__9523 = 9523;
 
         /**
         * EPSG:3992 , Puerto Rico / St. Croix , Virgin Islands, US - onshore
@@ -38223,10 +39704,10 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int WORLD__BETWEEN_80_S_AND_84_N__WGS_84__WORLD_MERCATOR__3395 = 3395;
 
         /**
-        * EPSG:6934 , IGS08 , World (by country)
-        * https://epsg.io/6934
+        * EPSG:9378 , IGb14 , World (by country)
+        * https://epsg.io/9378
         */
-        public const int WORLD__BY_COUNTRY__IGS08__6934 = 6934;
+        public const int WORLD__BY_COUNTRY__IGB14__9378 = 9378;
 
         /**
         * EPSG:4385 , ITRF2000 (geocentric) , World (by country)
@@ -38325,6 +39806,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int WORLD__IGB08__9017 = 9017;
 
         /**
+        * EPSG:9379 , IGb14 , World
+        * https://epsg.io/9379
+        */
+        public const int WORLD__IGB14__9379 = 9379;
+
+        /**
+        * EPSG:9380 , IGb14 , World
+        * https://epsg.io/9380
+        */
+        public const int WORLD__IGB14__9380 = 9380;
+
+        /**
         * EPSG:9004 , IGS00 , World
         * https://epsg.io/9004
         */
@@ -38359,6 +39852,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/9012
         */
         public const int WORLD__IGS05__9012 = 9012;
+
+        /**
+        * EPSG:6934 , IGS08 , World
+        * https://epsg.io/6934
+        */
+        public const int WORLD__IGS08__6934 = 6934;
 
         /**
         * EPSG:9013 , IGS08 , World
@@ -40029,6 +41528,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int WORLD__PZ_90_02__7678 = 7678;
 
         /**
+        * EPSG:9474 , PZ-90.02 , World
+        * https://epsg.io/9474
+        */
+        public const int WORLD__PZ_90_02__9474 = 9474;
+
+        /**
         * EPSG:7679 , PZ-90.11 , World
         * https://epsg.io/7679
         */
@@ -40039,6 +41544,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/7680
         */
         public const int WORLD__PZ_90_11__7680 = 7680;
+
+        /**
+        * EPSG:9475 , PZ-90.11 , World
+        * https://epsg.io/9475
+        */
+        public const int WORLD__PZ_90_11__9475 = 9475;
 
         /**
         * EPSG:4740 , PZ-90 , World
@@ -40075,6 +41586,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         * https://epsg.io/3974
         */
         public const int WORLD__SOUTH_OF_0_N__WGS_84__NSIDC_EASE_GRID_SOUTH__3974 = 3974;
+
+        /**
+        * EPSG:9354 , WGS 84 / IBCSO Polar Stereographic , World - south of 50°S
+        * https://epsg.io/9354
+        */
+        public const int WORLD__SOUTH_OF_50_S__WGS_84__IBCSO_POLAR_STEREOGRAPHIC__9354 = 9354;
 
         /**
         * EPSG:32731 , WGS 84 / UTM zone 31S , World - S hemisphere - 0°E to 6°E - by country
@@ -41349,6 +42866,18 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int WORLD__WGS_84__DM__63266408 = 63266408;
 
         /**
+        * EPSG:9518 , WGS 84 + EGM2008 height , World
+        * https://epsg.io/9518
+        */
+        public const int WORLD__WGS_84__EGM2008_HEIGHT__9518 = 9518;
+
+        /**
+        * EPSG:9707 , WGS 84 + EGM96 height , World
+        * https://epsg.io/9707
+        */
+        public const int WORLD__WGS_84__EGM96_HEIGHT__9707 = 9707;
+
+        /**
         * EPSG:8857 , WGS 84 / Equal Earth Greenwich , World
         * https://epsg.io/8857
         */
@@ -41475,6 +43004,12 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int WORLD__WGS_84__HDM__63266410 = 63266410;
 
         /**
+        * EPSG:9705 , WGS 84 + MSL height , World
+        * https://epsg.io/9705
+        */
+        public const int WORLD__WGS_84__MSL_HEIGHT__9705 = 9705;
+
+        /**
         * EPSG:32662 , WGS 84 / Plate Carree , World
         * https://epsg.io/32662
         */
@@ -41517,7 +43052,7 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9 {
         public const int WORLD__WGS_84__WORLD_EQUIDISTANT_CYLINDRICAL__4087 = 4087;
 
         /**
-        * EPSG:6893 , WGS 84 / World Mercator +  EGM2008 height , World
+        * EPSG:6893 , WGS 84 / World Mercator + EGM2008 height , World
         * https://epsg.io/6893
         */
         public const int WORLD__WGS_84__WORLD_MERCATOR__EGM2008_HEIGHT__6893 = 6893;
