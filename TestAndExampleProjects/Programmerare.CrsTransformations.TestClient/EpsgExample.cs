@@ -1,5 +1,5 @@
-﻿using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9;
-using static Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_8_9.EpsgNumber;
+﻿using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_027;
+using static Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_027.EpsgNumber;
 using System.Collections.Generic;
 using System;
 
@@ -17,7 +17,7 @@ namespace Programmerare.CrsTransformations.TestClient {
             NORTH_AMERICA__NAD83__NAD83__4269  ,
             USA__US_NATIONAL_ATLAS_EQUAL_AREA__2163  ,
             CANADA__NAD83__CANADA_ATLAS_LAMBERT__3978  ,
-            UK__GREAT_BRITAIN_MAINLAND_ONSHORE__OSGB_1936__BRITISH_NATIONAL_GRID__ODN_HEIGHT__7405  ,
+            UK__GREAT_BRITAIN_MAINLAND_ONSHORE__OSGB36__BRITISH_NATIONAL_GRID__ODN_HEIGHT__7405  ,
             IRELAND__ONSHORE__TM65__IRISH_GRID__29902  ,
             AUSTRALIA__GDA__GDA94__4283  ,
             NEW_ZEALAND__ONSHORE__NZGD49__NEW_ZEALAND_MAP_GRID__27200  ,
@@ -27,7 +27,7 @@ namespace Programmerare.CrsTransformations.TestClient {
             NORWAY__ONSHORE__NGO_1948__OSLO__4817  ,
             ICELAND__ONSHORE__REYKJAVIK_1900__4657  ,
             NETHERLANDS__ONSHORE__AMERSFOORT__RD_NEW__28992  ,
-            BELGIUM__ONSHORE__BELGE_1972__BELGIAN_LAMBERT_72__31370  ,
+            BELGIUM__ONSHORE__BD72__BELGIAN_LAMBERT_72__31370  ,
             GERMANY__WEST_GERMANY__10_5_E_TO_13_5_E__DHDN__3_DEGREE_GAUSS_KRUGER_ZONE_4__31468  ,
             AUSTRIA__ETRS89__AUSTRIA_LAMBERT__3416 ,
             EUROPE__LIECHTENSTEIN_AND_SWITZERLAND__CH1903__LV03__21781  ,
