@@ -1,7 +1,7 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>net45;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks>
     <Version>9.5.4</Version>
     <Title>.NET constants with EPSG codes for Coordinate Reference Systems</Title>
     <Authors>TomasJohansson</Authors>
