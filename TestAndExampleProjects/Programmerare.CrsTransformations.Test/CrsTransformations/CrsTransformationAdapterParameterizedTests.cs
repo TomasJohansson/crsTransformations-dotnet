@@ -2,7 +2,7 @@ using System.Collections.Generic;
 using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Identifier;
-using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_027;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_036;
 using System.IO;
 using System;
 

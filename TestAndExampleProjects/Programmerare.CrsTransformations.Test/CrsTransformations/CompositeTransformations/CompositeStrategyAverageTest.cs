@@ -3,7 +3,7 @@ using System.Linq;
 using NUnit.Framework;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Identifier;
-using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_027;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_036;
 
 namespace Programmerare.CrsTransformations.Core.CompositeTransformations  {
 

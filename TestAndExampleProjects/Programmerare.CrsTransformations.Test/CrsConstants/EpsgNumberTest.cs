@@ -1,4 +1,4 @@
-﻿using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_027;
+﻿using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_036;
 
 using NUnit.Framework;
 

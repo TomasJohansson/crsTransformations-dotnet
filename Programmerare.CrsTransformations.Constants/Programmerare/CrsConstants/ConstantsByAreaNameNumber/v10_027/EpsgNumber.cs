@@ -11,7 +11,7 @@ namespace Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_027 {
 *   Distribution for profit is forbidden ... 
 *   Ownership of the EPSG Dataset by IOGP must be acknowledged... "
 */
-
+    [System.Obsolete("use a later version instead (with a higher version number in the namespace)")]
     /// <summary>
     /// The constants in this file was generated based on data from EPSG v10.027
     /// http://www.epsg-registry.org

@@ -35,7 +35,7 @@ Please find more information in the license file at the root directory of each s
 ///     (the name is also used as one of the four accessors for the part of the coordinate that represents the north-south/Y/Latitude direction)
 /// - CRS (Coordinate Reference System) identifier with the EPSG code 
 ///     which defines the coordinate reference system for the coordinate instance. 
-///<para>
+///</para>
 ///</summary>
 [<AllowNullLiteral>] // C# interop
 type CrsCoordinate private 
