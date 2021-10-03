@@ -9,7 +9,7 @@ The code has been implemented with F# but the tests (and the generated constants
 
 # Versions of .NET and F#
 These versions below apply to v2.0.0 of the NuGet releases e.g. [Programmerare.CrsTransformations.Core](https://www.nuget.org/packages/Programmerare.CrsTransformations.Core/2.0.0):  
-The .NET target version is .NET Standard 2.0  ([e.g. .NET Framework 4.6.1 or later](https://docs.microsoft.com/en-us/dotnet/standard/net-standard)) but the library with constants ([Programmerare.CrsTransformations.Constants](https://www.nuget.org/packages/Programmerare.CrsTransformations.Constants/)) can be used with .NET Framework 2.0 or later.  
+The .NET target version is .NET Standard 2.0  ([e.g. .NET Framework 4.6.1 or later](https://docs.microsoft.com/en-us/dotnet/standard/net-standard)) but version 10.36 of the library with constants ([Programmerare.CrsTransformations.Constants](https://www.nuget.org/packages/Programmerare.CrsTransformations.Constants/)) can be used with .NET Framework 2.0 or later.  
 The F# version is 6.0.0 (i.e. for the package reference to "FSharp.Core")  
 
 # Adaptee libraries used by the three adapter libraries
@@ -134,11 +134,11 @@ using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
     // If you want to specify explicitly which ones to be used, you can provide 
     // a parameter 'IList<ICrsTransformationAdapter>' to the Create method like this:
     crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create(
-		new List<ICrsTransformationAdapter>{
-			new CrsTransformationAdapterDotSpatial(),
-			new CrsTransformationAdapterProjNet(),
-			new CrsTransformationAdapterMightyLittleGeodesy(),
-		}
+        new List<ICrsTransformationAdapter>{
+            new CrsTransformationAdapterDotSpatial(),
+            new CrsTransformationAdapterProjNet(),
+            new CrsTransformationAdapterMightyLittleGeodesy(),
+        }
 	);
         
     // The fourth 'Composite' below does not use any implicit implementations  
@@ -146,11 +146,11 @@ using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
     // to be specified explicitly per leaf implementation as in the example below.
     var weightFactory = CrsTransformationAdapterWeightFactory.Create();
     crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(
-		new List<CrsTransformationAdapterWeight> {
-			weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-			weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), 1.0),
-			weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 2.0),
-	    }
+        new List<CrsTransformationAdapterWeight> {
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), 1.0),
+            weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 2.0),
+        }
 	);
     // The weight values above illustrates a situation where you (for some reason) want to consider 
     // the transformation results from 'MightyLittleGeodesy' as being 'two times better' than the others.
