@@ -1,4 +1,5 @@
-﻿using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_036;
+﻿using NUnit.Framework;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_036;
 using Programmerare.CrsTransformations.CompositeTransformations;
 using Programmerare.CrsTransformations.Coordinate;
 using System;
@@ -7,6 +8,7 @@ using System.Collections.Generic;
 namespace Programmerare.CrsTransformations.TestClient {
     class LargerCSharpeExample {
 public void method() {
+    
     Console.WriteLine("LargerCSharpeExample starts");
 
     // Some terminology regarding the names used in the below code example:
@@ -25,7 +27,7 @@ public void method() {
     // https://kartor.eniro.se/m/03Yxp
     // SWEREF99TM coordinates (for WGS84 59.330231, 18.059196) 
     // according to Eniro (above URL): 6580822, 674032 (northing, easting)
-    
+
     ICrsTransformationAdapter crsTransformationAdapter; // interface with concrete "leaf" implementation or "composite" implementations
     // This code example is using a "composite" which will use multiple libraries to do the same transformation and then 
     // return a coordinate with the median values (median of the northing values and median of the easting values)  
@@ -44,7 +46,7 @@ public void method() {
     //      Median Composite Northing: 6580821.99121561
     //      Median Composite Easting: 674032.357177155
     // (and these can be compared with the 'Eniro' values above i.e. '6580822, 674032 (northing, easting)' )
-    
+
     // The coordinate class provides four properties with different names for the same east-west value and 
     // four properties for the same name each north-south value, as below:
     //      Four EQUIVALENT properties:  Easting  , X , Longitude , XEastingLongitude
@@ -54,7 +56,7 @@ public void method() {
     //      Longitude/Latitude for a geodetic or geographic system
     //      Easting/Northing for a cartographic or projected system
     //      xEastingLongitude/yNorthingLatitude for general code handling different types of system
-    
+
     // If you want more details for the result you can use the following 'Transform' method: 
     //  (instead of the method 'TransformToCoordinate' used above)
     CrsTransformationResult centralStockholmResultSweRef = crsTransformationAdapter.Transform(centralStockholmWgs84, epsgSweRef);
@@ -69,14 +71,14 @@ public void method() {
             // at least 2 succesful results and the maximal difference in northing or easting is less than 0.01
             // (and if you want to know the exact difference you can find it in this code example further down the page)
             Console.WriteLine("Reliable result"); // according to your chosen parameters to the method 'isReliable'    
-        }
+        } 
         else {
             Console.WriteLine("Not reliable result");
         }
         Console.WriteLine(centralStockholmResultSweRef.OutputCoordinate);
         // Console output from the above code row:
         // CrsCoordinate(xEastingLongitude=674032.357177155, yNorthingLatitude=6580821.99121561, crsIdentifier=CrsIdentifier(crsCode='EPSG:3006', isEpsgCode=True, epsgNumber=3006))
-        
+
         // When your code is in a context where you only have the result (but not the adapter object) 
         // (e.g. in a method receiving the result as a parameter)
         // you can get back the object which created the result as below:
@@ -86,17 +88,18 @@ public void method() {
         // The above code row returned an enum which is not really a true adaptee just like the 'composite' is not a true adapter.
         // However, when iterating (as below) the "leaf" results, 
         // it might be more interesting to keep track of from where the different values originated
+
         IList<CrsTransformationResult> transformationResultChildren = centralStockholmResultSweRef.TransformationResultChildren;
         foreach (CrsTransformationResult crsTransformationResultLeaf in transformationResultChildren) {
             if(!crsTransformationResultLeaf.IsSuccess) continue; // continue with the next 'leaf'
-            
+
             ICrsTransformationAdapter resultAdapter = crsTransformationResultLeaf.CrsTransformationAdapterResultSource;
             Console.WriteLine(resultAdapter.AdapteeType);
             // The above code row will output rows like this: 
             // "LEAF_PROJ_NET_4_GEO_API_1_4_1" or "LEAF_MIGHTY_LITTLE_GEODESY_1_0_1" and so on
             if(!crsTransformationResultLeaf.IsReliable(
-                    2,      // minimumNumberOfSuccesfulResults
-                    1000    // maxDeltaValueForXLongitudeAndYLatitude
+                2,      // minimumNumberOfSuccesfulResults
+                1000    // maxDeltaValueForXLongitudeAndYLatitude
             )) {
                 // The above constraint "at least 2 implementations" will always fail because now we are dealing with "leafs"
                 // The above delta value constraint has very high tolerance but it does not matter since 
@@ -147,11 +150,16 @@ public void method() {
         // Similarly the min and max y values are 6580821.991 and 6580821.99437121 (and the difference is 0.00337121).
         // The above two "MaxDifference" methods are used within the implementation of the convenience method 'isReliable' 
         // (also illustrated in this example further above)
-    
+
     } // else statement ends
 
     Console.WriteLine("LargerCSharpeExample ends");
-    Console.ReadLine();
 } // method ends
+
+    [Test]
+    public void testing(){
+        // this "test" method is just used as a way to execute the method and see the output from 'Console.WriteLine'
+        method();
+    }
 } // class ends
 } // namespace ends

@@ -1,13 +1,15 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>1.0.0</Version>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks> <!-- FSharp.Core 6.0 dependency ==> netstandard2.0 or 2.1 -->
+    <Version>2.0.0</Version>
     <AssemblyName>Programmerare.CrsTransformations.Core</AssemblyName>
     <Title>Coordinate Reference System Transformations core API library e.g. defining the interface implemented by adapters.</Title>
-    <Description>Coordinate Reference System Transformations core API library e.g. defining the interface implemented by adapters.
-F# library (usable from .NET e.g. C#) for transforming coordinates between different coordinate systems.
-The core assembly provides an adapter interface which is implemented by other assemblies using different third-part libraries as adaptees.
+    <Description>
+      Coordinate Reference System Transformations core API library e.g. defining the interface implemented by adapters.
+      F# library (usable from .NET e.g. C#) for transforming coordinates between different coordinate systems.
+      The core assembly provides an adapter interface which is implemented by other assemblies using different third-part libraries as adaptees.  
+      For more information see the project website at github https://github.com/TomasJohansson/crsTransformations-dotnet
     </Description>
     <Authors>TomasJohansson</Authors>
     <PackageProjectUrl>https://github.com/TomasJohansson/crsTransformations-dotnet</PackageProjectUrl>

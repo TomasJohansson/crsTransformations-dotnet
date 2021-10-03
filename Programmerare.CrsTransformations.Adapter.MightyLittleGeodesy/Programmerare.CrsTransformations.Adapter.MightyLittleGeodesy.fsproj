@@ -1,11 +1,14 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>1.0.0</Version>
+    <TargetFrameworks>netstandard2.0</TargetFrameworks> <!-- FSharp.Core 6.0 dependency ==> netstandard2.0 or 2.1 -->
+    <Version>2.0.0</Version>
     <AssemblyName>Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy</AssemblyName>
     <Title>Coordinate Reference System Transformations adapter implementation using the adaptee third-part library 'MightyLittleGeodesy'.</Title>
-    <Description>Coordinate Reference System Transformations adapter implementation using the adaptee third-part library 'MightyLittleGeodesy'.</Description>
+    <Description>
+      Coordinate Reference System Transformations adapter implementation using the adaptee third-part library 'MightyLittleGeodesy'.
+      For more information see the project website at github https://github.com/TomasJohansson/crsTransformations-dotnet
+    </Description>
     <Authors>TomasJohansson</Authors>
     <PackageProjectUrl>https://github.com/TomasJohansson/crsTransformations-dotnet</PackageProjectUrl>
     <PackageLicenseUrl>https://github.com/TomasJohansson/crsTransformations-dotnet/blob/master/Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy/LICENSE_NOTICE.txt</PackageLicenseUrl>

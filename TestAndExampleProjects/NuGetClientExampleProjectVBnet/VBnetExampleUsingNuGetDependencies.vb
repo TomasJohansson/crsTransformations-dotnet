@@ -1,7 +1,8 @@
 Imports Programmerare.CrsTransformations.Coordinate
 Imports Programmerare.CrsTransformations.CompositeTransformations
 Imports NUnit.Framework
-Imports Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4
+Imports Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_036
+
 
 Namespace Programmerare.CrsTransformations.NuGetClientExampleProjectVBnet
 
@@ -136,9 +137,9 @@ Namespace Programmerare.CrsTransformations.NuGetClientExampleProjectVBnet
                 Assert.That(leafResultStatistic.MaxDifferenceForYNorthingLatitude, [Is].LessThan(0.01))
             Next
             Assert.AreEqual(3, dict.Count)
-            Assert.IsTrue(dict.ContainsKey(CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_1))
+            Assert.IsTrue(dict.ContainsKey(CrsTransformationAdapteeType.LEAF_MIGHTY_LITTLE_GEODESY_1_0_2))
             Assert.IsTrue(dict.ContainsKey(CrsTransformationAdapteeType.LEAF_DOT_SPATIAL_2_0_0_RC1))
-            Assert.IsTrue(dict.ContainsKey(CrsTransformationAdapteeType.LEAF_PROJ_NET_4_GEO_API_1_4_1))
+            Assert.IsTrue(dict.ContainsKey(CrsTransformationAdapteeType.LEAF_PROJ_NET_2_0_0))
 
         End Sub
 

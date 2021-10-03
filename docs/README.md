@@ -8,29 +8,30 @@ The adapters are using third-part .NET libraries as adaptee's.
 The code has been implemented with F# but the tests (and the generated constants in the subproject "[Programmerare.CrsTransformations.Constants](https://github.com/TomasJohansson/crsTransformations-dotnet/tree/master/Programmerare.CrsTransformations.Constants)") are implemented with C#.  
 
 # Versions of .NET and F#
-The .NET target versions are .NET 4.5 and .NET Standard 2.0  
-The F# version is 4.5.4 (i.e. for the package reference to "FSharp.Core")  
+These versions below apply to v2.0.0 of the NuGet releases e.g. [Programmerare.CrsTransformations.Core](https://www.nuget.org/packages/Programmerare.CrsTransformations.Core/2.0.0):  
+The .NET target version is .NET Standard 2.0  ([e.g. .NET Framework 4.6.1 or later](https://docs.microsoft.com/en-us/dotnet/standard/net-standard)) but the library with constants ([Programmerare.CrsTransformations.Constants](https://www.nuget.org/packages/Programmerare.CrsTransformations.Constants/)) can be used with .NET Framework 2.0 or later.  
+The F# version is 6.0.0 (i.e. for the package reference to "FSharp.Core")  
 
 # Adaptee libraries used by the three adapter libraries
 * https://github.com/DotSpatial/DotSpatial
     (version [2.0.0-rc1](https://www.nuget.org/packages/DotSpatial.Projections/2.0.0-rc1) of DotSpatial.Projections)
 * https://github.com/NetTopologySuite/ProjNet4GeoAPI
-    (version [1.4.1](https://www.nuget.org/packages/ProjNET4GeoAPI/1.4.1) of ProjNET4GeoAPI)
+    (version [2.0.0](https://www.nuget.org/packages/ProjNet/2.0.0) of ProjNET)
 * https://github.com/bjornsallarp/MightyLittleGeodesy
-    (version [1.0.1](https://www.nuget.org/packages/MightyLittleGeodesy/1.0.1) of MightyLittleGeodesy)
+    (version [1.0.2](https://www.nuget.org/packages/MightyLittleGeodesy/1.0.2) of MightyLittleGeodesy)
 
 # NuGet releases
 The following five libraries from this code project have been released/distributed to NuGet:
 * Programmerare.CrsTransformations.**Core**
-    (version [1.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Core/1.0.0))
+    (version [2.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Core/2.0.0))
 * Programmerare.CrsTransformations.*Adapter*.**DotSpatial**
-    (version [1.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.DotSpatial/1.0.0))
+    (version [2.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.DotSpatial/2.0.0))
 * Programmerare.CrsTransformations.*Adapter*.**ProjNet4GeoAPI**
-    (version [1.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI/1.0.0))
+    (version [2.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.ProjNet/2.0.0))
 * Programmerare.CrsTransformations.*Adapter*.**MightyLittleGeodesy**
-    (version [1.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy/1.0.0))
+    (version [2.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy/2.0.0))
 * Programmerare.CrsTransformations.*Constants*
-    (version [**9.5.4** at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Constants/9.5.4))  
+    (version [**10.36.0** at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Constants/10.36.0))  
 
 The three above libraries which includes "*Adapter*" in the name are adapter implementations of the above "*Core*" library.  
 Those three adapters are using the three adaptee libraries for the coordinate transformations.  
@@ -41,7 +42,7 @@ The above library "Programmerare.CrsTransformations.*Constants*" is actually tot
 It is not depending on anything and nothing depends on it.  
 It is a **C#** library (i.e. not even depending on F# like the others) with only one class with a lot of C# constants.  
 (the other four Core/Adapter libraries are implemented with F#)    
-The C# constant class has been generated from the [EPSG database](http://www.epsg-registry.org) version 9.5.4 which is the reason for the version number.
+The C# constant class has been generated from the [EPSG dataset](https://epsg.org) version 10.036 which is the reason for its version number.
 
 # NuGet configuration
 The "Core" library is not necessary to include since there is an implicit/transitive dependency from all the "Adapter" libraries to the "Core".  
@@ -49,15 +50,16 @@ The "Constants" library is not needed but might be interesting if you want to us
 for the EPSG numbers rather than hardcoding them with integer literals or define your own integer constants.  
 ```xml
 <!-- Use one, two or three of the below three Adapters -->
-<PackageReference Include="Programmerare.CrsTransformations.Adapter.DotSpatial" Version="1.0.0" />
-<PackageReference Include="Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI" Version="1.0.0" />
-<PackageReference Include="Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy" Version="1.0.0" />
+<PackageReference Include="Programmerare.CrsTransformations.Adapter.DotSpatial" Version="2.0.0" />
+<PackageReference Include="Programmerare.CrsTransformations.Adapter.ProjNet" Version="2.0.0" />
+<PackageReference Include="Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy" Version="2.0.0" />
+    
 
 <!-- The Core should not be necessary to include explicitly as below (since it should be implicitly included when using one of the others above ) -->
-<PackageReference Include="Programmerare.CrsTransformations.Core" Version="1.0.0" />
+<PackageReference Include="Programmerare.CrsTransformations.Core" Version="2.0.0" />
 
 <!-- Optional (and totally independent) library with only one class with lots of integer constants -->
-<PackageReference Include="Programmerare.CrsTransformations.Constants" Version="9.5.4" />
+<PackageReference Include="Programmerare.CrsTransformations.Constants" Version="10.36.0" />
 ```
 The above libraries can be found at [my NuGet page](https://www.nuget.org/profiles/TomasJohansson).
 
@@ -89,7 +91,7 @@ using System.Collections.Generic; // IList
 using Programmerare.CrsTransformations; // ICrsTransformationAdapter
 using Programmerare.CrsTransformations.CompositeTransformations; // CrsTransformationAdapterCompositeFactory
 using Programmerare.CrsTransformations.Adapter.DotSpatial;
-using Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI;
+using Programmerare.CrsTransformations.Adapter.ProjNet;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
 
 	// ...
@@ -105,9 +107,9 @@ using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
     // Programmerare.CrsTransformations.Adapter.DotSpatial.CrsTransformationAdapterDotSpatial
     crsTransformationAdapter = new CrsTransformationAdapterDotSpatial();
 
-    // Library "Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI", class:
-    // Programmerare.CrsTransformations.Adapter.ProjNet4GeoAPI.CrsTransformationAdapterProjNet4GeoAPI
-    crsTransformationAdapter = new CrsTransformationAdapterProjNet4GeoAPI();
+    // Library "Programmerare.CrsTransformations.Adapter.ProjNet", class:
+    // Programmerare.CrsTransformations.Adapter.ProjNet.CrsTransformationAdapterProjNet
+    crsTransformationAdapter = new CrsTransformationAdapterProjNet();
 
     // Library "Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy", class:
     // Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy.CrsTransformationAdapterMightyLittleGeodesy
@@ -127,14 +129,14 @@ using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
     crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationFirstSuccess();
 
     // All of the above three factory methods without any parameter will try to use as many of 
-	// the three (currently) 'leaf' implementations as are available in runtime 
-	// (e.g. are included as NuGet dependencies).
+    // the three (currently) 'leaf' implementations as are available in runtime 
+    // (e.g. are included as NuGet dependencies).
     // If you want to specify explicitly which ones to be used, you can provide 
     // a parameter 'IList<ICrsTransformationAdapter>' to the Create method like this:
     crsTransformationAdapterCompositeFactory = CrsTransformationAdapterCompositeFactory.Create(
 		new List<ICrsTransformationAdapter>{
 			new CrsTransformationAdapterDotSpatial(),
-			new CrsTransformationAdapterProjNet4GeoAPI(),
+			new CrsTransformationAdapterProjNet(),
 			new CrsTransformationAdapterMightyLittleGeodesy(),
 		}
 	);
@@ -146,7 +148,7 @@ using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
     crsTransformationAdapter = crsTransformationAdapterCompositeFactory.CreateCrsTransformationWeightedAverage(
 		new List<CrsTransformationAdapterWeight> {
 			weightFactory.CreateFromInstance(new CrsTransformationAdapterDotSpatial(), 1.0),
-			weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet4GeoAPI(), 1.0),
+			weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), 1.0),
 			weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 2.0),
 	    }
 	);
@@ -227,6 +229,7 @@ using static Programmerare.CrsTransformations.Coordinate.CrsCoordinateFactory;
     crsCoordinate = CreateFromXEastingLongitudeAndYNorthingLatitude(longitude, latitude, crsIdentifier);
 
     CrsIdentifier targetCrs = CrsIdentifierFactory.CreateFromEpsgNumber(3006);
+    ICrsTransformationAdapter crsTransformationAdapter = CrsTransformationAdapterCompositeFactory.Create().CreateCrsTransformationAverage();
     CrsTransformationResult crsTransformationResult = crsTransformationAdapter.Transform(crsCoordinate, targetCrs);
     // see more example code further down in this webpage
 ```
@@ -272,6 +275,7 @@ Below is a small C# example code working with the current version 1.0.0.
 The example code transforms a coordinate from a global CRS WGS84 (EPSG code 4326) latitude/longitude to
 the Swedish CRS SWEREF99TM (EPSG code 3006).  
 ```C#
+using Programmerare.CrsTransformations;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.CompositeTransformations;
 using System; // Console
@@ -303,7 +307,8 @@ class SmallCSharpeExample {
 
 # Another C# example with some more code and comments
 ```C#
-using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v9_5_4;
+using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_036;
+using Programmerare.CrsTransformations;
 using Programmerare.CrsTransformations.CompositeTransformations;
 using Programmerare.CrsTransformations.Coordinate;
 using System;
@@ -450,13 +455,15 @@ using System.Collections.Generic;
     }
 ```
 # The library "Programmerare.CrsTransformations.Constants" with EPSG integer constants
-The integer constants are generated by using the [EPSG database](http://www.epsg-registry.org)  
+The integer constants are generated by using the [EPSG database](https://epsg.org)  
 and the Java library FreeMarker in "crs-transformation-code-generation" in the project https://github.com/TomasJohansson/crsTransformations  
 Each constant is used for defining a coordinate reference system (CRS).  
 The name of a constant is a concatenation of the following three parts:
 * Name of the area (e.g. country)
 * Name of the CRS
 * EPSG number (**also the integer value for the constant**)
+
+Note that the below screenshots and text in this section are for an older version 9.5.4 but **now there is a later version**. You can find the [latest version of 'Programmerare.CrsTransformations.Constants' in its NuGet repository](https://www.nuget.org/packages/Programmerare.CrsTransformations.Constants/).
 
 SQL result example when selecting the above three columns:
 ![EPSG_SQL](images/epsg_db.png)  
