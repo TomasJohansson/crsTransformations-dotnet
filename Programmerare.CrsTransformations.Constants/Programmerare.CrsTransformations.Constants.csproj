@@ -1,12 +1,12 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFrameworks>netstandard2.0</TargetFrameworks>
-    <Version>10.027</Version>
+    <TargetFrameworks>net20;netstandard2.0</TargetFrameworks>
+    <Version>10.036</Version>
     <Title>.NET constants with EPSG codes for Coordinate Reference Systems</Title>
     <Authors>TomasJohansson</Authors>
     <Description>.NET constants with EPSG codes for Coordinate Reference Systems.
-Assembly with only one C# class that defines 6733 integer constants which have been generated from the EPSG database.
+Assembly with only one C# class that defines many (thousands of) integer constants which have been generated from the EPSG database.
 The version number is the same as the used EPSG database at http://www.epsg.org or http://www.epsg-registry.org
 Regarding the license:
 MIT license for this library with C# constants for EPSG codes.
@@ -25,10 +25,21 @@ Some quotes from the 'Terms of use' URL:
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_5_4\EpsgNumber.fs" />
-    <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_6\EpsgNumber.fs" />
-    <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_7\EpsgNumber.fs" />
-    <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_8_9\EpsgNumber.fs" />
+    <Compile Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v10_027\**" />
+    <Compile Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_5_4\**" />
+    <Compile Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_6\**" />
+    <Compile Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_7\**" />
+    <Compile Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_8_9\**" />
+    <EmbeddedResource Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v10_027\**" />
+    <EmbeddedResource Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_5_4\**" />
+    <EmbeddedResource Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_6\**" />
+    <EmbeddedResource Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_7\**" />
+    <EmbeddedResource Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_8_9\**" />
+    <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v10_027\**" />
+    <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_5_4\**" />
+    <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_6\**" />
+    <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_7\**" />
+    <None Remove="Programmerare\CrsConstants\ConstantsByAreaNameNumber\v9_8_9\**" />
   </ItemGroup>
 
 </Project>

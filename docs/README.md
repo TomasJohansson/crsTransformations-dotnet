@@ -492,6 +492,6 @@ AUSTRIA__ETRS89__AUSTRIA_LAMBERT__3416
 EUROPE__LIECHTENSTEIN_AND_SWITZERLAND__CH1903__LV03__21781  
 ```
 The above examples with constants are showing very few of them.  
-The actual number of constants in the generated class is 6733.  
-This number can easily be retrieved with the C# code 'typeof(EpsgNumber).GetFields().Length'.  
+There are many thousands of constants in the generated class.  
+The actual number of constants (for the version of the constants class you are using) can easily be retrieved with the C# code 'typeof(EpsgNumber).GetFields().Length'.  
 The same number can also be verified with the value returned by the SQL statement 'SELECT count(DISTINCT coord_ref_sys_code) FROM epsg_coordinatereferencesystem' (or simply 'SELECT count(*) FROM epsg_coordinatereferencesystem' since 'coord_ref_sys_code' is the primary key).
