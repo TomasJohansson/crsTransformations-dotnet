@@ -139,7 +139,7 @@ using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
             new CrsTransformationAdapterProjNet(),
             new CrsTransformationAdapterMightyLittleGeodesy(),
         }
-	);
+    );
         
     // The fourth 'Composite' below does not use any implicit implementations  
     // but if you want to use a result created as a weighted average then the weights need 
@@ -151,7 +151,7 @@ using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
             weightFactory.CreateFromInstance(new CrsTransformationAdapterProjNet(), 1.0),
             weightFactory.CreateFromInstance(new CrsTransformationAdapterMightyLittleGeodesy(), 2.0),
         }
-	);
+    );
     // The weight values above illustrates a situation where you (for some reason) want to consider 
     // the transformation results from 'MightyLittleGeodesy' as being 'two times better' than the others.
 ```
