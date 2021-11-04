@@ -25,6 +25,9 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
         static let rt90Projections: Dictionary<int, RT90Position.RT90Projection> = new Dictionary<int, RT90Position.RT90Projection>()
         static let sweREFProjections: Dictionary<int, SWEREF99Position.SWEREFProjection> = new Dictionary<int, SWEREF99Position.SWEREFProjection>()
 
+        [<Literal>]
+        static let ErrorMessageForUnsupportedEspgNumber = "EPSG number not supported: "
+
         static do
             // Below some EPSG numbers are hardcoded.
             // If those numbers would be used in more than one place in this file or the module,
@@ -84,9 +87,9 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
             let inputEpsgNumber = inputCoordinate.CrsIdentifier.EpsgNumber
             let outputEpsgNumber = crsIdentifierForOutputCoordinateSystem.EpsgNumber
             if(not(this.isSupportedEpsgNumber(inputEpsgNumber))) then
-                invalidArg (nameof inputCoordinate) ("EPSG number not supported: " + inputEpsgNumber.ToString())
+                invalidArg (nameof inputCoordinate) ("Input " + ErrorMessageForUnsupportedEspgNumber + inputEpsgNumber.ToString())
             if(not(this.isSupportedEpsgNumber(outputEpsgNumber))) then
-                invalidArg (nameof crsIdentifierForOutputCoordinateSystem) ("EPSG number not supported: " + outputEpsgNumber.ToString())
+                invalidArg (nameof crsIdentifierForOutputCoordinateSystem) ("Output " + ErrorMessageForUnsupportedEspgNumber + outputEpsgNumber.ToString())
             
         member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             this.ThrowArgumentExceptionIfUnvalidCoordinateOrCrs(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
