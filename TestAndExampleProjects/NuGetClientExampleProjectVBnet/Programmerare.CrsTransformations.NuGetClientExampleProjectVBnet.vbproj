@@ -13,7 +13,7 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
-    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.11.0" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.0.0" />
     <PackageReference Include="Programmerare.CrsTransformations.Adapter.DotSpatial" Version="2.0.0" />
     <PackageReference Include="Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy" Version="2.0.0" />
     <PackageReference Include="Programmerare.CrsTransformations.Adapter.ProjNet" Version="2.0.0" />
