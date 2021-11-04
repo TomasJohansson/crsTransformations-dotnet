@@ -28,7 +28,7 @@ module CrsIdentifierFactory =
 
     let private getValidEpsgNumberOrThrowArgumentExceptionMessageIfNotValid epsgNumber = 
         if epsgNumber < 0 then    
-            invalidArg "epsgNumber" ("EPSG number must not be non-positive but was: " + epsgNumber.ToString())
+            invalidArg (nameof epsgNumber) ("EPSG number must not be non-positive but was: " + epsgNumber.ToString())
         epsgNumber
 
     ///<param name="crsCode">
@@ -47,11 +47,11 @@ module CrsIdentifierFactory =
         let mutable epsgNumber = 0
         let mutable isEpsgCode = false
         if isNull crsCode then
-            nullArg "crsCode"
+            nullArg (nameof crsCode)
 
         let mutable crsIdentifierCode = crsCode.Trim() // but does not uppercase here (unless EPSG below)
         if crsIdentifierCode.Length = 0 then    
-            invalidArg "crsCode" "CRS code must be non-empty"
+            invalidArg (nameof crsCode) "CRS code must be non-empty"
 
         if crsIdentifierCode.ToUpper().StartsWith(EPSG_PREFIX_UPPERCASED) then
             let nonEpsgPartOfString = crsIdentifierCode.Substring(LENGTH_OF_EPSG_PREFIX);

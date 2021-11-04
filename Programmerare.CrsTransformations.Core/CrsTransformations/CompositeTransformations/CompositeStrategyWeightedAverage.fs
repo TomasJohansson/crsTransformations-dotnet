@@ -26,15 +26,16 @@ type internal CompositeStrategyWeightedAverage private
         static let SMALL_DELTA_VALUE_FOR_EQUAL_COMPARISON_OF_WEIGHT_VALUES = 0.0000000001
         
         do
+            let argumentNameCrsTransformationAdapters = (nameof crsTransformationAdapters)
             if isNull crsTransformationAdapters then
-                nullArg "crsTransformationAdapters"
+                nullArg argumentNameCrsTransformationAdapters
             if isNull weights then 
-                nullArg "weights"
+                nullArg (nameof weights)
             if crsTransformationAdapters.Count <> weights.Count then
-                invalidArg "crsTransformationAdapters" "The number of adapters must be the same as the number of weights"
+                invalidArg argumentNameCrsTransformationAdapters "The number of adapters must be the same as the number of weights"
             for crsTransformationAdapter in crsTransformationAdapters do
                 if not((weights.ContainsKey(crsTransformationAdapter.AdapteeType))) then
-                    invalidArg "crsTransformationAdapters" ("No weight for adapter " + crsTransformationAdapter.LongNameOfImplementation)
+                    invalidArg argumentNameCrsTransformationAdapters ("No weight for adapter " + crsTransformationAdapter.LongNameOfImplementation)
 
         member internal this._GetWeights() = weights
 

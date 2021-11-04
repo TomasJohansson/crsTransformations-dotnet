@@ -25,6 +25,9 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
         static let rt90Projections: Dictionary<int, RT90Position.RT90Projection> = new Dictionary<int, RT90Position.RT90Projection>()
         static let sweREFProjections: Dictionary<int, SWEREF99Position.SWEREFProjection> = new Dictionary<int, SWEREF99Position.SWEREFProjection>()
 
+        [<Literal>]
+        static let ErrorMessageForUnsupportedEspgNumber = "EPSG number not supported: "
+
         static do
             // Below some EPSG numbers are hardcoded.
             // If those numbers would be used in more than one place in this file or the module,
@@ -60,7 +63,7 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
         member private this.isWgs84(epsgNumber) = epsgNumber = WGS84.EpsgNumber
         member private this.isSweref99(epsgNumber: int) = sweREFProjections.ContainsKey(epsgNumber)
         member private this.isRT90(epsgNumber) = rt90Projections.ContainsKey(epsgNumber)
-        member private this.isSupportedCrs(epsgNumber) = 
+        member private this.isSupportedEpsgNumber(epsgNumber) = 
             this.isWgs84(epsgNumber) || this.isSweref99(epsgNumber) || this.isRT90(epsgNumber)
 
         override this.Equals(o) =
@@ -81,12 +84,12 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
                 inputCoordinate: CrsCoordinate,
                 crsIdentifierForOutputCoordinateSystem: CrsIdentifier
             ) =
-            let i = inputCoordinate.CrsIdentifier.EpsgNumber
-            let o = crsIdentifierForOutputCoordinateSystem.EpsgNumber
-            if(not(this.isSupportedCrs(i))) then
-                invalidArg "inputCoordinate" ("crsIdentifier not supported: " + i.ToString())
-            if(not(this.isSupportedCrs(o))) then
-                invalidArg "crsIdentifierForOutputCoordinateSystem" ("crsIdentifier not supported: " + o.ToString())
+            let inputEpsgNumber = inputCoordinate.CrsIdentifier.EpsgNumber
+            let outputEpsgNumber = crsIdentifierForOutputCoordinateSystem.EpsgNumber
+            if(not(this.isSupportedEpsgNumber(inputEpsgNumber))) then
+                invalidArg (nameof inputCoordinate) ("Input " + ErrorMessageForUnsupportedEspgNumber + inputEpsgNumber.ToString())
+            if(not(this.isSupportedEpsgNumber(outputEpsgNumber))) then
+                invalidArg (nameof crsIdentifierForOutputCoordinateSystem) ("Output " + ErrorMessageForUnsupportedEspgNumber + outputEpsgNumber.ToString())
             
         member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             this.ThrowArgumentExceptionIfUnvalidCoordinateOrCrs(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
