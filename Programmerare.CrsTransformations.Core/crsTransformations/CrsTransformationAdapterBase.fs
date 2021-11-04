@@ -128,11 +128,11 @@ type CrsTransformationAdapterBase
 
         member internal this.ValidateNonNullIdentifier(crsIdentifier: CrsIdentifier) = 
             if isNull crsIdentifier then
-                nullArg "crsIdentifier"
+                nullArg (nameof crsIdentifier)
 
         member internal this.ValidateNonNullCoordinate(crsCoordinate: CrsCoordinate) = 
             if isNull crsCoordinate then
-                nullArg "crsCoordinate"
+                nullArg (nameof crsCoordinate)
             this.ValidateNonNullIdentifier(crsCoordinate.CrsIdentifier)
             // Most of the other validation has been moved into the 
             // creation of the coordinate i.e. it should not even be possible

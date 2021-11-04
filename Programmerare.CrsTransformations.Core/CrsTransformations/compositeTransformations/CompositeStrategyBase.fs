@@ -24,7 +24,7 @@ type internal CompositeStrategyBase internal
     class
 
         do
-            let argumentName = "crsTransformationAdapters"
+            let argumentName = (nameof crsTransformationAdapters)
             if isNull crsTransformationAdapters then
                 nullArg argumentName
             if crsTransformationAdapters.Count = 0 then

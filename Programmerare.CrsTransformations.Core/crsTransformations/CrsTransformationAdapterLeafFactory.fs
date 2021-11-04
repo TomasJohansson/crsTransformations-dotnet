@@ -60,7 +60,7 @@ type CrsTransformationAdapterLeafFactory internal
         static member internal ThrowExceptionWhenAdapterInstanceCouldNotBeReturned(crsTransformationAdapterClassName: string) = 
             let nameOfInterfaceThatShouldBeImplemented = typeof<ICrsTransformationAdapter>.FullName
             let message = "Failed to return an instance of a class with the name '" + crsTransformationAdapterClassName + "' . The parameter must be the name of an available class which implements the interface '" + nameOfInterfaceThatShouldBeImplemented + "'"
-            invalidArg "crsTransformationAdapterClassName" message
+            invalidArg (nameof crsTransformationAdapterClassName) message
 
         ///<returns>
         ///A factory that is capable of creating some known hardcoded implementations of the interface ICrsTransformationAdapter.
@@ -152,7 +152,7 @@ and internal CrsTransformationAdapterLeafFactoryWithHardcodedImplementations int
 
         member private this._CreateInstanceOfType(theType: Type): ICrsTransformationAdapter =
             if isNull theType then
-                nullArg "theType"
+                nullArg (nameof theType)
             try
                 let instance = Activator.CreateInstance(theType)
                 instance :?> ICrsTransformationAdapter

@@ -31,9 +31,9 @@ type CrsTransformationAdapterWeight private
 
     do
         if isNull crsTransformationAdapter then
-            nullArg "crsTransformationAdapter"
+            nullArg (nameof crsTransformationAdapter)
         if(weight <= 0.0) then
-            invalidArg "weight" ("The weight value must be positive value. It does not make sense to try using negative values, and there would be useless with a zero value. The weight value was: " + weight.ToString()  + " for the adapter " + crsTransformationAdapter.ShortNameOfImplementation)
+            invalidArg (nameof weight) ("The weight value must be positive value. It does not make sense to try using negative values, and there would be useless with a zero value. The weight value was: " + weight.ToString()  + " for the adapter " + crsTransformationAdapter.ShortNameOfImplementation)
 
     member x.Weight = weight
     member x.CrsTransformationAdapter = crsTransformationAdapter

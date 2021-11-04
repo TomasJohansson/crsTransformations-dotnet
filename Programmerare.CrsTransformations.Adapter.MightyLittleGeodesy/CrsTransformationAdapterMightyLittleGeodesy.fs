@@ -84,9 +84,9 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
             let i = inputCoordinate.CrsIdentifier.EpsgNumber
             let o = crsIdentifierForOutputCoordinateSystem.EpsgNumber
             if(not(this.isSupportedCrs(i))) then
-                invalidArg "inputCoordinate" ("crsIdentifier not supported: " + i.ToString())
+                invalidArg (nameof inputCoordinate) ("crsIdentifier not supported: " + i.ToString())
             if(not(this.isSupportedCrs(o))) then
-                invalidArg "crsIdentifierForOutputCoordinateSystem" ("crsIdentifier not supported: " + o.ToString())
+                invalidArg (nameof crsIdentifierForOutputCoordinateSystem) ("crsIdentifier not supported: " + o.ToString())
             
         member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
             this.ThrowArgumentExceptionIfUnvalidCoordinateOrCrs(inputCoordinate, crsIdentifierForOutputCoordinateSystem)
