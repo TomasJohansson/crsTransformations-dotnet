@@ -44,8 +44,16 @@
     <Compile Include="CrsTransformations\FileInfoVersionTest.cs" />
     <Compile Include="CrsTransformations\Identifier\CrsIdentifierTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterLeafFactoryTest.cs" />
+    <Compile Include="CrsTransformations\Utils\FileUtility.cs" />
+    <Compile Include="CrsTransformations\Utils\FileUtilityTest.cs" />
     <Compile Include="CrsTransformations\Utils\MedianValueUtilityTest.cs" />
     <Compile Include="CrsTransformations\WktTest\CrsTransformationAdapterWktTest.cs" />
+    <Compile Include="CrsTransformations\WktTest\WktTestUsingCsvFile\CoordinateAndTargetEpsg.cs" />
+    <Compile Include="CrsTransformations\WktTest\WktTestUsingCsvFile\EpsgAndWkt.cs" />
+    <Compile Include="CrsTransformations\WktTest\WktTestUsingCsvFile\CrsTransformationAdapterTransformationResultTest.cs" />
+    <Compile Include="CrsTransformations\WktTest\WktTestUsingCsvFile\FileGeneratorForCsvFileWithWktResults.cs" />
+    <Compile Include="CrsTransformations\WktTest\WktTestUsingCsvFile\TransformResult.cs" />
+    <Compile Include="CrsTransformations\WktTest\WktTestUsingCsvFile\TransformResultItem.cs" />
     <Compile Include="TestData\CoordinateTestDataGeneratedFromEpsgDatabaseTest.cs" />
     <Compile Include="TestData\CoordinateTestDataGeneratedFromEpsgDatabaseTest2.cs" />
     <Compile Include="TestData\DifferenceWhenComparingCoordinateValues.cs" />
