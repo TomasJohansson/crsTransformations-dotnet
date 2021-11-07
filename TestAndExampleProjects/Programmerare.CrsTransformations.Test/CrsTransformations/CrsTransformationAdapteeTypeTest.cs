@@ -23,7 +23,9 @@ class CrsTransformationAdapteeTypeTest {
         var expectedFileInfoVersion = new FileInfoVersion(
             fileName: "projnet.dll",
             fileSize: 115200L, // netstandard2.0 filesize
-            version: "2.0.0"
+            version: "2.0.0" // this version is the start of the string and will match both strings below
+            //Expected: "2.0.0"
+            //But was:  "2.0.0.0"
         );
         VerifyExpectedEnumAndAssemblyVersion(
             new CrsTransformationAdapterProjNet(),
@@ -37,7 +39,10 @@ class CrsTransformationAdapteeTypeTest {
         var expectedFileInfoVersion = new FileInfoVersion(
             fileName: "dotspatial.projections.dll",
             fileSize: 1538048L,
-            version: "2.0.0-rc1"
+            version: "2.0.0" // this "expected" version, is the start of the version number
+            // and is now used for matching the beginning of the version to match both versions below
+          //Expected: "2.0.0-rc1"
+          //But was:  "2.0.0.0"
         );
         VerifyExpectedEnumAndAssemblyVersion(
             new CrsTransformationAdapterDotSpatial(),
@@ -52,7 +57,9 @@ class CrsTransformationAdapteeTypeTest {
         FileInfoVersion expectedFileInfoVersion = new FileInfoVersion(
             fileName: "mightylittlegeodesy.dll", // .nuget\packages\mightylittlegeodesy\1.0.1\lib\net45
             fileSize: 16896L, // net45 version
-            version: "1.0.2"
+            version: "1.0" // this version is the start of the string and will match both strings below
+            //Expected: "1.0.2"
+            //But was:  "1.0.0.0"
         );
         VerifyExpectedEnumAndAssemblyVersion(
             new CrsTransformationAdapterMightyLittleGeodesy(),
@@ -84,7 +91,7 @@ class CrsTransformationAdapteeTypeTest {
         FileInfoVersion fileInfoVersion = crsTransformationAdapter._GetFileInfoVersion();
         if(expectedFileInfoVersion.IsRepresentingThirdPartLibrary()) {
             Assert.That(
-                fileInfoVersion.FileName, Does.EndWith(expectedFileInfoVersion.FileName),
+                fileInfoVersion.FileName.ToLower(), Is.EqualTo(expectedFileInfoVersion.FileName.ToLower()),
                 "Likely failure reason: You have upgraded a version. If so, then upgrade both the enum value and the filename"
             );
             Assert.AreEqual(
@@ -99,10 +106,7 @@ class CrsTransformationAdapteeTypeTest {
                 fileInfoVersion.FileSize
             );
 
-            Assert.AreEqual(
-                expectedFileInfoVersion.Version,
-                fileInfoVersion.Version
-            );
+            Assert.That(fileInfoVersion.Version, Does.StartWith(expectedFileInfoVersion.Version));
         }
     }
 

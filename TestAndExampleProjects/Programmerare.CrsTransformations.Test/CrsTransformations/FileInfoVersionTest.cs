@@ -7,23 +7,21 @@ namespace Programmerare.CrsTransformations.Core {
     class FileInfoVersionTest {
 
         [Test]
-        public void GetFileInfoVersion_ShouldThrowException_WhenTheTypeIsNotRetrivedFromNuGet() {
+        public void GetFileInfoVersionHelper() {
             // In the test below, the type of "this" is used, i.e. 
-            // this test class which is not going to be deployed 
-            // as a NuGet assembly and therefore it should fail.
-            Assert.That(
-                () => FileInfoVersion.GetFileInfoVersionHelper(this.GetType())
-                ,
-                Throws.Exception
-            );
+            // this test class which is not going to be deployed/released, 
+            // and therefore no reason to change it to anything else but 1.0.0.0 in the project file <AssemblyVersion>1.0.0.0</AssemblyVersion>
+            var fileInfoVersion = FileInfoVersion.GetFileInfoVersionHelper(this.GetType());
+            Assert.AreEqual("Programmerare.CrsTransformations.Test.dll", fileInfoVersion.FileName);
+            Assert.AreEqual("1.0.0.0", fileInfoVersion.Version);
         }
 
         [Test]
         public void GetFileInfoVersion_ShouldSuccess_WhenTheTypeIsRetrivedFromNuGet() {
             // In the succesful scenario, a type from an assembly is used,
             // and then the following kind of path will be retrieved:
-            // "...nuget/packages/mightylittlegeodesy/1.0.1/lib/net45/MightyLittleGeodesy.dll"
-            // and from that kind of path, the version "1.0.1" should become extracted by using 
+            // "...nuget/packages/mightylittlegeodesy/1.0.2/lib/net45/MightyLittleGeodesy.dll"
+            // and from that kind of path, the version "1.0.2" should become extracted by using 
             // a regular expression.
             // The below test will use NUnit 
 

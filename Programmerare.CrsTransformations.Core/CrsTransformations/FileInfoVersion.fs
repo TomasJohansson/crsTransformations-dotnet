@@ -53,12 +53,14 @@ type FileInfoVersion internal
             let file = FileInfo(assembly.Location)
             // AssemblyQualifiedName is something like this: 
             // "MightyLittleGeodesy.Positions.RT90Position, MightyLittleGeodesy, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null"
-            // but the version number 1.0.0.0 is not what I want which is 1.0.1 
+            // but the version number 1.0.0.0 is not what I want which is 1.0.2 
             // which can be extracted from the path below
             // the code base will be some path like:
-            // "...nuget/packages/mightylittlegeodesy/1.0.1/lib/net45/MightyLittleGeodesy.dll"
+            // "...nuget/packages/mightylittlegeodesy/1.0.2/lib/net45/MightyLittleGeodesy.dll"
             // version between some slashes in the below regexp: 
             // e.g. "2.0.0-rc1" or "1.0.1"
+            // However, this does not seem to always work, at least not for Linux and .NET5, 
+            // so if the regexp is failing, then trying to retrieve a version from within the assembly instead.
             let inputString = codeBase.ToLower().Replace('\\','/')
             // printfn "GetFileInfoVersionHelper inputString: %s" inputString
             let regExp = new Regex("^.*\\/(.{0,10}?[\\d\\.]{3,9}.{0,10}?)\\/.*\\/(.+)$")
@@ -71,5 +73,12 @@ type FileInfoVersion internal
                     regExpMatch.Groups.[1].Value
                     )
             else
-                failwith ("The 'FileInfoVersion' parts could not be extracted from the string " + inputString + " which was retrieved using the type " + someTypeInTheThidPartAdapteeLibrary.GetType().FullName)
+                let versionAccordingToAssembly = assembly.GetName().Version.ToString()
+                // printfn "GetFileInfoVersionHelper versionAccordingToAssembly %s" versionAccordingToAssembly
+                FileInfoVersion
+                    (
+                        file.Name,
+                        file.Length,
+                        versionAccordingToAssembly
+                    )
     end
