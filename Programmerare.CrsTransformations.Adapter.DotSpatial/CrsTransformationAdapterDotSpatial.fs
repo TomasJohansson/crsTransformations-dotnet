@@ -32,8 +32,17 @@ type CrsTransformationAdapterDotSpatial() as this =
         override this.GetHashCode() = base.GetHashCode()
 
         member private this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) = 
-            let projInfoSourceCrs = ProjectionInfo.FromEpsgCode(inputCoordinate.CrsIdentifier.EpsgNumber)
-            let projInfoTargetCrs = ProjectionInfo.FromEpsgCode(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
+            let isEpsgInput = inputCoordinate.CrsIdentifier.IsEpsgCode
+            let isEpsgOutput = crsIdentifierForOutputCoordinateSystem.IsEpsgCode
+
+            let projInfoSourceCrs = if isEpsgInput then
+                                        ProjectionInfo.FromEpsgCode(inputCoordinate.CrsIdentifier.EpsgNumber)
+                                    else 
+                                        ProjectionInfo.FromEsriString(inputCoordinate.CrsIdentifier.WellKnownTextCrs)
+            let projInfoTargetCrs = if isEpsgOutput then 
+                                        ProjectionInfo.FromEpsgCode(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
+                                    else 
+                                        ProjectionInfo.FromEsriString(crsIdentifierForOutputCoordinateSystem.WellKnownTextCrs)
 
             let xy: double[] = [| inputCoordinate.X; inputCoordinate.Y |]
             Reproject.ReprojectPoints(xy, null, projInfoSourceCrs, projInfoTargetCrs, 0, 1)

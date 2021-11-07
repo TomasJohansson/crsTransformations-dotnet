@@ -21,6 +21,8 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
                 ( fun (inputCoordinate, crsIdentifierForOutputCoordinateSystem) -> this._TransformToCoordinateStrategy(inputCoordinate, crsIdentifierForOutputCoordinateSystem) )
             )
 
+        static let _errorMessageForNonEpsg = "The CRS adapter implementation only supports CRS identifiers created from EPSG numbers: "
+
         static let WGS84 = CrsIdentifierFactory.CreateFromEpsgNumber(4326)
         static let rt90Projections: Dictionary<int, RT90Position.RT90Projection> = new Dictionary<int, RT90Position.RT90Projection>()
         static let sweREFProjections: Dictionary<int, SWEREF99Position.SWEREFProjection> = new Dictionary<int, SWEREF99Position.SWEREFProjection>()
@@ -84,6 +86,10 @@ type CrsTransformationAdapterMightyLittleGeodesy() as this =
                 inputCoordinate: CrsCoordinate,
                 crsIdentifierForOutputCoordinateSystem: CrsIdentifier
             ) =
+            if(not(inputCoordinate.CrsIdentifier.IsEpsgCode)) then
+                invalidArg (nameof inputCoordinate) (_errorMessageForNonEpsg + nameof(MightyLittleGeodesy))
+            if(not(crsIdentifierForOutputCoordinateSystem.IsEpsgCode)) then
+                invalidArg (nameof crsIdentifierForOutputCoordinateSystem) (_errorMessageForNonEpsg + nameof(MightyLittleGeodesy))
             let inputEpsgNumber = inputCoordinate.CrsIdentifier.EpsgNumber
             let outputEpsgNumber = crsIdentifierForOutputCoordinateSystem.EpsgNumber
             if(not(this.isSupportedEpsgNumber(inputEpsgNumber))) then

@@ -41,6 +41,8 @@ type CrsTransformationAdapterProjNet
         
         let _sridReader = sridReader
 
+        let _coordinateSystemFactory = new CoordinateSystemFactory()
+
         // this private field is only internally mutable i.e. can not be changed through some public setter
         let mutable _cachedCoordinateSystem = Dictionary<int, CoordinateSystem>() :> IDictionary<int, CoordinateSystem>
 
@@ -102,8 +104,20 @@ type CrsTransformationAdapterProjNet
             // would otherwise read the resource file twice, which it would do 
             // for every usage of the method even if doing multiple 
             // transformations between the same coordinate systems
-            let sourceCrs: CoordinateSystem = GetCSbyID(inputCoordinate.CrsIdentifier.EpsgNumber)
-            let targetCrs: CoordinateSystem = GetCSbyID(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
+
+            let isEpsgCodeInput = inputCoordinate.CrsIdentifier.IsEpsgCode
+            let isEpsgCodeOutput = crsIdentifierForOutputCoordinateSystem.IsEpsgCode
+
+            let sourceCrs: CoordinateSystem =   if isEpsgCodeInput then 
+                                                    GetCSbyID(inputCoordinate.CrsIdentifier.EpsgNumber)
+                                                else 
+                                                    _coordinateSystemFactory.CreateFromWkt(inputCoordinate.CrsIdentifier.WellKnownTextCrs)
+
+            let targetCrs: CoordinateSystem =   if isEpsgCodeOutput then 
+                                                    GetCSbyID(crsIdentifierForOutputCoordinateSystem.EpsgNumber)
+                                                else 
+                                                    _coordinateSystemFactory.CreateFromWkt(crsIdentifierForOutputCoordinateSystem.WellKnownTextCrs)
+
             let ctFact: CoordinateTransformationFactory = new CoordinateTransformationFactory()
             let xy: double[] = [| inputCoordinate.X; inputCoordinate.Y |]
             let trans: ICoordinateTransformation  = ctFact.CreateFromCoordinateSystems(sourceCrs, targetCrs)

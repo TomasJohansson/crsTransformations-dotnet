@@ -39,7 +39,8 @@ type CrsIdentifier private
     (
         crsCode: string,
         isEpsgCode: bool,
-        epsgNumber: int
+        epsgNumber: int,
+        wellKnownTextCrs: string
     ) =
 
     ///<value>
@@ -64,6 +65,8 @@ type CrsIdentifier private
     ///</value>
     member this.IsEpsgCode = isEpsgCode
 
+    member this.WellKnownTextCrs = wellKnownTextCrs
+
     ///<summary>
     ///F# factory method with access level "internal".
     ///NOT indended for public use.
@@ -73,19 +76,20 @@ type CrsIdentifier private
         (
             crsCode: string,
             isEpsgCode: bool,
-            epsgNumber: int
+            epsgNumber: int,
+            wellKnownTextCrs: string
         ) = 
-        CrsIdentifier(crsCode, isEpsgCode, epsgNumber)
+        CrsIdentifier(crsCode, isEpsgCode, epsgNumber, wellKnownTextCrs)
 
     override this.Equals(obj) =
         match obj with
-        | :? CrsIdentifier as c -> (crsCode, isEpsgCode, epsgNumber) = (c.CrsCode, c.IsEpsgCode, c.EpsgNumber)
+        | :? CrsIdentifier as c -> (crsCode, isEpsgCode, epsgNumber, wellKnownTextCrs) = (c.CrsCode, c.IsEpsgCode, c.EpsgNumber, c.WellKnownTextCrs)
         | _ -> false
 
     override this.GetHashCode() =
         //Is 'HashCode.Combine' below not available in .NET Standard ?
         //System.HashCode.Combine(CrsCode, IsEpsgCode, EpsgNumber);
-        Tuple.Create(this.CrsCode, this.IsEpsgCode, this.EpsgNumber).GetHashCode()
+        Tuple.Create(this.CrsCode, this.IsEpsgCode, this.EpsgNumber, this.WellKnownTextCrs).GetHashCode()
 
     override this.ToString() =
-        "CrsIdentifier(crsCode='" + this.CrsCode + "', isEpsgCode=" + this.IsEpsgCode.ToString() + ", epsgNumber=" + this.EpsgNumber.ToString() + ")"
+        "CrsIdentifier(crsCode='" + this.CrsCode + "', isEpsgCode=" + this.IsEpsgCode.ToString() + ", epsgNumber=" + this.EpsgNumber.ToString() + ", wellKnownText=" + this.WellKnownTextCrs.ToString() + ")"

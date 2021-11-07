@@ -4,7 +4,6 @@ using NUnit.Framework;
 using Programmerare.CrsConstants.ConstantsByAreaNameNumber.v10_036;
 using Programmerare.CrsTransformations.Coordinate;
 using Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy;
-using Programmerare.CrsTransformations.Adapter.DotSpatial;
 using Programmerare.CrsTransformations.Identifier;
 
 namespace Programmerare.CrsTransformations.Core {
@@ -16,12 +15,12 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
     // the keyword "base" is not needed but is still used in this test class 
     // to make it obvious that some variables ar defined and populated in a base class
     
-    private string unvalidCrsCode;
+    private int unvalidEpsgNumber;
     private CrsCoordinate validInputCoordinate;
 
     [SetUp]
     public void SetUpCrsTransformationAdapterTest() {
-        unvalidCrsCode = "This string is NOT a correct crs/EPSG code";
+        unvalidEpsgNumber = 999999999;
         validInputCoordinate = CrsCoordinateFactory.LatLon(
             60.0, // ok wgs84 latitude
             20.0, // ok wgs84 longitude
@@ -104,11 +103,11 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
     }
 
     [Test]
-    public void Transform_ShouldReturnSuccessFalseButNotThrowException_WhenCrsCodeIsNotValid() {
+    public void Transform_ShouldReturnSuccessFalseButNotThrowException_WhenEpsgNumberIsNotValid() {
         CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.LatLon(
             60.0, // ok wgs84 latitude
             20.0, // ok wgs84 longitude
-            unvalidCrsCode
+            unvalidEpsgNumber
         );
         Transform_ShouldReturnSuccessFalseButNotThrowException_WhenCoordinateIsNotValid(unvalidInputCoordinate);
     }
@@ -154,11 +153,11 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
     //}
 
     [Test]
-    public void TransformToCoordinate_ShouldThrowException_WhenCrsCodeIsNotValid() {
+    public void TransformToCoordinate_ShouldThrowException_WhenEpsgNumberIsNotValid() {
         CrsCoordinate unvalidInputCoordinate = CrsCoordinateFactory.LatLon(
             60.0, // ok wgs84 latitude
             20.0, // ok wgs84 longitude
-            unvalidCrsCode
+            unvalidEpsgNumber
         );
         TransformToCoordinate_ShouldThrowException_WhenCoordinateIsNotValid(unvalidInputCoordinate);
     }
@@ -193,12 +192,12 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
     }
 
     [Test]
-    public void TransformToCoordinate_shouldThrowException_whenTargetCrsIsNotValid() {
+    public void TransformToCoordinate_shouldThrowException_whenTargetEpsgNumberIsNotValid() {
         foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
             Assert.That(
                 () => crsTransformationAdapter.TransformToCoordinate(
                     validInputCoordinate,
-                    unvalidCrsCode
+                    unvalidEpsgNumber
                 ),
                 Throws.Exception
                     // testing that the thrown exception type is one of the following:
@@ -276,11 +275,11 @@ public class CrsTransformationAdapterTest : CrsTransformationTestBase {
     }
 
     [Test]
-    public void Transform_ShouldNotThrowException_WhenTargetCrsIsNotValid() {
+    public void Transform_ShouldNotThrowException_WhenTargetEpsgNumberIsNotValid() {
         foreach (ICrsTransformationAdapter crsTransformationAdapter in crsTransformationAdapterImplementations) {
             var res = crsTransformationAdapter.Transform(
                 validInputCoordinate,
-                unvalidCrsCode
+                unvalidEpsgNumber
             );
             // The main part of the test (as in the test method name)
             // is that the above Transform method should NOT 

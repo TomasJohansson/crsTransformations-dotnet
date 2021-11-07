@@ -1,21 +1,14 @@
-namespace Programmerare.CrsTransformations.Core.Identifier {
-
 using NUnit.Framework;
-    using Programmerare.CrsTransformations.Identifier;
-    using System;
+using Programmerare.CrsTransformations.Identifier;
+using System;
+
+namespace Programmerare.CrsTransformations.Core.Identifier {
 
 [TestFixture]
 public class CrsIdentifierTest {
 
     private string GetCrsCodeIncludingUppercasedEpsgPrefix(int epsgNumber) {
         return "EPSG:" + epsgNumber;
-    }
-    
-    [Test]
-    public void CrsIdentifier_ShouldReturnWhitespaceTrimmedCrsCodeAndNotBeConsideredAsEpsg_WhenCreatedFromNonEpsgString() {
-        CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromCrsCode("  abc  ");
-        Assert.AreEqual("abc", crsIdentifier.CrsCode);
-        Assert.AreEqual(false, crsIdentifier.IsEpsgCode);
     }
 
     [Test]
@@ -145,13 +138,65 @@ public class CrsIdentifierTest {
         );
     }
 
-    [Test]
-    public void crsIdentifier_shouldNotBeEqual_whenDifferentNonEpsgCrsCode() {
-        Assert.AreNotEqual(
-            CrsIdentifierFactory.CreateFromCrsCode("abc"),
-            CrsIdentifierFactory.CreateFromCrsCode("abd")
+    public void crsIdentifier_shouldThrowException_whenNonEpsgCrsCode() {
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () => {
+                CrsIdentifierFactory.CreateFromCrsCode("abc");
+            }
+            ,
+            "CRS code not valid EPSG code should throw ArgumentException"
         );
     }
+    
+    [Test]
+    public void CrsIdentifier_ShouldReturnEpsgNumberZeroAndNotBeConsideredAsEpsg_WhenCreatedFromWktString() {
+        string wktString = "x";
+        // Note that the above string is of course not a valid Crs-Wkt string
+        // but this library is not doing much validation of the correctness
+        // except from checking non-null and not empty/blank string
+        CrsIdentifier crsIdentifier = CrsIdentifierFactory.CreateFromWktCrs(wktString);
+        Assert.AreEqual(
+            0, // expected
+            crsIdentifier.EpsgNumber
+        );
+        Assert.AreEqual(false, crsIdentifier.IsEpsgCode);
+        Assert.AreEqual("", crsIdentifier.CrsCode);
+        Assert.AreEqual("x", crsIdentifier.WellKnownTextCrs);
+     }
+
+    [Test]
+    public void CrsIdentifierFactory_ShouldThrowException_WhenWktInputIsNull() {
+        ArgumentException exception = Assert.Throws<ArgumentNullException>(
+            () => {
+                CrsIdentifierFactory.CreateFromWktCrs(null);
+            }
+            ,
+            "Null should not be allowed"
+        );
+     }
+
+    [Test]
+    public void CrsIdentifierFactory_ShouldThrowException_WhenWktInputIsEmptyString() {
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () => {
+                CrsIdentifierFactory.CreateFromWktCrs("");
+            }
+            ,
+            "Empty string should not be allowed"
+        );
+     }
+
+
+    [Test]
+    public void CrsIdentifierFactory_ShouldThrowException_WhenWktInputIsOnlyWhitespaces() {
+        ArgumentException exception = Assert.Throws<ArgumentException>(
+            () => {
+                CrsIdentifierFactory.CreateFromWktCrs("  	   	 	 "); // both spaces and tabs
+            }
+            ,
+            "Only white spaces should not be allowed"
+        );
+     }
 
 } // class ends
 } // namespace ends

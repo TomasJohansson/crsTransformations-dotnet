@@ -45,6 +45,7 @@
     <Compile Include="CrsTransformations\Identifier\CrsIdentifierTest.cs" />
     <Compile Include="CrsTransformations\CrsTransformationAdapterLeafFactoryTest.cs" />
     <Compile Include="CrsTransformations\Utils\MedianValueUtilityTest.cs" />
+    <Compile Include="CrsTransformations\WktTest\CrsTransformationAdapterWktTest.cs" />
     <Compile Include="TestData\CoordinateTestDataGeneratedFromEpsgDatabaseTest.cs" />
     <Compile Include="TestData\CoordinateTestDataGeneratedFromEpsgDatabaseTest2.cs" />
     <Compile Include="TestData\DifferenceWhenComparingCoordinateValues.cs" />
