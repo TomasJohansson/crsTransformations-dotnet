@@ -57,14 +57,18 @@ type CrsIdentifier private
     member this.EpsgNumber = epsgNumber
 
     ///<value>
-    ///true if the instance represents an EPSG code and false otherwise.
-    ///Normally the method should always be true since EPSG code are expected 
-    ///by the transform methods, and if this method would return false then 
-    ///there was some problem at the construction of the instance, e.g. 
-    ///trying to create the instance with a string not beginning with "EPSG:"
+    ///true if the instance represents a CRS (coordinate reference system) 
+    ///defined by an EPSG code and false if it instead represents a CRS 
+    ///defined by a WKT-CRS
     ///</value>
     member this.IsEpsgCode = isEpsgCode
 
+    ///<value>
+    ///empty string, if the instance represents an EPSG code but 
+    ///otherwise a WKT (Well-Known-Text) CRS string.
+    ///https://en.wikipedia.org/wiki/Well-known_text_representation_of_coordinate_reference_systems#ESRI_vs_OGC
+    ///Quote from above URL: "Well-known text representation of coordinate reference systems (WKT or WKT-CRS) is a text markup language for representing spatial reference systems and transformations between spatial reference systems."
+    ///</value>
     member this.WellKnownTextCrs = wellKnownTextCrs
 
     ///<summary>

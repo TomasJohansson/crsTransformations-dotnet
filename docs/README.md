@@ -8,9 +8,9 @@ The adapters are using third-part .NET libraries as adaptee's.
 The code has been implemented with F# but the tests (and the generated constants in the subproject "[Programmerare.CrsTransformations.Constants](https://github.com/TomasJohansson/crsTransformations-dotnet/tree/master/Programmerare.CrsTransformations.Constants)") are implemented with C#.  
 
 # Versions of .NET and F#
-These versions below apply to v2.0.0 of the NuGet releases e.g. [Programmerare.CrsTransformations.Core](https://www.nuget.org/packages/Programmerare.CrsTransformations.Core/2.0.0):  
+These versions below apply to v3.0.0 of the NuGet releases e.g. [Programmerare.CrsTransformations.Core](https://www.nuget.org/packages/Programmerare.CrsTransformations.Core/3.0.0):  
 The .NET target version is .NET Standard 2.0  ([e.g. .NET Framework 4.6.1 or later](https://docs.microsoft.com/en-us/dotnet/standard/net-standard)) but version 10.36 of the library with constants ([Programmerare.CrsTransformations.Constants](https://www.nuget.org/packages/Programmerare.CrsTransformations.Constants/)) can be used with .NET Framework 2.0 or later.  
-The F# version is 6.0.0 (i.e. for the package reference to "FSharp.Core")  
+The F# version is 6.0.1 (i.e. for the package reference to "FSharp.Core")  
 
 # Adaptee libraries used by the three adapter libraries
 * https://github.com/DotSpatial/DotSpatial
@@ -23,13 +23,13 @@ The F# version is 6.0.0 (i.e. for the package reference to "FSharp.Core")
 # NuGet releases
 The following five libraries from this code project have been released/distributed to NuGet:
 * Programmerare.CrsTransformations.**Core**
-    (version [2.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Core/2.0.0))
+    (version [3.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Core/3.0.0))
 * Programmerare.CrsTransformations.*Adapter*.**DotSpatial**
-    (version [2.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.DotSpatial/2.0.0))
+    (version [3.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.DotSpatial/3.0.0))
 * Programmerare.CrsTransformations.*Adapter*.**ProjNet4GeoAPI**
-    (version [2.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.ProjNet/2.0.0))
+    (version [3.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.ProjNet/3.0.0))
 * Programmerare.CrsTransformations.*Adapter*.**MightyLittleGeodesy**
-    (version [2.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy/2.0.0))
+    (version [3.0.0 at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy/3.0.0))
 * Programmerare.CrsTransformations.*Constants*
     (version [**10.36.0** at NuGet](https://www.nuget.org/packages/Programmerare.CrsTransformations.Constants/10.36.0))  
 
@@ -50,13 +50,13 @@ The "Constants" library is not needed but might be interesting if you want to us
 for the EPSG numbers rather than hardcoding them with integer literals or define your own integer constants.  
 ```xml
 <!-- Use one, two or three of the below three Adapters -->
-<PackageReference Include="Programmerare.CrsTransformations.Adapter.DotSpatial" Version="2.0.0" />
-<PackageReference Include="Programmerare.CrsTransformations.Adapter.ProjNet" Version="2.0.0" />
-<PackageReference Include="Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy" Version="2.0.0" />
+<PackageReference Include="Programmerare.CrsTransformations.Adapter.DotSpatial" Version="3.0.0" />
+<PackageReference Include="Programmerare.CrsTransformations.Adapter.ProjNet" Version="3.0.0" />
+<PackageReference Include="Programmerare.CrsTransformations.Adapter.MightyLittleGeodesy" Version="3.0.0" />
     
 
 <!-- The Core should not be necessary to include explicitly as below (since it should be implicitly included when using one of the others above ) -->
-<PackageReference Include="Programmerare.CrsTransformations.Core" Version="2.0.0" />
+<PackageReference Include="Programmerare.CrsTransformations.Core" Version="3.0.0" />
 
 <!-- Optional (and totally independent) library with only one class with lots of integer constants -->
 <PackageReference Include="Programmerare.CrsTransformations.Constants" Version="10.36.0" />

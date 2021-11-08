@@ -38,7 +38,7 @@ module CrsIdentifierFactory =
     ///it will then be internally canonicalized to "EPSG:4326")
     ///An exception is thrown if an EPSG number is zero or negative,
     ///or if the input string is null or only whitespace.
-    ///Also thrown if not following the specified format in som other way.
+    ///Also thrown if not following the specified format in some other way.
     ///</param>
     ///<returns>
     ///an instance of CrsIdentifier
