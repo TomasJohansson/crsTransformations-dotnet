@@ -50,6 +50,7 @@
     <Compile Include="CrsTransformations\Utils\FileUtility.cs" />
     <Compile Include="CrsTransformations\Utils\FileUtilityTest.cs" />
     <Compile Include="CrsTransformations\Utils\MedianValueUtilityTest.cs" />
+    <Compile Include="CrsTransformations\WktTest\CrsTransformationAdapterCompositeWktTest.cs" />
     <Compile Include="CrsTransformations\WktTest\CrsTransformationAdapterWktTest.cs" />
     <Compile Include="CrsTransformations\WktTest\WktTestUsingCsvFile\CoordinateAndTargetEpsg.cs" />
     <Compile Include="CrsTransformations\WktTest\WktTestUsingCsvFile\EpsgAndWkt.cs" />

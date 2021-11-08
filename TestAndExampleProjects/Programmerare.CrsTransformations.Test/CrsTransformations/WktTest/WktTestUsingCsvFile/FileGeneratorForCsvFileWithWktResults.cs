@@ -69,11 +69,19 @@ class FileGeneratorForCsvFileWithWktResults {
         // the above file is not used programmatically, but may be convenient to have a file which can be
         // opened in an editor and already be sorted by EPSG number
 
+
         // the below sorted and created file is used from 'CrsTransformationAdapterTransformationResultTest.cs'
         // and it is sorted with the "best" results at the top, i.e. succeeding transformations
         // (succeed both in the transform from WGS84 to target CRS and transformed back to WGS84)
         // and small maximal differences between the different combinations of CRS adapter and CRS identifiers
         // (i.e. identifier created by EPSG or WKT)
+        // Please note that it is a VERY ROUGH comparison, actually comparing very different units, 
+        // for example degrees versus meters or feet...
+        // So, this is *almost* a useless sorting, however some values are very large, for example EPSG 5638 
+        // with the max X diff value around 446635 and the max Y diff value around 158477.
+        // This mentioned EPSG 5638 with big differences have been chosen in the example test file "CrsTransformationAdapterCompositeWktTest"
+        // which are also providing some tests that use the native libraries directly to verify that those 
+        // very different values are indeed retrieved.
         results.Sort((a, b) => {
             if(a.diffMaxTargetCrsExists && !b.diffMaxTargetCrsExists) return -1;
             if(!a.diffMaxTargetCrsExists && b.diffMaxTargetCrsExists) return 1;
@@ -92,7 +100,11 @@ class FileGeneratorForCsvFileWithWktResults {
         WriteToFile(results, Filename_results_sorted_with_best_results_first);
     }
 
+    // Note that the sorting, at the creation of this "best results first" file is not very useful,
+    // since the sorting does not consider the very different units, e.g. degrees vs meters.
+    // But still somewhat useful to see the very worst (largest) differences far down in the file.
     private const string Filename_results_sorted_with_best_results_first = "results_sorted_with_best_results_first.csv";
+
     public static FileInfo Get_file_with_results_sorted_with_best_results_first(
         string fileName = Filename_results_sorted_with_best_results_first,
         bool createDirectoryIfNotAlreadyExisting = true

@@ -13,8 +13,12 @@ using Programmerare.CrsTransformations.CompositeTransformations;
 namespace Programmerare.CrsTransformations.Test.CrsTransformations.WktTest.WktTestUsingCsvFile {
 
 // This class iterates a CSV file that should have been created by the class 'FileGeneratorForCsvFileWithWktResults'
-// as long as the results are 'good' (thwe results are sorted with the best first).
-// The above mentioned class that generated the CSV file were using individual CRS adapters
+// as long as the results are 'good' (the results are sorted with the best first).
+// However, note that the sorting, at the creation of this "best results first" file is not very useful,
+// since the sorting does not consider the very different units, e.g. degrees vs meters.
+// But still somewhat useful to see the very worst (largest) differences far down in the file.
+
+// The above mentioned File generator class which generated the CSV file were using individual CRS adapters
 // and also different methods for creating CRS identifier (by EPSG or by WKT)
 // and compared the results, and the "best" results (sorted first) are those that succeed 
 // for all combinations of adapters/identifiers, and also small differences in the calculated values.
@@ -43,7 +47,10 @@ class CrsTransformationAdapterTransformationResultTest {
         double maxDeltaTargetEpsg = 0.01;
         double maxDeltaWgs84 = 0.01; // when transforming back
 
-        // only iterate the first "best" results from the above file, regarding the max difference when caculating results with different combinations of adapters/identifiers
+        // Below we are filtering to only iterate the first "best" results from the above file,
+        // regarding the max difference when caculating results with different combinations of adapters/identifiers.
+        // But please remember that the sorting was very rough regarding not considering the units, e.g. meters vs degrees,
+        // which have been mentioned in other places in the source code, e.g. close to the sorting where that file was created.
         transformResults = transformResults.Where(
             item => item.diffMaxTargetCrsExists 
             && item.xDiffMaxTargetCrs < maxDeltaTargetEpsg 
